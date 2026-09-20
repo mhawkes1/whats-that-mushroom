@@ -432,3 +432,30 @@ def order_by_effort(keys: list[str]) -> list[str]:
         [k for k in keys if k in CHARACTERS],
         key=lambda k: EFFORT_ORDER.get(CHARACTERS[k].effort, 1),
     )
+
+
+# The characters offered on the capture form, before any question is asked.
+#
+# Deliberately short. The catalogue holds 35 characters and a form listing all
+# of them would be abandoned halfway; these are the ones a person standing
+# over a mushroom can answer without instruction, plus spore print for the
+# minority who already have one. Everything else stays with the interrogation
+# engine, which asks for it only when it would actually settle something.
+#
+# Order is the order they are shown: where you found it, then what it looks
+# like, then the two that need a closer look.
+FIELD_NOTE_CHARACTERS: tuple[str, ...] = (
+    "habitat",
+    "substrate",
+    "growth_form",
+    "cap_colour",
+    "gill_colour",
+    "ring",
+    "smell",
+    "spore_print_colour",
+)
+
+
+def field_note_characters() -> list[Character]:
+    """The capture-form characters, in display order."""
+    return [CHARACTERS[key] for key in FIELD_NOTE_CHARACTERS if key in CHARACTERS]

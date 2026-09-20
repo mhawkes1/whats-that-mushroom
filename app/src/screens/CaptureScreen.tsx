@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import {
-  ActivityIndicator,
   Alert,
+  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -9,117 +9,160 @@ import {
   View,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
 
-import { identify, type FieldContext } from '../lib/api';
 import { theme } from '../lib/theme';
 
 /**
  * Capture screen.
  *
- * Location is requested but never required. It measurably improves accuracy
- * (fungal fruiting is tightly bound to season and region), and the copy says
- * so rather than asking for the permission unexplained.
+ * Three views rather than one. The cap alone is the weakest evidence a
+ * mushroom offers: what is underneath separates gills from pores from spines,
+ * which separates whole families, and the base of the stem is where the volva
+ * is -- the single feature that most reliably marks the genus responsible for
+ * most fatal poisonings.
+ *
+ * Only the top view is required. Making the other two mandatory would train
+ * people to photograph something, anything, to get past the screen, and a
+ * photograph taken to satisfy a form is worse than no photograph at all.
  */
-export function CaptureScreen({ navigation }: { navigation: any }) {
-  const [busy, setBusy] = useState(false);
 
-  const collectContext = useCallback(async (): Promise<FieldContext> => {
-    const context: FieldContext = { month: new Date().getMonth() + 1 };
-    try {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === 'granted') {
-        const position = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Balanced,
-        });
-        context.latitude = position.coords.latitude;
-        context.longitude = position.coords.longitude;
+type Slot = 'top' | 'side' | 'underside';
+
+const SLOTS: { key: Slot; label: string; hint: string; required: boolean }[] = [
+  {
+    key: 'top',
+    label: 'The cap, from above',
+    hint: 'Straight down, in daylight if you can.',
+    required: true,
+  },
+  {
+    key: 'side',
+    label: 'From the side',
+    hint: 'Include the whole stem, right down to the base.',
+    required: false,
+  },
+  {
+    key: 'underside',
+    label: 'Underneath',
+    hint: 'Turn it over. Gills, pores or spines — this one carries the most.',
+    required: false,
+  },
+];
+
+export function CaptureScreen({ navigation }: { navigation: any }) {
+  const [photos, setPhotos] = useState<Partial<Record<Slot, string>>>({});
+
+  const capture = useCallback(async (slot: Slot, fromLibrary: boolean) => {
+    if (!fromLibrary) {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Camera needed', 'Allow camera access to photograph a mushroom.');
+        return;
       }
-    } catch {
-      // Location is a bonus, never a blocker.
     }
-    return context;
+
+    const result = fromLibrary
+      ? await ImagePicker.launchImageLibraryAsync({
+          quality: 0.85,
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        })
+      : await ImagePicker.launchCameraAsync({
+          quality: 0.85,
+          allowsEditing: false,
+          exif: true,
+        });
+
+    if (!result.canceled && result.assets[0]) {
+      setPhotos((current) => ({ ...current, [slot]: result.assets[0].uri }));
+    }
   }, []);
 
-  const run = useCallback(
-    async (uri: string) => {
-      setBusy(true);
-      try {
-        const context = await collectContext();
-        const result = await identify(uri, context);
-        navigation.navigate('Result', { result, imageUri: uri });
-      } catch (error) {
-        Alert.alert(
-          'Could not identify',
-          error instanceof Error ? error.message : 'Something went wrong.',
-        );
-      } finally {
-        setBusy(false);
-      }
+  const chooseSource = useCallback(
+    (slot: Slot) => {
+      Alert.alert('Add a photo', undefined, [
+        { text: 'Take a photo', onPress: () => capture(slot, false) },
+        { text: 'Choose from library', onPress: () => capture(slot, true) },
+        { text: 'Cancel', style: 'cancel' },
+      ]);
     },
-    [collectContext, navigation],
+    [capture],
   );
 
-  const takePhoto = useCallback(async () => {
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Camera needed', 'Allow camera access to photograph a mushroom.');
-      return;
-    }
-    const result = await ImagePicker.launchCameraAsync({
-      quality: 0.85,
-      allowsEditing: false,
-      exif: true,
-    });
-    if (!result.canceled && result.assets[0]) run(result.assets[0].uri);
-  }, [run]);
+  const goToNotes = useCallback(() => {
+    if (!photos.top) return;
+    navigation.navigate('FieldNotes', { views: photos });
+  }, [navigation, photos]);
 
-  const pickPhoto = useCallback(async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      quality: 0.85,
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    });
-    if (!result.canceled && result.assets[0]) run(result.assets[0].uri);
-  }, [run]);
+  const taken = SLOTS.filter((slot) => photos[slot.key]).length;
 
   return (
-    <ScrollView
-      style={styles.screen}
-      contentContainerStyle={styles.content}
-      keyboardShouldPersistTaps="handled"
-    >
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Text style={styles.title}>What's That Mushroom?</Text>
       <Text style={styles.subtitle}>
         Photograph a mushroom and I'll tell you what it might be — and, just as
         importantly, when I can't tell.
       </Text>
 
-      <View style={styles.tips}>
-        <Text style={styles.tipsHeading}>For a useful answer</Text>
-        <Text style={styles.tip}>• Photograph the cap from above, in daylight</Text>
-        <Text style={styles.tip}>• Turn one over and show the underside</Text>
-        <Text style={styles.tip}>
-          • Dig up the whole stem, including the base — this is the part that
-          matters most, and it's the part almost everyone cuts off
-        </Text>
-        <Text style={styles.tip}>• Note what it's growing on: soil, wood, grass</Text>
+      <View style={styles.slots}>
+        {SLOTS.map((slot) => {
+          const uri = photos[slot.key];
+          return (
+            <Pressable
+              key={slot.key}
+              onPress={() => chooseSource(slot.key)}
+              style={[styles.slot, uri ? styles.slotFilled : null]}
+              accessibilityRole="button"
+              accessibilityLabel={`${slot.label}. ${uri ? 'Photo added' : 'No photo yet'}`}
+            >
+              {uri ? (
+                <Image source={{ uri }} style={styles.thumb} />
+              ) : (
+                <View style={[styles.thumb, styles.thumbEmpty]}>
+                  <Text style={styles.thumbPlus}>+</Text>
+                </View>
+              )}
+
+              <View style={styles.slotText}>
+                <Text style={styles.slotLabel}>
+                  {slot.label}
+                  {slot.required ? '' : '  ·  optional'}
+                </Text>
+                <Text style={styles.slotHint}>{slot.hint}</Text>
+                {uri ? <Text style={styles.slotRetake}>Tap to replace</Text> : null}
+              </View>
+            </Pressable>
+          );
+        })}
       </View>
 
-      {busy ? (
-        <View style={styles.busy}>
-          <ActivityIndicator color={theme.colour.accent} />
-          <Text style={styles.busyText}>Looking…</Text>
-        </View>
-      ) : (
-        <View style={styles.actions}>
-          <Pressable style={styles.primary} onPress={takePhoto}>
-            <Text style={styles.primaryText}>Take a photo</Text>
-          </Pressable>
-          <Pressable style={styles.secondary} onPress={pickPhoto}>
-            <Text style={styles.secondaryText}>Choose from library</Text>
-          </Pressable>
-        </View>
-      )}
+      <Pressable
+        style={[styles.primary, !photos.top && styles.primaryDisabled]}
+        onPress={goToNotes}
+        disabled={!photos.top}
+        accessibilityRole="button"
+      >
+        <Text style={styles.primaryText}>
+          {photos.top ? 'Next — what did you see?' : 'Add the cap photo to start'}
+        </Text>
+      </Pressable>
+
+      {photos.top && taken < SLOTS.length ? (
+        <Text style={styles.nudge}>
+          You can go on with {taken} photo{taken === 1 ? '' : 's'}, but the
+          underside and the base of the stem are where the answer usually is.
+        </Text>
+      ) : null}
+
+      <View style={styles.tips}>
+        <Text style={styles.tipsHeading}>Worth doing before you photograph</Text>
+        <Text style={styles.tip}>
+          • Lever the whole mushroom out of the ground rather than cutting it.
+          The base is the part that matters most and the part almost everyone
+          leaves behind.
+        </Text>
+        <Text style={styles.tip}>• Note what it was growing on: soil, wood, grass</Text>
+        <Text style={styles.tip}>• Daylight beats indoor light for colour</Text>
+      </View>
 
       <View style={styles.disclaimer}>
         <Text style={styles.disclaimerText}>
@@ -134,15 +177,52 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: theme.colour.background },
   content: { padding: theme.spacing(3), gap: theme.spacing(2.5) },
-  title: {
-    fontSize: theme.font.title,
-    fontWeight: '800',
-    color: theme.colour.text,
-  },
+  title: { fontSize: theme.font.title, fontWeight: '800', color: theme.colour.text },
   subtitle: {
     fontSize: theme.font.body,
     color: theme.colour.textMuted,
     lineHeight: 23,
+  },
+  slots: { gap: theme.spacing(1.5) },
+  slot: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing(2),
+    backgroundColor: theme.colour.surface,
+    borderRadius: theme.radius.lg,
+    borderWidth: 1,
+    borderColor: theme.colour.border,
+    padding: theme.spacing(1.5),
+  },
+  slotFilled: { borderColor: theme.colour.accent },
+  thumb: { width: 68, height: 68, borderRadius: theme.radius.md },
+  thumbEmpty: {
+    backgroundColor: theme.colour.surfaceRaised,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  thumbPlus: { fontSize: 30, color: theme.colour.textFaint },
+  slotText: { flex: 1, gap: 2 },
+  slotLabel: { fontSize: theme.font.body, color: theme.colour.text, fontWeight: '600' },
+  slotHint: { fontSize: theme.font.small, color: theme.colour.textMuted, lineHeight: 19 },
+  slotRetake: { fontSize: theme.font.tiny, color: theme.colour.accent },
+  primary: {
+    backgroundColor: theme.colour.accent,
+    borderRadius: theme.radius.lg,
+    paddingVertical: theme.spacing(2.25),
+    alignItems: 'center',
+  },
+  primaryDisabled: { backgroundColor: theme.colour.surfaceRaised },
+  primaryText: {
+    fontSize: theme.font.heading,
+    fontWeight: '700',
+    color: theme.colour.background,
+  },
+  nudge: {
+    fontSize: theme.font.small,
+    color: theme.colour.textMuted,
+    lineHeight: 20,
+    textAlign: 'center',
   },
   tips: {
     backgroundColor: theme.colour.surface,
@@ -156,32 +236,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.8,
     color: theme.colour.accent,
   },
-  tip: {
-    fontSize: theme.font.small,
-    color: theme.colour.textMuted,
-    lineHeight: 21,
-  },
-  actions: { gap: theme.spacing(1.5) },
-  primary: {
-    backgroundColor: theme.colour.accent,
-    borderRadius: theme.radius.lg,
-    paddingVertical: theme.spacing(2.25),
-    alignItems: 'center',
-  },
-  primaryText: {
-    fontSize: theme.font.heading,
-    fontWeight: '700',
-    color: theme.colour.background,
-  },
-  secondary: {
-    backgroundColor: theme.colour.surfaceRaised,
-    borderRadius: theme.radius.lg,
-    paddingVertical: theme.spacing(2),
-    alignItems: 'center',
-  },
-  secondaryText: { fontSize: theme.font.body, color: theme.colour.text },
-  busy: { alignItems: 'center', gap: theme.spacing(1), paddingVertical: theme.spacing(4) },
-  busyText: { color: theme.colour.textMuted, fontSize: theme.font.small },
+  tip: { fontSize: theme.font.small, color: theme.colour.textMuted, lineHeight: 21 },
   disclaimer: {
     borderTopWidth: 1,
     borderTopColor: theme.colour.border,

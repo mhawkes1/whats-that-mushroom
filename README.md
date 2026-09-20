@@ -28,6 +28,14 @@ fungi, is most of the time. That is what this project is built around.
 
 ## What makes it different
 
+**It asks for the evidence that actually decides it.** Capture is three
+views -- cap, side, underside -- because what is under the cap separates gills
+from pores from spines, and that separates whole families. Then one screen of
+field notes: where it grew, what it grew on, colour, ring, smell, and spore
+print if you already have one. Every field is optional, and skipping is
+offered as prominently as answering, because a guess recorded as an
+observation is worse than a blank -- nothing downstream can tell them apart.
+
 **It interrogates rather than pronounces.** Every other app maps a photograph
 to an answer and stops. No mycologist works that way: they find the character
 that separates the remaining candidates and go and look at it. This app does
@@ -84,6 +92,7 @@ whats-that-mushroom/
 │       ├── characters.py      how to ask a non-expert for evidence
 │       └── main.py            HTTP API
 ├── app/                       Expo React Native client
+│   └── src/screens/           capture -> field notes -> result
 ├── CLAUDE.md                  orientation for anyone (or any agent) picking this up
 └── docs/
     ├── SAFETY.md              the policy that governs the product

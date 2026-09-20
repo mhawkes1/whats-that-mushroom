@@ -50,6 +50,27 @@ class IdentifyResponse(BaseModel):
     calibrated: bool
 
 
+class FieldNoteFieldOut(BaseModel):
+    key: str
+    label: str
+    prompt: str
+    how: str
+    options: list[str]
+    effort: str
+
+
+class FieldFormOut(BaseModel):
+    """The capture form, served rather than hardcoded in the client.
+
+    The answer strings are compared against the character catalogue, so a
+    client that invented its own list would submit values the server silently
+    ignores. Serving the form makes that impossible.
+    """
+
+    fields: list[FieldNoteFieldOut]
+    note: str
+
+
 class AnswerRequest(BaseModel):
     observation_id: str
     character_key: str

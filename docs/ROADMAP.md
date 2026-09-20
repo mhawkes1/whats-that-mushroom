@@ -102,10 +102,27 @@ reports 95%, there is a leak — check the observation-level split first.
 
 ### 3. Replace the answer-weighting stub
 
+**This is now the highest-value item, and the capture flow depends on it.**
+
 `InterrogationEngine.apply_answer` currently applies a weak, conservative
 re-weighting because there is no per-species character-state table. It should
 never have been more aggressive than that without one, but it is the weakest
 part of the system.
+
+How weak is measurable. Running every character against every one of its
+answer options, 157 combinations in total:
+
+> **Only 34 of 157 (22%) change the candidate ranking at all.** The remaining
+> 78% are silent no-ops.
+
+The cause is that `apply_answer` boosts a species only when the answer string
+happens to appear verbatim in that species' free-text `notes`. That is an
+accident of the data rather than a model of anything.
+
+It matters more now than it did. The capture form asks for habitat, substrate,
+growth habit, cap and gill colour, ring, smell and spore print up front, so a
+user can hand over eight observations and watch most of them change nothing.
+The form is honest about being optional, but it should not stay decorative.
 
 The fix is a `character_states` block per species in the taxonomy:
 
@@ -151,6 +168,24 @@ controlled white balance. A genuine differentiator and a genuine contribution.
 Local history of what the user photographed, where and when, with the
 questions they answered. Useful in itself, and the foundation for any future
 community verification.
+
+## Done since this list was written
+
+- **Multi-view capture.** `/identify` takes cap, side and underside; the views
+  are averaged in probability space rather than in logits, so one
+  over-confident view cannot shout down the others and the result stays a
+  probability the safety thresholds can be set against. Only the top view is
+  required.
+- **The field-notes form.** One screen, eight characters, every field
+  skippable. Served from `/field-form` rather than hardcoded in the client, so
+  the options cannot drift from the catalogue the server validates against.
+  An unknown character or an out-of-list answer is rejected rather than
+  quietly dropped.
+- **Spore print colour matching** (`server/app/spore_print.py`). Matches a
+  photographed deposit against a reference chart in CIELAB using CIEDE2000,
+  correcting exposure and colour cast against the white half of the card. It
+  refuses far more often than it answers, which is the point. Not yet wired
+  to a guided-capture screen -- the matcher exists, the camera flow does not.
 
 ## Explicitly not doing
 

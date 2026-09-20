@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { CaptureScreen } from './src/screens/CaptureScreen';
+import { FieldNotesScreen } from './src/screens/FieldNotesScreen';
 import { ResultScreen } from './src/screens/ResultScreen';
 import { theme } from './src/lib/theme';
 
@@ -39,6 +40,11 @@ export default function App() {
             name="Capture"
             component={CaptureScreen}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="FieldNotes"
+            component={FieldNotesScreen}
+            options={{ title: 'What did you see?' }}
           />
           <Stack.Screen
             name="Result"

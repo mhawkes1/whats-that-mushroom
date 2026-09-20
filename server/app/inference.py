@@ -168,6 +168,18 @@ class Classifier:
 
         return cls(backend, temperature=temperature, image_size=image_size)
 
+    def _probabilities(
+        self,
+        image: Image.Image,
+        month: int | None,
+        latitude: float | None,
+        longitude: float | None,
+    ) -> np.ndarray:
+        tensor = preprocess(image, self.image_size)
+        metadata = encode_metadata(month, latitude, longitude)
+        logits = self.backend.logits(tensor, metadata)
+        return softmax(logits / self.temperature)[0]
+
     def predict(
         self,
         image: Image.Image,
@@ -176,13 +188,43 @@ class Classifier:
         longitude: float | None = None,
     ) -> list[tuple[str, float]]:
         """Return calibrated (species_key, probability), highest first."""
-        tensor = preprocess(image, self.image_size)
-        metadata = encode_metadata(month, latitude, longitude)
-
-        logits = self.backend.logits(tensor, metadata)
-        probabilities = softmax(logits / self.temperature)[0]
-
-        ranked = sorted(
+        probabilities = self._probabilities(image, month, latitude, longitude)
+        return sorted(
             zip(self.classes, probabilities.tolist()), key=lambda kv: -kv[1]
         )
-        return ranked
+
+    def predict_views(
+        self,
+        images: list[Image.Image],
+        month: int | None = None,
+        latitude: float | None = None,
+        longitude: float | None = None,
+    ) -> list[tuple[str, float]]:
+        """Combine several views of one mushroom into a single ranking.
+
+        The cap, the side and the underside carry different evidence -- the
+        underside in particular, since gills, pores and spines separate whole
+        families and are invisible from above. Asking for all three costs the
+        user two extra taps and is the cheapest accuracy available.
+
+        The views are averaged in probability space rather than in logits.
+        Averaging logits lets one very confident view shout down the others,
+        and an over-confident view is exactly what an uncalibrated model
+        produces. The mean of calibrated probabilities stays a probability,
+        which matters because the safety thresholds are set against it.
+
+        This is an ensemble over a single-view model, not a model trained on
+        multiple views. It is a sound way to use the evidence, but it is not
+        the same thing as a model that has learned how the views relate, and
+        the model card should not claim otherwise.
+        """
+        if not images:
+            raise ValueError("predict_views needs at least one image")
+
+        stacked = np.stack(
+            [self._probabilities(i, month, latitude, longitude) for i in images]
+        )
+        combined = stacked.mean(axis=0)
+        return sorted(
+            zip(self.classes, combined.tolist()), key=lambda kv: -kv[1]
+        )
