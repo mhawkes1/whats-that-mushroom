@@ -13,9 +13,14 @@ tqdm>=4.66
 requests>=2.31
 pyarrow>=15.0
 
-# Export targets
+# Export targets.
+# onnxscript is not optional: since torch 2.9 the default ONNX exporter is the
+# torch.export-based one, which imports it. Without it `fungi_ml.export` dies
+# on ModuleNotFoundError -- at the very end of the pipeline, after the whole
+# training run has been paid for.
 onnx>=1.16
 onnxruntime>=1.17
+onnxscript>=0.1
 
 # Experiment tracking (optional, guarded by config)
 tensorboard>=2.16

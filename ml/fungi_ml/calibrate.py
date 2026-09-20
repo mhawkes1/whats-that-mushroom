@@ -167,7 +167,7 @@ def calibrate_checkpoint(
     data produces a temperature near 1.0 and a model that stays overconfident.
     """
     from .data.dataset import FungiDataset, load_manifest
-    from .models.build import FungiClassifier
+    from .models.build import load_checkpoint_model
     from torch.utils.data import DataLoader
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -175,13 +175,7 @@ def calibrate_checkpoint(
     classes = ckpt["classes"]
     config = ckpt["config"]
 
-    model = FungiClassifier(
-        num_classes=len(classes),
-        backbone=config["model"]["backbone"],
-        pretrained=False,
-    )
-    model.load_state_dict(ckpt["model"])
-    model.to(device).eval()
+    model = load_checkpoint_model(ckpt).to(device)
 
     manifest = load_manifest(manifest_path)
     dataset = FungiDataset(manifest, split, config["data"]["image_size"])

@@ -4,33 +4,103 @@
 
 Working: taxonomy and risk model, dataset pipeline, training loop,
 calibration, evaluation and model card generation, safety layer,
-interrogation engine, HTTP API, Expo client. 80 tests pass.
+interrogation engine, HTTP API, Expo client. 85 tests pass.
 
-Not working: there is no trained model. The API serves a stub backend that
-produces deterministic fake predictions so the rest of the system can be
-developed and tested. Everything except the predictions themselves is real.
+The chain from raw manifest through to a served ONNX model has now been run
+end to end on synthetic data (`scripts/smoke_e2e.py`), so the stages are known
+to fit together rather than merely known to work in isolation.
+
+Not working: there is no trained model, and no dataset. The API serves a stub
+backend that produces deterministic fake predictions so the rest of the system
+can be developed and tested. Everything except the predictions themselves is
+real.
 
 ## Next, in order
 
-### 1. Train the first model
+### 0. Rehearse the pipeline before spending anything
+
+```bash
+python scripts/smoke_e2e.py
+```
+
+About a minute on CPU. Synthesises a small random dataset and walks
+prepare -> train -> calibrate -> export -> serve, asserting only that each
+stage hands the next one something usable. It says nothing about accuracy --
+the data is noise -- and that is the point: it tests the seams, which is where
+this pipeline actually breaks.
+
+Running it the first time found two faults that would each have surfaced only
+at the end of a paid training run:
+
+- `onnxscript` was missing from `ml/requirements.txt`. Since torch 2.9 the
+  default ONNX exporter imports it, so export died on `ModuleNotFoundError`
+  after training had completed.
+- `export` and `calibrate` rebuilt the model from the checkpoint by hand,
+  reading only `backbone`. Every other architectural switch was dropped --
+  `use_metadata` above all, which changes the state dict, so a run configured
+  without the metadata branch trained fine and then failed to load.
+
+A third fault it surfaced was quieter and is the one worth remembering:
+`torch.onnx.export` treats `opset_version` as a request, not a promise. Asking
+for opset 17 produced a file declaring opset 18, with no exception and no
+non-zero exit. It verified, served and looked correct, because the local
+onnxruntime is new enough to run either. It would have failed against a pinned
+runtime or against the Core ML/TFLite converters step 5 needs. Export now reads
+back what it wrote and refuses to ship an opset that is not the one requested.
+
+Re-run this after any change to the model, the config schema or the export
+path.
+
+### 1. Build the dataset
 
 ```bash
 pip install -r ml/requirements.txt
 python scripts/build_dataset.py --target 400 --country GB
+```
+
+**This is the gate on everything else, and it needs no GPU.** It is bound by
+network and disk: roughly 20k images pulled one at a time from GBIF, which is
+hours of wall time and tens of GB. Renting a GPU to sit idle through it wastes
+the rent.
+
+It also needs unrestricted outbound access to `api.gbif.org` and to the
+iNaturalist media CDN. Sandboxes and locked-down CI runners commonly block
+both, which fails at the first request rather than partway through. The run is
+resumable -- images already on disk are skipped -- so an interrupted build
+costs only the time already spent.
+
+Check before moving on: how many species survived `--min-images 40`. The seed
+taxonomy has 57, and the long tail of UK fungi means fewer will clear the
+threshold. Species that were dropped are not in the label space, and the safety
+layer cannot warn about a lookalike the model cannot name.
+
+### 2. Train the first model
+
+```bash
 cd ml && python -m fungi_ml.train --config configs/default.yaml
 python -m fungi_ml.calibrate --checkpoint runs/baseline/best.pt \
     --manifest ../data/processed/manifest.parquet --split test
 python -m fungi_ml.export --checkpoint runs/baseline/best.pt
 ```
 
-Needs a GPU. A single A10G or 4090 handles the default config; roughly
-6-10 hours for 30 epochs on ~20k images. Rent rather than buy at this stage.
+This is the step that needs a GPU, and the only one that does. The default
+config is a 86M-parameter ViT-B/16 at 384px; a single 24GB card (A10G, 3090,
+4090) fits it at batch size 32, and 30 epochs over ~20k images is roughly
+6-10 hours. Rent rather than buy at this stage.
+
+Take the dataset to the GPU box already built, or build it on a cheap
+CPU instance and copy it across. Bring `data/processed/` and `data/images/`;
+nothing else in the repo is large.
+
+Calibration and export are CPU-bound and take minutes, so they can run
+anywhere -- but run them before releasing the rental, because a checkpoint
+that will not export is a checkpoint that has to be retrained.
 
 Expect species-level top-1 somewhere in the 50-70% range on a first pass with
 this label space, and genus accuracy substantially higher. If the first run
 reports 95%, there is a leak — check the observation-level split first.
 
-### 2. Replace the answer-weighting stub
+### 3. Replace the answer-weighting stub
 
 `InterrogationEngine.apply_answer` currently applies a weak, conservative
 re-weighting because there is no per-species character-state table. It should
@@ -54,7 +124,7 @@ nudge, and an answer can legitimately rule candidates out. This requires the
 mycological review in `SAFETY.md` to happen first, since it encodes claims
 about species that users will act on.
 
-### 3. Out-of-distribution detection
+### 4. Out-of-distribution detection
 
 The current OOD check is a threshold on top-1 probability, which is weak. A
 user photographing a slug, a pine cone, or a species outside the label space
@@ -62,7 +132,7 @@ should get a clear "that isn't something I know", not a confident wrong
 answer. Options: an energy-based score, a Mahalanobis distance on penultimate
 features, or an explicit "not a fungus" class trained on negatives.
 
-### 4. On-device inference
+### 5. On-device inference
 
 Signal in woodland is poor and this is where the app is used. Export to
 TFLite or Core ML with a smaller backbone (EfficientNet-B0/B2) and ship the
@@ -70,13 +140,13 @@ model in the bundle. The safety layer must move client-side with it —
 critically, it must not be possible to get a species answer with the safety
 rules bypassed because the network was unavailable.
 
-### 5. Guided spore print workflow
+### 6. Guided spore print workflow
 
 Nobody has built this and it is the most diagnostic cheap test in mycology.
 Guided capture, a timer, and colour matching against a reference chart under
 controlled white balance. A genuine differentiator and a genuine contribution.
 
-### 6. Observation log
+### 7. Observation log
 
 Local history of what the user photographed, where and when, with the
 questions they answered. Useful in itself, and the foundation for any future
