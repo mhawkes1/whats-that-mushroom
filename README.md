@@ -88,6 +88,7 @@ whats-that-mushroom/
 └── docs/
     ├── SAFETY.md              the policy that governs the product
     ├── REVIEW.md              the mycological review this needs before release
+    ├── fungi-taxonomy-review-pack.docx   printable pack for a reviewer
     ├── POSITIONING.md         who we compete with, and what we refuse to chase
     ├── DECISIONS.md           why it's built this way — read before undoing something
     └── ROADMAP.md             what's next, and what's deliberately not

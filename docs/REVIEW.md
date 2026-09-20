@@ -5,9 +5,16 @@ The seed taxonomy in `data/taxonomy.seed.json` covers 57 species and has
 references. Until it is signed off, `reviewed_by` stays `null` and `/health`
 reports `taxonomy_reviewed: false`.
 
-`taxonomy-review-worksheet.csv` in this folder is the working document: one
-row per species, sorted by review priority, with blank columns for the
-reviewer to complete.
+Two working documents accompany this note, both in this folder:
+
+- **`fungi-taxonomy-review-pack.docx`** — a printable Word document with the
+  species split into priority tiers, blank columns to mark up by hand, the
+  specific queries below, and a sign-off page. Best for handing to a reviewer.
+- **`taxonomy-review-worksheet.csv`** — the same 57 species as a spreadsheet,
+  one row each, for anyone who would rather type than annotate.
+
+Both are generated from `data/taxonomy.seed.json`, so regenerate them if the
+taxonomy changes rather than editing them as the source of truth.
 
 ## Priority tiers
 
