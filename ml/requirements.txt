@@ -1,0 +1,21 @@
+# Core training stack
+torch>=2.2
+torchvision>=0.17
+timm>=1.0.3
+numpy>=1.26
+pandas>=2.2
+pillow>=10.2
+pyyaml>=6.0
+scikit-learn>=1.4
+tqdm>=4.66
+
+# Dataset acquisition
+requests>=2.31
+pyarrow>=15.0
+
+# Export targets
+onnx>=1.16
+onnxruntime>=1.17
+
+# Experiment tracking (optional, guarded by config)
+tensorboard>=2.16

@@ -1,0 +1,29 @@
+# Datasets and model artefacts — never committed, often gigabytes
+data/raw/
+data/processed/
+data/images/
+ml/runs/
+*.parquet
+*.pt
+*.pth
+*.onnx
+*.tflite
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Node / Expo
+node_modules/
+.expo/
+dist/
+*.log
+
+# Secrets
+.env
+.env.*
+!.env.example

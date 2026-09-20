@@ -1,0 +1,62 @@
+# Training configuration for the fungi species classifier.
+#
+# Defaults target a single 24GB GPU (A10G / 3090 / 4090). Reduce batch_size
+# and enable grad_accum_steps to fit smaller cards.
+
+data:
+  # Directory produced by `python -m fungi_ml.data.prepare`
+  root: data/processed
+  manifest: data/processed/manifest.parquet
+  label_map: data/processed/labels.json
+  image_size: 384
+  # Species with fewer than this many usable images are dropped. Fungi datasets
+  # have a brutal long tail; training on 3-image classes produces confident
+  # nonsense, which is the one failure mode this project cannot tolerate.
+  min_images_per_class: 40
+  # Cap to stop Agaricus/Amanita from dominating the loss.
+  max_images_per_class: 1200
+  val_fraction: 0.10
+  test_fraction: 0.10
+  # Observations (not images) are split. The same fruiting body photographed
+  # five times must never straddle train and val, or metrics are fiction.
+  split_on: observation_id
+  num_workers: 8
+
+model:
+  # timm identifier. vit_base_patch16_384 and convnext_base are the two that
+  # consistently top the Danish Fungi benchmark; EfficientNet is the choice
+  # when the model must run on-device.
+  backbone: vit_base_patch16_384.augreg_in21k_ft_in1k
+  pretrained: true
+  drop_rate: 0.1
+  drop_path_rate: 0.2
+
+train:
+  epochs: 30
+  batch_size: 32
+  grad_accum_steps: 1
+  lr: 3.0e-4
+  backbone_lr_mult: 0.1      # discriminative fine-tuning
+  weight_decay: 0.05
+  warmup_epochs: 2
+  label_smoothing: 0.1
+  mixup_alpha: 0.2
+  cutmix_alpha: 1.0
+  amp: true
+  ema_decay: 0.9998
+  clip_grad_norm: 1.0
+  # Oversample rare classes so the tail is learned rather than memorised.
+  balanced_sampling: true
+  seed: 1337
+
+eval:
+  topk: [1, 3, 5]
+  # Genus-level accuracy matters more than species for real-world usefulness.
+  report_genus_accuracy: true
+  # Any confusion between these pairs is reported separately and loudly.
+  report_dangerous_confusions: true
+
+output:
+  dir: runs/baseline
+  save_top_k: 2
+  tensorboard: true
