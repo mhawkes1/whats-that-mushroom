@@ -37,8 +37,13 @@ Everything works **except the model**. There is no trained classifier; the API
 serves a stub backend with deterministic fake predictions. Every other layer
 is real and tested.
 
-80 tests pass. `/health` honestly reports `model_loaded: false`,
+85 tests pass. `/health` honestly reports `model_loaded: false`,
 `calibrated: false`, `taxonomy_reviewed: false`.
+
+The training pipeline has been rehearsed end to end on synthetic data
+(`python scripts/smoke_e2e.py`, ~1 minute on CPU, no dataset or network
+needed). Run it before paying for GPU time and after any change to the model,
+the config schema or the export path.
 
 **Blocking for any public release: the taxonomy has not been reviewed by a
 qualified mycologist.** Toxicity data, lookalike relationships and diagnostic
