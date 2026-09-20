@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "What's That Mushroom?",
+    "slug": "whats-that-mushroom",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "splash": { "resizeMode": "contain", "backgroundColor": "#1a1410" },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.whatsthatmushroom.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Used to photograph mushrooms for identification.",
+        "NSPhotoLibraryUsageDescription": "Used to choose an existing photograph of a mushroom.",
+        "NSLocationWhenInUseUsageDescription": "Location and season substantially narrow which species are possible, which makes identification more reliable."
+      }
+    },
+    "android": {
+      "package": "com.whatsthatmushroom.app",
+      "permissions": ["CAMERA", "ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+    },
+    "plugins": ["expo-camera", "expo-image-picker", "expo-location"]
+  }
+}
