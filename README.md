@@ -84,8 +84,12 @@ whats-that-mushroom/
 │       ├── characters.py      how to ask a non-expert for evidence
 │       └── main.py            HTTP API
 ├── app/                       Expo React Native client
+├── CLAUDE.md                  orientation for anyone (or any agent) picking this up
 └── docs/
     ├── SAFETY.md              the policy that governs the product
+    ├── REVIEW.md              the mycological review this needs before release
+    ├── POSITIONING.md         who we compete with, and what we refuse to chase
+    ├── DECISIONS.md           why it's built this way — read before undoing something
     └── ROADMAP.md             what's next, and what's deliberately not
 ```
 

@@ -98,6 +98,8 @@ These are blocking, not aspirational.
       is drawn from standard references but has not been reviewed by a
       mycologist. `reviewed_by` is `null` and `/health` reports
       `taxonomy_reviewed: false`. Do not ship while that is the case.
+      See `REVIEW.md` for the prioritised species list, the specific queries
+      raised, and `taxonomy-review-worksheet.csv` for the working document.
 - [ ] **Model card published**, including per-dangerous-pair confusion counts
       and the coverage/precision curve.
 - [ ] **Zero dangerous confusions on the held-out test set**, or a documented
