@@ -135,6 +135,25 @@ export function ResultScreen({ navigation, route }: { navigation: any; route: an
         <Text style={styles.logged}>
           Saved to your observations, on this phone.
         </Text>
+
+        {/* An app that says it might be wrong owes the user somewhere to say
+            that it was. The report carries what this screen showed, so it is
+            actionable without the server remembering the observation. */}
+        <Pressable
+          onPress={() =>
+            navigation.navigate('Report', {
+              observationId: result.observation_id,
+              verdict: result.verdict,
+              candidates: result.candidates.map((c) => c.species_key),
+              modelVersion: result.model_version,
+              calibrated: result.calibrated,
+            })
+          }
+          style={styles.report}
+          accessibilityRole="button"
+        >
+          <Text style={styles.reportText}>This is wrong — tell me why</Text>
+        </Pressable>
       </View>
     </ScrollView>
   );
@@ -173,4 +192,13 @@ const styles = StyleSheet.create({
     lineHeight: 21,
   },
   logged: { fontSize: theme.font.tiny, color: theme.colour.textFaint },
+  report: {
+    borderWidth: 1,
+    borderColor: theme.colour.border,
+    borderRadius: theme.radius.md,
+    padding: theme.spacing(1.5),
+    alignItems: 'center',
+    marginTop: theme.spacing(1),
+  },
+  reportText: { fontSize: theme.font.small, color: theme.colour.textMuted, fontWeight: '600' },
 });

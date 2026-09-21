@@ -122,6 +122,16 @@ describe('what a history row says', () => {
     expect(summarise(entry({ verdict: 'species', deadlyInPlay: true })).tone).toBe('danger');
   });
 
+  it('stores the taxonomy key beside the name', () => {
+    // An incident report is graded by looking these up server-side, and a
+    // scientific name is not a key. With names in place of keys, a report
+    // disputing a warning grades as a warning that never happened -- the
+    // opposite classification.
+    const stored = fromResult(response());
+    expect(stored.candidates[0].speciesKey).toBe('amanita-rubescens');
+    expect(stored.candidates[0].scientificName).toBe('Amanita rubescens');
+  });
+
   it('never reduces to a bare name field', () => {
     // The API shape has no field carrying an answer without its verdict, and
     // neither does a stored entry. Anything reading one must go through

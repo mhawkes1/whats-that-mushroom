@@ -27,3 +27,6 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Incident reports are real user data, never committed
+data/incidents*.jsonl

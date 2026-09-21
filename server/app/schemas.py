@@ -140,3 +140,87 @@ class HealthOut(BaseModel):
             "here means field notes are inert by design, not broken."
         ),
     )
+
+
+class AcknowledgementOut(BaseModel):
+    key: str
+    statement: str
+    because: str = Field(
+        description="Why this statement is here. Never a reassurance."
+    )
+
+
+class DisclaimerOut(BaseModel):
+    version: str = Field(
+        description=(
+            "A hash of everything shown. A client stores the version it was "
+            "acknowledged under; when the text changes this changes with it "
+            "and the acknowledgement is stale, because agreeing to an older "
+            "statement is not agreeing to a newer one."
+        )
+    )
+    heading: str
+    body: str
+    acknowledgements: list[AcknowledgementOut] = Field(
+        description=(
+            "Each is ticked separately. One blanket agreement is a formality; "
+            "these are the individual things a user must know."
+        )
+    )
+
+
+class IncidentRequest(BaseModel):
+    """A suspected misidentification.
+
+    Everything about what the app said is sent by the client from its own
+    observation log rather than looked up here, so a report stays actionable
+    after the server has forgotten the observation.
+    """
+
+    observation_id: str | None = None
+    verdict: str | None = None
+    reported_candidates: list[str] = Field(
+        default_factory=list, description="Species keys the app offered."
+    )
+    model_version: str | None = None
+    calibrated: bool | None = None
+
+    believed_species_key: str | None = Field(
+        default=None, description="What the reporter says it actually was."
+    )
+    account: str = Field(default="", max_length=4000)
+    anyone_ate_it: bool = False
+    anyone_unwell: bool = False
+    contact: str | None = Field(default=None, max_length=200)
+
+
+class IncidentOut(BaseModel):
+    incident_id: str
+    severity: str = Field(
+        description="medical | dangerous_miss | dangerous_false_alarm | ordinary."
+    )
+    acknowledgement: str
+    medical_emergency: bool = Field(
+        description=(
+            "True when the report says someone ate it or is unwell. The client "
+            "shows the emergency guidance rather than a confirmation."
+        )
+    )
+    emergency_guidance: str | None = None
+
+
+class SpeciesListEntryOut(BaseModel):
+    species_key: str
+    scientific_name: str
+    common_names: list[str]
+
+
+class SpeciesListOut(BaseModel):
+    species: list[SpeciesListEntryOut]
+    note: str = Field(
+        description=(
+            "The label space, which is a fraction of the British fungi. A "
+            "name absent from this list is not a name the app can be wrong "
+            "about, and a reporter must be able to say so."
+        )
+    )

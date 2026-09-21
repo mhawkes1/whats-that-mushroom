@@ -66,6 +66,9 @@ characters come from standard references but are unverified.
 | `server/app/characters.py` | How to ask a non-expert for evidence |
 | `app/` | Expo React Native client |
 | `app/src/lib/observationLog.ts` | Local history; what a stored verdict may say later |
+| `server/app/disclaimer.py` | What a user acknowledges before first use; the version is the text |
+| `server/app/incidents.py` | Reports that the app was wrong, and how they are graded |
+| `docs/INCIDENTS.md` | Who acts on a report, and in what order |
 | `scripts/build_ebook.py` | Fills the companion ebook's field slots from the taxonomy |
 
 ## Commands
@@ -207,6 +210,36 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   AsyncStorage is aliased to an in-memory double in `vitest.config.ts`, so
   storage behaviour is tested rather than mocked away. Only modules free of
   the RN renderer are covered.
+- **The disclaimer's version is a hash of its own text.** Change a word and
+  every stored consent goes stale and is asked again, because agreeing to an
+  older statement is not agreeing to a newer one. Three of the statements are
+  conditional on `model_loaded`, `calibrated` and `taxonomy_reviewed`, so
+  training a model or getting the taxonomy reviewed re-asks by construction —
+  that is intended, the terms genuinely changed.
+- **Each acknowledgement is ticked on its own; there is no "accept all".** One
+  blanket agreement is a formality, and a formality is what people learn to
+  tap past. `isComplete` requires every key individually and a test pins that
+  an empty list cannot satisfy it — a disclaimer that failed to load must not
+  read as one with nothing to agree to.
+- **The emergency screen is the one hardcoded, offline, ungated string in the
+  app.** Everything else a user reads is served so one copy exists. This is
+  the exception: the screen that must never fail is this one, a wood is where
+  the network is not, and it sits above the consent gate because someone
+  whose child has eaten something is not going to complete an onboarding flow.
+- **The report form checks for a medical emergency before it submits.** Not
+  only on the server's reply — the reply needs the network. A yes to "has
+  anyone eaten it" or "is anyone unwell" turns the screen into the emergency
+  guidance. The server flags it too, and its confirmation text deliberately
+  does not thank anyone for their feedback.
+- **Incident severity is derived from the taxonomy, never claimed.** A report
+  naming a DEADLY species the app did not warn about is `dangerous_miss`
+  whatever the wording; a dispute of a warning is `dangerous_false_alarm`,
+  which is lower priority and never zero, because a warning nobody believes
+  protects nobody. Nothing ever writes a report into the taxonomy.
+- **The observation log stores `speciesKey`, not just the name.** Reports are
+  graded by looking those up server-side. With names in place of keys every
+  candidate is unrecognisable, and a disputed warning grades as a warning that
+  never happened — the opposite classification.
 - **`notes` is rendered verbatim to users.** Rationale, policy and review
   flags go in `internal_note`, which is never surfaced.
 - **The ebook's field data is generated, never hand-copied.** The book and

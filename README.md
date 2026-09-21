@@ -110,11 +110,11 @@ and no dataset yet; the API serves a stub backend producing deterministic fake
 predictions so the safety layer, interrogation engine, API and mobile client
 can all be developed and tested. Every other layer is real and tested.
 
-226 Python tests pass, covering split integrity, the risk asymmetry,
+244 Python tests pass, covering split integrity, the risk asymmetry,
 calibration, the checkpoint-to-ONNX seam, spore print colour matching, the
-evidence model's safety floors, and the classic fatal confusions end to end.
-A further 29 cover the client's storage layers, where a mistake is silent
-rather than visible.
+evidence model's safety floors, incident triage, and the classic fatal
+confusions end to end. A further 48 cover the client's storage layers and the
+consent gate, where a mistake is silent rather than visible.
 
 The training pipeline has also been rehearsed end to end on synthetic data, so
 the stages are known to fit together and not merely to work in isolation:
@@ -139,7 +139,12 @@ cd server && uvicorn app.main:app --reload
 
 `GET /health` reports whether a model is loaded, whether calibration has been
 fitted, and whether the taxonomy has been through mycological review. All
-three are `false` until the work in `docs/ROADMAP.md` is done.
+three are `false` until the work in `docs/ROADMAP.md` is done — and while they
+are, `GET /disclaimer` puts each of them in front of the user as something to
+acknowledge before their first identification.
+
+`POST /incident` takes a report that the app got something wrong.
+`docs/INCIDENTS.md` says what happens to one.
 
 **Mobile client**
 

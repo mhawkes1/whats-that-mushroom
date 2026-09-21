@@ -7,6 +7,8 @@ Endpoints are deliberately few:
   POST /spore-print/match  a photographed spore print -> which chart colour
   GET  /field-form  the characters to offer on the capture form
   GET  /species     reference data for one species
+  GET  /disclaimer  what a user acknowledges before first use
+  POST /incident    a suspected misidentification
   GET  /health      readiness, including whether calibration is loaded
 
 The identify response never contains a bare species name without the
@@ -27,6 +29,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image, UnidentifiedImageError
 
 from .config import settings
+from .disclaimer import build as build_disclaimer
+from .incidents import EMERGENCY_GUIDANCE, IncidentStore, build_report
 from .inference import Classifier, OnnxBackend
 from .interrogation import InterrogationEngine
 from .safety import SafetyLayer
@@ -34,14 +38,20 @@ from .spore_print import read_from_photograph
 from .characters import CHARACTERS, field_note_characters
 from .evidence import described_coverage
 from .schemas import (
+    AcknowledgementOut,
     AnswerRequest,
     ColourMatchOut,
     CandidateOut,
+    DisclaimerOut,
     FieldFormOut,
     FieldNoteFieldOut,
     HealthOut,
     IdentifyResponse,
+    IncidentOut,
+    IncidentRequest,
     QuestionOut,
+    SpeciesListEntryOut,
+    SpeciesListOut,
     SpeciesOut,
     SporePrintReadingOut,
 )
@@ -95,6 +105,7 @@ async def lifespan(app: FastAPI):
         safety=safety,
         engine=InterrogationEngine(taxonomy),
         calibrated=calibrated,
+        incidents=IncidentStore(settings.incident_log_path),
     )
     log.info("Ready: %d classes, calibrated=%s", len(classifier.classes), calibrated)
     yield
@@ -148,11 +159,8 @@ def _build_response(
 def health() -> HealthOut:
     if not state:
         raise HTTPException(503, "Service is still starting.")
-    import json
 
-    reviewed = bool(
-        json.loads(settings.taxonomy_path.read_text(encoding="utf-8")).get("reviewed_by")
-    )
+    reviewed = _taxonomy_reviewed()
     return HealthOut(
         status="ok",
         model_loaded=isinstance(state["classifier"].backend, OnnxBackend),
@@ -379,6 +387,119 @@ async def match_spore_print_photo(
             for m in reading.ranked
         ],
         corrected_rgb=list(reading.corrected_rgb) if reading.corrected_rgb else None,
+    )
+
+
+def _taxonomy_reviewed() -> bool:
+    import json
+
+    return bool(
+        json.loads(settings.taxonomy_path.read_text(encoding="utf-8")).get("reviewed_by")
+    )
+
+
+@app.get("/disclaimer", response_model=DisclaimerOut)
+def disclaimer() -> DisclaimerOut:
+    """What a user acknowledges before first use.
+
+    Served rather than shipped in the client so that one copy exists, and so
+    that the statements can depend on what the service currently is. While
+    there is no trained model, no fitted calibration and no reviewed taxonomy,
+    the user is told each of those before they see an identification.
+
+    `version` is a hash of the text. When any of those facts changes the text
+    changes, the version changes with it, and the client asks again.
+    """
+    if not state:
+        raise HTTPException(503, "Service is still starting.")
+
+    built = build_disclaimer(
+        model_loaded=isinstance(state["classifier"].backend, OnnxBackend),
+        calibrated=state["calibrated"],
+        taxonomy_reviewed=_taxonomy_reviewed(),
+    )
+    return DisclaimerOut(
+        version=built.version,
+        heading=built.heading,
+        body=built.body,
+        acknowledgements=[
+            AcknowledgementOut(key=a.key, statement=a.statement, because=a.because)
+            for a in built.acknowledgements
+        ],
+    )
+
+
+@app.post("/incident", response_model=IncidentOut)
+def incident(request: IncidentRequest) -> IncidentOut:
+    """Report a suspected misidentification.
+
+    Stored for a person to read. Nothing here changes the taxonomy: see
+    `docs/INCIDENTS.md` for who acts on these and how.
+
+    A report saying someone ate it, or that anyone is unwell, is not a defect
+    report. It comes back flagged, with the emergency guidance, and the client
+    shows that instead of a confirmation.
+    """
+    if not state:
+        raise HTTPException(503, "Service is still starting.")
+
+    report = build_report(
+        taxonomy=state["taxonomy"],
+        observation_id=request.observation_id,
+        verdict=request.verdict,
+        reported_candidates=request.reported_candidates,
+        model_version=request.model_version,
+        calibrated=request.calibrated,
+        believed_species_key=request.believed_species_key,
+        account=request.account,
+        anyone_ate_it=request.anyone_ate_it,
+        anyone_unwell=request.anyone_unwell,
+        contact=request.contact,
+    )
+    state["incidents"].append(report)
+    log.warning("incident %s severity=%s", report.incident_id, report.severity)
+
+    medical = report.severity == "medical"
+    return IncidentOut(
+        incident_id=report.incident_id,
+        severity=report.severity,
+        acknowledgement=(
+            "Recorded. A person reads these; nothing is changed automatically."
+        ),
+        medical_emergency=medical,
+        emergency_guidance=EMERGENCY_GUIDANCE if medical else None,
+    )
+
+
+@app.get("/species", response_model=SpeciesListOut)
+def species_list() -> SpeciesListOut:
+    """Every species in the label space, for naming one.
+
+    Needed by the incident form. The failure worth reporting most is the app
+    missing something dangerous, and the species it missed is by definition
+    not among the candidates it offered -- so a reporter who can only pick
+    from those candidates can never describe it.
+    """
+    if not state:
+        raise HTTPException(503, "Service is still starting.")
+
+    taxonomy: TaxonomyService = state["taxonomy"]
+    return SpeciesListOut(
+        species=[
+            SpeciesListEntryOut(
+                species_key=sp.key,
+                scientific_name=sp.scientific_name,
+                common_names=list(sp.common_names),
+            )
+            for sp in sorted(
+                taxonomy.species.values(), key=lambda s: s.scientific_name
+            )
+        ],
+        note=(
+            "These are the species this app knows. It is a small fraction of "
+            "the British fungi, and a mushroom missing from it cannot be "
+            "identified here at all."
+        ),
     )
 
 

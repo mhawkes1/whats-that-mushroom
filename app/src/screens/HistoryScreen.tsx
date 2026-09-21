@@ -48,7 +48,7 @@ const TONE_COLOUR: Record<Tone, string> = {
 /** Back to the API's shape, so the toxicity rules stay in one component. */
 function asCandidate(logged: LoggedCandidate): Candidate {
   return {
-    species_key: logged.scientificName,
+    species_key: logged.speciesKey,
     scientific_name: logged.scientificName,
     common_names: logged.commonName ? [logged.commonName] : [],
     confidence: logged.confidence,
@@ -189,7 +189,7 @@ export function HistoryScreen({ navigation }: { navigation: any }) {
                     <Text style={styles.sectionHeading}>POSSIBILITIES AT THE TIME</Text>
                     {entry.candidates.map((candidate) => (
                       <CandidateRow
-                        key={candidate.scientificName}
+                        key={candidate.speciesKey || candidate.scientificName}
                         candidate={asCandidate(candidate)}
                       />
                     ))}
@@ -212,6 +212,27 @@ export function HistoryScreen({ navigation }: { navigation: any }) {
                     {warning}
                   </Text>
                 ))}
+
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate('Report', {
+                      observationId: entry.observationId,
+                      verdict: entry.verdict,
+                      // Keys, not names: the server grades a report by
+                      // looking these up. Entries logged before the key was
+                      // stored contribute nothing rather than nonsense.
+                      candidates: entry.candidates
+                        .map((c) => c.speciesKey)
+                        .filter(Boolean),
+                      modelVersion: entry.modelVersion,
+                      calibrated: entry.calibrated,
+                    })
+                  }
+                  style={styles.destructive}
+                  accessibilityRole="button"
+                >
+                  <Text style={styles.reportText}>This one was wrong</Text>
+                </Pressable>
 
                 <Pressable
                   onPress={() =>
@@ -386,6 +407,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   destructiveText: { fontSize: theme.font.small, color: theme.colour.danger, fontWeight: '600' },
+  reportText: { fontSize: theme.font.small, color: theme.colour.textMuted, fontWeight: '600' },
 
   primary: {
     backgroundColor: theme.colour.accent,

@@ -113,12 +113,41 @@ These are blocking, not aspirational.
 - [ ] **Zero dangerous confusions on the held-out test set**, or a documented
       justification for each one that remains.
 - [ ] **Calibration fitted** on a split not used for model selection.
-- [ ] **Onboarding consent** recorded, with the disclaimer shown and
-      acknowledged before first use.
+- [x] **Onboarding consent** recorded, with the disclaimer shown and
+      acknowledged before first use. `GET /disclaimer` serves the statements;
+      the client gates on them (`app/src/lib/consent.ts`). The version is a
+      hash of the text, so a materially changed disclaimer is re-acknowledged
+      rather than silently inherited — and while `model_loaded`, `calibrated`
+      or `taxonomy_reviewed` is false, each of those is one of the statements.
+      Still needs the legal review below; this records consent, it does not
+      make the wording sufficient.
 - [ ] **Legal review** of the disclaimer and terms, covering the jurisdictions
       of launch.
-- [ ] **An incident route**: a way for users to report a suspected
+- [x] **An incident route**: a way for users to report a suspected
       misidentification, and a documented process for acting on it.
+      `POST /incident` and `docs/INCIDENTS.md`. Reports are triaged from the
+      taxonomy rather than from how they are worded, are never applied to the
+      data automatically, and a report of someone being unwell is returned as
+      an emergency rather than filed as a ticket. `docs/INCIDENTS.md` carries
+      its own short list of what is still owed before launch — a named
+      responder, rate limiting, and a retention period.
+
+## Two screens that work differently from the rest
+
+**The emergency page is hardcoded and reachable before consent.** Every other
+string a user reads is served, so that one copy of it exists and cannot drift.
+This one is not, because the screen that must never fail is this one and a
+wood is exactly where the network is not. It also sits above the consent gate:
+someone opening the app because a child has eaten something in the garden is
+not going to work through an onboarding flow first, and a safety gate standing
+between a frightened person and the words "call 999" is not a safety gate.
+
+**The report form refuses to be a triage channel.** Its first two questions
+are whether anyone ate it and whether anyone is unwell. A yes to either turns
+the screen into the emergency guidance before anything is submitted — the
+client checks for itself rather than waiting on the server's reply, because
+the reply needs the network. An incident form that files a medical emergency
+as a ticket and thanks the user for their feedback is worse than no form.
 
 ## What is stored on the device
 

@@ -121,6 +121,96 @@ export async function getHealth(): Promise<Health> {
   return handle<Health>(response);
 }
 
+export interface Acknowledgement {
+  key: string;
+  statement: string;
+  /** Why this one is here, shown beneath it. Never a reassurance. */
+  because: string;
+}
+
+export interface Disclaimer {
+  /**
+   * A hash of the text, derived by the server. Stored with the consent: when
+   * the statements change this changes with them and the consent is stale,
+   * because agreeing to an older statement is not agreeing to a newer one.
+   */
+  version: string;
+  heading: string;
+  body: string;
+  acknowledgements: Acknowledgement[];
+}
+
+/**
+ * What a user acknowledges before first use.
+ *
+ * Served rather than written into the client, for the reason `/field-form` is
+ * served, and because the statements depend on what the service currently is:
+ * while there is no trained model, no fitted calibration and no reviewed
+ * taxonomy, each of those is something the user is told up front.
+ */
+export async function getDisclaimer(): Promise<Disclaimer> {
+  const response = await fetch(`${BASE_URL}/disclaimer`, {
+    headers: { Accept: 'application/json' },
+  });
+  return handle<Disclaimer>(response);
+}
+
+export interface SpeciesListEntry {
+  species_key: string;
+  scientific_name: string;
+  common_names: string[];
+}
+
+export async function getSpeciesList(): Promise<SpeciesListEntry[]> {
+  const response = await fetch(`${BASE_URL}/species`, {
+    headers: { Accept: 'application/json' },
+  });
+  return (await handle<{ species: SpeciesListEntry[] }>(response)).species;
+}
+
+export interface IncidentReport {
+  observation_id?: string | null;
+  verdict?: string | null;
+  reported_candidates?: string[];
+  model_version?: string | null;
+  calibrated?: boolean | null;
+  believed_species_key?: string | null;
+  account?: string;
+  anyone_ate_it?: boolean;
+  anyone_unwell?: boolean;
+  contact?: string | null;
+}
+
+export interface IncidentReceipt {
+  incident_id: string;
+  severity: string;
+  acknowledgement: string;
+  /** True when the report says someone ate it or is unwell. */
+  medical_emergency: boolean;
+  emergency_guidance: string | null;
+}
+
+/**
+ * Report a suspected misidentification.
+ *
+ * Everything about what the app said is sent from the observation log rather
+ * than looked up server-side, so a report stays actionable after the server
+ * has forgotten the observation, and records the model that actually produced
+ * the answer.
+ *
+ * A receipt with `medical_emergency` is not a confirmation. The client shows
+ * the emergency guidance instead -- and checks for itself before submitting,
+ * because the network is exactly what fails in a wood.
+ */
+export async function reportIncident(report: IncidentReport): Promise<IncidentReceipt> {
+  const response = await fetch(`${BASE_URL}/incident`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(report),
+  });
+  return handle<IncidentReceipt>(response);
+}
+
 async function handle<T>(response: Response): Promise<T> {
   if (!response.ok) {
     const detail = await response.text().catch(() => '');

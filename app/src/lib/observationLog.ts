@@ -52,6 +52,16 @@ const ENTRY_VERSION = 1;
 export const MAX_ENTRIES = 200;
 
 export interface LoggedCandidate {
+  /**
+   * The taxonomy key, not only the name.
+   *
+   * An incident report is graded by looking these up server-side, and a
+   * scientific name is not a key. Reporting an old observation with names in
+   * place of keys would make every candidate unrecognisable, so a report of a
+   * warning the user disputes would be graded as a warning that never
+   * happened -- the opposite classification.
+   */
+  speciesKey: string;
   scientificName: string;
   commonName: string | null;
   confidence: number;
@@ -110,6 +120,7 @@ export function fromResult(
     headline: result.headline,
     detail: result.detail,
     candidates: result.candidates.map((candidate) => ({
+      speciesKey: candidate.species_key,
       scientificName: candidate.scientific_name,
       commonName: candidate.common_names[0] ?? null,
       confidence: candidate.confidence,

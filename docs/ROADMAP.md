@@ -328,6 +328,22 @@ but copying the top view into the app's own storage would be better.
   blank, which turned out to be the useful output: see the thin-character
   table in `docs/REVIEW.md`.
 
+- **Onboarding consent and the incident route** — the two remaining blocking
+  items in `docs/SAFETY.md` that were not about the model. `GET /disclaimer`
+  serves what a user acknowledges, versioned by a hash of its own text, so a
+  materially changed disclaimer is re-acknowledged rather than silently
+  inherited; three of its statements are conditional on `model_loaded`,
+  `calibrated` and `taxonomy_reviewed`, which means training a model or
+  getting the taxonomy reviewed re-asks by construction. `POST /incident`
+  takes a report that the app was wrong, grades it from the taxonomy rather
+  than from its wording, and returns a report of someone being unwell as an
+  emergency rather than as a filed ticket. `docs/INCIDENTS.md` is the process.
+
+  Neither is finished in the sense of shippable: the disclaimer still needs
+  the legal review, and the incident route needs a named responder, rate
+  limiting and a retention period. Both are now recorded where they belong
+  rather than in this file.
+
 ## Explicitly not doing
 
 - **Competing with iNaturalist on community or breadth.** They have won that.

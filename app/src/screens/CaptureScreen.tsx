@@ -195,6 +195,18 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
           wild mushroom identified only by an app.
         </Text>
       </View>
+
+      {/* Not behind anything. Someone opening the app because a child has
+          eaten something in the garden is not going to go looking. */}
+      <Pressable
+        style={styles.emergency}
+        onPress={() => navigation.navigate('Emergency')}
+        accessibilityRole="button"
+      >
+        <Text style={styles.emergencyText}>
+          Someone has eaten a wild mushroom — what to do
+        </Text>
+      </Pressable>
     </ScrollView>
   );
 }
@@ -202,6 +214,19 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: theme.colour.background },
   content: { padding: theme.spacing(3), gap: theme.spacing(2.5) },
+  emergency: {
+    backgroundColor: theme.colour.dangerSurface,
+    borderWidth: 1,
+    borderColor: theme.colour.danger,
+    borderRadius: theme.radius.md,
+    padding: theme.spacing(1.5),
+  },
+  emergencyText: {
+    fontSize: theme.font.small,
+    fontWeight: '700',
+    color: theme.colour.danger,
+    textAlign: 'center',
+  },
   header: { flexDirection: 'row', alignItems: 'flex-start', gap: theme.spacing(1.5) },
   headerText: { flex: 1 },
   logLink: {

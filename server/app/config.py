@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     labels_path: Path = ROOT / "ml" / "runs" / "baseline" / "labels.json"
     calibration_path: Path = ROOT / "ml" / "runs" / "baseline" / "calibration.json"
 
+    # Append-only. See docs/INCIDENTS.md for what is done with these.
+    incident_log_path: Path = ROOT / "data" / "incidents.jsonl"
+
     image_size: int = 384
     max_upload_bytes: int = 12 * 1024 * 1024
 
