@@ -323,6 +323,24 @@ def test_field_notes_never_unlock_a_species_verdict(client):
             assert body["verdict"] != "species"
 
 
+def test_health_reports_the_same_model_version_identify_stamps(client):
+    """A stored result has to be comparable to a current one.
+
+    The client keeps an observation log, and a confidence recorded by an
+    earlier model is not the same quantity as one recorded by this one. It
+    can only say so if it can ask which model is running without performing
+    an identification to find out -- and the two strings have to be the same
+    string, or the comparison is noise.
+    """
+    health = client.get("/health").json()
+    identified = client.post(
+        "/identify", files={"image": ("m.jpg", a_photo(), "image/jpeg")}
+    ).json()
+
+    assert health["model_version"]
+    assert health["model_version"] == identified["model_version"]
+
+
 def test_health_reports_character_state_coverage(client):
     """How much of the table is filled in, so an operator can tell.
 

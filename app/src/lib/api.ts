@@ -97,6 +97,30 @@ export async function getFieldForm(): Promise<FieldForm> {
   return handle<FieldForm>(response);
 }
 
+export interface Health {
+  status: string;
+  model_loaded: boolean;
+  calibrated: boolean;
+  n_classes: number;
+  model_version: string;
+  taxonomy_reviewed: boolean;
+  character_states_described: number;
+}
+
+/**
+ * What the service currently is.
+ *
+ * The observation log needs this to know whether a confidence it stored
+ * months ago is still the same quantity as one stored today, and asking that
+ * should not require running an identification.
+ */
+export async function getHealth(): Promise<Health> {
+  const response = await fetch(`${BASE_URL}/health`, {
+    headers: { Accept: 'application/json' },
+  });
+  return handle<Health>(response);
+}
+
 async function handle<T>(response: Response): Promise<T> {
   if (!response.ok) {
     const detail = await response.text().catch(() => '');

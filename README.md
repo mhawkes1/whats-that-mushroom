@@ -110,9 +110,11 @@ and no dataset yet; the API serves a stub backend producing deterministic fake
 predictions so the safety layer, interrogation engine, API and mobile client
 can all be developed and tested. Every other layer is real and tested.
 
-210 tests pass, covering split integrity, the risk asymmetry, calibration, the
-checkpoint-to-ONNX seam, spore print colour matching, the evidence model's
-safety floors, and the classic fatal confusions end to end.
+226 Python tests pass, covering split integrity, the risk asymmetry,
+calibration, the checkpoint-to-ONNX seam, spore print colour matching, the
+evidence model's safety floors, and the classic fatal confusions end to end.
+A further 29 cover the client's storage layers, where a mistake is silent
+rather than visible.
 
 The training pipeline has also been rehearsed end to end on synthetic data, so
 the stages are known to fit together and not merely to work in isolation:
@@ -150,6 +152,7 @@ EXPO_PUBLIC_API_URL=http://<your-lan-ip>:8000 npx expo start
 
 ```bash
 python -m pytest ml/tests server/tests -q
+cd app && npm test && npm run typecheck
 ```
 
 **Training** — see `docs/ROADMAP.md`.

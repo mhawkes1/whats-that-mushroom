@@ -68,6 +68,14 @@ hit a target precision, rather than picked because a round number sounds
 reassuring. Until calibration has been fitted, the API reports
 `calibrated: false` and the UI says the percentages are rough ordering only.
 
+Saying this once, at the time, is not enough. The observation log outlives
+the sentence: an entry stores the model version and the calibration state it
+was recorded under, and the log compares them against the service as it
+stands now (`app/src/lib/observationLog.ts`, `caveats`). A confidence
+recorded before calibration was fitted must never later read as a calibrated
+one, and a number produced by a model the app no longer runs is not
+comparable to one produced today.
+
 ### 5. Declining to answer is a correct answer
 
 Below the calibrated threshold the app says it does not know. Low coverage is
@@ -111,6 +119,28 @@ These are blocking, not aspirational.
       of launch.
 - [ ] **An incident route**: a way for users to report a suspected
       misidentification, and a documented process for acting on it.
+
+## What is stored on the device
+
+The observation log (`app/src/lib/observationLog.ts`) keeps, locally and
+without uploading anything: the photograph URIs, the time, the coordinates if
+the user granted location, what they answered, and the verdict with its
+warnings as it stood when they left the screen.
+
+Two things follow from that.
+
+**A history row says what the app was willing to say, not what the mushroom
+was.** Only a `species` verdict names a species; every other verdict, the
+lethal-pair refusal included, describes the refusal instead. The result
+screen names both halves of a dangerous pair because the refusal is on the
+screen beside it. A list row six weeks later has no such context, and a name
+read out of context is an answer.
+
+**Where someone forages is the most sensitive thing here.** Deleting the
+locations is a separate control from deleting the log, because "stop keeping
+where I was" and "delete my history" are different requests. Any future sync
+must coarsen coordinates rather than send them: a patch is findable from one
+accurate fix.
 
 ## What to do if someone is poisoned
 

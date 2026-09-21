@@ -158,6 +158,7 @@ def health() -> HealthOut:
         model_loaded=isinstance(state["classifier"].backend, OnnxBackend),
         calibrated=state["calibrated"],
         n_classes=len(state["classifier"].classes),
+        model_version=app.version,
         taxonomy_reviewed=reviewed,
         character_states_described=int(
             described_coverage(state["taxonomy"])["described"]

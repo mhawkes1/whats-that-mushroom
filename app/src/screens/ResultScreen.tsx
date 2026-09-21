@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -12,7 +12,8 @@ import {
 import { CandidateRow } from '../components/CandidateRow';
 import { QuestionCard } from '../components/QuestionCard';
 import { VerdictCard } from '../components/VerdictCard';
-import { answerQuestion, type IdentifyResponse } from '../lib/api';
+import { answerQuestion, type IdentifyResponse, type Views } from '../lib/api';
+import { fromResult, record, type Place } from '../lib/observationLog';
 import { theme } from '../lib/theme';
 
 /**
@@ -29,15 +30,44 @@ import { theme } from '../lib/theme';
  * percentage at the top is precisely the design that gets people poisoned.
  */
 export function ResultScreen({ navigation, route }: { navigation: any; route: any }) {
-  const { imageUri } = route.params as { imageUri?: string };
+  const { imageUri, views, fieldNotes, place } = route.params as {
+    imageUri?: string;
+    views?: Views;
+    fieldNotes?: Record<string, string>;
+    place?: Place | null;
+  };
   const [result, setResult] = useState<IdentifyResponse>(route.params.result);
   const [busy, setBusy] = useState(false);
+  // Answers given here, as opposed to on the field-notes form. Kept in a ref
+  // rather than state because nothing on this screen renders them and a
+  // re-render between the answer and the save would lose one.
+  const answers = useRef<Record<string, string>>({});
+
+  // Logged on arrival and re-logged after every answer, keyed on the
+  // observation id so the entry is replaced rather than duplicated. An
+  // answered question often turns a refusal into an identification or the
+  // reverse, and the log holds where the user got to, not where they started.
+  //
+  // Refusals are saved like anything else. A history that quietly kept only
+  // the confident results would misrepresent the app to its own user.
+  useEffect(() => {
+    record(
+      fromResult(result, {
+        photos: views ?? (imageUri ? { top: imageUri } : {}),
+        place: place ?? null,
+        fieldNotes,
+        answers: answers.current,
+      }),
+    );
+  }, [result, views, imageUri, place, fieldNotes]);
 
   const onAnswer = useCallback(
     async (characterKey: string, answer: string) => {
       setBusy(true);
       try {
-        setResult(await answerQuestion(result.observation_id, characterKey, answer));
+        const next = await answerQuestion(result.observation_id, characterKey, answer);
+        answers.current = { ...answers.current, [characterKey]: answer };
+        setResult(next);
       } catch {
         // Keep the current result on failure; the user loses nothing.
       } finally {
@@ -102,6 +132,9 @@ export function ResultScreen({ navigation, route }: { navigation: any; route: an
             {warning}
           </Text>
         ))}
+        <Text style={styles.logged}>
+          Saved to your observations, on this phone.
+        </Text>
       </View>
     </ScrollView>
   );
@@ -139,4 +172,5 @@ const styles = StyleSheet.create({
     color: theme.colour.textMuted,
     lineHeight: 21,
   },
+  logged: { fontSize: theme.font.tiny, color: theme.colour.textFaint },
 });

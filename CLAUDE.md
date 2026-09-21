@@ -65,6 +65,7 @@ characters come from standard references but are unverified.
 | `server/app/spore_print.py` | Reads a photographed spore print against a colour chart |
 | `server/app/characters.py` | How to ask a non-expert for evidence |
 | `app/` | Expo React Native client |
+| `app/src/lib/observationLog.ts` | Local history; what a stored verdict may say later |
 | `scripts/build_ebook.py` | Fills the companion ebook's field slots from the taxonomy |
 
 ## Commands
@@ -72,6 +73,7 @@ characters come from standard references but are unverified.
 ```bash
 # Tests — run these before any commit
 python -m pytest ml/tests server/tests -q
+cd app && npm test && npm run typecheck
 
 # API (stub backend)
 cd server && uvicorn app.main:app --reload
@@ -185,6 +187,26 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   suggestion beside the manual list and the user picks. Spore print colour is
   what separates an *Amanita* from a young *Agaricus*, so the app proposes and
   the person decides.
+- **A history row names a species only under a `species` verdict.** Including
+  `dangerous_group`, where the result screen *does* name both halves of the
+  pair — naming both is a warning while the refusal is on the screen beside
+  it, but in a scrolling list weeks later it is two guesses to choose between.
+  `summarise` in `observationLog.ts` enforces this and a test pins it.
+- **A stored confidence carries the model version and calibration state it was
+  produced under.** Rule 4 along the time axis: saying "uncalibrated" once, at
+  the time, does not survive into a history row. `caveats` compares an entry
+  against `/health` and reports both facts separately rather than picking a
+  worst case. When the service is unreachable it still reports the
+  calibration one — that needs nothing to compare against — and stays silent
+  about drift rather than guessing either way.
+- **Log writes are serialised.** Every one is read-modify-write over a single
+  AsyncStorage blob, and the result screen saves on arrival and again after
+  each answer. Without the queue, twenty overlapping saves collapse to one;
+  there is a test that fails if the queue is removed.
+- **The client has a test suite now** (`cd app && npm test`, vitest).
+  AsyncStorage is aliased to an in-memory double in `vitest.config.ts`, so
+  storage behaviour is tested rather than mocked away. Only modules free of
+  the RN renderer are covered.
 - **`notes` is rendered verbatim to users.** Rationale, policy and review
   flags go in `internal_note`, which is never surfaced.
 - **The ebook's field data is generated, never hand-copied.** The book and

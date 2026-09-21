@@ -263,11 +263,34 @@ so dust specks and glare do not drag a black print toward grey.
 Nothing is submitted automatically. A confident reading is shown as a
 suggestion beside the full manual list, and the user picks.
 
-### 7. Observation log
+### 7. Observation log *(done)*
 
-Local history of what the user photographed, where and when, with the
-questions they answered. Useful in itself, and the foundation for any future
-community verification.
+`app/src/lib/observationLog.ts`, `app/src/screens/HistoryScreen.tsx`. Local
+history of what the user photographed, where and when, with what they
+answered and the verdict as it stood when they left the screen. Nothing is
+uploaded.
+
+The design question is not storage, it is what a stored answer is allowed to
+say later. At the moment of identification the user sees the verdict, the
+refusal, the warnings and the question that would settle it; weeks later they
+see a thumbnail and one line of text, and that line is what they remember. So
+the log stores the verdict rather than the name, and only a `species` verdict
+puts a species on a row — the lethal-pair refusal included, though the result
+screen does name both halves of the pair, because a name read at a glance and
+out of context is an answer.
+
+Refusals are logged like everything else. A history that quietly kept only
+the confident identifications would misrepresent the app to its own user.
+
+Each entry also carries the model version and calibration state it was
+produced under, and `caveats` compares them against `/health`. Rule 4 holds
+along the time axis: a confidence recorded before calibration was fitted must
+not later read as a calibrated one. `/health` now reports `model_version` so
+a client can ask that without running an identification.
+
+Still to do here: the photograph URIs are references, and the OS may evict a
+camera cache file. A row survives it — the record outlives the photograph —
+but copying the top view into the app's own storage would be better.
 
 ## Done since this list was written
 

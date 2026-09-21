@@ -122,6 +122,15 @@ class HealthOut(BaseModel):
     model_loaded: bool
     calibrated: bool
     n_classes: int
+    model_version: str = Field(
+        default="",
+        description=(
+            "The same string `/identify` stamps on a result. A client holding "
+            "stored results needs it to know whether an old confidence is "
+            "still comparable to a new one, and asking for that should not "
+            "require running an identification."
+        ),
+    )
     taxonomy_reviewed: bool
     character_states_described: int = Field(
         default=0,

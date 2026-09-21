@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   Alert,
   Image,
@@ -10,6 +11,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
+import { readLog } from '../lib/observationLog';
 import { theme } from '../lib/theme';
 
 /**
@@ -51,6 +53,13 @@ const SLOTS: { key: Slot; label: string; hint: string; required: boolean }[] = [
 
 export function CaptureScreen({ navigation }: { navigation: any }) {
   const [photos, setPhotos] = useState<Partial<Record<Slot, string>>>({});
+  const [logged, setLogged] = useState(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      readLog().then((entries) => setLogged(entries.length));
+    }, []),
+  );
 
   const capture = useCallback(async (slot: Slot, fromLibrary: boolean) => {
     if (!fromLibrary) {
@@ -97,11 +106,27 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>What's That Mushroom?</Text>
-      <Text style={styles.subtitle}>
-        Photograph a mushroom and I'll tell you what it might be — and, just as
-        importantly, when I can't tell.
-      </Text>
+      <View style={styles.header}>
+        <View style={styles.headerText}>
+          <Text style={styles.title}>What's That Mushroom?</Text>
+          <Text style={styles.subtitle}>
+            Photograph a mushroom and I'll tell you what it might be — and, just
+            as importantly, when I can't tell.
+          </Text>
+        </View>
+
+        {logged > 0 ? (
+          <Pressable
+            onPress={() => navigation.navigate('History')}
+            style={styles.logLink}
+            accessibilityRole="button"
+            accessibilityLabel={`Your observations. ${logged} recorded.`}
+          >
+            <Text style={styles.logLinkCount}>{logged}</Text>
+            <Text style={styles.logLinkLabel}>logged</Text>
+          </Pressable>
+        ) : null}
+      </View>
 
       <View style={styles.slots}>
         {SLOTS.map((slot) => {
@@ -177,6 +202,22 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: theme.colour.background },
   content: { padding: theme.spacing(3), gap: theme.spacing(2.5) },
+  header: { flexDirection: 'row', alignItems: 'flex-start', gap: theme.spacing(1.5) },
+  headerText: { flex: 1 },
+  logLink: {
+    alignItems: 'center',
+    backgroundColor: theme.colour.surface,
+    borderRadius: theme.radius.md,
+    paddingVertical: theme.spacing(1),
+    paddingHorizontal: theme.spacing(1.5),
+  },
+  logLinkCount: {
+    fontSize: theme.font.heading,
+    fontWeight: '800',
+    color: theme.colour.text,
+    fontVariant: ['tabular-nums'],
+  },
+  logLinkLabel: { fontSize: theme.font.tiny, color: theme.colour.textFaint },
   title: { fontSize: theme.font.title, fontWeight: '800', color: theme.colour.text },
   subtitle: {
     fontSize: theme.font.body,

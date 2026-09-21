@@ -76,7 +76,19 @@ export function FieldNotesScreen({ navigation, route }: { navigation: any; route
     try {
       const context = await collectContext();
       const result = await identify(views, context, notes);
-      navigation.navigate('Result', { result, imageUri: views.top });
+      // The result screen logs this, and needs what the server was told as
+      // well as what it answered: the log records the observation, not just
+      // the verdict.
+      navigation.navigate('Result', {
+        result,
+        imageUri: views.top,
+        views,
+        fieldNotes: notes,
+        place:
+          context.latitude !== undefined && context.longitude !== undefined
+            ? { latitude: context.latitude, longitude: context.longitude }
+            : null,
+      });
     } catch (error) {
       Alert.alert(
         'Could not identify',

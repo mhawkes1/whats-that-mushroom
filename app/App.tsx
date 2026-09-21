@@ -6,6 +6,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { CaptureScreen } from './src/screens/CaptureScreen';
 import { FieldNotesScreen } from './src/screens/FieldNotesScreen';
+import { HistoryScreen } from './src/screens/HistoryScreen';
 import { ResultScreen } from './src/screens/ResultScreen';
 import { SporePrintScreen } from './src/screens/SporePrintScreen';
 import { theme } from './src/lib/theme';
@@ -51,6 +52,11 @@ export default function App() {
             name="Result"
             component={ResultScreen}
             options={{ title: 'What I can tell you' }}
+          />
+          <Stack.Screen
+            name="History"
+            component={HistoryScreen}
+            options={{ title: 'Your observations' }}
           />
           <Stack.Screen
             name="SporePrint"
