@@ -16,13 +16,25 @@ from pathlib import Path
 
 
 class Toxicity(IntEnum):
-    """Consequence of eating the species, not of misidentifying it."""
+    """Recorded harm from eating the species. Never a recommendation.
+
+    The scale measures *toxicity only*. Its lowest recorded value is
+    NONE_RECORDED, which asserts nothing whatsoever about edibility --
+    neither that a species is safe nor that it is not.
+
+    An earlier version used INEDIBLE for that bottom value, reasoning that
+    the app should never imply permission. That was a mistake: refusing to
+    say "edible" does not require saying "inedible", and labelling
+    *Boletus edulis* inedible is simply false. Worse, a label that is
+    obviously wrong to any experienced forager undermines the credibility of
+    the warnings that actually matter. Make no claim rather than a false one.
+    """
 
     DEADLY = 4  # Contains amatoxins/orellanine/gyromitrin; can be fatal.
     SERIOUS = 3  # Hospitalisation likely (e.g. rhabdomyolysis, severe GI).
     TOXIC = 2  # Significant illness, rarely life-threatening.
-    INEDIBLE = 1  # Unpalatable or mildly upsetting.
-    UNKNOWN = 0  # Not assessed. Treated as TOXIC by the safety layer.
+    NONE_RECORDED = 1  # No toxicity recorded. Says nothing about edibility.
+    UNASSESSED = 0  # Not yet checked. Treated as TOXIC by the safety layer.
 
 
 @dataclass(frozen=True)
@@ -33,7 +45,7 @@ class Species:
     scientific_name: str
     genus: str
     common_names: tuple[str, ...] = ()
-    toxicity: Toxicity = Toxicity.UNKNOWN
+    toxicity: Toxicity = Toxicity.UNASSESSED
     gbif_key: int | None = None
     # Species this one is realistically confused with in the field, by a
     # non-expert working from photographs.
@@ -60,7 +72,7 @@ class Taxonomy:
                 scientific_name=entry["scientific_name"],
                 genus=entry.get("genus") or entry["scientific_name"].split()[0],
                 common_names=tuple(entry.get("common_names", ())),
-                toxicity=Toxicity[entry.get("toxicity", "UNKNOWN")],
+                toxicity=Toxicity[entry.get("toxicity", "UNASSESSED")],
                 gbif_key=entry.get("gbif_key"),
                 lookalikes=tuple(entry.get("lookalikes", ())),
                 diagnostic_characters=tuple(entry.get("diagnostic_characters", ())),

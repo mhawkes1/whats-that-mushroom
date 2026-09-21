@@ -14,10 +14,12 @@
       "toxicity": "DEADLY",
       "gbif_key": null,
       "lookalikes": [
-        "agaricus-campestris",
         "agaricus-arvensis",
-        "russula-cyanoxantha",
+        "agaricus-campestris",
+        "amanita-rubescens",
         "macrolepiota-procera",
+        "russula-cyanoxantha",
+        "tricholoma-equestre",
         "volvopluteus-gloiocephalus"
       ],
       "diagnostic_characters": [
@@ -41,8 +43,9 @@
       "lookalikes": [
         "agaricus-arvensis",
         "agaricus-campestris",
+        "calocybe-gambosa",
         "lycoperdon-perlatum",
-        "calocybe-gambosa"
+        "volvopluteus-gloiocephalus"
       ],
       "diagnostic_characters": [
         "volva",
@@ -63,9 +66,9 @@
       "toxicity": "DEADLY",
       "gbif_key": null,
       "lookalikes": [
-        "kuehneromyces-mutabilis",
         "armillaria-mellea",
         "hypholoma-fasciculare",
+        "kuehneromyces-mutabilis",
         "pholiota-squarrosa"
       ],
       "diagnostic_characters": [
@@ -86,9 +89,9 @@
       "toxicity": "DEADLY",
       "gbif_key": null,
       "lookalikes": [
+        "armillaria-mellea",
         "cantharellus-cibarius",
-        "lactarius-deliciosus",
-        "armillaria-mellea"
+        "lactarius-deliciosus"
       ],
       "diagnostic_characters": [
         "spore_print_colour",
@@ -109,7 +112,8 @@
       "toxicity": "DEADLY",
       "gbif_key": null,
       "lookalikes": [
-        "morchella-esculenta"
+        "morchella-esculenta",
+        "verpa-bohemica"
       ],
       "diagnostic_characters": [
         "cap_surface",
@@ -129,9 +133,10 @@
       "toxicity": "DEADLY",
       "gbif_key": null,
       "lookalikes": [
-        "marasmius-oreades",
         "calocybe-gambosa",
-        "clitopilus-prunulus"
+        "clitopilus-prunulus",
+        "marasmius-oreades",
+        "paxillus-involutus"
       ],
       "diagnostic_characters": [
         "gill_attachment",
@@ -151,8 +156,8 @@
       "toxicity": "DEADLY",
       "gbif_key": null,
       "lookalikes": [
-        "calocybe-gambosa",
-        "agaricus-campestris"
+        "agaricus-campestris",
+        "calocybe-gambosa"
       ],
       "diagnostic_characters": [
         "bruising_reaction",
@@ -172,8 +177,8 @@
       "toxicity": "SERIOUS",
       "gbif_key": null,
       "lookalikes": [
-        "lactarius-deliciosus",
-        "clitocybe-rivulosa"
+        "clitocybe-rivulosa",
+        "lactarius-deliciosus"
       ],
       "diagnostic_characters": [
         "cap_margin",
@@ -194,9 +199,10 @@
       "toxicity": "SERIOUS",
       "gbif_key": null,
       "lookalikes": [
-        "clitopilus-prunulus",
+        "agaricus-arvensis",
         "calocybe-gambosa",
-        "agaricus-arvensis"
+        "clitopilus-prunulus",
+        "lepista-nuda"
       ],
       "diagnostic_characters": [
         "spore_print_colour",
@@ -237,8 +243,8 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
-        "agaricus-campestris",
-        "agaricus-arvensis"
+        "agaricus-arvensis",
+        "agaricus-campestris"
       ],
       "diagnostic_characters": [
         "bruising_reaction",
@@ -257,9 +263,9 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
-        "kuehneromyces-mutabilis",
         "armillaria-mellea",
-        "galerina-marginata"
+        "galerina-marginata",
+        "kuehneromyces-mutabilis"
       ],
       "diagnostic_characters": [
         "gill_colour",
@@ -279,8 +285,8 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
-        "lycoperdon-perlatum",
-        "calvatia-gigantea"
+        "calvatia-gigantea",
+        "lycoperdon-perlatum"
       ],
       "diagnostic_characters": [
         "interior_structure",
@@ -339,12 +345,13 @@
       "common_names": [
         "Field Mushroom"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
+        "agaricus-xanthodermus",
         "amanita-phalloides",
         "amanita-virosa",
-        "agaricus-xanthodermus"
+        "inocybe-erubescens"
       ],
       "diagnostic_characters": [
         "gill_colour",
@@ -353,7 +360,7 @@
         "bruising_reaction"
       ],
       "notes": "Gills pink when young, darkening to chocolate-brown. Brown spore print. No volva at the stem base and no chrome-yellow staining when cut.",
-      "internal_note": "Recorded as INEDIBLE rather than edible by deliberate policy: this app never asserts edibility for any species. See docs/SAFETY.md."
+      "internal_note": "Recorded as NONE_RECORDED: no toxicity is recorded for this species. That is a statement about toxicity only and is not a recommendation to eat it. See docs/SAFETY.md."
     },
     {
       "key": "agaricus-arvensis",
@@ -362,12 +369,14 @@
       "common_names": [
         "Horse Mushroom"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "amanita-virosa",
+        "agaricus-xanthodermus",
         "amanita-phalloides",
-        "agaricus-xanthodermus"
+        "amanita-virosa",
+        "entoloma-sinuatum",
+        "volvopluteus-gloiocephalus"
       ],
       "diagnostic_characters": [
         "smell",
@@ -376,7 +385,7 @@
         "volva"
       ],
       "notes": "Aniseed smell and a pendulous cog-wheel ring. The critical checks are absence of a volva and absence of chrome-yellow staining at the stem base.",
-      "internal_note": "Recorded as INEDIBLE by the same policy as agaricus-campestris."
+      "internal_note": "Recorded as NONE_RECORDED on the same basis as agaricus-campestris."
     },
     {
       "key": "macrolepiota-procera",
@@ -385,11 +394,11 @@
       "common_names": [
         "Parasol Mushroom"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "chlorophyllum-brunneum",
-        "amanita-phalloides"
+        "amanita-phalloides",
+        "chlorophyllum-brunneum"
       ],
       "diagnostic_characters": [
         "stipe_surface",
@@ -425,12 +434,12 @@
       "common_names": [
         "Sheathed Woodtuft"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
+        "armillaria-mellea",
         "galerina-marginata",
-        "hypholoma-fasciculare",
-        "armillaria-mellea"
+        "hypholoma-fasciculare"
       ],
       "diagnostic_characters": [
         "stipe_surface",
@@ -450,9 +459,11 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
+        "cortinarius-rubellus",
         "galerina-marginata",
         "hypholoma-fasciculare",
-        "kuehneromyces-mutabilis"
+        "kuehneromyces-mutabilis",
+        "pholiota-squarrosa"
       ],
       "diagnostic_characters": [
         "spore_print_colour",
@@ -470,11 +481,11 @@
         "Chanterelle",
         "Girolle"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "hygrophoropsis-aurantiaca",
         "cortinarius-rubellus",
+        "hygrophoropsis-aurantiaca",
         "omphalotus-olearius"
       ],
       "diagnostic_characters": [
@@ -515,7 +526,8 @@
       "gbif_key": null,
       "lookalikes": [
         "cantharellus-cibarius",
-        "hygrophoropsis-aurantiaca"
+        "hygrophoropsis-aurantiaca",
+        "pleurotus-ostreatus"
       ],
       "diagnostic_characters": [
         "gill_type",
@@ -533,11 +545,12 @@
         "Cep",
         "Porcini"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "tylopilus-felleus",
-        "rubroboletus-satanas"
+        "leccinum-scabrum",
+        "rubroboletus-satanas",
+        "tylopilus-felleus"
       ],
       "diagnostic_characters": [
         "pore_colour",
@@ -554,10 +567,11 @@
       "common_names": [
         "Bitter Bolete"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "boletus-edulis"
+        "boletus-edulis",
+        "leccinum-scabrum"
       ],
       "diagnostic_characters": [
         "pore_colour",
@@ -592,7 +606,7 @@
       "common_names": [
         "Morel"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
         "gyromitra-esculenta",
@@ -612,11 +626,11 @@
       "common_names": [
         "Fairy Ring Champignon"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "clitocybe-rivulosa",
-        "clitocybe-dealbata"
+        "clitocybe-dealbata",
+        "clitocybe-rivulosa"
       ],
       "diagnostic_characters": [
         "gill_attachment",
@@ -633,12 +647,14 @@
       "common_names": [
         "St George's Mushroom"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "inocybe-erubescens",
+        "amanita-virosa",
+        "clitocybe-dealbata",
+        "clitocybe-rivulosa",
         "entoloma-sinuatum",
-        "clitocybe-rivulosa"
+        "inocybe-erubescens"
       ],
       "diagnostic_characters": [
         "smell",
@@ -655,11 +671,11 @@
       "common_names": [
         "The Miller"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "entoloma-sinuatum",
-        "clitocybe-rivulosa"
+        "clitocybe-rivulosa",
+        "entoloma-sinuatum"
       ],
       "diagnostic_characters": [
         "gill_attachment",
@@ -676,11 +692,11 @@
       "common_names": [
         "Common Puffball"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "scleroderma-citrinum",
-        "amanita-virosa"
+        "amanita-virosa",
+        "scleroderma-citrinum"
       ],
       "diagnostic_characters": [
         "interior_structure",
@@ -695,7 +711,7 @@
       "common_names": [
         "Giant Puffball"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
         "scleroderma-citrinum"
@@ -714,7 +730,7 @@
         "Shaggy Inkcap",
         "Lawyer's Wig"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
         "coprinopsis-atramentaria"
@@ -751,11 +767,11 @@
       "common_names": [
         "Oyster Mushroom"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "omphalotus-olearius",
-        "crepidotus-mollis"
+        "crepidotus-mollis",
+        "omphalotus-olearius"
       ],
       "diagnostic_characters": [
         "gill_attachment",
@@ -773,7 +789,7 @@
         "Hedgehog Fungus",
         "Wood Hedgehog"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -805,7 +821,7 @@
       "common_names": [
         "Beefsteak Fungus"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -842,11 +858,12 @@
       "common_names": [
         "Charcoal Burner"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
         "amanita-phalloides",
-        "russula-emetica"
+        "russula-emetica",
+        "russula-ochroleuca"
       ],
       "diagnostic_characters": [
         "gill_texture",
@@ -866,8 +883,8 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
-        "russula-cyanoxantha",
-        "amanita-muscaria"
+        "amanita-muscaria",
+        "russula-cyanoxantha"
       ],
       "diagnostic_characters": [
         "taste",
@@ -883,11 +900,11 @@
       "common_names": [
         "Ochre Brittlegill"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "tricholoma-equestre",
-        "russula-cyanoxantha"
+        "russula-cyanoxantha",
+        "tricholoma-equestre"
       ],
       "diagnostic_characters": [
         "stipe_texture",
@@ -903,9 +920,10 @@
       "common_names": [
         "Saffron Milkcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
+        "cortinarius-rubellus",
         "lactarius-torminosus",
         "paxillus-involutus"
       ],
@@ -942,7 +960,7 @@
       "common_names": [
         "Slippery Jack"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
         "suillus-granulatus"
@@ -961,7 +979,7 @@
       "common_names": [
         "Brown Birch Bolete"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
         "boletus-edulis",
@@ -981,7 +999,7 @@
       "common_names": [
         "Wood Cauliflower"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -998,7 +1016,7 @@
         "Jelly Ear",
         "Wood Ear"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -1016,7 +1034,7 @@
         "Horn of Plenty",
         "Black Trumpet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -1036,9 +1054,9 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
+        "agaricus-arvensis",
         "amanita-phalloides",
-        "amanita-virosa",
-        "agaricus-arvensis"
+        "amanita-virosa"
       ],
       "diagnostic_characters": [
         "volva",
@@ -1055,7 +1073,7 @@
       "common_names": [
         "Violet Webcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
         "lepista-nuda"
@@ -1077,8 +1095,8 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
-        "galerina-marginata",
-        "armillaria-mellea"
+        "armillaria-mellea",
+        "galerina-marginata"
       ],
       "diagnostic_characters": [
         "cap_surface",
@@ -1094,7 +1112,7 @@
       "common_names": [
         "Peeling Oysterling"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
         "pleurotus-ostreatus"
@@ -1117,8 +1135,8 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
-        "morchella-esculenta",
-        "gyromitra-esculenta"
+        "gyromitra-esculenta",
+        "morchella-esculenta"
       ],
       "diagnostic_characters": [
         "cap_attachment",
@@ -1137,8 +1155,8 @@
       "toxicity": "DEADLY",
       "gbif_key": null,
       "lookalikes": [
-        "marasmius-oreades",
-        "calocybe-gambosa"
+        "calocybe-gambosa",
+        "marasmius-oreades"
       ],
       "diagnostic_characters": [
         "gill_attachment",
@@ -1154,7 +1172,7 @@
       "common_names": [
         "Weeping Bolete"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
         "suillus-luteus"
@@ -1167,5 +1185,5 @@
       "notes": "No ring, and young pores exude milky droplets."
     }
   ],
-  "$policy": "The `toxicity` field records the consequence of EATING a species, and is used only to drive warnings. It is never rendered as a recommendation. No species is ever labelled edible: the highest-safety value is INEDIBLE. The `notes` field is shown to users verbatim and must describe only what is observable. Rationale, policy and review flags belong in `internal_note`, which is never surfaced."
+  "$policy": "The `toxicity` field records HARM FROM EATING and drives warnings only. It is never rendered as a recommendation. There is deliberately no 'edible' value -- but nor is there an 'inedible' one, because asserting that a choice edible is inedible is a false claim and destroys trust in the warnings that matter. The lowest value, NONE_RECORDED, means no toxicity is recorded and says nothing about edibility either way. UNASSESSED means not yet checked and is treated as TOXIC by the safety layer. The `notes` field is shown to users verbatim and must describe only what is observable; rationale and review flags belong in `internal_note`, which is never surfaced."
 }

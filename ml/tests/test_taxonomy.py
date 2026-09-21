@@ -108,13 +108,24 @@ def test_genus_containing_a_deadly_species_taints_its_members(taxonomy):
     assert tuple(sorted(("amanita-phalloides", "amanita-muscaria"))) in pairs
 
 
-def test_unknown_toxicity_is_not_treated_as_safe(taxonomy):
-    # UNKNOWN must never sort below TOXIC in a way that makes it look benign.
-    assert Toxicity.UNKNOWN < Toxicity.TOXIC
-    # ...which is precisely why the safety layer must special-case it.
-    # Guard that no seed species silently relies on UNKNOWN.
-    unknown = [k for k, s in taxonomy.species.items() if s.toxicity is Toxicity.UNKNOWN]
-    assert not unknown, f"seed species with unassessed toxicity: {unknown}"
+def test_unassessed_toxicity_is_not_treated_as_safe(taxonomy):
+    # UNASSESSED sorts below TOXIC, which is why the safety layer must
+    # special-case it rather than reading it as "harmless".
+    assert Toxicity.UNASSESSED < Toxicity.TOXIC
+    unassessed = [k for k, s in taxonomy.species.items() if s.toxicity is Toxicity.UNASSESSED]
+    assert not unassessed, f"seed species with unassessed toxicity: {unassessed}"
+
+
+def test_scale_makes_no_edibility_claim(taxonomy):
+    """The bottom of the scale must not assert that anything is inedible.
+
+    Labelling Boletus edulis "inedible" is false, and a label that is plainly
+    wrong to an experienced forager undermines the warnings that matter.
+    """
+    names = {t.name for t in Toxicity}
+    assert "INEDIBLE" not in names, "the scale must not claim anything is inedible"
+    assert "EDIBLE" not in names, "the scale must not claim anything is edible"
+    assert Toxicity.NONE_RECORDED.name == "NONE_RECORDED"
 
 
 def test_deadly_species_all_declare_diagnostic_characters(taxonomy):

@@ -78,14 +78,26 @@ species that are in fact correct.
 
 ---
 
-## No "edible" value anywhere in the type system
+## The toxicity scale makes no edibility claim in either direction
 
-The `toxicity` enum's safest value is `INEDIBLE`, rendered as "Not assessed as
-safe". There is deliberately no positive category.
+The enum's lowest value is `NONE_RECORDED`, rendered as "No toxicity
+recorded". There is deliberately no positive category — and, equally
+deliberately, no negative one.
 
-This is not squeamishness. Users read a best-case label as permission, and
-the app has no way to verify what the user is actually holding. Enforced by
-test, not convention — see `SAFETY.md`.
+The first version got this half right. It had no "edible" value, on the
+reasoning that users read a best-case label as permission and the app cannot
+verify what someone is actually holding. But it named the bottom value
+`INEDIBLE`, which made a *false* claim instead of no claim: it labelled the
+Penny Bun, the Chanterelle, the Morel and twenty-five others inedible.
+
+That was a safety defect, not a cosmetic one. A label that is plainly wrong
+to anyone with field experience undermines every other label the app shows.
+If it is wrong about *Boletus edulis*, a user has no reason to trust it about
+*Amanita phalloides*.
+
+The rule is therefore narrower than "never say edible": **make no claim
+rather than a false one.** Enforced by test — see `SAFETY.md` and
+`ml/tests/test_taxonomy_qa.py`.
 
 ---
 

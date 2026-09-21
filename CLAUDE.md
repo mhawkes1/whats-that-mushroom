@@ -18,8 +18,11 @@ accuracy or taxonomic breadth. See `docs/POSITIONING.md`.
 These are product requirements, not style preferences. Each is enforced by a
 test; if a change makes a test here fail, the change is wrong.
 
-1. **Never assert edibility.** No "edible", "safe to eat", "choice" in any
-   user-facing path. The safest toxicity value is `INEDIBLE`.
+1. **Never assert edibility — and never assert inedibility either.** No
+   "edible", "safe to eat" or "choice" in any user-facing path. The lowest
+   toxicity value is `NONE_RECORDED`, which makes no claim in either
+   direction. Claiming a choice edible is inedible is a false statement and
+   destroys trust in the real warnings.
 2. **Never resolve a lethal ambiguity from a photograph.** If top candidates
    straddle a known dangerous pair, return `dangerous_group` and name neither.
 3. **Never round away a small probability of death.** 2% on a deadly species
@@ -85,6 +88,9 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   flags go in `internal_note`, which is never surfaced.
 - **Expect 50–70% species top-1** on a first training run, with genus accuracy
   notably higher. 95% means a leak.
+- **Run `python scripts/qa_taxonomy.py` after touching the taxonomy.** It
+  catches broken references, asymmetric lookalikes and name/toxicity
+  mismatches. Errors fail the test suite; warnings are for human judgement.
 
 ## Related
 

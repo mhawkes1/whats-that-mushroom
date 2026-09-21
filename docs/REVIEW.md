@@ -125,9 +125,10 @@ For each species, per the worksheet columns:
 
 - **`REVIEW_name_current`** — is the scientific name current and correctly
   spelled?
-- **`REVIEW_toxicity_agreed`** — is the toxicity classification right? Note
-  that the scale records the consequence of *eating*, and that the safest
-  value is `INEDIBLE` because this app never asserts edibility.
+- **`REVIEW_toxicity_agreed`** — is the toxicity classification right? The
+  scale records *recorded harm from eating* and nothing else. Its lowest
+  value, `NONE_RECORDED`, means no toxicity is recorded and is not a
+  statement that the species is safe to eat — nor that it is not.
 - **`REVIEW_characters_agreed`** — are the listed diagnostic characters the
   ones that actually separate this species in the field?
 - **`REVIEW_lookalikes_agreed`** — is the lookalike list right, and is

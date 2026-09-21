@@ -8,8 +8,8 @@ const TOXICITY_COLOUR: Record<string, string> = {
   DEADLY: theme.colour.danger,
   SERIOUS: theme.colour.danger,
   TOXIC: theme.colour.caution,
-  INEDIBLE: theme.colour.textMuted,
-  UNKNOWN: theme.colour.textMuted,
+  NONE_RECORDED: theme.colour.textMuted,
+  UNASSESSED: theme.colour.caution,
 };
 
 /**

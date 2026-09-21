@@ -25,10 +25,19 @@ This project takes the opposite position deliberately.
 
 ### 1. The app never asserts edibility
 
-There is no "edible" category anywhere in the system. The `toxicity` field
-records the consequence of eating a species and exists solely to drive
-warnings. Its safest value is `INEDIBLE`, which the UI renders as "Not
-assessed as safe".
+There is no "edible" category anywhere in the system — and, deliberately, no
+"inedible" one either. The `toxicity` field records recorded harm from eating
+a species and exists solely to drive warnings. Its lowest value is
+`NONE_RECORDED`, rendered as "No toxicity recorded", which asserts nothing
+about edibility in either direction.
+
+An earlier version used `INEDIBLE` for that value, on the reasoning that the
+app should never imply permission. That was wrong twice over. Refusing to say
+"edible" does not require saying "inedible", and calling *Boletus edulis*
+inedible is simply false. More seriously, a label that is obviously wrong to
+anyone with field experience undermines the credibility of the warnings that
+matter: if the app is wrong about the Penny Bun, why would a user believe it
+about the Death Cap? **Make no claim rather than a false one.**
 
 This is enforced by test, not by convention. `test_no_output_path_ever_asserts_edibility`
 scans every user-facing string produced by the safety layer for affirmative

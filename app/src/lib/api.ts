@@ -15,7 +15,12 @@ export type Verdict =
   | 'dangerous_group'
   | 'out_of_scope';
 
-export type Toxicity = 'DEADLY' | 'SERIOUS' | 'TOXIC' | 'INEDIBLE' | 'UNKNOWN';
+export type Toxicity =
+  | 'DEADLY'
+  | 'SERIOUS'
+  | 'TOXIC'
+  | 'NONE_RECORDED'
+  | 'UNASSESSED';
 
 export interface Candidate {
   species_key: string;
@@ -115,16 +120,19 @@ export async function answerQuestion(
 /**
  * Toxicity labels shown to users.
  *
- * There is no "edible" label, and INEDIBLE deliberately reads as an absence
- * of assessment rather than as reassurance. Users read the best-case label as
- * permission, so the best case must not sound like permission.
+ * These describe recorded harm and nothing else. There is no "edible" label
+ * -- and deliberately no "inedible" one either. Telling a user that a Penny
+ * Bun is inedible is a false statement, and a label that is plainly wrong to
+ * anyone with field experience destroys their trust in the warnings that
+ * matter. The bottom of the scale makes no edibility claim in either
+ * direction.
  */
 export const TOXICITY_LABEL: Record<Toxicity, string> = {
   DEADLY: 'Can kill',
   SERIOUS: 'Causes serious illness',
   TOXIC: 'Causes illness',
-  INEDIBLE: 'Not assessed as safe',
-  UNKNOWN: 'Unassessed',
+  NONE_RECORDED: 'No toxicity recorded',
+  UNASSESSED: 'Not yet assessed',
 };
 
 export function verdictColour(

@@ -12,8 +12,9 @@ class CandidateOut(BaseModel):
     confidence: float = Field(description="Calibrated probability, 0-1.")
     toxicity: str = Field(
         description=(
-            "Consequence of eating this species: DEADLY, SERIOUS, TOXIC, INEDIBLE. "
-            "Never a recommendation. No value means edible."
+            "Recorded harm from eating this species: DEADLY, SERIOUS, TOXIC, "
+            "NONE_RECORDED or UNASSESSED. Never a recommendation. NONE_RECORDED "
+            "means no toxicity is recorded and asserts nothing about edibility."
         )
     )
     genus: str
