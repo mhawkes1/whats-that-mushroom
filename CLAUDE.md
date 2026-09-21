@@ -66,6 +66,7 @@ characters come from standard references but are unverified.
 | `server/app/characters.py` | How to ask a non-expert for evidence |
 | `app/` | Expo React Native client |
 | `app/src/lib/observationLog.ts` | Local history; what a stored verdict may say later |
+| `app/src/components/CoverHeader.tsx` | The book's cover as the app's front page |
 | `server/app/disclaimer.py` | What a user acknowledges before first use; the version is the text |
 | `server/app/incidents.py` | Reports that the app was wrong, and how they are graded |
 | `docs/INCIDENTS.md` | Who acts on a report, and in what order |
@@ -194,6 +195,19 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   suggestion beside the manual list and the user picks. Spore print colour is
   what separates an *Amanita* from a young *Agaricus*, so the app proposes and
   the person decides.
+- **The front page is the book's cover, with three deliberate departures.**
+  `CoverHeader.tsx` reproduces Martin Hawkes's cover — same photograph, same
+  Fraunces setting, same gold rule. It is *not* full-screen (on an app that
+  puts the thing the user came to do below the fold); the emergency route is
+  pinned to the top corner (the one control that must never need a scroll);
+  and the book's "1st Edition · 25 most common species" flag is dropped,
+  because the app's label space is 79 and on that screen the line would be
+  false. The scrim is a real gradient, not stacked translucent views — flat
+  bands leave visible edges across the photograph.
+- **The cover's typeface is loaded but never awaited.** `useFonts` reports an
+  error as well as a loading state, and a front page that will not render
+  because a font did not arrive is worse than a cover set in the platform
+  serif. `theme.cover` names the family; React Native falls back on its own.
 - **A history row names a species only under a `species` verdict.** Including
   `dangerous_group`, where the result screen *does* name both halves of the
   pair — naming both is a warning while the refusal is on the screen beside

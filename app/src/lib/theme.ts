@@ -27,6 +27,28 @@ export const theme = {
 
     accent: '#c98b4b',
   },
+  /**
+   * The book's cover, which is now the app's front page.
+   *
+   * Kept beside the app palette rather than inside the component so the two
+   * cannot drift: these are the ebook's own values -- `--gold`, the subtitle
+   * and byline colours, the near-black behind the photograph.
+   *
+   * `display` names a font that is loaded asynchronously at launch. If it
+   * has not arrived, or fails, React Native falls back to the platform serif
+   * rather than to nothing -- a cover set in Georgia is a worse cover, and a
+   * front page that will not render is a worse app.
+   */
+  cover: {
+    ground: '#0a0e08',
+    gold: '#c9a227',
+    subtitle: '#e8c15a',
+    byline: '#c6ceb4',
+    display: 'Fraunces_600SemiBold',
+    displayItalic: 'Fraunces_300Light_Italic',
+    displayFallback: 'serif',
+  },
+
   spacing: (n: number) => n * 8,
   radius: { sm: 8, md: 14, lg: 22 },
   font: { title: 26, heading: 20, body: 16, small: 14, tiny: 12 },

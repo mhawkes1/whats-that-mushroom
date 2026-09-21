@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
+import { CoverHeader } from '../components/CoverHeader';
 import { readLog } from '../lib/observationLog';
 import { theme } from '../lib/theme';
 
@@ -106,12 +107,14 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
+      <CoverHeader onEmergency={() => navigation.navigate('Emergency')} />
+
       <View style={styles.header}>
         <View style={styles.headerText}>
-          <Text style={styles.title}>What's That Mushroom?</Text>
+          {/* The cover already carries a subtitle. This says the one thing
+              the cover does not, which is the whole argument for the app. */}
           <Text style={styles.subtitle}>
-            Photograph a mushroom and I'll tell you what it might be — and, just
-            as importantly, when I can't tell.
+            Photograph one, and I'll tell you when I can't tell.
           </Text>
         </View>
 
@@ -227,7 +230,7 @@ const styles = StyleSheet.create({
     color: theme.colour.danger,
     textAlign: 'center',
   },
-  header: { flexDirection: 'row', alignItems: 'flex-start', gap: theme.spacing(1.5) },
+  header: { flexDirection: 'row', alignItems: 'center', gap: theme.spacing(1.5) },
   headerText: { flex: 1 },
   logLink: {
     alignItems: 'center',
@@ -243,7 +246,6 @@ const styles = StyleSheet.create({
     fontVariant: ['tabular-nums'],
   },
   logLinkLabel: { fontSize: theme.font.tiny, color: theme.colour.textFaint },
-  title: { fontSize: theme.font.title, fontWeight: '800', color: theme.colour.text },
   subtitle: {
     fontSize: theme.font.body,
     color: theme.colour.textMuted,
