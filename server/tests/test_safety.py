@@ -201,3 +201,93 @@ def test_candidates_are_returned_with_toxicity_labels(layer):
     result = layer.assess(ranked)
     toxicities = {c.species_key: c.toxicity for c in result.candidates}
     assert toxicities["amanita-phalloides"] == "DEADLY"
+
+
+# --- species added after the first review pass ---------------------------
+
+
+def test_small_lepiota_on_a_lawn_is_refused(layer):
+    """The deadly dapplerlings grow in grass alongside the Fairy Ring
+    Champignon, and both are small, pale and scaly. This is the confusion
+    that makes the small Lepiota species worth carrying at all."""
+    ranked = [
+        ("marasmius-oreades", 0.51),
+        ("lepiota-brunneoincarnata", 0.28),
+        ("lepiota-cristata", 0.13),
+        ("agaricus-campestris", 0.08),
+    ]
+    result = layer.assess(ranked)
+    assert result.verdict is Verdict.DANGEROUS_GROUP
+    assert result.deadly_in_play
+    assert "Marasmius" not in result.headline, (
+        "must not headline the harmless candidate when a deadly Lepiota is in play"
+    )
+
+
+def test_small_parasol_confusion_is_refused(layer):
+    """Someone who knows Parasols are collected may assume a small one is
+    the same thing. It is the single most plausible route into a deadly
+    Lepiota."""
+    ranked = [
+        ("macrolepiota-procera", 0.58),
+        ("lepiota-brunneoincarnata", 0.31),
+        ("chlorophyllum-brunneum", 0.11),
+    ]
+    result = layer.assess(ranked)
+    assert result.verdict is Verdict.DANGEROUS_GROUP
+    assert result.deadly_in_play
+    assert result.requested_evidence
+
+
+def test_all_deadly_lepiota_candidates_still_warn(layer):
+    """When every candidate is a deadly Lepiota the app may name one.
+
+    Naming a deadly species is the cautious direction, not the fatal one, and
+    the warning is what carries the meaning. Refusing here would add no
+    safety. Note the separate honesty question recorded in docs/ROADMAP.md:
+    the small Lepiota species cannot actually be separated from a photograph,
+    so a species-level headline claims more precision than exists.
+    """
+    ranked = [
+        ("lepiota-brunneoincarnata", 0.88),
+        ("lepiota-subincarnata", 0.09),
+        ("lepiota-castanea", 0.03),
+    ]
+    result = layer.assess(ranked)
+    assert result.deadly_in_play
+    assert any("kill" in w.lower() for w in result.warnings)
+    # Whatever the verdict, the named species must itself be a deadly one --
+    # never a harmless neighbour.
+    assert result.candidates[0].toxicity == "DEADLY"
+
+
+def test_panther_cap_versus_blusher_warns(layer):
+    """Amanita pantherina and A. rubescens are a classic and serious
+    confusion. The app need not refuse outright -- pantherina is SERIOUS
+    rather than DEADLY -- but it must warn and must not name a species."""
+    ranked = [
+        ("amanita-rubescens", 0.55),
+        ("amanita-pantherina", 0.40),
+        ("amanita-muscaria", 0.05),
+    ]
+    result = layer.assess(ranked)
+    assert result.verdict is not Verdict.SPECIES
+    assert result.deadly_in_play, "any Amanita ambiguity must carry the warning"
+
+
+def test_genus_headline_uses_the_correct_article(layer):
+    """'a Amanita' on the one screen the user must trust reads as carelessness."""
+    ranked = [
+        ("amanita-rubescens", 0.35), ("amanita-pantherina", 0.30),
+        ("amanita-muscaria", 0.20), ("boletus-edulis", 0.15),
+    ]
+    headline = layer.assess(ranked).headline
+    if "species" in headline and "looks like" in headline:
+        assert "a Amanita" not in headline
+        assert "an Amanita" in headline
+
+
+def test_new_species_carry_toxicity_labels(layer):
+    ranked = [("lepiota-brunneoincarnata", 0.6), ("marasmius-oreades", 0.4)]
+    by_key = {c.species_key: c.toxicity for c in layer.assess(ranked).candidates}
+    assert by_key["lepiota-brunneoincarnata"] == "DEADLY"

@@ -54,7 +54,20 @@ nudge, and an answer can legitimately rule candidates out. This requires the
 mycological review in `SAFETY.md` to happen first, since it encodes claims
 about species that users will act on.
 
-### 3. Out-of-distribution detection
+### 3. Species-level claims the evidence cannot support
+
+Adding the small *Lepiota* species exposed a gap that is about honesty rather
+than safety. When every candidate is a deadly Lepiota the app will name one,
+which is safe -- it names a deadly species and warns -- but the species-level
+claim is not supportable, because those species genuinely cannot be separated
+from a photograph without microscopy.
+
+The fix is a per-species `photo_resolvable: false` flag in the taxonomy, with
+the safety layer reporting at genus level for anything carrying it. Populating
+it is a mycological judgement, so it waits on review. *Cortinarius*, *Inocybe*
+and the small *Lepiota* species are the obvious candidates.
+
+### 4. Out-of-distribution detection
 
 The current OOD check is a threshold on top-1 probability, which is weak. A
 user photographing a slug, a pine cone, or a species outside the label space
@@ -62,7 +75,7 @@ should get a clear "that isn't something I know", not a confident wrong
 answer. Options: an energy-based score, a Mahalanobis distance on penultimate
 features, or an explicit "not a fungus" class trained on negatives.
 
-### 4. On-device inference
+### 5. On-device inference
 
 Signal in woodland is poor and this is where the app is used. Export to
 TFLite or Core ML with a smaller backbone (EfficientNet-B0/B2) and ship the
@@ -70,13 +83,13 @@ model in the bundle. The safety layer must move client-side with it —
 critically, it must not be possible to get a species answer with the safety
 rules bypassed because the network was unavailable.
 
-### 5. Guided spore print workflow
+### 6. Guided spore print workflow
 
 Nobody has built this and it is the most diagnostic cheap test in mycology.
 Guided capture, a timer, and colour matching against a reference chart under
 controlled white balance. A genuine differentiator and a genuine contribution.
 
-### 6. Observation log
+### 7. Observation log
 
 Local history of what the user photographed, where and when, with the
 questions they answered. Useful in itself, and the foundation for any future

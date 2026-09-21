@@ -1,6 +1,6 @@
 # Taxonomy review
 
-The seed taxonomy in `data/taxonomy.seed.json` covers 57 species and has
+The seed taxonomy in `data/taxonomy.seed.json` covers 62 species and has
 **not** been verified by a qualified mycologist. It was compiled from standard
 references. Until it is signed off, `reviewed_by` stays `null` and `/health`
 reports `taxonomy_reviewed: false`.
@@ -10,7 +10,7 @@ Two working documents accompany this note, both in this folder:
 - **`fungi-taxonomy-review-pack.docx`** — a printable Word document with the
   species split into priority tiers, blank columns to mark up by hand, the
   specific queries below, and a sign-off page. Best for handing to a reviewer.
-- **`taxonomy-review-worksheet.csv`** — the same 57 species as a spreadsheet,
+- **`taxonomy-review-worksheet.csv`** — the same 62 species as a spreadsheet,
   one row each, for anyone who would rather type than annotate.
 
 Both are generated from `data/taxonomy.seed.json`, so regenerate them if the
@@ -18,27 +18,31 @@ taxonomy changes rather than editing them as the source of truth.
 
 ## Priority tiers
 
-### Tier 1 — Critical (12 species)
+### Tier 1 — Critical (16 species)
 
 Species that can kill or hospitalise. An error here is the most direct route
 to harming a user.
 
 | Species | Current | In lethal pairs |
 | --- | --- | ---: |
-| *Amanita phalloides* — Death Cap | DEADLY | 8 |
-| *Amanita virosa* — Destroying Angel | DEADLY | 7 |
+| *Amanita phalloides* — Death Cap | DEADLY | 9 |
+| *Amanita virosa* — Destroying Angel | DEADLY | 8 |
+| *Lepiota brunneoincarnata* — Deadly Dapperling | DEADLY | 5 |
 | *Clitocybe rivulosa* — Fool's Funnel | DEADLY | 4 |
 | *Cortinarius rubellus* — Deadly Webcap | DEADLY | 4 |
 | *Galerina marginata* — Funeral Bell | DEADLY | 4 |
+| *Lepiota subincarnata* — Fatal Dapperling | DEADLY | 3 |
 | *Clitocybe dealbata* — Ivory Funnel | DEADLY | 2 |
 | *Gyromitra esculenta* — False Morel | DEADLY | 2 |
 | *Inocybe erubescens* — Deadly Fibrecap | DEADLY | 2 |
+| *Lepiota castanea* — Chestnut Dapperling | DEADLY | 1 |
+| *Amanita pantherina* — Panther Cap | SERIOUS | 2 |
 | *Paxillus involutus* — Brown Roll-rim | SERIOUS | 1 |
 | *Tricholoma equestre* — Yellow Knight | SERIOUS | 1 |
 | *Entoloma sinuatum* — Livid Pinkgill | SERIOUS | 0 |
 | *Rubroboletus satanas* — Devil's Bolete | SERIOUS | 0 |
 
-### Tier 2 — High (20 species)
+### Tier 2 — High (22 species)
 
 The *safe half* of a lethal confusion. **Wrongly reassuring here is the fatal
 direction**: if the app says "this is the field mushroom" and it is not, the
@@ -56,7 +60,7 @@ Highest exposure first:
   *Lycoperdon perlatum*, *Macrolepiota procera*, *Morchella esculenta*,
   *Pholiota squarrosa*, *Russula cyanoxantha*, *Verpa bohemica* — 1 each
 
-### Tier 3 — Standard (25 species)
+### Tier 3 — Standard (24 species)
 
 Everything else. Still needs checking for current nomenclature and accurate
 characters, but an error is less likely to be directly harmful.
@@ -110,12 +114,18 @@ These are **not** in the label space and arguably should be. A species the
 model has never seen cannot be flagged as dangerous — it will be forced into
 the nearest class it knows, which may be something harmless.
 
-10. **`Lepiota brunneoincarnata`** and the small brown *Lepiota* species —
-    contain amatoxins, occur in the UK, and are genuinely lethal. Their
-    absence feels like the most significant gap.
-11. **`Amanita pantherina`** — Panther Cap. Present in the UK, seriously toxic.
-12. **`Cortinarius orellanus`** — the other orellanine-containing webcap;
-    only *C. rubellus* is currently included.
+10. ~~*Lepiota brunneoincarnata* and the small brown *Lepiota* species~~ —
+    **added.** The label space now carries *L. brunneoincarnata*,
+    *L. subincarnata* and *L. castanea* as DEADLY, plus *L. cristata* as
+    TOXIC because it is the common species people will actually photograph
+    and the natural entry point to the genus. Please confirm the
+    classifications, and in particular whether *L. subincarnata* and
+    *L. josserandii* should be treated as one species.
+11. ~~*Amanita pantherina*~~ — **added** as SERIOUS, linked to *A. rubescens*
+    as its principal confusion. Please confirm the severity and the
+    separating characters, especially the reliance on flesh not reddening.
+12. **`Cortinarius orellanus`** — still missing. The other
+    orellanine-containing webcap; only *C. rubellus* is currently included.
 13. Any other UK species the reviewer considers a common cause of poisoning
     that is missing.
 
@@ -158,4 +168,4 @@ publication.
 - **University mycology departments** — frequently receptive to public-good
   projects
 - **The Association of Foragers** — professional teaching foragers
-- A **paid consultation**. Reviewing 57 species is a bounded piece of work.
+- A **paid consultation**. Reviewing 62 species is a bounded piece of work.

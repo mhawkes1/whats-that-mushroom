@@ -16,6 +16,7 @@
       "lookalikes": [
         "agaricus-arvensis",
         "agaricus-campestris",
+        "amanita-pantherina",
         "amanita-rubescens",
         "macrolepiota-procera",
         "russula-cyanoxantha",
@@ -43,6 +44,7 @@
       "lookalikes": [
         "agaricus-arvensis",
         "agaricus-campestris",
+        "amanita-pantherina",
         "calocybe-gambosa",
         "lycoperdon-perlatum",
         "volvopluteus-gloiocephalus"
@@ -305,6 +307,7 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
+        "amanita-pantherina",
         "amanita-rubescens",
         "russula-emetica"
       ],
@@ -327,6 +330,7 @@
       "gbif_key": null,
       "lookalikes": [
         "amanita-muscaria",
+        "amanita-pantherina",
         "amanita-phalloides"
       ],
       "diagnostic_characters": [
@@ -351,7 +355,8 @@
         "agaricus-xanthodermus",
         "amanita-phalloides",
         "amanita-virosa",
-        "inocybe-erubescens"
+        "inocybe-erubescens",
+        "lepiota-brunneoincarnata"
       ],
       "diagnostic_characters": [
         "gill_colour",
@@ -398,7 +403,10 @@
       "gbif_key": null,
       "lookalikes": [
         "amanita-phalloides",
-        "chlorophyllum-brunneum"
+        "chlorophyllum-brunneum",
+        "lepiota-brunneoincarnata",
+        "lepiota-cristata",
+        "lepiota-subincarnata"
       ],
       "diagnostic_characters": [
         "stipe_surface",
@@ -418,6 +426,7 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
+        "lepiota-brunneoincarnata",
         "macrolepiota-procera"
       ],
       "diagnostic_characters": [
@@ -630,7 +639,9 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-dealbata",
-        "clitocybe-rivulosa"
+        "clitocybe-rivulosa",
+        "lepiota-brunneoincarnata",
+        "lepiota-subincarnata"
       ],
       "diagnostic_characters": [
         "gill_attachment",
@@ -1183,6 +1194,133 @@
         "stipe_surface"
       ],
       "notes": "No ring, and young pores exude milky droplets."
+    },
+    {
+      "key": "lepiota-brunneoincarnata",
+      "scientific_name": "Lepiota brunneoincarnata",
+      "genus": "Lepiota",
+      "common_names": [
+        "Deadly Dapperling"
+      ],
+      "toxicity": "DEADLY",
+      "gbif_key": null,
+      "lookalikes": [
+        "agaricus-campestris",
+        "chlorophyllum-brunneum",
+        "lepiota-castanea",
+        "lepiota-cristata",
+        "lepiota-subincarnata",
+        "macrolepiota-procera",
+        "marasmius-oreades"
+      ],
+      "diagnostic_characters": [
+        "size",
+        "cap_surface",
+        "spore_print_colour",
+        "ring",
+        "habitat",
+        "gill_colour"
+      ],
+      "notes": "A small dapperling, rarely more than 5 cm across, with concentric pinkish to purplish-brown scales on a paler ground, free white gills and a white spore print. Contains the same amatoxins as the Death Cap and has caused repeated fatalities in Europe. Grows in grass, parks, gardens, verges and path edges, often in warm dry spots, which is exactly where people pick small mushrooms casually."
+    },
+    {
+      "key": "lepiota-subincarnata",
+      "scientific_name": "Lepiota subincarnata",
+      "genus": "Lepiota",
+      "common_names": [
+        "Fatal Dapperling"
+      ],
+      "toxicity": "DEADLY",
+      "gbif_key": null,
+      "lookalikes": [
+        "lepiota-brunneoincarnata",
+        "lepiota-castanea",
+        "lepiota-cristata",
+        "macrolepiota-procera",
+        "marasmius-oreades"
+      ],
+      "diagnostic_characters": [
+        "size",
+        "cap_surface",
+        "spore_print_colour",
+        "ring",
+        "habitat",
+        "gill_colour"
+      ],
+      "notes": "Very small, with a pinkish-brown finely scaly cap, free white gills and a white spore print. Contains amatoxins and has been responsible for fatal poisonings. Frequently found on lawns, wood-chip mulch and in gardens. Also recorded under the name Lepiota josserandii.",
+      "internal_note": "Synonymy with L. josserandii should be confirmed at review; both names remain in circulation."
+    },
+    {
+      "key": "lepiota-castanea",
+      "scientific_name": "Lepiota castanea",
+      "genus": "Lepiota",
+      "common_names": [
+        "Chestnut Dapperling"
+      ],
+      "toxicity": "DEADLY",
+      "gbif_key": null,
+      "lookalikes": [
+        "lepiota-brunneoincarnata",
+        "lepiota-cristata",
+        "lepiota-subincarnata"
+      ],
+      "diagnostic_characters": [
+        "size",
+        "cap_surface",
+        "spore_print_colour",
+        "ring",
+        "habitat"
+      ],
+      "notes": "Small, with a chestnut to rust-brown finely scaly cap breaking into granular patches, free white gills and a white spore print. Amatoxins have been recorded from this species. Found in woodland litter and on shaded verges."
+    },
+    {
+      "key": "lepiota-cristata",
+      "scientific_name": "Lepiota cristata",
+      "genus": "Lepiota",
+      "common_names": [
+        "Stinking Dapperling"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "lepiota-brunneoincarnata",
+        "lepiota-castanea",
+        "lepiota-subincarnata",
+        "macrolepiota-procera"
+      ],
+      "diagnostic_characters": [
+        "size",
+        "cap_surface",
+        "smell",
+        "spore_print_colour",
+        "ring"
+      ],
+      "notes": "By far the commonest small Lepiota in Britain. Reddish-brown concentric scales on a white cap, a flimsy ring, white spore print, and an unpleasant smell often described as rubbery or of coal gas. Included because it is the species people will actually photograph, and because it cannot be separated from its deadly relatives without care.",
+      "internal_note": "Deliberately included as the common entry point to the genus. The app must never resolve a small Lepiota to species from a photograph."
+    },
+    {
+      "key": "amanita-pantherina",
+      "scientific_name": "Amanita pantherina",
+      "genus": "Amanita",
+      "common_names": [
+        "Panther Cap"
+      ],
+      "toxicity": "SERIOUS",
+      "gbif_key": null,
+      "lookalikes": [
+        "amanita-muscaria",
+        "amanita-phalloides",
+        "amanita-rubescens",
+        "amanita-virosa"
+      ],
+      "diagnostic_characters": [
+        "bruising_reaction",
+        "volva",
+        "ring",
+        "cap_colour",
+        "cap_surface"
+      ],
+      "notes": "Brown cap carrying pure white, evenly scattered wart-like patches, white gills, a smooth ungrooved ring, and a distinct collar-like rim at the top of the basal bulb. The flesh does not redden when cut or bruised, which is the decisive separation from The Blusher. Contains ibotenic acid and muscimol at higher concentrations than the Fly Agaric; poisoning is severe and hospitalisation common."
     }
   ],
   "$policy": "The `toxicity` field records HARM FROM EATING and drives warnings only. It is never rendered as a recommendation. There is deliberately no 'edible' value -- but nor is there an 'inedible' one, because asserting that a choice edible is inedible is a false claim and destroys trust in the warnings that matter. The lowest value, NONE_RECORDED, means no toxicity is recorded and says nothing about edibility either way. UNASSESSED means not yet checked and is treated as TOXIC by the safety layer. The `notes` field is shown to users verbatim and must describe only what is observable; rationale and review flags belong in `internal_note`, which is never surfaced."

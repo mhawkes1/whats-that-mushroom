@@ -141,3 +141,35 @@ def test_policy_statement_is_present_and_current(raw):
     assert policy, "the data file must carry its own policy statement"
     assert "NONE_RECORDED" in policy
     assert "never rendered as a recommendation" in policy
+
+
+def test_amatoxin_lepiotas_are_present(taxonomy):
+    """Small amatoxin-containing Lepiota species occur in the UK and kill.
+
+    A species the model has never seen cannot be flagged as dangerous: it is
+    forced into the nearest class it knows, which may be something harmless.
+    Their absence was the most significant gap in the first label space.
+    """
+    for key in ("lepiota-brunneoincarnata", "lepiota-subincarnata"):
+        sp = taxonomy.get(key)
+        assert sp is not None, f"{key} is missing from the label space"
+        assert sp.toxicity is Toxicity.DEADLY
+
+
+def test_lepiotas_are_reachable_from_lawn_and_parasol_species(taxonomy):
+    """The deadly dapperlings must be discoverable from what people actually
+    look up: the Fairy Ring Champignon and the Parasol."""
+    for entry_point in ("marasmius-oreades", "macrolepiota-procera"):
+        sp = taxonomy[entry_point]
+        assert any(la.startswith("lepiota-") for la in sp.lookalikes), (
+            f"{entry_point} does not reference any Lepiota, so a user browsing "
+            "it would never be shown the deadly small dapperlings"
+        )
+
+
+def test_amanita_pantherina_is_present_and_linked_to_the_blusher(taxonomy):
+    sp = taxonomy.get("amanita-pantherina")
+    assert sp is not None
+    assert sp.toxicity is Toxicity.SERIOUS
+    assert "amanita-rubescens" in sp.lookalikes
+    assert "amanita-pantherina" in taxonomy["amanita-rubescens"].lookalikes

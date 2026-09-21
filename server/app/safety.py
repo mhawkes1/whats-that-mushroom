@@ -78,6 +78,17 @@ UNIVERSAL_DISCLAIMER = (
 )
 
 
+def _article(word: str) -> str:
+    """Indefinite article for a genus name.
+
+    Several genera in the label space begin with a vowel -- Amanita,
+    Agaricus, Armillaria, Entoloma, Inocybe, Omphalotus -- and "a Amanita"
+    in the headline reads as carelessness on the one screen where the user
+    most needs to trust what they are reading.
+    """
+    return "an" if word[:1].upper() in "AEIOU" else "a"
+
+
 class SafetyLayer:
     def __init__(
         self,
@@ -243,7 +254,7 @@ class SafetyLayer:
         if best_genus_score >= self.group_threshold:
             return SafetyAssessment(
                 verdict=Verdict.GROUP,
-                headline=f"This looks like a {best_genus} species",
+                headline=f"This looks like {_article(best_genus)} {best_genus} species",
                 detail=(
                     f"{GROUP_ONLY_DETAIL} I'm reasonably confident about the genus "
                     f"({best_genus_score:.0%}) but not about which species within it."
