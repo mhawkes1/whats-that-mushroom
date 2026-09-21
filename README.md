@@ -153,6 +153,17 @@ cd app && npm install
 EXPO_PUBLIC_API_URL=http://<your-lan-ip>:8000 npx expo start
 ```
 
+**A demo**
+
+```bash
+python scripts/demo.py
+```
+
+Drives the real safety layer, interrogation engine, out-of-distribution check
+and spore print matcher. No GPU, no dataset, no network, nothing mocked. It
+hands in the rankings a trained classifier would produce, because there is no
+trained classifier yet — what it shows is everything that sits on top of one.
+
 **Tests**
 
 ```bash

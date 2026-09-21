@@ -70,6 +70,7 @@ characters come from standard references but are unverified.
 | `server/app/incidents.py` | Reports that the app was wrong, and how they are graded |
 | `docs/INCIDENTS.md` | Who acts on a report, and in what order |
 | `scripts/build_ebook.py` | Fills the companion ebook's field slots from the taxonomy |
+| `scripts/demo.py` | Drives the real safety layer, engine and matcher in a terminal |
 
 ## Commands
 
@@ -86,6 +87,9 @@ cd app && npm install && EXPO_PUBLIC_API_URL=http://<lan-ip>:8000 npx expo start
 
 # Companion ebook -- fill its field data from the taxonomy
 python scripts/build_ebook.py --ebook <book>.html --out draft.html
+
+# See it work -- no GPU, no dataset, no network, nothing mocked
+python scripts/demo.py
 ```
 
 Training needs a GPU and is documented in `docs/ROADMAP.md`.
