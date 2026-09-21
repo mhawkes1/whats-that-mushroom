@@ -191,3 +191,64 @@ def test_webcaps_are_reachable_from_the_chanterelle(taxonomy):
     assert any(k.startswith("cortinarius-") for k in lookalikes), (
         "the chanterelle page omits the orellanine webcaps"
     )
+
+
+def test_no_test_file_references_a_species_that_no_longer_exists(taxonomy):
+    """Guard against tests quietly testing less than they claim.
+
+    The safety layer skips unknown species keys rather than raising, which is
+    right at runtime but dangerous in a test: a scenario referencing a species
+    that has since been removed still passes, while silently exercising a
+    smaller candidate set than the test name promises. This happened when four
+    species were removed after a cross-check against an external UK list.
+    """
+    import re
+
+    pattern = re.compile(r'\("([a-z]+-[a-z-]+)",\s*[01]?\.\d+\)')
+    known = set(taxonomy.species)
+    stale: list[tuple[str, str]] = []
+
+    for path in (ROOT / "ml" / "tests").glob("test_*.py"):
+        for key in set(pattern.findall(path.read_text(encoding="utf-8"))):
+            if key not in known:
+                stale.append((path.name, key))
+    for path in (ROOT / "server" / "tests").glob("test_*.py"):
+        for key in set(pattern.findall(path.read_text(encoding="utf-8"))):
+            if key not in known:
+                stale.append((path.name, key))
+
+    assert not stale, f"tests reference species absent from the taxonomy: {sorted(stale)}"
+
+
+def test_species_removed_by_the_uk_cross_check_are_gone(taxonomy):
+    """These four were removed after checking against an external UK list.
+
+    Re-adding any of them should be a deliberate act with a reason, not an
+    accident of a merge.
+    """
+    for key, why in [
+        ("clitocybe-dealbata", "merged into clitocybe-rivulosa"),
+        ("verpa-bohemica", "not present on the UK list"),
+        ("omphalotus-olearius", "replaced by omphalotus-illudens"),
+        ("chlorophyllum-brunneum", "replaced by chlorophyllum-rhacodes"),
+    ]:
+        assert key not in taxonomy, f"{key} is back in the label space ({why})"
+
+
+def test_spore_colour_code_is_stored_but_not_interpreted(raw):
+    """The source list's 01-12 code is carried verbatim.
+
+    Until the legend is supplied it must not be mapped onto the
+    spore_print_colour character. Guessing a value for a safety-relevant
+    field is how the earlier INEDIBLE defect arose.
+    """
+    policy = raw.get("$spore_colour_code", "")
+    assert policy, "the spore colour code needs its policy note"
+    assert "NOT be mapped" in policy or "NOT mapped" in policy
+
+    coded = [s for s in raw["species"] if s.get("spore_colour_code")]
+    assert coded, "no species carries a spore colour code"
+    for s in coded:
+        assert s["spore_colour_code"].isdigit(), (
+            f"{s['key']}: spore colour code should remain the raw numeric string"
+        )

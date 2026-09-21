@@ -1,6 +1,6 @@
 # Taxonomy review
 
-The seed taxonomy in `data/taxonomy.seed.json` covers 63 species and has
+The seed taxonomy in `data/taxonomy.seed.json` covers 82 species and has
 **not** been verified by a qualified mycologist. It was compiled from standard
 references. Until it is signed off, `reviewed_by` stays `null` and `/health`
 reports `taxonomy_reviewed: false`.
@@ -10,7 +10,7 @@ Two working documents accompany this note, both in this folder:
 - **`fungi-taxonomy-review-pack.docx`** — a printable Word document with the
   species split into priority tiers, blank columns to mark up by hand, the
   specific queries below, and a sign-off page. Best for handing to a reviewer.
-- **`taxonomy-review-worksheet.csv`** — the same 63 species as a spreadsheet,
+- **`taxonomy-review-worksheet.csv`** — the same 82 species as a spreadsheet,
   one row each, for anyone who would rather type than annotate.
 
 Both are generated from `data/taxonomy.seed.json`, so regenerate them if the
@@ -18,32 +18,34 @@ taxonomy changes rather than editing them as the source of truth.
 
 ## Priority tiers
 
-### Tier 1 — Critical (17 species)
+### Tier 1 — Critical (19 species)
 
 Species that can kill or hospitalise. An error here is the most direct route
 to harming a user.
 
 | Species | Current | In lethal pairs |
 | --- | --- | ---: |
-| *Amanita phalloides* — Death Cap | DEADLY | 9 |
-| *Amanita virosa* — Destroying Angel | DEADLY | 8 |
+| *Amanita phalloides* — Deathcap | DEADLY | 14 |
+| *Amanita virosa* — Destroying Angel | DEADLY | 13 |
+| *Clitocybe rivulosa* — Fool's Funnel | DEADLY | 5 |
+| *Galerina marginata* — Funeral Bell | DEADLY | 5 |
 | *Lepiota brunneoincarnata* — Deadly Dapperling | DEADLY | 5 |
-| *Clitocybe rivulosa* — Fool's Funnel | DEADLY | 4 |
 | *Cortinarius orellanus* — Fool's Webcap | DEADLY | 4 |
 | *Cortinarius rubellus* — Deadly Webcap | DEADLY | 4 |
-| *Galerina marginata* — Funeral Bell | DEADLY | 4 |
 | *Lepiota subincarnata* — Fatal Dapperling | DEADLY | 3 |
-| *Clitocybe dealbata* — Ivory Funnel | DEADLY | 2 |
 | *Gyromitra esculenta* — False Morel | DEADLY | 2 |
 | *Inocybe erubescens* — Deadly Fibrecap | DEADLY | 2 |
+| *Pholiotina rugosa* — Wrinkled Conecap | DEADLY | 2 |
 | *Lepiota castanea* — Chestnut Dapperling | DEADLY | 1 |
-| *Amanita pantherina* — Panther Cap | SERIOUS | 2 |
-| *Paxillus involutus* — Brown Roll-rim | SERIOUS | 1 |
+| *Amanita pantherina* — Panthercap | SERIOUS | 2 |
+| *Paxillus involutus* — Brown Rollrim | SERIOUS | 1 |
 | *Tricholoma equestre* — Yellow Knight | SERIOUS | 1 |
 | *Entoloma sinuatum* — Livid Pinkgill | SERIOUS | 0 |
+| *Pleurocybella porrigens* — Angel's Wings | SERIOUS | 0 |
 | *Rubroboletus satanas* — Devil's Bolete | SERIOUS | 0 |
+| *Tricholoma pardinum* — Leopard Knight | SERIOUS | 0 |
 
-### Tier 2 — High (22 species)
+### Tier 2 — High (30 species)
 
 The *safe half* of a lethal confusion. **Wrongly reassuring here is the fatal
 direction**: if the app says "this is the field mushroom" and it is not, the
@@ -61,10 +63,40 @@ Highest exposure first:
   *Lycoperdon perlatum*, *Macrolepiota procera*, *Morchella esculenta*,
   *Pholiota squarrosa*, *Russula cyanoxantha*, *Verpa bohemica* — 1 each
 
-### Tier 3 — Standard (24 species)
+### Tier 3 — Standard (33 species)
 
 Everything else. Still needs checking for current nomenclature and accurate
 characters, but an error is less likely to be directly harmful.
+
+## Cross-check against an external UK species list
+
+The taxonomy was compared against a UK species list supplied in review
+(~700 species with family and a spore-colour code). Four entries were absent
+from it and have been acted on:
+
+- *Clitocybe dealbata* — **merged** into *C. rivulosa*, which the list carries
+  alone. This also cleared the duplicate "Ivory Funnel" common name.
+- *Verpa bohemica* — **removed**; not on the UK list, confirming query 9 below.
+- *Omphalotus olearius* — **replaced** by *O. illudens*, which holds the common
+  name "Jack o' Lantern" on the list while *olearius* appears unnamed.
+- *Chlorophyllum brunneum* — **replaced** by *C. rhacodes*, the name the list
+  carries for Shaggy Parasol.
+
+Eight common names were also brought into line with the list's UK standard
+(Wood Hedgehog, Birch Bolete, Parasol, Deathcap, Panthercap, Brown Rollrim,
+Sickener, Cep).
+
+*Lepiota castanea* is also absent from the list but has been **kept**: it is a
+recognised European species with amatoxins recorded, and absence from a single
+list is not evidence against it. Please rule on this.
+
+### Outstanding: the spore colour legend
+
+The list's numeric colour column (01–12) has been stored verbatim as
+`spore_colour_code` but is **not** mapped onto the `spore_print_colour`
+character, because the legend was not supplied. Please provide the mapping of
+each number to a colour and it will be wired through; until then it is inert
+reference data.
 
 ## Specific queries for the reviewer
 
@@ -172,4 +204,4 @@ publication.
 - **University mycology departments** — frequently receptive to public-good
   projects
 - **The Association of Foragers** — professional teaching foragers
-- A **paid consultation**. Reviewing 63 species is a bounded piece of work.
+- A **paid consultation**. Reviewing 82 species is a bounded piece of work.

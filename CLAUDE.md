@@ -51,7 +51,7 @@ characters come from standard references but are unverified.
 
 | Path | What it holds |
 | --- | --- |
-| `data/taxonomy.seed.json` | 63 UK species, lookalike graph, toxicity, diagnostic characters |
+| `data/taxonomy.seed.json` | 82 UK species, lookalike graph, toxicity, diagnostic characters |
 | `ml/fungi_ml/taxonomy.py` | Species model and the asymmetric risk matrix |
 | `ml/fungi_ml/losses.py` | Risk-weighted objective |
 | `ml/fungi_ml/calibrate.py` | Temperature scaling, threshold fitting |

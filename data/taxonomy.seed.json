@@ -9,15 +9,19 @@
       "scientific_name": "Amanita phalloides",
       "genus": "Amanita",
       "common_names": [
-        "Death Cap"
+        "Deathcap"
       ],
       "toxicity": "DEADLY",
       "gbif_key": null,
       "lookalikes": [
         "agaricus-arvensis",
         "agaricus-campestris",
+        "amanita-citrina",
+        "amanita-excelsa",
+        "amanita-fulva",
         "amanita-pantherina",
         "amanita-rubescens",
+        "amanita-vaginata",
         "macrolepiota-procera",
         "russula-cyanoxantha",
         "tricholoma-equestre",
@@ -30,7 +34,9 @@
         "gill_attachment",
         "cap_colour"
       ],
-      "notes": "Responsible for the majority of fatal mushroom poisonings worldwide. Free white gills, white spore print, membranous ring, and a sac-like volva at the stem base which is often buried and missed. Olive-green to yellowish cap. Ectomycorrhizal, usually with oak or beech."
+      "notes": "Responsible for the majority of fatal mushroom poisonings worldwide. Free white gills, white spore print, membranous ring, and a sac-like volva at the stem base which is often buried and missed. Olive-green to yellowish cap. Ectomycorrhizal, usually with oak or beech.",
+      "family": "Amanitaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "amanita-virosa",
@@ -44,7 +50,10 @@
       "lookalikes": [
         "agaricus-arvensis",
         "agaricus-campestris",
+        "amanita-citrina",
+        "amanita-fulva",
         "amanita-pantherina",
+        "amanita-vaginata",
         "calocybe-gambosa",
         "lycoperdon-perlatum",
         "volvopluteus-gloiocephalus"
@@ -56,7 +65,9 @@
         "gill_colour",
         "bruising_reaction"
       ],
-      "notes": "Entirely white, including the gills, which stay white at all ages. White spore print. Ragged ring and a sac-like volva. Young buttons are readily mistaken for puffballs; sectioning vertically reveals the developing cap and gills."
+      "notes": "Entirely white, including the gills, which stay white at all ages. White spore print. Ragged ring and a sac-like volva. Young buttons are readily mistaken for puffballs; sectioning vertically reveals the developing cap and gills.",
+      "family": "Amanitaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "galerina-marginata",
@@ -71,7 +82,9 @@
         "armillaria-mellea",
         "hypholoma-fasciculare",
         "kuehneromyces-mutabilis",
-        "pholiota-squarrosa"
+        "pholiota-squarrosa",
+        "pholiotina-rugosa",
+        "psilocybe-semilanceata"
       ],
       "diagnostic_characters": [
         "spore_print_colour",
@@ -79,7 +92,9 @@
         "ring",
         "stipe_surface"
       ],
-      "notes": "Contains the same amatoxins as the Death Cap. Grows in clusters on dead wood, which is exactly where foragers look for Sheathed Woodtuft. Rust-brown spore print. The distinction from Kuehneromyces mutabilis is genuinely difficult and is the single most dangerous confusion for experienced foragers."
+      "notes": "Contains the same amatoxins as the Death Cap. Grows in clusters on dead wood, which is exactly where foragers look for Sheathed Woodtuft. Rust-brown spore print. The distinction from Kuehneromyces mutabilis is genuinely difficult and is the single most dangerous confusion for experienced foragers.",
+      "family": "Strophariaceae",
+      "spore_colour_code": "09"
     },
     {
       "key": "cortinarius-rubellus",
@@ -102,7 +117,9 @@
         "gill_type",
         "habitat"
       ],
-      "notes": "Contains orellanine. Kidney failure onset is delayed by 2-3 weeks, so victims rarely connect the illness to the meal. Rusty-brown spore print, cobwebby cortina on the stem, true gills. Conifer woodland, often among Sphagnum."
+      "notes": "Contains orellanine. Kidney failure onset is delayed by 2-3 weeks, so victims rarely connect the illness to the meal. Rusty-brown spore print, cobwebby cortina on the stem, true gills. Conifer woodland, often among Sphagnum.",
+      "family": "Cortinariaceae",
+      "spore_colour_code": "08"
     },
     {
       "key": "gyromitra-esculenta",
@@ -115,15 +132,17 @@
       "toxicity": "DEADLY",
       "gbif_key": null,
       "lookalikes": [
-        "morchella-esculenta",
-        "verpa-bohemica"
+        "morchella-elata",
+        "morchella-esculenta"
       ],
       "diagnostic_characters": [
         "cap_surface",
         "interior_structure",
         "season"
       ],
-      "notes": "Contains gyromitrin, which metabolises to monomethylhydrazine. The cap is irregularly brain-like or saddle-shaped, not regularly pitted like a true morel, and the interior is chambered rather than a single hollow cavity. Spring, usually with conifers."
+      "notes": "Contains gyromitrin, which metabolises to monomethylhydrazine. The cap is irregularly brain-like or saddle-shaped, not regularly pitted like a true morel, and the interior is chambered rather than a single hollow cavity. Spring, usually with conifers.",
+      "family": "Morchellaceae (Asc)",
+      "spore_colour_code": "02"
     },
     {
       "key": "clitocybe-rivulosa",
@@ -137,6 +156,7 @@
       "gbif_key": null,
       "lookalikes": [
         "calocybe-gambosa",
+        "clitocybe-nebularis",
         "clitopilus-prunulus",
         "marasmius-oreades",
         "paxillus-involutus"
@@ -147,7 +167,10 @@
         "habitat",
         "cap_surface"
       ],
-      "notes": "High muscarine content; fatalities are rare but recorded. Decurrent gills running down the stem, versus the free-to-adnexed gills of Marasmius oreades. Shares the same short grassland and lawn habitat, and often the same fairy rings."
+      "notes": "High muscarine content; fatalities are rare but recorded. Decurrent gills running down the stem, versus the free-to-adnexed gills of Marasmius oreades. Shares the same short grassland and lawn habitat, and often the same fairy rings.",
+      "internal_note": "Clitocybe dealbata was carried as a separate DEADLY entry and has been merged here. The two are taxonomically entangled, several authorities treat dealbata as a synonym, and the source UK list carries only rivulosa. Confirm at review.",
+      "family": "Tricholomataceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "inocybe-erubescens",
@@ -168,14 +191,16 @@
         "spore_print_colour",
         "smell"
       ],
-      "notes": "Severe muscarine poisoning; fatalities recorded. Radially fibrous cap staining red where handled or bruised. Appears in spring alongside St George's Mushroom, with which it has been fatally confused."
+      "notes": "Severe muscarine poisoning; fatalities recorded. Radially fibrous cap staining red where handled or bruised. Appears in spring alongside St George's Mushroom, with which it has been fatally confused.",
+      "family": "Inocybaceae",
+      "spore_colour_code": "09"
     },
     {
       "key": "paxillus-involutus",
       "scientific_name": "Paxillus involutus",
       "genus": "Paxillus",
       "common_names": [
-        "Brown Roll-rim"
+        "Brown Rollrim"
       ],
       "toxicity": "SERIOUS",
       "gbif_key": null,
@@ -189,7 +214,9 @@
         "gill_attachment",
         "spore_print_colour"
       ],
-      "notes": "Causes a cumulative immune-mediated haemolytic syndrome that can be fatal and may develop only after years of apparently safe consumption. Strongly inrolled cap margin; gills bruise reddish-brown. Formerly eaten after cooking in parts of Europe; now regarded as unsafe in all preparations."
+      "notes": "Causes a cumulative immune-mediated haemolytic syndrome that can be fatal and may develop only after years of apparently safe consumption. Strongly inrolled cap margin; gills bruise reddish-brown. Formerly eaten after cooking in parts of Europe; now regarded as unsafe in all preparations.",
+      "family": "Paxillaceae",
+      "spore_colour_code": "03"
     },
     {
       "key": "entoloma-sinuatum",
@@ -204,15 +231,19 @@
       "lookalikes": [
         "agaricus-arvensis",
         "calocybe-gambosa",
+        "clitocybe-nebularis",
         "clitopilus-prunulus",
-        "lepista-nuda"
+        "lepista-nuda",
+        "lepista-saeva"
       ],
       "diagnostic_characters": [
         "spore_print_colour",
         "gill_attachment",
         "smell"
       ],
-      "notes": "A leading cause of mushroom poisoning in Europe. Pink spore print and pink-flushing gills at maturity. Separated from The Miller by gill attachment: sinuate/adnexed here, strongly decurrent in Clitopilus prunulus."
+      "notes": "A leading cause of mushroom poisoning in Europe. Pink spore print and pink-flushing gills at maturity. Separated from The Miller by gill attachment: sinuate/adnexed here, strongly decurrent in Clitopilus prunulus.",
+      "family": "Entolomataceae",
+      "spore_colour_code": "05"
     },
     {
       "key": "tricholoma-equestre",
@@ -226,7 +257,9 @@
       "gbif_key": null,
       "lookalikes": [
         "amanita-phalloides",
-        "russula-ochroleuca"
+        "russula-ochroleuca",
+        "tricholoma-pardinum",
+        "tricholoma-sulphureum"
       ],
       "diagnostic_characters": [
         "volva",
@@ -234,7 +267,9 @@
         "gill_colour",
         "habitat"
       ],
-      "notes": "Long eaten in Europe, then linked to fatal rhabdomyolysis after repeated large meals. Now legally restricted in some countries. Yellow gills and flesh; sandy pine woodland."
+      "notes": "Long eaten in Europe, then linked to fatal rhabdomyolysis after repeated large meals. Now legally restricted in some countries. Yellow gills and flesh; sandy pine woodland.",
+      "family": "Tricholomataceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "agaricus-xanthodermus",
@@ -247,14 +282,19 @@
       "gbif_key": null,
       "lookalikes": [
         "agaricus-arvensis",
-        "agaricus-campestris"
+        "agaricus-bisporus",
+        "agaricus-bitorquis",
+        "agaricus-campestris",
+        "agaricus-moelleri"
       ],
       "diagnostic_characters": [
         "bruising_reaction",
         "smell",
         "stipe_base"
       ],
-      "notes": "The commonest cause of mushroom poisoning in the UK. The stem base stains chrome yellow when cut, and the smell is phenolic or of ink. Both reactions are strongest at the very base of the stem, which is why the whole fruit body must be collected."
+      "notes": "The commonest cause of mushroom poisoning in the UK. The stem base stains chrome yellow when cut, and the smell is phenolic or of ink. Both reactions are strongest at the very base of the stem, which is why the whole fruit body must be collected.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "10"
     },
     {
       "key": "hypholoma-fasciculare",
@@ -276,7 +316,9 @@
         "spore_print_colour",
         "substrate"
       ],
-      "notes": "Very common on stumps and dead wood. Greenish-yellow gills darkening to purple-brown, and an intensely bitter taste. Its clustered habit on wood mirrors that of the woodland species foragers commonly collect."
+      "notes": "Very common on stumps and dead wood. Greenish-yellow gills darkening to purple-brown, and an intensely bitter taste. Its clustered habit on wood mirrors that of the woodland species foragers commonly collect.",
+      "family": "Strophariaceae",
+      "spore_colour_code": "11"
     },
     {
       "key": "scleroderma-citrinum",
@@ -296,7 +338,9 @@
         "skin_thickness",
         "smell"
       ],
-      "notes": "Sectioned vertically, the interior is firm and purple-black from an early stage, whereas a true puffball is uniformly pure white throughout. The outer skin is thick and warty."
+      "notes": "Sectioned vertically, the interior is firm and purple-black from an early stage, whereas a true puffball is uniformly pure white throughout. The outer skin is thick and warty.",
+      "family": "Sclerodermataceae",
+      "spore_colour_code": "10"
     },
     {
       "key": "amanita-muscaria",
@@ -308,6 +352,7 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
+        "amanita-gemmata",
         "amanita-pantherina",
         "amanita-rubescens",
         "russula-emetica"
@@ -318,7 +363,9 @@
         "ring",
         "cap_surface"
       ],
-      "notes": "Ibotenic acid and muscimol; deliriant rather than lethal, but hospitalisation is common. Included in the label space because it is the most photographed fungus in the world and the model must handle it confidently."
+      "notes": "Ibotenic acid and muscimol; deliriant rather than lethal, but hospitalisation is common. Included in the label space because it is the most photographed fungus in the world and the model must handle it confidently.",
+      "family": "Amanitaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "amanita-rubescens",
@@ -330,6 +377,7 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
+        "amanita-excelsa",
         "amanita-muscaria",
         "amanita-pantherina",
         "amanita-phalloides"
@@ -341,7 +389,9 @@
         "cap_surface"
       ],
       "notes": "Flesh reddens where damaged or grub-eaten, which is the character the common name refers to. Toxic raw.",
-      "internal_note": "Widely treated as edible when thoroughly cooked. Classified TOXIC here because it is toxic raw and because the margin for error sits inside Amanita, where a misidentification is potentially fatal. Do not relax this without mycological review."
+      "internal_note": "Widely treated as edible when thoroughly cooked. Classified TOXIC here because it is toxic raw and because the margin for error sits inside Amanita, where a misidentification is potentially fatal. Do not relax this without mycological review.",
+      "family": "Amanitaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "agaricus-campestris",
@@ -353,9 +403,13 @@
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
+        "agaricus-bisporus",
+        "agaricus-bitorquis",
+        "agaricus-moelleri",
         "agaricus-xanthodermus",
         "amanita-phalloides",
         "amanita-virosa",
+        "hebeloma-crustuliniforme",
         "inocybe-erubescens",
         "lepiota-brunneoincarnata"
       ],
@@ -366,7 +420,9 @@
         "bruising_reaction"
       ],
       "notes": "Gills pink when young, darkening to chocolate-brown. Brown spore print. No volva at the stem base and no chrome-yellow staining when cut.",
-      "internal_note": "Recorded as NONE_RECORDED: no toxicity is recorded for this species. That is a statement about toxicity only and is not a recommendation to eat it. See docs/SAFETY.md."
+      "internal_note": "Recorded as NONE_RECORDED: no toxicity is recorded for this species. That is a statement about toxicity only and is not a recommendation to eat it. See docs/SAFETY.md.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "10"
     },
     {
       "key": "agaricus-arvensis",
@@ -378,6 +434,7 @@
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
+        "agaricus-moelleri",
         "agaricus-xanthodermus",
         "amanita-phalloides",
         "amanita-virosa",
@@ -391,20 +448,22 @@
         "volva"
       ],
       "notes": "Aniseed smell and a pendulous cog-wheel ring. The critical checks are absence of a volva and absence of chrome-yellow staining at the stem base.",
-      "internal_note": "Recorded as NONE_RECORDED on the same basis as agaricus-campestris."
+      "internal_note": "Recorded as NONE_RECORDED on the same basis as agaricus-campestris.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "10"
     },
     {
       "key": "macrolepiota-procera",
       "scientific_name": "Macrolepiota procera",
       "genus": "Macrolepiota",
       "common_names": [
-        "Parasol Mushroom"
+        "Parasol"
       ],
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
         "amanita-phalloides",
-        "chlorophyllum-brunneum",
+        "chlorophyllum-rhacodes",
         "lepiota-brunneoincarnata",
         "lepiota-cristata",
         "lepiota-subincarnata"
@@ -415,27 +474,9 @@
         "bruising_reaction",
         "spore_print_colour"
       ],
-      "notes": "Snakeskin-patterned stem and a double ring that slides freely. Flesh does not redden strongly, separating it from Chlorophyllum."
-    },
-    {
-      "key": "chlorophyllum-brunneum",
-      "scientific_name": "Chlorophyllum brunneum",
-      "genus": "Chlorophyllum",
-      "common_names": [
-        "Shaggy Parasol"
-      ],
-      "toxicity": "TOXIC",
-      "gbif_key": null,
-      "lookalikes": [
-        "lepiota-brunneoincarnata",
-        "macrolepiota-procera"
-      ],
-      "diagnostic_characters": [
-        "bruising_reaction",
-        "stipe_surface",
-        "stipe_base"
-      ],
-      "notes": "Causes gastric upset in a substantial minority of people even when cooked. Smooth stem without snakeskin patterning, abrupt basal bulb, flesh reddening when cut."
+      "notes": "Snakeskin-patterned stem and a double ring that slides freely. Flesh does not redden strongly, separating it from Chlorophyllum.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "kuehneromyces-mutabilis",
@@ -457,7 +498,9 @@
         "cap_surface",
         "substrate"
       ],
-      "notes": "Scaly stem below the ring and a two-toned hygrophanous cap. The app will not return this at species level when Galerina marginata is in the candidate set, because the two cannot be reliably separated from photographs."
+      "notes": "Scaly stem below the ring and a two-toned hygrophanous cap. The app will not return this at species level when Galerina marginata is in the candidate set, because the two cannot be reliably separated from photographs.",
+      "family": "Strophariaceae",
+      "spore_colour_code": "08"
     },
     {
       "key": "armillaria-mellea",
@@ -482,7 +525,9 @@
         "cap_surface",
         "substrate"
       ],
-      "notes": "White to cream spore print, which separates it from the rust-brown Galerina. Toxic raw and upsetting to some people even cooked."
+      "notes": "White to cream spore print, which separates it from the rust-brown Galerina. Toxic raw and upsetting to some people even cooked.",
+      "family": "Physalacriaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "cantharellus-cibarius",
@@ -495,17 +540,20 @@
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
+        "cantharellus-tubaeformis",
         "cortinarius-orellanus",
         "cortinarius-rubellus",
         "hygrophoropsis-aurantiaca",
-        "omphalotus-olearius"
+        "omphalotus-illudens"
       ],
       "diagnostic_characters": [
         "gill_type",
         "smell",
         "flesh_colour"
       ],
-      "notes": "Blunt forking false gills running down the stem, not true blade-like gills. Apricot smell. Flesh white throughout when torn."
+      "notes": "Blunt forking false gills running down the stem, not true blade-like gills. Apricot smell. Flesh white throughout when torn.",
+      "family": "Cantharellaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "hygrophoropsis-aurantiaca",
@@ -518,44 +566,25 @@
       "gbif_key": null,
       "lookalikes": [
         "cantharellus-cibarius",
-        "omphalotus-olearius"
+        "cantharellus-tubaeformis",
+        "omphalotus-illudens"
       ],
       "diagnostic_characters": [
         "gill_type",
         "flesh_colour",
         "smell"
       ],
-      "notes": "True gills, thin, crowded and repeatedly forking; orange flesh rather than white. Upsets some people."
-    },
-    {
-      "key": "omphalotus-olearius",
-      "scientific_name": "Omphalotus olearius",
-      "genus": "Omphalotus",
-      "common_names": [
-        "Jack-o'-Lantern"
-      ],
-      "toxicity": "TOXIC",
-      "gbif_key": null,
-      "lookalikes": [
-        "cantharellus-cibarius",
-        "hygrophoropsis-aurantiaca",
-        "pleurotus-ostreatus"
-      ],
-      "diagnostic_characters": [
-        "gill_type",
-        "substrate",
-        "flesh_colour"
-      ],
-      "notes": "True sharp-edged gills and a clustered habit on wood or buried roots. Severe gastrointestinal poisoning. Rare in the UK but present in southern Europe and North America."
+      "notes": "True gills, thin, crowded and repeatedly forking; orange flesh rather than white. Upsets some people.",
+      "family": "Hygrophoropsidaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "boletus-edulis",
       "scientific_name": "Boletus edulis",
       "genus": "Boletus",
       "common_names": [
-        "Penny Bun",
         "Cep",
-        "Porcini"
+        "Penny Bun"
       ],
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
@@ -570,7 +599,9 @@
         "stipe_surface",
         "taste"
       ],
-      "notes": "White pores ageing yellow-olive, a pale raised network on the upper stem, and flesh that does not blue. Any boletes with red pores are excluded by the safety layer."
+      "notes": "White pores ageing yellow-olive, a pale raised network on the upper stem, and flesh that does not blue. Any boletes with red pores are excluded by the safety layer.",
+      "family": "Boletaceae",
+      "spore_colour_code": "07"
     },
     {
       "key": "tylopilus-felleus",
@@ -590,7 +621,9 @@
         "stipe_surface",
         "taste"
       ],
-      "notes": "Pores flushing pink with age and a dark coarse network on the stem. Overwhelmingly bitter; harmless but ruins a dish."
+      "notes": "Pores flushing pink with age and a dark coarse network on the stem. Overwhelmingly bitter; harmless but ruins a dish.",
+      "family": "Boletaceae",
+      "spore_colour_code": "06"
     },
     {
       "key": "rubroboletus-satanas",
@@ -609,7 +642,9 @@
         "bruising_reaction",
         "stipe_surface"
       ],
-      "notes": "Red pores, blueing flesh, and a red-flushed netted stem. Violent gastrointestinal poisoning, especially raw. Chalk woodland in southern England."
+      "notes": "Red pores, blueing flesh, and a red-flushed netted stem. Violent gastrointestinal poisoning, especially raw. Chalk woodland in southern England.",
+      "family": "Boletaceae",
+      "spore_colour_code": "07"
     },
     {
       "key": "morchella-esculenta",
@@ -622,14 +657,16 @@
       "gbif_key": null,
       "lookalikes": [
         "gyromitra-esculenta",
-        "verpa-bohemica"
+        "morchella-elata"
       ],
       "diagnostic_characters": [
         "cap_surface",
         "interior_structure",
         "season"
       ],
-      "notes": "Regularly pitted honeycomb cap, fully hollow from cap tip to stem base when sectioned lengthways, and the cap fused to the stem along its length."
+      "notes": "Regularly pitted honeycomb cap, fully hollow from cap tip to stem base when sectioned lengthways, and the cap fused to the stem along its length.",
+      "family": "Morchellaceae (Asc)",
+      "spore_colour_code": "02"
     },
     {
       "key": "marasmius-oreades",
@@ -641,7 +678,6 @@
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "clitocybe-dealbata",
         "clitocybe-rivulosa",
         "lepiota-brunneoincarnata",
         "lepiota-subincarnata"
@@ -652,7 +688,9 @@
         "stipe_texture",
         "spore_print_colour"
       ],
-      "notes": "Widely spaced free gills, a tough pliable stem, and a broad umbo. Shares lawns and fairy rings with the deadly Clitocybe species, which have crowded decurrent gills."
+      "notes": "Widely spaced free gills, a tough pliable stem, and a broad umbo. Shares lawns and fairy rings with the deadly Clitocybe species, which have crowded decurrent gills.",
+      "family": "Marasmiaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "calocybe-gambosa",
@@ -665,10 +703,12 @@
       "gbif_key": null,
       "lookalikes": [
         "amanita-virosa",
-        "clitocybe-dealbata",
+        "clitocybe-nebularis",
         "clitocybe-rivulosa",
         "entoloma-sinuatum",
-        "inocybe-erubescens"
+        "hebeloma-crustuliniforme",
+        "inocybe-erubescens",
+        "tricholoma-pardinum"
       ],
       "diagnostic_characters": [
         "smell",
@@ -676,7 +716,9 @@
         "season",
         "gill_attachment"
       ],
-      "notes": "Strong mealy smell of fresh bread dough, white spore print, spring fruiting. Shares its season with the deadly Inocybe erubescens."
+      "notes": "Strong mealy smell of fresh bread dough, white spore print, spring fruiting. Shares its season with the deadly Inocybe erubescens.",
+      "family": "Tricholomataceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "clitopilus-prunulus",
@@ -689,7 +731,8 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "entoloma-sinuatum"
+        "entoloma-sinuatum",
+        "hebeloma-crustuliniforme"
       ],
       "diagnostic_characters": [
         "gill_attachment",
@@ -697,7 +740,9 @@
         "smell",
         "cap_surface"
       ],
-      "notes": "Strongly decurrent gills and a pink spore print. The decurrent gills are the separation from the dangerous Entoloma sinuatum, whose gills are sinuate."
+      "notes": "Strongly decurrent gills and a pink spore print. The decurrent gills are the separation from the dangerous Entoloma sinuatum, whose gills are sinuate.",
+      "family": "Entolomataceae",
+      "spore_colour_code": "05"
     },
     {
       "key": "lycoperdon-perlatum",
@@ -716,7 +761,9 @@
         "interior_structure",
         "skin_thickness"
       ],
-      "notes": "Interior uniformly pure white and homogeneous when young. Any trace of gill structure means an Amanita button; any darkening means an earthball or an over-mature specimen."
+      "notes": "Interior uniformly pure white and homogeneous when young. Any trace of gill structure means an Amanita button; any darkening means an earthball or an over-mature specimen.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "10"
     },
     {
       "key": "calvatia-gigantea",
@@ -734,7 +781,9 @@
         "interior_structure",
         "skin_thickness"
       ],
-      "notes": "Very large and effectively unmistakable at full size, but the same white-interior check applies."
+      "notes": "Very large and effectively unmistakable at full size, but the same white-interior check applies.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "07"
     },
     {
       "key": "coprinus-comatus",
@@ -747,14 +796,17 @@
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
-        "coprinopsis-atramentaria"
+        "coprinopsis-atramentaria",
+        "coprinopsis-picacea"
       ],
       "diagnostic_characters": [
         "cap_surface",
         "cap_shape",
         "deliquescence"
       ],
-      "notes": "Tall shaggy cylindrical cap that dissolves into black ink from the margin upwards."
+      "notes": "Tall shaggy cylindrical cap that dissolves into black ink from the margin upwards.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "12"
     },
     {
       "key": "coprinopsis-atramentaria",
@@ -766,13 +818,16 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
+        "coprinopsis-picacea",
         "coprinus-comatus"
       ],
       "diagnostic_characters": [
         "cap_surface",
         "cap_shape"
       ],
-      "notes": "Contains coprine, which causes a severe disulfiram-like reaction with alcohol consumed within several days. Grey-brown smooth cap without shaggy scales."
+      "notes": "Contains coprine, which causes a severe disulfiram-like reaction with alcohol consumed within several days. Grey-brown smooth cap without shaggy scales.",
+      "family": "Psathyrellaceae",
+      "spore_colour_code": "12"
     },
     {
       "key": "pleurotus-ostreatus",
@@ -785,7 +840,8 @@
       "gbif_key": null,
       "lookalikes": [
         "crepidotus-mollis",
-        "omphalotus-olearius"
+        "omphalotus-illudens",
+        "pleurocybella-porrigens"
       ],
       "diagnostic_characters": [
         "gill_attachment",
@@ -793,14 +849,15 @@
         "substrate",
         "stipe_presence"
       ],
-      "notes": "Decurrent gills running onto an off-centre or absent stem, white to lilac spore print, on hardwood."
+      "notes": "Decurrent gills running onto an off-centre or absent stem, white to lilac spore print, on hardwood.",
+      "family": "Pleurotaceae",
+      "spore_colour_code": "02"
     },
     {
       "key": "hydnum-repandum",
       "scientific_name": "Hydnum repandum",
       "genus": "Hydnum",
       "common_names": [
-        "Hedgehog Fungus",
         "Wood Hedgehog"
       ],
       "toxicity": "NONE_RECORDED",
@@ -809,7 +866,9 @@
       "diagnostic_characters": [
         "hymenium_type"
       ],
-      "notes": "Spines rather than gills or pores on the underside. Among the most distinctive genera in the label space and a useful sanity check on model calibration."
+      "notes": "Spines rather than gills or pores on the underside. Among the most distinctive genera in the label space and a useful sanity check on model calibration.",
+      "family": "Hydnaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "laetiporus-sulphureus",
@@ -826,7 +885,9 @@
         "substrate",
         "growth_form"
       ],
-      "notes": "Widely eaten but causes reactions in a significant minority, and specimens from yew, eucalyptus or conifers are regarded as unsafe. Host tree matters, so the app asks for it."
+      "notes": "Widely eaten but causes reactions in a significant minority, and specimens from yew, eucalyptus or conifers are regarded as unsafe. Host tree matters, so the app asks for it.",
+      "family": "Polyporaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "fistulina-hepatica",
@@ -843,7 +904,9 @@
         "substrate",
         "growth_form"
       ],
-      "notes": "Marbled red flesh exuding red juice, on oak and sweet chestnut."
+      "notes": "Marbled red flesh exuding red juice, on oak and sweet chestnut.",
+      "family": "Fistulinaceae",
+      "spore_colour_code": "05"
     },
     {
       "key": "lepista-nuda",
@@ -855,15 +918,19 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
+        "clitocybe-nebularis",
         "cortinarius-violaceus",
-        "entoloma-sinuatum"
+        "entoloma-sinuatum",
+        "lepista-saeva"
       ],
       "diagnostic_characters": [
         "spore_print_colour",
         "cortina",
         "smell"
       ],
-      "notes": "Toxic raw and must be thoroughly cooked. Pale pinkish-buff spore print, no cortina, distinguishing it from purple Cortinarius species."
+      "notes": "Toxic raw and must be thoroughly cooked. Pale pinkish-buff spore print, no cortina, distinguishing it from purple Cortinarius species.",
+      "family": "Tricholomataceae",
+      "spore_colour_code": "05"
     },
     {
       "key": "russula-cyanoxantha",
@@ -877,6 +944,7 @@
       "lookalikes": [
         "amanita-phalloides",
         "russula-emetica",
+        "russula-nobilis",
         "russula-ochroleuca"
       ],
       "diagnostic_characters": [
@@ -885,27 +953,32 @@
         "volva",
         "taste"
       ],
-      "notes": "Flexible greasy gills that do not shatter, and brittle chalk-like stem flesh. Green-capped Russula species have been fatally confused with the Death Cap; absence of volva and ring is the decisive check."
+      "notes": "Flexible greasy gills that do not shatter, and brittle chalk-like stem flesh. Green-capped Russula species have been fatally confused with the Death Cap; absence of volva and ring is the decisive check.",
+      "family": "Russulaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "russula-emetica",
       "scientific_name": "Russula emetica",
       "genus": "Russula",
       "common_names": [
-        "The Sickener"
+        "Sickener"
       ],
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
         "amanita-muscaria",
-        "russula-cyanoxantha"
+        "russula-cyanoxantha",
+        "russula-nobilis"
       ],
       "diagnostic_characters": [
         "taste",
         "cap_colour",
         "cap_cuticle"
       ],
-      "notes": "Acrid, burning taste. Cap cuticle peels readily. Conifer woodland and Sphagnum."
+      "notes": "Acrid, burning taste. Cap cuticle peels readily. Conifer woodland and Sphagnum.",
+      "family": "Russulaceae",
+      "spore_colour_code": "02"
     },
     {
       "key": "russula-ochroleuca",
@@ -918,6 +991,7 @@
       "gbif_key": null,
       "lookalikes": [
         "russula-cyanoxantha",
+        "russula-nobilis",
         "tricholoma-equestre"
       ],
       "diagnostic_characters": [
@@ -925,7 +999,9 @@
         "gill_texture",
         "taste"
       ],
-      "notes": "One of the commonest British fungi; included so the model has a well-populated ochre-capped reference class."
+      "notes": "One of the commonest British fungi; included so the model has a well-populated ochre-capped reference class.",
+      "family": "Russulaceae",
+      "spore_colour_code": "02"
     },
     {
       "key": "lactarius-deliciosus",
@@ -947,7 +1023,9 @@
         "bruising_reaction",
         "cap_surface"
       ],
-      "notes": "Exudes carrot-orange latex that slowly stains green. Pine woodland."
+      "notes": "Exudes carrot-orange latex that slowly stains green. Pine woodland.",
+      "family": "Russulaceae",
+      "spore_colour_code": "04"
     },
     {
       "key": "lactarius-torminosus",
@@ -966,7 +1044,9 @@
         "cap_margin",
         "taste"
       ],
-      "notes": "White acrid latex and a shaggy inrolled cap margin. With birch."
+      "notes": "White acrid latex and a shaggy inrolled cap margin. With birch.",
+      "family": "Russulaceae",
+      "spore_colour_code": "02"
     },
     {
       "key": "suillus-luteus",
@@ -985,14 +1065,16 @@
         "ring",
         "pore_colour"
       ],
-      "notes": "Glutinous cap and a distinct purple-banded ring. Pine woodland."
+      "notes": "Glutinous cap and a distinct purple-banded ring. Pine woodland.",
+      "family": "Suillaceae",
+      "spore_colour_code": "03"
     },
     {
       "key": "leccinum-scabrum",
       "scientific_name": "Leccinum scabrum",
       "genus": "Leccinum",
       "common_names": [
-        "Brown Birch Bolete"
+        "Birch Bolete"
       ],
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
@@ -1005,7 +1087,9 @@
         "pore_colour",
         "habitat"
       ],
-      "notes": "Dark scabrous scales on a pale stem; strictly with birch."
+      "notes": "Dark scabrous scales on a pale stem; strictly with birch.",
+      "family": "Boletaceae",
+      "spore_colour_code": "07"
     },
     {
       "key": "sparassis-crispa",
@@ -1021,7 +1105,9 @@
         "growth_form",
         "substrate"
       ],
-      "notes": "Cream lobed brain-like mass at the base of conifers."
+      "notes": "Cream lobed brain-like mass at the base of conifers.",
+      "family": "Sparassidaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "auricularia-auricula-judae",
@@ -1039,7 +1125,9 @@
         "substrate",
         "growth_form"
       ],
-      "notes": "Gelatinous ear-shaped bracket, overwhelmingly on elder."
+      "notes": "Gelatinous ear-shaped bracket, overwhelmingly on elder.",
+      "family": "Auriculariaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "craterellus-cornucopioides",
@@ -1051,13 +1139,17 @@
       ],
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
-      "lookalikes": [],
+      "lookalikes": [
+        "cantharellus-tubaeformis"
+      ],
       "diagnostic_characters": [
         "growth_form",
         "hymenium_type",
         "flesh_colour"
       ],
-      "notes": "Hollow funnel, smooth to slightly wrinkled outer surface, no true gills."
+      "notes": "Hollow funnel, smooth to slightly wrinkled outer surface, no true gills.",
+      "family": "Cantharellaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "volvopluteus-gloiocephalus",
@@ -1079,7 +1171,9 @@
         "spore_print_colour",
         "gill_colour"
       ],
-      "notes": "Has a volva but no ring, and a pink spore print. Included specifically because it is the classic trap for anyone taught that a volva alone identifies an Amanita."
+      "notes": "Has a volva but no ring, and a pink spore print. Included specifically because it is the classic trap for anyone taught that a volva alone identifies an Amanita.",
+      "family": "Pluteaceae",
+      "spore_colour_code": "05"
     },
     {
       "key": "cortinarius-violaceus",
@@ -1099,7 +1193,9 @@
         "spore_print_colour",
         "cap_surface"
       ],
-      "notes": "Deep violet throughout with a scaly cap and rusty spore print. Present in the label space so the model learns the Cortinarius/Lepista boundary, which matters because the genus contains deadly members."
+      "notes": "Deep violet throughout with a scaly cap and rusty spore print. Present in the label space so the model learns the Cortinarius/Lepista boundary, which matters because the genus contains deadly members.",
+      "family": "Cortinariaceae",
+      "spore_colour_code": "08"
     },
     {
       "key": "pholiota-squarrosa",
@@ -1119,7 +1215,9 @@
         "spore_print_colour",
         "substrate"
       ],
-      "notes": "Dry upturned scales on cap and stem; clustered at the base of living trees."
+      "notes": "Dry upturned scales on cap and stem; clustered at the base of living trees.",
+      "family": "Strophariaceae",
+      "spore_colour_code": "09"
     },
     {
       "key": "crepidotus-mollis",
@@ -1131,6 +1229,7 @@
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
+        "pleurocybella-porrigens",
         "pleurotus-ostreatus"
       ],
       "diagnostic_characters": [
@@ -1138,48 +1237,9 @@
         "size",
         "texture"
       ],
-      "notes": "Small, with a brown spore print, separating it from the white-spored oyster mushrooms it grows alongside."
-    },
-    {
-      "key": "verpa-bohemica",
-      "scientific_name": "Verpa bohemica",
-      "genus": "Verpa",
-      "common_names": [
-        "Early Morel",
-        "Thimble Morel"
-      ],
-      "toxicity": "TOXIC",
-      "gbif_key": null,
-      "lookalikes": [
-        "gyromitra-esculenta",
-        "morchella-esculenta"
-      ],
-      "diagnostic_characters": [
-        "cap_attachment",
-        "interior_structure",
-        "season"
-      ],
-      "notes": "Cap attached to the stem only at the very apex and hanging free like a thimble, unlike a true morel whose cap is fused along its length. Causes loss of muscular coordination in some people."
-    },
-    {
-      "key": "clitocybe-dealbata",
-      "scientific_name": "Clitocybe dealbata",
-      "genus": "Clitocybe",
-      "common_names": [
-        "Ivory Funnel"
-      ],
-      "toxicity": "DEADLY",
-      "gbif_key": null,
-      "lookalikes": [
-        "calocybe-gambosa",
-        "marasmius-oreades"
-      ],
-      "diagnostic_characters": [
-        "gill_attachment",
-        "gill_spacing",
-        "habitat"
-      ],
-      "notes": "Taxonomically entangled with Clitocybe rivulosa and treated as equivalently dangerous. Crowded decurrent gills in short grassland."
+      "notes": "Small, with a brown spore print, separating it from the white-spored oyster mushrooms it grows alongside.",
+      "family": "Inocybaceae",
+      "spore_colour_code": "03"
     },
     {
       "key": "suillus-granulatus",
@@ -1198,7 +1258,9 @@
         "pore_colour",
         "stipe_surface"
       ],
-      "notes": "No ring, and young pores exude milky droplets."
+      "notes": "No ring, and young pores exude milky droplets.",
+      "family": "Suillaceae",
+      "spore_colour_code": "03"
     },
     {
       "key": "lepiota-brunneoincarnata",
@@ -1211,7 +1273,7 @@
       "gbif_key": null,
       "lookalikes": [
         "agaricus-campestris",
-        "chlorophyllum-brunneum",
+        "chlorophyllum-rhacodes",
         "lepiota-castanea",
         "lepiota-cristata",
         "lepiota-subincarnata",
@@ -1226,7 +1288,9 @@
         "habitat",
         "gill_colour"
       ],
-      "notes": "A small dapperling, rarely more than 5 cm across, with concentric pinkish to purplish-brown scales on a paler ground, free white gills and a white spore print. Contains the same amatoxins as the Death Cap and has caused repeated fatalities in Europe. Grows in grass, parks, gardens, verges and path edges, often in warm dry spots, which is exactly where people pick small mushrooms casually."
+      "notes": "A small dapperling, rarely more than 5 cm across, with concentric pinkish to purplish-brown scales on a paler ground, free white gills and a white spore print. Contains the same amatoxins as the Death Cap and has caused repeated fatalities in Europe. Grows in grass, parks, gardens, verges and path edges, often in warm dry spots, which is exactly where people pick small mushrooms casually.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "lepiota-subincarnata",
@@ -1253,7 +1317,9 @@
         "gill_colour"
       ],
       "notes": "Very small, with a pinkish-brown finely scaly cap, free white gills and a white spore print. Contains amatoxins and has been responsible for fatal poisonings. Frequently found on lawns, wood-chip mulch and in gardens. Also recorded under the name Lepiota josserandii.",
-      "internal_note": "Synonymy with L. josserandii should be confirmed at review; both names remain in circulation."
+      "internal_note": "Synonymy with L. josserandii should be confirmed at review; both names remain in circulation.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "lepiota-castanea",
@@ -1276,7 +1342,9 @@
         "ring",
         "habitat"
       ],
-      "notes": "Small, with a chestnut to rust-brown finely scaly cap breaking into granular patches, free white gills and a white spore print. Amatoxins have been recorded from this species. Found in woodland litter and on shaded verges."
+      "notes": "Small, with a chestnut to rust-brown finely scaly cap breaking into granular patches, free white gills and a white spore print. Amatoxins have been recorded from this species. Found in woodland litter and on shaded verges.",
+      "family": null,
+      "spore_colour_code": null
     },
     {
       "key": "lepiota-cristata",
@@ -1301,18 +1369,23 @@
         "ring"
       ],
       "notes": "By far the commonest small Lepiota in Britain. Reddish-brown concentric scales on a white cap, a flimsy ring, white spore print, and an unpleasant smell often described as rubbery or of coal gas. Included because it is the species people will actually photograph, and because it cannot be separated from its deadly relatives without care.",
-      "internal_note": "Deliberately included as the common entry point to the genus. The app must never resolve a small Lepiota to species from a photograph."
+      "internal_note": "Deliberately included as the common entry point to the genus. The app must never resolve a small Lepiota to species from a photograph.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "amanita-pantherina",
       "scientific_name": "Amanita pantherina",
       "genus": "Amanita",
       "common_names": [
-        "Panther Cap"
+        "Panthercap"
       ],
       "toxicity": "SERIOUS",
       "gbif_key": null,
       "lookalikes": [
+        "amanita-citrina",
+        "amanita-excelsa",
+        "amanita-gemmata",
         "amanita-muscaria",
         "amanita-phalloides",
         "amanita-rubescens",
@@ -1325,7 +1398,9 @@
         "cap_colour",
         "cap_surface"
       ],
-      "notes": "Brown cap carrying pure white, evenly scattered wart-like patches, white gills, a smooth ungrooved ring, and a distinct collar-like rim at the top of the basal bulb. The flesh does not redden when cut or bruised, which is the decisive separation from The Blusher. Contains ibotenic acid and muscimol at higher concentrations than the Fly Agaric; poisoning is severe and hospitalisation common."
+      "notes": "Brown cap carrying pure white, evenly scattered wart-like patches, white gills, a smooth ungrooved ring, and a distinct collar-like rim at the top of the basal bulb. The flesh does not redden when cut or bruised, which is the decisive separation from The Blusher. Contains ibotenic acid and muscimol at higher concentrations than the Fly Agaric; poisoning is severe and hospitalisation common.",
+      "family": "Amanitaceae",
+      "spore_colour_code": "01"
     },
     {
       "key": "cortinarius-orellanus",
@@ -1351,8 +1426,571 @@
         "cap_colour"
       ],
       "notes": "Contains orellanine, the same toxin as the Deadly Webcap. Kidney failure is delayed by two to three weeks, so victims rarely connect the illness to the meal and may be diagnosed long after treatment would have helped. Tawny to foxy orange-brown cap with a dry fibrous surface, rusty brown spore print, and a cobwebby cortina leaving a rust-coloured zone on the stem. True gills, not the blunt forking ridges of a chanterelle. Broadleaf woodland, especially oak and beech.",
-      "internal_note": "Habitat is the practical separation from C. rubellus, which is associated with conifers and Sphagnum, but habitat alone must never be treated as decisive. Both species carry orellanine and neither should be resolved to species from a photograph."
+      "internal_note": "Habitat is the practical separation from C. rubellus, which is associated with conifers and Sphagnum, but habitat alone must never be treated as decisive. Both species carry orellanine and neither should be resolved to species from a photograph.",
+      "family": "Cortinariaceae",
+      "spore_colour_code": "08"
+    },
+    {
+      "key": "omphalotus-illudens",
+      "scientific_name": "Omphalotus illudens",
+      "genus": "Omphalotus",
+      "common_names": [
+        "Jack o' Lantern"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "cantharellus-cibarius",
+        "hygrophoropsis-aurantiaca",
+        "pleurotus-ostreatus"
+      ],
+      "diagnostic_characters": [
+        "gill_type",
+        "substrate",
+        "flesh_colour",
+        "growth_form"
+      ],
+      "notes": "Bright orange throughout, growing in dense clusters on wood or buried roots. True sharp-edged gills running down the stem, not the blunt forking ridges of a chanterelle. Causes severe and prolonged gastrointestinal poisoning.",
+      "internal_note": "Replaces Omphalotus olearius, which the source UK list carries only as an unnamed entry while illudens holds the common name. Confirm which occurs in Britain at review.",
+      "family": "Marasmiaceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "chlorophyllum-rhacodes",
+      "scientific_name": "Chlorophyllum rhacodes",
+      "genus": "Chlorophyllum",
+      "common_names": [
+        "Shaggy Parasol"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "lepiota-brunneoincarnata",
+        "macrolepiota-procera"
+      ],
+      "diagnostic_characters": [
+        "bruising_reaction",
+        "stipe_surface",
+        "stipe_base",
+        "spore_print_colour"
+      ],
+      "notes": "Coarsely shaggy cap, a smooth stem without the snakeskin patterning of a true Parasol, and flesh that reddens strongly when cut. Causes gastric upset in a substantial minority of people even when cooked.",
+      "internal_note": "Replaces Chlorophyllum brunneum. Both occur in Europe and both are called Shaggy Parasol; the source UK list carries rhacodes. Confirm which is intended at review.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "tricholoma-pardinum",
+      "scientific_name": "Tricholoma pardinum",
+      "genus": "Tricholoma",
+      "common_names": [
+        "Leopard Knight"
+      ],
+      "toxicity": "SERIOUS",
+      "gbif_key": null,
+      "lookalikes": [
+        "calocybe-gambosa",
+        "clitocybe-nebularis",
+        "tricholoma-equestre",
+        "tricholoma-sulphureum"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "gill_colour",
+        "smell",
+        "spore_print_colour"
+      ],
+      "notes": "Pale grey cap broken into darker fibrous scales, white gills and a mealy smell. One of the more frequent causes of serious mushroom poisoning in Europe and North America, producing violent and prolonged gastrointestinal illness.",
+      "family": "Tricholomataceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "pleurocybella-porrigens",
+      "scientific_name": "Pleurocybella porrigens",
+      "genus": "Pleurocybella",
+      "common_names": [
+        "Angel's Wings"
+      ],
+      "toxicity": "SERIOUS",
+      "gbif_key": null,
+      "lookalikes": [
+        "crepidotus-mollis",
+        "pleurotus-ostreatus"
+      ],
+      "diagnostic_characters": [
+        "substrate",
+        "texture",
+        "stipe_presence",
+        "spore_print_colour"
+      ],
+      "notes": "Thin, pure white, ear-shaped brackets on conifer wood, without a stem. Long eaten in parts of the world, then linked to an outbreak of fatal encephalopathy in Japan in 2004, chiefly among people with impaired kidney function. Thinner and whiter than an Oyster Mushroom, and on conifer rather than hardwood.",
+      "family": "Marasmiaceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "hebeloma-crustuliniforme",
+      "scientific_name": "Hebeloma crustuliniforme",
+      "genus": "Hebeloma",
+      "common_names": [
+        "Poisonpie"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "agaricus-campestris",
+        "calocybe-gambosa",
+        "clitopilus-prunulus"
+      ],
+      "diagnostic_characters": [
+        "smell",
+        "spore_print_colour",
+        "cap_surface",
+        "gill_colour"
+      ],
+      "notes": "Pale buff, greasy cap, gills weeping small droplets when young, a strong smell of radish, and a clay-brown spore print. Causes severe gastrointestinal upset.",
+      "family": "Strophariaceae",
+      "spore_colour_code": "09"
+    },
+    {
+      "key": "agaricus-moelleri",
+      "scientific_name": "Agaricus moelleri",
+      "genus": "Agaricus",
+      "common_names": [
+        "Inky Mushroom"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "agaricus-arvensis",
+        "agaricus-campestris",
+        "agaricus-xanthodermus"
+      ],
+      "diagnostic_characters": [
+        "bruising_reaction",
+        "smell",
+        "stipe_base",
+        "cap_surface"
+      ],
+      "notes": "Cap covered in dark grey-brown fibrous scales on a pale ground. Like the Yellow Stainer it stains chrome yellow at the stem base and smells strongly of ink or phenol, and it upsets people in the same way.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "10"
+    },
+    {
+      "key": "clitocybe-nebularis",
+      "scientific_name": "Clitocybe nebularis",
+      "genus": "Clitocybe",
+      "common_names": [
+        "Clouded Funnel"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "calocybe-gambosa",
+        "clitocybe-rivulosa",
+        "entoloma-sinuatum",
+        "lepista-nuda",
+        "lepista-saeva",
+        "tricholoma-pardinum"
+      ],
+      "diagnostic_characters": [
+        "smell",
+        "gill_attachment",
+        "spore_print_colour",
+        "growth_form"
+      ],
+      "notes": "Large, grey, clouded cap with crowded decurrent gills and a strong sweetish mealy smell, often in troops and rings in leaf litter. Causes gastrointestinal upset in a significant proportion of people.",
+      "family": "Tricholomataceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "amanita-citrina",
+      "scientific_name": "Amanita citrina",
+      "genus": "Amanita",
+      "common_names": [
+        "False Deathcap"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "amanita-gemmata",
+        "amanita-pantherina",
+        "amanita-phalloides",
+        "amanita-virosa"
+      ],
+      "diagnostic_characters": [
+        "volva",
+        "ring",
+        "smell",
+        "cap_colour",
+        "stipe_base"
+      ],
+      "notes": "Pale lemon-yellow to almost white cap with flat veil patches, a rounded rimmed basal bulb, and a distinct smell of raw potato. Its resemblance to the Deathcap is close enough to have given it its name, and the app will not separate the two from a photograph.",
+      "family": "Amanitaceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "amanita-excelsa",
+      "scientific_name": "Amanita excelsa",
+      "genus": "Amanita",
+      "common_names": [
+        "Grey Spotted Amanita"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "amanita-pantherina",
+        "amanita-phalloides",
+        "amanita-rubescens"
+      ],
+      "diagnostic_characters": [
+        "bruising_reaction",
+        "volva",
+        "ring",
+        "cap_colour",
+        "cap_surface"
+      ],
+      "notes": "Grey-brown cap with grey, easily removed veil patches, a grooved ring, and flesh that does not redden. Very close to the Panthercap, from which it is separated only with care.",
+      "family": "Amanitaceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "amanita-gemmata",
+      "scientific_name": "Amanita gemmata",
+      "genus": "Amanita",
+      "common_names": [
+        "Jewelled Amanita"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "amanita-citrina",
+        "amanita-muscaria",
+        "amanita-pantherina"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "volva",
+        "ring",
+        "cap_surface"
+      ],
+      "notes": "Pale yellow to buff cap with scattered white veil patches and a rimmed basal bulb. Contains the same ibotenic acid and muscimol as the Panthercap, in variable amount.",
+      "family": "Amanitaceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "amanita-vaginata",
+      "scientific_name": "Amanita vaginata",
+      "genus": "Amanita",
+      "common_names": [
+        "Grisette"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "amanita-fulva",
+        "amanita-phalloides",
+        "amanita-virosa"
+      ],
+      "diagnostic_characters": [
+        "ring",
+        "volva",
+        "cap_margin",
+        "cap_colour"
+      ],
+      "notes": "Grey cap with a strongly grooved margin, no ring at all, and a tall white sac-like volva at the base. Toxic raw. The absence of a ring is not a safety feature: a deadly Amanita whose ring has washed away looks much the same.",
+      "family": "Amanitaceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "amanita-fulva",
+      "scientific_name": "Amanita fulva",
+      "genus": "Amanita",
+      "common_names": [
+        "Tawny Grisette"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "amanita-phalloides",
+        "amanita-vaginata",
+        "amanita-virosa"
+      ],
+      "diagnostic_characters": [
+        "ring",
+        "volva",
+        "cap_margin",
+        "cap_colour"
+      ],
+      "notes": "Tawny orange-brown cap with a grooved margin, no ring, and a rust-stained sac-like volva. Toxic raw. Common with birch.",
+      "family": "Amanitaceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "lepista-saeva",
+      "scientific_name": "Lepista saeva",
+      "genus": "Lepista",
+      "common_names": [
+        "Field Blewit"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-nebularis",
+        "entoloma-sinuatum",
+        "lepista-nuda"
+      ],
+      "diagnostic_characters": [
+        "stipe_surface",
+        "spore_print_colour",
+        "cortina",
+        "smell"
+      ],
+      "notes": "Buff cap over a distinctly blue-violet streaked stem, in grassland. Toxic raw and must be thoroughly cooked. Pale pinkish spore print and no cortina.",
+      "family": "Tricholomataceae",
+      "spore_colour_code": "05"
+    },
+    {
+      "key": "cantharellus-tubaeformis",
+      "scientific_name": "Cantharellus tubaeformis",
+      "genus": "Cantharellus",
+      "common_names": [
+        "Trumpet Chanterelle"
+      ],
+      "toxicity": "NONE_RECORDED",
+      "gbif_key": null,
+      "lookalikes": [
+        "cantharellus-cibarius",
+        "craterellus-cornucopioides",
+        "hygrophoropsis-aurantiaca"
+      ],
+      "diagnostic_characters": [
+        "gill_type",
+        "cap_shape",
+        "growth_form",
+        "flesh_colour"
+      ],
+      "notes": "Brown funnel-shaped cap over a hollow yellow stem, with blunt forking ridges rather than true gills. Often in large troops in damp mossy woodland.",
+      "family": "Cantharellaceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "morchella-elata",
+      "scientific_name": "Morchella elata",
+      "genus": "Morchella",
+      "common_names": [
+        "Black Morel"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "gyromitra-esculenta",
+        "morchella-esculenta"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "interior_structure",
+        "season",
+        "cap_attachment"
+      ],
+      "notes": "Conical cap with dark ridges running lengthways between elongated pits, hollow throughout when cut lengthways. Toxic raw, as all morels are.",
+      "internal_note": "Recorded TOXIC on the basis of raw toxicity. Morchella esculenta is currently NONE_RECORDED, which is inconsistent; resolve both at review.",
+      "family": "Morchellaceae (Asc)",
+      "spore_colour_code": "02"
+    },
+    {
+      "key": "russula-nobilis",
+      "scientific_name": "Russula nobilis",
+      "genus": "Russula",
+      "common_names": [
+        "Beechwood Sickener"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "russula-cyanoxantha",
+        "russula-emetica",
+        "russula-ochroleuca"
+      ],
+      "diagnostic_characters": [
+        "taste",
+        "cap_colour",
+        "habitat",
+        "cap_cuticle"
+      ],
+      "notes": "Scarlet cap, white gills and stem, acrid burning taste, strictly under beech. Causes vomiting and gastric upset.",
+      "family": "Russulaceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "agaricus-bisporus",
+      "scientific_name": "Agaricus bisporus",
+      "genus": "Agaricus",
+      "common_names": [
+        "Commercial Button Mushroom"
+      ],
+      "toxicity": "NONE_RECORDED",
+      "gbif_key": null,
+      "lookalikes": [
+        "agaricus-bitorquis",
+        "agaricus-campestris",
+        "agaricus-xanthodermus"
+      ],
+      "diagnostic_characters": [
+        "gill_colour",
+        "spore_print_colour",
+        "bruising_reaction",
+        "habitat"
+      ],
+      "notes": "The cultivated mushroom, also occurring wild on compost, manure heaps and disturbed ground. Gills pink then chocolate-brown, brown spore print, no volva.",
+      "internal_note": "Included because people photograph shop-bought and garden specimens, and the model needs a correct home for them rather than forcing them into a wild Agaricus or an Amanita.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "10"
+    },
+    {
+      "key": "agaricus-bitorquis",
+      "scientific_name": "Agaricus bitorquis",
+      "genus": "Agaricus",
+      "common_names": [
+        "Pavement Mushroom"
+      ],
+      "toxicity": "NONE_RECORDED",
+      "gbif_key": null,
+      "lookalikes": [
+        "agaricus-bisporus",
+        "agaricus-campestris",
+        "agaricus-xanthodermus"
+      ],
+      "diagnostic_characters": [
+        "ring",
+        "habitat",
+        "gill_colour",
+        "bruising_reaction"
+      ],
+      "notes": "Squat, very firm, with a distinctive double-rimmed ring, pushing up through hard ground, paths and pavement edges.",
+      "family": "Agaricaceae",
+      "spore_colour_code": "10"
+    },
+    {
+      "key": "coprinopsis-picacea",
+      "scientific_name": "Coprinopsis picacea",
+      "genus": "Coprinopsis",
+      "common_names": [
+        "Magpie Inkcap"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "coprinopsis-atramentaria",
+        "coprinus-comatus"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "cap_colour",
+        "deliquescence",
+        "habitat"
+      ],
+      "notes": "Dark cap broken by large white patches of veil, giving the magpie pattern, deliquescing to ink. Beech woodland on chalk. Causes gastric upset.",
+      "family": "Psathyrellaceae",
+      "spore_colour_code": "12"
+    },
+    {
+      "key": "tricholoma-sulphureum",
+      "scientific_name": "Tricholoma sulphureum",
+      "genus": "Tricholoma",
+      "common_names": [
+        "Sulphur Knight"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "tricholoma-equestre",
+        "tricholoma-pardinum"
+      ],
+      "diagnostic_characters": [
+        "smell",
+        "cap_colour",
+        "gill_colour"
+      ],
+      "notes": "Sulphur-yellow throughout with a powerful and unpleasant smell of coal gas, which separates it from the other yellow knights.",
+      "family": "Tricholomataceae",
+      "spore_colour_code": "01"
+    },
+    {
+      "key": "psilocybe-semilanceata",
+      "scientific_name": "Psilocybe semilanceata",
+      "genus": "Psilocybe",
+      "common_names": [
+        "Magic Mushroom",
+        "Liberty Cap"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata",
+        "panaeolina-foenisecii",
+        "pholiotina-rugosa"
+      ],
+      "diagnostic_characters": [
+        "cap_shape",
+        "spore_print_colour",
+        "habitat",
+        "size"
+      ],
+      "notes": "Small, with a sharply conical nipple-tipped cap, a dark purple-brown spore print, and a slender wavy stem, in unimproved grassland. Psychoactive, and a controlled substance in the United Kingdom. It is carried here because the small brown grassland fungi picked alongside it include species that can kill.",
+      "internal_note": "Included for the confusion risk, not for use. The notes must stay factual about identification and must never read as guidance on consumption.",
+      "family": "Strophariaceae",
+      "spore_colour_code": "11"
+    },
+    {
+      "key": "pholiotina-rugosa",
+      "scientific_name": "Pholiotina rugosa",
+      "genus": "Pholiotina",
+      "common_names": [
+        "Wrinkled Conecap"
+      ],
+      "toxicity": "DEADLY",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata",
+        "panaeolina-foenisecii",
+        "psilocybe-semilanceata"
+      ],
+      "diagnostic_characters": [
+        "ring",
+        "spore_print_colour",
+        "cap_shape",
+        "size",
+        "habitat"
+      ],
+      "notes": "Small, tawny-brown, conical to bell-shaped cap with a rust-brown spore print and, critically, a distinct membranous ring on the stem. Contains amatoxins and has caused deaths among people collecting small brown grassland and woodchip fungi. Also recorded as Conocybe rugosa and Conocybe filaris.",
+      "internal_note": "Synonymy across Pholiotina/Conocybe should be settled at review; the source UK list carries it as Conocybe rugosa.",
+      "family": null,
+      "spore_colour_code": null
+    },
+    {
+      "key": "panaeolina-foenisecii",
+      "scientific_name": "Panaeolina foenisecii",
+      "genus": "Panaeolina",
+      "common_names": [
+        "Brown Mottlegill"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "pholiotina-rugosa",
+        "psilocybe-semilanceata"
+      ],
+      "diagnostic_characters": [
+        "gill_colour",
+        "spore_print_colour",
+        "cap_shape",
+        "habitat"
+      ],
+      "notes": "Extremely common small brown mushroom of lawns and grassland, with mottled uneven gills and a dark brown spore print. Rounded rather than sharply conical, and without a ring.",
+      "family": null,
+      "spore_colour_code": null
     }
   ],
-  "$policy": "The `toxicity` field records HARM FROM EATING and drives warnings only. It is never rendered as a recommendation. There is deliberately no 'edible' value -- but nor is there an 'inedible' one, because asserting that a choice edible is inedible is a false claim and destroys trust in the warnings that matter. The lowest value, NONE_RECORDED, means no toxicity is recorded and says nothing about edibility either way. UNASSESSED means not yet checked and is treated as TOXIC by the safety layer. The `notes` field is shown to users verbatim and must describe only what is observable; rationale and review flags belong in `internal_note`, which is never surfaced."
+  "$policy": "The `toxicity` field records HARM FROM EATING and drives warnings only. It is never rendered as a recommendation. There is deliberately no 'edible' value -- but nor is there an 'inedible' one, because asserting that a choice edible is inedible is a false claim and destroys trust in the warnings that matter. The lowest value, NONE_RECORDED, means no toxicity is recorded and says nothing about edibility either way. UNASSESSED means not yet checked and is treated as TOXIC by the safety layer. The `notes` field is shown to users verbatim and must describe only what is observable; rationale and review flags belong in `internal_note`, which is never surfaced.",
+  "$spore_colour_code": "Raw spore-print colour code carried over from the source UK species list, values 01-12. The legend mapping each number to a colour has NOT been supplied, so the code is stored verbatim and is deliberately NOT mapped onto the spore_print_colour diagnostic character. Do not infer the mapping: guessing a value for a safety-relevant field is how the earlier INEDIBLE defect arose. Populate the legend, then wire it through."
 }

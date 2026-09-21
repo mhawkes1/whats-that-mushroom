@@ -77,7 +77,7 @@ def test_funeral_bell_versus_woodtuft_refuses(layer):
 
 
 def test_false_morel_versus_true_morel_refuses(layer):
-    ranked = [("morchella-esculenta", 0.70), ("gyromitra-esculenta", 0.28), ("verpa-bohemica", 0.02)]
+    ranked = [("morchella-esculenta", 0.70), ("gyromitra-esculenta", 0.28), ("morchella-elata", 0.02)]
     result = layer.assess(ranked)
     assert result.verdict is Verdict.DANGEROUS_GROUP
     assert result.deadly_in_play
@@ -231,7 +231,7 @@ def test_small_parasol_confusion_is_refused(layer):
     ranked = [
         ("macrolepiota-procera", 0.58),
         ("lepiota-brunneoincarnata", 0.31),
-        ("chlorophyllum-brunneum", 0.11),
+        ("chlorophyllum-rhacodes", 0.11),
     ]
     result = layer.assess(ranked)
     assert result.verdict is Verdict.DANGEROUS_GROUP
