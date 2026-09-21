@@ -37,7 +37,7 @@ Everything works **except the model**. There is no trained classifier; the API
 serves a stub backend with deterministic fake predictions. Every other layer
 is real and tested.
 
-178 tests pass. `/health` honestly reports `model_loaded: false`,
+195 tests pass. `/health` honestly reports `model_loaded: false`,
 `calibrated: false`, `taxonomy_reviewed: false`.
 
 The training pipeline has been rehearsed end to end on synthetic data
@@ -61,6 +61,7 @@ characters come from standard references but are unverified.
 | `server/app/safety.py` | The safety layer — read first |
 | `server/app/interrogation.py` | Question selection; gain computed in `evidence.py` |
 | `server/app/evidence.py` | Answer likelihoods, the safety floors, expected gain |
+| `server/app/ood.py` | Free-energy check for "that isn't something I know" |
 | `server/app/characters.py` | How to ask a non-expert for evidence |
 | `app/` | Expo React Native client |
 
@@ -141,6 +142,21 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   `import` validates and writes back. A state
   that is not exactly one of the character's answer options is refused,
   because it would store cleanly and never match anything.
+- **Softmax cannot detect out-of-distribution input, and that is why
+  `ood.py` exists.** Softmax depends only on *differences* between logits, so
+  shifting every logit down leaves it byte-identical while the network has
+  recognised nothing. The old check read top-1 probability and accepted both
+  cases at p=0.98. Free energy (`-logsumexp(logits)`) keeps the magnitude and
+  separates them. Compute it on **raw logits** — before temperature scaling
+  and before softmax — or the signal is gone.
+- **The energy threshold is fitted on known species only, not on negatives.**
+  `fit_energy_threshold` takes the rate of *false unknowns* it will accept
+  (default 5%), because the out-of-distribution inputs that matter are the
+  ones nobody thought to collect. An unfitted detector reports
+  `fitted: False` and the safety layer falls back to the old top-1 rule
+  knowingly; it must never invent a threshold.
+- **Views are averaged, not minimised.** One well-framed photo must not vouch
+  for a set that is otherwise unreadable.
 - **`notes` is rendered verbatim to users.** Rationale, policy and review
   flags go in `internal_note`, which is never surfaced.
 - **Expect 50–70% species top-1** on a first training run, with genus accuracy

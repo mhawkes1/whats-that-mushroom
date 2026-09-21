@@ -142,6 +142,44 @@ def fit_confidence_thresholds(
     }
 
 
+def fit_energy_threshold(
+    logits: torch.Tensor, false_unknown_rate: float = 0.05
+) -> dict:
+    """Fit the out-of-distribution energy threshold on in-distribution data.
+
+    The free energy -logsumexp(logits) is low when the network strongly
+    activated some class and high when it activated nothing. Softmax throws
+    that magnitude away -- it always sums to one -- which is why a top-1
+    probability threshold cannot tell a photograph of a slug from a genuine
+    but ambiguous mushroom.
+
+    Fitted from known species alone, at the quantile that leaves
+    `false_unknown_rate` of them above the line. That fixes the rate at which
+    the app disowns something it does know; the alternative, fitting against
+    collected negatives, would tune the threshold to whichever negatives
+    someone happened to gather, and the inputs that matter are the ones nobody
+    thought to collect.
+
+    The direction of error is deliberate. Wrongly saying "I don't recognise
+    this" costs an answer. Failing to say it lets the app name a species for a
+    mushroom outside its sixty, and the species missing from a label space
+    that small are the uncommon ones -- which does not exclude the lethal.
+    """
+    energies = (-torch.logsumexp(logits.float(), dim=1)).numpy()
+    ordered = np.sort(energies)
+    threshold = float(np.quantile(ordered, 1.0 - false_unknown_rate))
+
+    return {
+        "energy_threshold": threshold,
+        "energy_temperature": 1.0,
+        "energy_false_unknown_rate": false_unknown_rate,
+        # Reported so the model card can state what the check costs on data
+        # the model does know, rather than only what it is meant to catch.
+        "energy_median_in_distribution": float(np.median(ordered)),
+        "energy_flagged_in_distribution": float((energies > threshold).mean()),
+    }
+
+
 @torch.no_grad()
 def collect_logits(model, loader, device) -> tuple[torch.Tensor, torch.Tensor]:
     model.eval()
@@ -193,9 +231,14 @@ def calibrate_checkpoint(
     ece_after = expected_calibration_error(calibrated, labels.numpy())
 
     thresholds = fit_confidence_thresholds(calibrated, labels.numpy())
+    # Fitted on the uncalibrated logits on purpose: temperature scaling
+    # rescales them, and the energy check wants the magnitude as the network
+    # produced it.
+    energy = fit_energy_threshold(logits)
 
     result = {
         "temperature": temperature,
+        **energy,
         "ece_before": ece_before,
         "ece_after": ece_after,
         "reliability": reliability_table(calibrated, labels.numpy()),
@@ -208,6 +251,10 @@ def calibrate_checkpoint(
         "Calibration: T=%.3f  ECE %.4f -> %.4f  threshold=%.2f (coverage %.1f%%)",
         temperature, ece_before, ece_after,
         thresholds["confidence_threshold"], thresholds["coverage"] * 100,
+    )
+    log.info(
+        "Out-of-scope: energy threshold %.3f, flagging %.1f%% of known species",
+        energy["energy_threshold"], energy["energy_flagged_in_distribution"] * 100,
     )
 
     out_path = Path(out_path or Path(checkpoint_path).parent / "calibration.json")

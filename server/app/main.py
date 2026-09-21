@@ -120,8 +120,10 @@ def _candidates_out(candidates) -> list[CandidateOut]:
     return [CandidateOut(**c.__dict__) for c in candidates]
 
 
-def _build_response(observation_id: str, ranked, answered: set[str]) -> IdentifyResponse:
-    assessment = state["safety"].assess(ranked)
+def _build_response(
+    observation_id: str, ranked, answered: set[str], energy: float | None = None
+) -> IdentifyResponse:
+    assessment = state["safety"].assess(ranked, energy)
     questions = state["engine"].next_questions(ranked, already_answered=answered, limit=3)
 
     return IdentifyResponse(
@@ -267,7 +269,8 @@ async def identify(
     if underside is not None:
         pictures.append(await _read_photo(underside, "underside"))
 
-    ranked = state["classifier"].predict_views(pictures, month, latitude, longitude)
+    prediction = state["classifier"].predict_views(pictures, month, latitude, longitude)
+    ranked = prediction.ranked
 
     # Field notes are applied exactly as answers given to a question, so a
     # fact volunteered upfront counts the same as one asked for later.
@@ -277,9 +280,15 @@ async def identify(
         answered.add(key)
 
     observation_id = uuid.uuid4().hex
-    observations[observation_id] = {"ranked": ranked, "answered": answered}
+    observations[observation_id] = {
+        "ranked": ranked,
+        "answered": answered,
+        # Kept so follow-up answers are assessed against the same
+        # out-of-scope judgement; the photographs do not change.
+        "energy": prediction.energy,
+    }
 
-    return _build_response(observation_id, ranked, answered)
+    return _build_response(observation_id, ranked, answered, prediction.energy)
 
 
 @app.post("/answer", response_model=IdentifyResponse)
@@ -303,7 +312,9 @@ def answer(request: AnswerRequest) -> IdentifyResponse:
     record["ranked"] = ranked
     record["answered"].add(request.character_key)
 
-    return _build_response(request.observation_id, ranked, record["answered"])
+    return _build_response(
+        request.observation_id, ranked, record["answered"], record.get("energy")
+    )
 
 
 @app.get("/species/{species_key}", response_model=SpeciesOut)

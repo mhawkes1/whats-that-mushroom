@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
 
+from .ood import OodDetector
 from .taxonomy_service import TaxonomyService, Toxicity
 
 
@@ -71,6 +72,18 @@ GROUP_ONLY_DETAIL = (
     "They differ by characters that are not visible here."
 )
 
+# An unrecognised mushroom is not a harmless one. The label space holds sixty
+# species out of thousands, and the ones missing from it are the uncommon
+# ones -- a category that emphatically includes lethal species. Saying "I
+# don't know this" without saying what that implies reads as reassurance,
+# which is the one thing it must not do.
+OUT_OF_SCOPE_WARNING = (
+    "Because this does not match anything I know, I cannot tell you what it "
+    "is -- and I cannot rule out that it is one of the species that can kill. "
+    "Treat an unidentified mushroom as more dangerous than a named one, not "
+    "less."
+)
+
 UNIVERSAL_DISCLAIMER = (
     "This app identifies possibilities, not certainties, and never tells you "
     "whether something is safe to eat. Never eat a wild mushroom identified "
@@ -86,8 +99,13 @@ class SafetyLayer:
         group_threshold: float = 0.50,
         ood_threshold: float = 0.20,
         dangerous_mass_threshold: float = 0.02,
+        ood_detector: OodDetector | None = None,
     ):
         self.taxonomy = taxonomy
+        # The energy-based check, when a threshold has been fitted. Without
+        # one it reports itself unfitted and we fall back to `ood_threshold`
+        # below, which is weak but does not pretend otherwise.
+        self.ood_detector = ood_detector or OodDetector()
         # Fitted empirically by ml/fungi_ml/calibrate.py, not chosen because
         # it sounds reassuring.
         self.confidence_threshold = confidence_threshold
@@ -103,7 +121,11 @@ class SafetyLayer:
         cls, taxonomy: TaxonomyService, calibration_path: str | Path
     ) -> "SafetyLayer":
         blob = json.loads(Path(calibration_path).read_text(encoding="utf-8"))
-        return cls(taxonomy, confidence_threshold=blob["confidence_threshold"])
+        return cls(
+            taxonomy,
+            confidence_threshold=blob["confidence_threshold"],
+            ood_detector=OodDetector.from_calibration(blob),
+        )
 
     def _to_candidates(self, ranked: list[tuple[str, float]]) -> list[Candidate]:
         out = []
@@ -154,11 +176,33 @@ class SafetyLayer:
                     return (a, b)
         return None
 
-    def assess(self, ranked: list[tuple[str, float]]) -> SafetyAssessment:
+    def is_out_of_scope(
+        self, ranked: list[tuple[str, float]], energy: float | None
+    ) -> bool:
+        """Whether to decline on the grounds of not recognising the photograph.
+
+        Prefers the energy check, which can see that nothing was recognised.
+        Falls back to the top-1 probability rule only when no threshold has
+        been fitted -- that rule cannot distinguish "nothing activated" from
+        "several things activated equally", because softmax normalises the
+        difference away.
+        """
+        if energy is not None and self.ood_detector.fitted:
+            return self.ood_detector.assess(energy).out_of_distribution
+        return bool(ranked) and ranked[0][1] < self.ood_threshold
+
+    def assess(
+        self,
+        ranked: list[tuple[str, float]],
+        energy: float | None = None,
+    ) -> SafetyAssessment:
         """Turn a calibrated probability distribution into what we will say.
 
         `ranked` must be sorted descending and must be calibrated. Feeding
         raw softmax output here defeats the entire design.
+
+        `energy` is the free energy of the raw logits, used for the
+        out-of-scope check. Omitting it falls back to the top-1 rule.
         """
         if not ranked:
             return SafetyAssessment(
@@ -184,7 +228,7 @@ class SafetyLayer:
             warnings.append(DEADLY_WARNING)
 
         # Rule 0: the image probably isn't something we know at all.
-        if top_score < self.ood_threshold:
+        if self.is_out_of_scope(ranked, energy):
             return SafetyAssessment(
                 verdict=Verdict.OUT_OF_SCOPE,
                 headline="This doesn't match anything I know well",
@@ -194,7 +238,10 @@ class SafetyLayer:
                     "on, or the photograph may not show enough of the mushroom."
                 ),
                 candidates=candidates,
-                warnings=warnings + [UNIVERSAL_DISCLAIMER],
+                # The out-of-scope warning comes first: the candidate list
+                # below it is the least trustworthy thing on the screen, and
+                # the user has to be told so before they read it.
+                warnings=[OUT_OF_SCOPE_WARNING] + warnings + [UNIVERSAL_DISCLAIMER],
                 requested_evidence=["cap_surface", "gill_type", "stipe_base", "substrate"],
                 deadly_in_play=deadly_in_play,
             )

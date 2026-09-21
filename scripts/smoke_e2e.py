@@ -245,9 +245,15 @@ def main() -> int:
         probe = Image.fromarray(
             np.random.default_rng(0).integers(0, 255, (256, 256, 3), dtype=np.uint8)
         )
-        ranked = classifier.predict(probe, month=10, latitude=51.5, longitude=-0.1)
+        prediction = classifier.predict(probe, month=10, latitude=51.5, longitude=-0.1)
+        ranked = prediction.ranked
 
         assert len(ranked) == len(label_map), "served class count mismatch"
+        # The out-of-scope check needs the logit magnitude, which softmax
+        # discards, so the served prediction has to carry it.
+        import math as _math
+
+        assert _math.isfinite(prediction.energy), "no usable free energy served"
         assert abs(sum(p for _, p in ranked) - 1.0) < 1e-4, "probabilities do not sum to 1"
         assert all(
             ranked[i][1] >= ranked[i + 1][1] for i in range(len(ranked) - 1)

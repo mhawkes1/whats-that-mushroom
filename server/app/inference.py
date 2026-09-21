@@ -14,10 +14,13 @@ from __future__ import annotations
 import json
 import logging
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
 from PIL import Image
+
+from .ood import combine_views, free_energy
 
 log = logging.getLogger(__name__)
 
@@ -122,6 +125,22 @@ class StubBackend(Backend):
         return base
 
 
+@dataclass(frozen=True)
+class Prediction:
+    """What the model said, and how much it recognised.
+
+    `ranked` is the calibrated distribution the safety layer assesses.
+    `energy` is the free energy of the raw logits: low when the network
+    strongly activated something, high when it did not. The two answer
+    different questions -- which species, and whether any species -- and a
+    ranking alone cannot express the second, because softmax normalises the
+    magnitude away.
+    """
+
+    ranked: list[tuple[str, float]]
+    energy: float
+
+
 class Classifier:
     """Backend plus calibration. The only thing the API talks to."""
 
@@ -168,7 +187,7 @@ class Classifier:
 
         return cls(backend, temperature=temperature, image_size=image_size)
 
-    def _probabilities(
+    def _raw_logits(
         self,
         image: Image.Image,
         month: int | None,
@@ -177,8 +196,7 @@ class Classifier:
     ) -> np.ndarray:
         tensor = preprocess(image, self.image_size)
         metadata = encode_metadata(month, latitude, longitude)
-        logits = self.backend.logits(tensor, metadata)
-        return softmax(logits / self.temperature)[0]
+        return self.backend.logits(tensor, metadata)[0]
 
     def predict(
         self,
@@ -186,12 +204,9 @@ class Classifier:
         month: int | None = None,
         latitude: float | None = None,
         longitude: float | None = None,
-    ) -> list[tuple[str, float]]:
-        """Return calibrated (species_key, probability), highest first."""
-        probabilities = self._probabilities(image, month, latitude, longitude)
-        return sorted(
-            zip(self.classes, probabilities.tolist()), key=lambda kv: -kv[1]
-        )
+    ) -> "Prediction":
+        """Calibrated ranking for one photograph, plus its free energy."""
+        return self.predict_views([image], month, latitude, longitude)
 
     def predict_views(
         self,
@@ -199,7 +214,7 @@ class Classifier:
         month: int | None = None,
         latitude: float | None = None,
         longitude: float | None = None,
-    ) -> list[tuple[str, float]]:
+    ) -> "Prediction":
         """Combine several views of one mushroom into a single ranking.
 
         The cap, the side and the underside carry different evidence -- the
@@ -221,10 +236,16 @@ class Classifier:
         if not images:
             raise ValueError("predict_views needs at least one image")
 
+        per_view = [self._raw_logits(i, month, latitude, longitude) for i in images]
+
+        # Energy is computed on the raw logits, before temperature scaling and
+        # before softmax. Both of those discard the magnitude that says whether
+        # anything was recognised at all, which is the whole signal.
+        energy = combine_views([free_energy(view.tolist()) for view in per_view])
+
         stacked = np.stack(
-            [self._probabilities(i, month, latitude, longitude) for i in images]
+            [softmax(view[None, :] / self.temperature)[0] for view in per_view]
         )
         combined = stacked.mean(axis=0)
-        return sorted(
-            zip(self.classes, combined.tolist()), key=lambda kv: -kv[1]
-        )
+        ranked = sorted(zip(self.classes, combined.tolist()), key=lambda kv: -kv[1])
+        return Prediction(ranked=ranked, energy=energy)

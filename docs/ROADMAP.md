@@ -4,7 +4,7 @@
 
 Working: taxonomy and risk model, dataset pipeline, training loop,
 calibration, evaluation and model card generation, safety layer,
-interrogation engine, HTTP API, Expo client. 178 tests pass.
+interrogation engine, HTTP API, Expo client. 195 tests pass.
 
 The chain from raw manifest through to a served ONNX model has now been run
 end to end on synthetic data (`scripts/smoke_e2e.py`), so the stages are known
@@ -207,13 +207,35 @@ nudge, and an answer can legitimately rule candidates out. This requires the
 mycological review in `SAFETY.md` to happen first, since it encodes claims
 about species that users will act on.
 
-### 4. Out-of-distribution detection
+### 4. Out-of-distribution detection *(done, pending a trained model)*
 
-The current OOD check is a threshold on top-1 probability, which is weak. A
-user photographing a slug, a pine cone, or a species outside the label space
-should get a clear "that isn't something I know", not a confident wrong
-answer. Options: an energy-based score, a Mahalanobis distance on penultimate
-features, or an explicit "not a fungus" class trained on negatives.
+The check was a threshold on top-1 probability, and the flaw is structural:
+softmax depends only on the *differences* between logits, so it is unchanged
+when every logit shifts down -- which is exactly what an input the network has
+no features for produces. Two photographs can yield identical softmax output,
+one a genuine mushroom and one a slug, and the old rule accepted both at 98%
+confidence.
+
+`server/app/ood.py` uses free energy, `-logsumexp(logits)`, which keeps the
+magnitude softmax discards. It is computed on the raw logits, before
+temperature scaling, and `calibrate.py` fits the threshold on held-out known
+species at a chosen rate of false unknowns (5% by default). Fitting from
+in-distribution data alone is deliberate: tuning against collected negatives
+would fix the threshold against whichever negatives someone gathered, and the
+inputs that matter are the ones nobody thought to collect.
+
+Until a threshold is fitted the detector reports itself unfitted and the
+safety layer falls back to the old rule knowingly, rather than inventing a
+number -- the same principle as rule 4.
+
+Still open here:
+
+- **It is unvalidated against real out-of-distribution photographs.** The
+  mechanism is tested and the threshold fits, but nothing has measured the
+  detection rate on actual slugs, pine cones and unlisted species, because
+  there is no trained model. Do this with the first real checkpoint.
+- **A Mahalanobis distance on penultimate features** would likely beat energy
+  and needs the same plumbing, which now exists.
 
 ### 5. On-device inference
 
