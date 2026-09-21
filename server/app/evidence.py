@@ -55,6 +55,7 @@ break it from the inside.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 from .characters import CHARACTERS
@@ -96,6 +97,17 @@ UNOBSERVED = 1.0
 # No answer may drive a deadly species below this. Matches the threshold in
 # docs/SAFETY.md at which a deadly candidate still triggers the full warning.
 DEADLY_PROBABILITY_FLOOR = 0.02
+
+# How likely a species is to be reported as showing a state it does not have.
+#
+# Used only to predict what a user will say, never to update a ranking. The
+# INCONSISTENT constants above are safety floors -- deliberately far from zero
+# so that one answer cannot eliminate a candidate -- and reading them as
+# probabilities says a blusher is a 25% chance of looking blue. Averaging over
+# answers weighted like that buries the informative ones under a crowd of
+# absurd ones, and makes the character that actually separates two species
+# look barely worth asking about.
+PREDICTIVE_MISMATCH = 0.05
 
 
 @dataclass(frozen=True)
@@ -249,3 +261,115 @@ def described_coverage(taxonomy: TaxonomyService) -> dict[str, float]:
         "fraction": described / total,
         "state_entries": entries,
     }
+
+
+def entropy(distribution: list[float]) -> float:
+    """Shannon entropy in bits, over an unnormalised set of scores."""
+    total = sum(distribution)
+    if total <= 0:
+        return 0.0
+    return -sum(
+        (p / total) * math.log2(p / total) for p in distribution if p > 0
+    )
+
+
+def _predictive_weight(species: Species, character_key: str, answer: str) -> float:
+    """How likely this species is to be reported as showing this state.
+
+    Unlike `likelihood_for`, this is meant to be read as a probability, so a
+    state the species does not have is very unlikely rather than merely
+    down-weighted. A species nobody has described could be reported as
+    anything, so it spreads evenly and contributes no preference.
+    """
+    states = species.character_states.get(character_key)
+    if not states:
+        return 1.0
+    normalised = answer.strip().casefold()
+    if any(state.strip().casefold() == normalised for state in states):
+        return 1.0
+    return PREDICTIVE_MISMATCH
+
+
+def expected_information_gain(
+    ranked: list[tuple[str, float]],
+    character_key: str,
+    taxonomy: TaxonomyService,
+) -> float:
+    """How much asking about this character should actually narrow the field.
+
+    Computed by simulation rather than by a formula: for each answer the user
+    could give, work out how likely that answer is under the current belief,
+    run the real `reweight` to get the ranking it would produce, and average
+    the resulting entropies.
+
+    Using `reweight` itself is the point. Question selection and answer
+    application used to be two different models -- one estimating how
+    informative a character *ought* to be from the fact that candidates
+    declared it, the other deciding what an answer actually did. They
+    disagreed, and the disagreement was not subtle: with the funeral bell and
+    the sheathed woodtuft as the two candidates, the highest-scoring question
+    was substrate, on which both species show exactly the same state. The app
+    sent people to check something that could not possibly tell the two
+    apart, on the confusion the taxonomy itself calls the most dangerous.
+    Driving both from one model makes that impossible by construction -- a
+    character nobody's states differ on now scores zero, because simulating
+    every answer leaves the ranking exactly where it started.
+
+    Answers that report a failed observation are left out of the average.
+    "I cut it off" is a fact about the user, not a state the mushroom might be
+    in, so it should not dilute the estimate of what looking would tell us.
+
+    This is not a textbook Bayesian information gain, because the likelihoods
+    it averages over are deliberately not normalised per species: a species
+    that lists many states is not penalised for vagueness, so that generous
+    lists stay safe for deadly species. What it measures is the expected
+    reduction in the entropy of the ranking this app will really produce,
+    which is the thing worth optimising when choosing what to ask.
+    """
+    character = CHARACTERS.get(character_key)
+    if character is None or not character.options:
+        return 0.0
+
+    options = [
+        option
+        for option in character.options
+        if not is_uninformative(character_key, option)
+    ]
+    if len(options) < 2:
+        return 0.0
+
+    before = entropy([score for _, score in ranked])
+    if before <= 0:
+        return 0.0
+
+    # How likely each answer is, given what we currently believe. This uses
+    # the predictive likelihood rather than the safety-floored one, and
+    # normalises it per species so each candidate contributes one unit of
+    # belief spread over the answers it might produce.
+    marginals = [0.0] * len(options)
+    for key, score in ranked:
+        species = taxonomy.get(key)
+        if species is None:
+            continue
+        weights = [
+            _predictive_weight(species, character_key, option) for option in options
+        ]
+        total_weight = sum(weights)
+        if total_weight <= 0:
+            continue
+        for index, weight in enumerate(weights):
+            marginals[index] += score * weight / total_weight
+
+    total = sum(marginals)
+    if total <= 0:
+        return 0.0
+
+    expected_after = 0.0
+    for option, weight in zip(options, marginals):
+        probability = weight / total
+        if probability <= 0:
+            continue
+        posterior = reweight(ranked, character_key, option, taxonomy)
+        expected_after += probability * entropy([score for _, score in posterior])
+
+    return max(0.0, before - expected_after)

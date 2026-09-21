@@ -69,11 +69,18 @@ def test_tiny_deadly_probability_still_triggers_the_warning(layer):
 
 
 def test_funeral_bell_versus_woodtuft_refuses(layer):
-    """Kills experienced foragers. Cannot be resolved from a photo."""
+    """Kills experienced foragers. Cannot be resolved from a photo.
+
+    The evidence the refusal asks for has to be evidence that could actually
+    settle it. Both species have a rust-brown spore print, so requesting one
+    -- which this test used to assert -- sends the user away for hours to
+    learn nothing. The stem surface is the difference the taxonomy records.
+    """
     ranked = [("kuehneromyces-mutabilis", 0.61), ("galerina-marginata", 0.33), ("armillaria-mellea", 0.06)]
     result = layer.assess(ranked)
     assert result.verdict is Verdict.DANGEROUS_GROUP
-    assert "spore_print_colour" in result.requested_evidence
+    assert "stipe_surface" in result.requested_evidence
+    assert "spore_print_colour" not in result.requested_evidence
 
 
 def test_false_morel_versus_true_morel_refuses(layer):

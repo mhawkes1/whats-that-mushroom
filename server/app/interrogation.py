@@ -19,16 +19,24 @@ import math
 from dataclasses import dataclass
 
 from .characters import CHARACTERS, Character, EFFORT_ORDER
-from .evidence import reweight
+from .evidence import entropy, expected_information_gain, reweight
 from .taxonomy_service import TaxonomyService, Toxicity
 
 
 @dataclass
 class Question:
     character: Character
+    # Bits of entropy this question is expected to remove. This is the real
+    # figure, and it is what leaves in the API response.
     expected_information_gain: float
     resolves_dangerous_pair: bool
     rationale: str
+    # Internal sort key: the share of the available uncertainty this would
+    # resolve, plus a bonus for settling a lethal ambiguity, minus a discount
+    # for effort. Kept separate from the gain because they are different
+    # quantities, and conflating them once let a question with almost no
+    # information ride the safety bonus to the top of the list.
+    priority: float = 0.0
 
     def to_dict(self) -> dict:
         return {
@@ -43,15 +51,6 @@ class Question:
             "rationale": self.rationale,
             "expected_information_gain": round(self.expected_information_gain, 4),
         }
-
-
-def entropy(distribution: list[float]) -> float:
-    total = sum(distribution)
-    if total <= 0:
-        return 0.0
-    return -sum(
-        (p / total) * math.log2(p / total) for p in distribution if p > 0
-    )
 
 
 class InterrogationEngine:
@@ -91,42 +90,21 @@ class InterrogationEngine:
     ) -> float:
         """Expected reduction in entropy from learning this character.
 
-        We lack a per-species character-state table, so this is a model
-        rather than an exact computation. The key insight -- and the thing an
-        earlier version got backwards -- is that a character several
-        candidates *share* as diagnostic is highly informative, not
-        uninformative. A field guide's key works precisely by asking about
-        characters that all the remaining candidates possess but in
-        *different states*: mild versus acrid taste, white versus rust spores.
+        Delegates to `evidence.expected_information_gain`, which simulates
+        every answer the user could give using the same re-weighting the app
+        will really apply. Question selection and answer application are
+        therefore one model rather than two that can disagree.
 
-        So we assume the declaring candidates separate into distinct states,
-        limited by how many answer options the question actually offers, and
-        that candidates the character says nothing about stay mixed.
+        The earlier version estimated gain from the fact that candidates
+        *declared* a character as diagnostic, without knowing which state each
+        one showed. That could not distinguish a character the candidates
+        differ on from one they happen to share, so it recommended questions
+        that could not discriminate at all -- substrate as the top question for
+        the funeral bell against the sheathed woodtuft, where both grow on dead
+        wood. A character every remaining candidate answers identically now
+        scores zero.
         """
-        total = sum(score for _, score in ranked)
-        if total <= 0:
-            return 0.0
-
-        before = entropy([score for _, score in ranked])
-        declares, silent = self._split_candidates(ranked, character_key)
-
-        if len(declares) < 1:
-            return 0.0
-
-        declaring_mass = sum(declares)
-        silent_mass = sum(silent)
-
-        character = CHARACTERS.get(character_key)
-        n_options = len(character.options) if character and character.options else 2
-        if character and character.requires_photo and not character.options:
-            n_options = 4  # a photograph carries several bits in practice
-
-        residual = self._residual_entropy(declares, n_options)
-        after = (
-            (declaring_mass / total) * residual
-            + (silent_mass / total) * entropy(silent)
-        )
-        return max(0.0, before - after)
+        return expected_information_gain(ranked, character_key, self.taxonomy)
 
     @staticmethod
     def _residual_entropy(group: list[float], n_options: int) -> float:
@@ -166,6 +144,7 @@ class InterrogationEngine:
         if len(ranked) < 2:
             return []
 
+        available = entropy([score for _, score in ranked])
         dangerous_pair = self._leading_dangerous_pair(ranked)
         safety_characters: set[str] = set()
         if dangerous_pair:
@@ -191,23 +170,28 @@ class InterrogationEngine:
             if gain < self.MIN_GAIN and not resolves:
                 continue
 
+            # Priority is scored on the share of the uncertainty actually
+            # present, so the bonus and the effort discount stay comparable
+            # whatever the size of the candidate set.
+            share = gain / available if available > 0 else 0.0
             # A character that settles a potentially lethal ambiguity is worth
             # asking even when a cheaper question would cut more entropy.
-            priority = gain + (2.0 if resolves else 0.0)
+            priority = share + (1.0 if resolves else 0.0)
             # Discount by effort so we don't send someone away for eight hours
             # when looking at the stem base would do.
-            priority -= 0.15 * EFFORT_ORDER.get(character.effort, 1)
+            priority -= 0.05 * EFFORT_ORDER.get(character.effort, 1)
 
             scored.append(
                 Question(
                     character=character,
-                    expected_information_gain=priority,
+                    expected_information_gain=gain,
                     resolves_dangerous_pair=resolves,
                     rationale=self._rationale(ranked, char_key, resolves, dangerous_pair),
+                    priority=priority,
                 )
             )
 
-        scored.sort(key=lambda q: -q.expected_information_gain)
+        scored.sort(key=lambda q: -q.priority)
         return scored[:limit]
 
     def _leading_dangerous_pair(

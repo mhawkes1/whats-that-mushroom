@@ -47,18 +47,51 @@ class TaxonomyService(Taxonomy):
             self._dangerous_pairs = frozenset(super().dangerous_pairs())
         return self._dangerous_pairs
 
+    @staticmethod
+    def _states_differ(sp_a: Species, sp_b: Species, character: str) -> bool:
+        """Could any answer about this character tell these two species apart?
+
+        Only when both are described for it and the state sets are not
+        identical. If one is undescribed we cannot say, and if both show the
+        same states then no answer separates them however diagnostic the
+        character is for each of them individually.
+        """
+        states_a = set(sp_a.character_states.get(character, ()))
+        states_b = set(sp_b.character_states.get(character, ()))
+        if not states_a or not states_b:
+            return False
+        return states_a != states_b
+
     def separating_characters(self, a: str, b: str) -> list[str]:
         """Characters that distinguish two specific species.
 
-        Prefers characters both species declare, since those are the ones
-        documented as diagnostic for this particular confusion.
+        Both species declaring a character is not enough: the funeral bell and
+        the sheathed woodtuft both declare substrate, and both grow on dead
+        wood, so asking about it tells a user nothing while sounding like the
+        decisive check. Characters whose recorded states actually differ come
+        first; characters both declare but which are not known to differ come
+        after, since they may still separate the two in ways the table does
+        not capture yet.
         """
         sp_a, sp_b = self.get(a), self.get(b)
         if sp_a is None or sp_b is None:
             return []
+
         shared = [c for c in sp_a.diagnostic_characters if c in sp_b.diagnostic_characters]
-        if shared:
-            return shared
+        discriminating, unknown = [], []
+        for character in shared:
+            states_a = set(sp_a.character_states.get(character, ()))
+            states_b = set(sp_b.character_states.get(character, ()))
+            if states_a and states_b:
+                # Both described. Only a difference can separate them; if the
+                # states match, no answer distinguishes the two and offering
+                # the character would send the user to check nothing.
+                if states_a != states_b:
+                    discriminating.append(character)
+            else:
+                unknown.append(character)
+        if discriminating or unknown:
+            return discriminating + unknown
         # Fall back to the union, preserving the deadly species' ordering so
         # the most safety-relevant check is requested first.
         deadly_first = sp_a if sp_a.toxicity is Toxicity.DEADLY else sp_b

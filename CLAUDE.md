@@ -37,7 +37,7 @@ Everything works **except the model**. There is no trained classifier; the API
 serves a stub backend with deterministic fake predictions. Every other layer
 is real and tested.
 
-175 tests pass. `/health` honestly reports `model_loaded: false`,
+178 tests pass. `/health` honestly reports `model_loaded: false`,
 `calibrated: false`, `taxonomy_reviewed: false`.
 
 The training pipeline has been rehearsed end to end on synthetic data
@@ -59,7 +59,8 @@ characters come from standard references but are unverified.
 | `ml/fungi_ml/calibrate.py` | Temperature scaling, threshold fitting |
 | `ml/fungi_ml/evaluate.py` | Safety-first metrics, model card generation |
 | `server/app/safety.py` | The safety layer — read first |
-| `server/app/interrogation.py` | Question selection by information gain |
+| `server/app/interrogation.py` | Question selection; gain computed in `evidence.py` |
+| `server/app/evidence.py` | Answer likelihoods, the safety floors, expected gain |
 | `server/app/characters.py` | How to ask a non-expert for evidence |
 | `app/` | Expo React Native client |
 
@@ -112,6 +113,22 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   manufacture confidence the classifier did not supply. So an answer matching
   a species moves nothing on its own — it only bites by contradicting rivals.
   Tests that expect a matching answer to promote a species are wrong.
+- **Question selection and answer application are one model, deliberately.**
+  `expected_gain` simulates every answer through the real `reweight`, so the
+  engine cannot recommend a character its own update would ignore. Before
+  this, selection scored characters by whether candidates *declared* them,
+  and the top question for the funeral bell against the sheathed woodtuft was
+  `substrate` — which both show identically. Don't reintroduce a separate
+  heuristic for selection.
+- **Two likelihoods, for two different jobs.** `likelihood_for` is the
+  safety-floored one used to *update* a ranking; `PREDICTIVE_MISMATCH` (0.05)
+  is the sharp one used only to guess *what a user will say* when averaging
+  over possible answers. Reading the floors as probabilities implies a blusher
+  is 25% likely to look blue, which buries the informative answers under
+  absurd ones.
+- **`Question.expected_information_gain` is bits; `Question.priority` is the
+  sort key.** They were one field, which let the dangerous-pair bonus publish
+  a near-zero-information question to the client as a high-scoring one.
 - **Some answer options are non-observations, not states.** `volva`'s "I cut
   it off" and `cortina`'s "Can't tell" are in `uninformative_options` and get
   a likelihood of 1.0. Without that, the commonest field mistake — cutting the
@@ -120,7 +137,8 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   there; a test asserts no committed state is one.
 - **Filling the table is a worksheet job, not a code job.** `python
   scripts/character_states.py emit` writes `docs/character-states-worksheet.csv`
-  (190 rows, deadliest first); `import` validates and writes back. A state
+  (205 rows, deadliest first, and it preserves answers already in the sheet);
+  `import` validates and writes back. A state
   that is not exactly one of the character's answer options is refused,
   because it would store cleanly and never match anything.
 - **`notes` is rendered verbatim to users.** Rationale, policy and review

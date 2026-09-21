@@ -22,8 +22,13 @@ SEED = ROOT / "data" / "taxonomy.seed.json"
 
 
 @pytest.fixture(scope="module")
-def engine():
-    return InterrogationEngine(TaxonomyService.load(SEED))
+def taxonomy():
+    return TaxonomyService.load(SEED)
+
+
+@pytest.fixture(scope="module")
+def engine(taxonomy):
+    return InterrogationEngine(taxonomy)
 
 
 def test_entropy_is_zero_when_certain():
@@ -59,10 +64,27 @@ def test_safety_question_outranks_a_cheaper_one(engine):
     )
 
 
-def test_asks_for_spore_print_on_the_galerina_confusion(engine):
+def test_does_not_ask_about_characters_the_candidates_share(engine):
+    """The funeral bell and the sheathed woodtuft both have a rust-brown spore
+    print and both grow on dead wood.
+
+    This test used to assert the opposite -- that the engine asks for a spore
+    print here -- which it did, because it scored questions from the fact that
+    both species declared the character as diagnostic without knowing that
+    both show the same state. Sending someone away for hours to make a spore
+    print that cannot separate the two candidates is worse than asking
+    nothing, and this was the confusion the taxonomy itself calls the most
+    dangerous for experienced foragers.
+
+    What separates them in the recorded data is the stem surface: scaly on the
+    woodtuft, fibrous or smooth on the funeral bell.
+    """
     ranked = [("kuehneromyces-mutabilis", 0.52), ("galerina-marginata", 0.48)]
     keys = [q.character.key for q in engine.next_questions(ranked, limit=4)]
-    assert "spore_print_colour" in keys
+
+    assert "stipe_surface" in keys
+    assert "spore_print_colour" not in keys
+    assert "substrate" not in keys
 
 
 def test_does_not_repeat_an_answered_question(engine):
@@ -167,3 +189,84 @@ def test_trace_deadly_mass_still_suppresses_taste(engine):
     ranked = [("russula-cyanoxantha", 0.94), ("amanita-phalloides", 0.06)]
     keys = [q.character.key for q in engine.next_questions(ranked, limit=8)]
     assert "taste" not in keys
+
+
+def test_never_leads_with_a_character_both_candidates_share(engine, taxonomy):
+    """The general form of the funeral-bell bug, over every lethal pair.
+
+    For any two candidates that differ somewhere, the question the engine puts
+    first must be one whose recorded states actually differ between them.
+    Leading with a shared character sends the user to check something that
+    cannot change the answer, and on these pairs that is a wasted trip made
+    while a deadly species is on the table.
+    """
+    for a, b in sorted(taxonomy.dangerous_pairs()):
+        states_a, states_b = taxonomy[a].character_states, taxonomy[b].character_states
+        differing = {
+            c
+            for c in set(states_a) | set(states_b)
+            if states_a.get(c) and states_b.get(c)
+            and set(states_a[c]) != set(states_b[c])
+        }
+        if not differing:
+            continue  # nothing can separate them; covered elsewhere
+
+        questions = engine.next_questions([(a, 0.5), (b, 0.5)], limit=1)
+        if not questions:
+            continue
+        top = questions[0].character.key
+
+        shared = (
+            states_a.get(top)
+            and states_b.get(top)
+            and set(states_a[top]) == set(states_b[top])
+        )
+        assert not shared, (
+            f"{a} vs {b}: leads with {top}, which both show identically, "
+            f"while {sorted(differing)} would discriminate"
+        )
+
+
+def test_gain_is_zero_when_no_answer_could_move_anything(engine, taxonomy):
+    """A character every candidate answers the same way carries no information."""
+    from dataclasses import replace
+
+    from app.taxonomy_service import TaxonomyService
+
+    same = TaxonomyService(
+        species={
+            **taxonomy.species,
+            "agaricus-campestris": replace(
+                taxonomy["agaricus-campestris"],
+                character_states={"spore_print_colour": ("White or cream",)},
+            ),
+            "marasmius-oreades": replace(
+                taxonomy["marasmius-oreades"],
+                character_states={"spore_print_colour": ("White or cream",)},
+            ),
+        }
+    )
+    from app.interrogation import InterrogationEngine
+
+    ranked = [("agaricus-campestris", 0.5), ("marasmius-oreades", 0.5)]
+    gain = InterrogationEngine(same).expected_gain(ranked, "spore_print_colour")
+    assert gain == pytest.approx(0.0, abs=1e-9)
+
+
+def test_the_reported_gain_is_bits_not_a_priority_score(engine):
+    """`expected_information_gain` must mean what it says.
+
+    It used to carry the sort key -- gain plus a safety bonus minus an effort
+    discount -- which is how a question with almost no information could be
+    published to the client as though it had a great deal.
+    """
+    ranked = [("amanita-phalloides", 0.5), ("agaricus-campestris", 0.5)]
+    for question in engine.next_questions(ranked, limit=3):
+        # One bit is the most that can be removed from a two-way split.
+        assert 0.0 <= question.expected_information_gain <= 1.0
+        assert question.to_dict()["expected_information_gain"] == round(
+            question.expected_information_gain, 4
+        )
+        if question.resolves_dangerous_pair:
+            # The bonus lives on `priority`, and only there.
+            assert question.priority > question.expected_information_gain

@@ -4,7 +4,7 @@
 
 Working: taxonomy and risk model, dataset pipeline, training loop,
 calibration, evaluation and model card generation, safety layer,
-interrogation engine, HTTP API, Expo client. 175 tests pass.
+interrogation engine, HTTP API, Expo client. 178 tests pass.
 
 The chain from raw manifest through to a served ONNX model has now been run
 end to end on synthetic data (`scripts/smoke_e2e.py`), so the stages are known
@@ -247,6 +247,14 @@ community verification.
   the options cannot drift from the catalogue the server validates against.
   An unknown character or an out-of-list answer is rejected rather than
   quietly dropped.
+- **Question selection driven by the character-state table.** The engine used
+  to score a question by whether candidates *declared* the character as
+  diagnostic, which cannot tell a character they differ on from one they
+  share. With the funeral bell and the sheathed woodtuft as the candidates its
+  top recommendation was `substrate` -- both grow on dead wood -- and a spore
+  print ranked above the one character that does separate them. `expected_gain`
+  now simulates every answer through the real re-weighting, so selection and
+  application are one model and a shared character scores near zero.
 - **Spore print colour matching** (`server/app/spore_print.py`). Matches a
   photographed deposit against a reference chart in CIELAB using CIEDE2000,
   correcting exposure and colour cast against the white half of the card. It
