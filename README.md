@@ -28,6 +28,14 @@ fungi, is most of the time. That is what this project is built around.
 
 ## What makes it different
 
+**It asks for the evidence that actually decides it.** Capture is three
+views -- cap, side, underside -- because what is under the cap separates gills
+from pores from spines, and that separates whole families. Then one screen of
+field notes: where it grew, what it grew on, colour, ring, smell, and spore
+print if you already have one. Every field is optional, and skipping is
+offered as prominently as answering, because a guess recorded as an
+observation is worse than a blank -- nothing downstream can tell them apart.
+
 **It interrogates rather than pronounces.** Every other app maps a photograph
 to an answer and stops. No mycologist works that way: they find the character
 that separates the remaining candidates and go and look at it. This app does
@@ -85,6 +93,7 @@ whats-that-mushroom/
 │       ├── characters.py      how to ask a non-expert for evidence
 │       └── main.py            HTTP API
 ├── app/                       Expo React Native client
+│   └── src/screens/           capture -> field notes -> result
 ├── CLAUDE.md                  orientation for anyone (or any agent) picking this up
 └── docs/
     ├── SAFETY.md              the policy that governs the product
@@ -98,12 +107,25 @@ whats-that-mushroom/
 ## Current status
 
 Everything works **except the model itself.** There is no trained classifier
-yet; the API serves a stub backend producing deterministic fake predictions so
-the safety layer, interrogation engine, API and mobile client can all be
-developed and tested. Every other layer is real and tested.
+and no dataset yet; the API serves a stub backend producing deterministic fake
+predictions so the safety layer, interrogation engine, API and mobile client
+can all be developed and tested. Every other layer is real and tested.
 
-80 tests pass, covering split integrity, the risk asymmetry, calibration, and
-the classic fatal confusions end to end.
+148 tests pass, covering split integrity, the risk asymmetry, calibration, the
+checkpoint-to-ONNX seam, spore print colour matching, the evidence model's
+safety floors, and the classic fatal confusions end to end.
+
+The training pipeline has also been rehearsed end to end on synthetic data, so
+the stages are known to fit together and not merely to work in isolation:
+
+```bash
+python scripts/smoke_e2e.py        # ~1 minute, CPU, no network, no dataset
+```
+
+That walks prepare -> train -> calibrate -> export -> serve on random images
+and checks only that each stage hands the next one something usable. It makes
+no claim about accuracy. Run it before paying for GPU time, and after any
+change to the model, the config schema or the export path.
 
 ## Running it
 
@@ -131,7 +153,14 @@ EXPO_PUBLIC_API_URL=http://<your-lan-ip>:8000 npx expo start
 python -m pytest ml/tests server/tests -q
 ```
 
-**Training** — see `docs/ROADMAP.md`. Needs a GPU.
+**Training** — see `docs/ROADMAP.md`.
+
+Only one step needs a GPU, and it is not the first one. Building the dataset
+comes first and is bound by network and disk rather than compute: ~20k images
+from GBIF, hours of wall time, no GPU involved. Training the default
+86M-parameter ViT-B/16 at 384px then wants a single 24GB card (A10G, 3090,
+4090) for roughly 6-10 hours. Calibration and export are CPU work of a few
+minutes.
 
 ## Before this goes anywhere near the public
 

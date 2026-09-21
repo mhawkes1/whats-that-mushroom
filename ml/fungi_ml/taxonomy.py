@@ -53,6 +53,25 @@ class Species:
     # Characters that separate this species from its lookalikes. The
     # interrogation engine turns these into the next question it asks.
     diagnostic_characters: tuple[str, ...] = ()
+    # Which states of a character this species actually shows, e.g.
+    # {"spore_print_colour": ("White or cream",)}. This is what turns a
+    # user's answer into evidence: without it we know a character is
+    # diagnostic but not what the answer should look like, so an answer
+    # cannot rule anything in or out.
+    #
+    # Empty for every species until the field-character review in
+    # docs/REVIEW.md fills it in. Empty means "no evidence", not "no match" --
+    # see server/app/evidence.py.
+    #
+    # `hash=False` keeps Species hashable. A frozen dataclass derives its hash
+    # from its fields, and a dict field would make every Species unhashable --
+    # which nothing in the codebase relies on today, so it would have failed
+    # silently later, in whatever code first put a species in a set. Equality
+    # still considers the states; only the hash skips them, which is sound
+    # because equal species necessarily have equal states.
+    character_states: dict[str, tuple[str, ...]] = field(
+        default_factory=dict, hash=False
+    )
     notes: str = ""
 
 
@@ -76,6 +95,10 @@ class Taxonomy:
                 gbif_key=entry.get("gbif_key"),
                 lookalikes=tuple(entry.get("lookalikes", ())),
                 diagnostic_characters=tuple(entry.get("diagnostic_characters", ())),
+                character_states={
+                    character: tuple(states)
+                    for character, states in (entry.get("character_states") or {}).items()
+                },
                 notes=entry.get("notes", ""),
             )
         return cls(species=species)

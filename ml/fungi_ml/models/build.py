@@ -12,6 +12,8 @@ will happily rule out autumn species that are in fact the right answer.
 
 from __future__ import annotations
 
+from copy import deepcopy
+
 import torch
 import torch.nn as nn
 
@@ -138,3 +140,24 @@ def build_model(config: dict, num_classes: int) -> FungiClassifier:
         metadata_dropout=model_cfg.get("metadata_dropout", 0.3),
         use_metadata=model_cfg.get("use_metadata", True),
     )
+
+
+def load_checkpoint_model(checkpoint: dict) -> FungiClassifier:
+    """Rebuild the exact architecture a checkpoint was trained with.
+
+    Calibration and export both need the trained model back, and both used to
+    reconstruct it by hand from two config keys. That quietly dropped every
+    other architectural switch -- `use_metadata` above all, which changes the
+    state dict -- so a run configured without the metadata branch trained
+    fine and then failed at calibration, after the GPU time had been spent.
+
+    Routing all three through `build_model` means the architecture can only be
+    described in one place. `pretrained` is forced off: the weights come from
+    the checkpoint, and fetching backbone weights we are about to overwrite
+    costs a download and needs network the serving box may not have.
+    """
+    config = deepcopy(checkpoint["config"])
+    config.setdefault("model", {})["pretrained"] = False
+    model = build_model(config, len(checkpoint["classes"]))
+    model.load_state_dict(checkpoint["model"])
+    return model.eval()

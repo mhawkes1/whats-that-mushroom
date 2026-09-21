@@ -51,6 +51,27 @@ class IdentifyResponse(BaseModel):
     calibrated: bool
 
 
+class FieldNoteFieldOut(BaseModel):
+    key: str
+    label: str
+    prompt: str
+    how: str
+    options: list[str]
+    effort: str
+
+
+class FieldFormOut(BaseModel):
+    """The capture form, served rather than hardcoded in the client.
+
+    The answer strings are compared against the character catalogue, so a
+    client that invented its own list would submit values the server silently
+    ignores. Serving the form makes that impossible.
+    """
+
+    fields: list[FieldNoteFieldOut]
+    note: str
+
+
 class AnswerRequest(BaseModel):
     observation_id: str
     character_key: str
@@ -74,3 +95,11 @@ class HealthOut(BaseModel):
     calibrated: bool
     n_classes: int
     taxonomy_reviewed: bool
+    character_states_described: int = Field(
+        default=0,
+        description=(
+            "Species with a character-state table. Answers to diagnostic "
+            "questions only re-weight candidates that have one, so a zero "
+            "here means field notes are inert by design, not broken."
+        ),
+    )

@@ -154,3 +154,212 @@ def test_species_notes_do_not_leak_internal_policy(client):
 
 def test_unknown_species_is_404(client):
     assert client.get("/species/not-a-real-species").status_code == 404
+
+
+# --- Capture flow: multiple views plus field notes ---------------------------
+
+
+def test_field_form_is_served_rather_than_hardcoded(client):
+    """The client must not invent its own answer strings.
+
+    Every option the form offers has to be one `/identify` will accept, or a
+    user's answer is silently discarded.
+    """
+    from app.characters import CHARACTERS
+
+    body = client.get("/field-form").json()
+    assert body["fields"], "the capture form must offer something"
+
+    for field in body["fields"]:
+        character = CHARACTERS[field["key"]]
+        assert field["options"] == list(character.options)
+        assert field["label"] and field["prompt"]
+
+
+def test_identify_accepts_three_views(client):
+    response = client.post(
+        "/identify",
+        files={
+            "image": ("top.jpg", a_photo((150, 120, 90)), "image/jpeg"),
+            "side": ("side.jpg", a_photo((140, 115, 85)), "image/jpeg"),
+            "underside": ("under.jpg", a_photo((210, 205, 195)), "image/jpeg"),
+        },
+    )
+    assert response.status_code == 200
+    assert response.json()["warnings"]
+
+
+def test_a_single_photograph_still_works(client):
+    """The extra views are optional; one photo must remain a complete request."""
+    response = client.post(
+        "/identify", files={"image": ("m.jpg", a_photo(), "image/jpeg")}
+    )
+    assert response.status_code == 200
+
+
+def test_extra_views_change_the_assessment(client):
+    """Averaging over views must actually use them.
+
+    If the side and underside made no difference, the two extra taps we ask
+    of the user would be for nothing.
+    """
+    one = client.post(
+        "/identify", files={"image": ("t.jpg", a_photo((150, 120, 90)), "image/jpeg")}
+    ).json()
+    three = client.post(
+        "/identify",
+        files={
+            "image": ("t.jpg", a_photo((150, 120, 90)), "image/jpeg"),
+            "side": ("s.jpg", a_photo((40, 40, 40)), "image/jpeg"),
+            "underside": ("u.jpg", a_photo((230, 225, 215)), "image/jpeg"),
+        },
+    ).json()
+
+    one_top = [(c["species_key"], round(c["confidence"], 6)) for c in one["candidates"]]
+    three_top = [(c["species_key"], round(c["confidence"], 6)) for c in three["candidates"]]
+    assert one_top != three_top
+
+
+def test_field_notes_are_accepted_and_not_asked_again(client):
+    """A fact volunteered on the form must count as answered."""
+    import json
+
+    from app.characters import CHARACTERS
+
+    # Taken from the catalogue rather than typed out, so the test cannot
+    # drift away from the options the server actually accepts.
+    habitat = CHARACTERS["habitat"].options[0]
+
+    body = client.post(
+        "/identify",
+        files={"image": ("m.jpg", a_photo(), "image/jpeg")},
+        data={"field_notes": json.dumps({"habitat": habitat})},
+    ).json()
+
+    assert body["observation_id"]
+    assert "habitat" not in [q["key"] for q in body["questions"]]
+
+
+def test_blank_field_notes_are_skipped_not_rejected(client):
+    """Every field is optional, and an empty one must not fail the request."""
+    import json
+
+    response = client.post(
+        "/identify",
+        files={"image": ("m.jpg", a_photo(), "image/jpeg")},
+        data={"field_notes": json.dumps({"habitat": "", "smell": None})},
+    )
+    assert response.status_code == 200
+
+
+def test_an_unknown_character_is_rejected_not_ignored(client):
+    """Dropping it silently would let the user think they had told us something."""
+    import json
+
+    response = client.post(
+        "/identify",
+        files={"image": ("m.jpg", a_photo(), "image/jpeg")},
+        data={"field_notes": json.dumps({"vibes": "good"})},
+    )
+    assert response.status_code == 400
+    assert "vibes" in response.json()["detail"]
+
+
+def test_an_answer_outside_the_option_list_is_rejected(client):
+    import json
+
+    response = client.post(
+        "/identify",
+        files={"image": ("m.jpg", a_photo(), "image/jpeg")},
+        data={"field_notes": json.dumps({"habitat": "on the moon"})},
+    )
+    assert response.status_code == 400
+
+
+def test_malformed_field_notes_are_rejected(client):
+    response = client.post(
+        "/identify",
+        files={"image": ("m.jpg", a_photo(), "image/jpeg")},
+        data={"field_notes": "not json at all"},
+    )
+    assert response.status_code == 400
+
+
+def test_a_broken_second_view_names_which_photo_failed(client):
+    """Three uploads means the error has to say which one was wrong."""
+    response = client.post(
+        "/identify",
+        files={
+            "image": ("t.jpg", a_photo(), "image/jpeg"),
+            "underside": ("u.txt", b"not a jpeg", "text/plain"),
+        },
+    )
+    assert response.status_code == 400
+    assert "underside" in response.json()["detail"]
+
+
+def test_field_notes_never_unlock_a_species_verdict(client):
+    """Answers feed the ranking; they must not bypass the safety layer.
+
+    This is the rule that makes the form safe to add: whatever the user
+    volunteers, the verdict still comes from `SafetyLayer.assess`.
+    """
+    import json
+
+    from app.characters import CHARACTERS
+
+    notes = {
+        key: CHARACTERS[key].options[0]
+        for key in ("habitat", "substrate", "growth_form", "gill_colour", "ring")
+    }
+    for colour in [(20, 20, 20), (200, 195, 185), (150, 60, 40)]:
+        body = client.post(
+            "/identify",
+            files={"image": ("m.jpg", a_photo(colour), "image/jpeg")},
+            data={"field_notes": json.dumps(notes)},
+        ).json()
+        assert any("never eat" in w.lower() for w in body["warnings"])
+        if body["deadly_in_play"]:
+            assert body["verdict"] != "species"
+
+
+def test_health_reports_character_state_coverage(client):
+    """A zero here is the honest signal that field notes cannot yet bite.
+
+    Without it, an operator seeing answers change nothing has no way to tell
+    an empty table from a broken update.
+    """
+    body = client.get("/health").json()
+    assert "character_states_described" in body
+    assert body["character_states_described"] == 0
+
+
+def test_field_notes_are_inert_while_the_state_table_is_empty(client):
+    """Documents today's behaviour so a future fill-in has to update it.
+
+    The same photographs with and without field notes must produce an
+    identical ranking, because no species declares any states yet.
+    """
+    import json
+
+    from app.characters import CHARACTERS
+
+    photo = a_photo((150, 120, 90))
+    notes = {
+        "habitat": CHARACTERS["habitat"].options[0],
+        "gill_colour": CHARACTERS["gill_colour"].options[0],
+    }
+
+    without = client.post(
+        "/identify", files={"image": ("m.jpg", photo, "image/jpeg")}
+    ).json()
+    with_notes = client.post(
+        "/identify",
+        files={"image": ("m.jpg", photo, "image/jpeg")},
+        data={"field_notes": json.dumps(notes)},
+    ).json()
+
+    rank = lambda body: [  # noqa: E731
+        (c["species_key"], round(c["confidence"], 9)) for c in body["candidates"]
+    ]
+    assert rank(without) == rank(with_notes)

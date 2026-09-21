@@ -19,6 +19,7 @@ import math
 from dataclasses import dataclass
 
 from .characters import CHARACTERS, Character, EFFORT_ORDER
+from .evidence import reweight
 from .taxonomy_service import TaxonomyService, Toxicity
 
 
@@ -258,41 +259,28 @@ class InterrogationEngine:
         ranked: list[tuple[str, float]],
         character_key: str,
         answer: str,
-        strength: float = 0.6,
     ) -> list[tuple[str, float]]:
         """Re-weight candidates given a user's answer.
 
-        The v1 rule is intentionally conservative. Without a curated
-        character-state table per species, we cannot say which species a
-        given answer rules *out*. What we can do is boost species for which
-        this character is diagnostic and which the answer is consistent with,
-        and let the interrogation continue.
+        The judgement lives in `evidence.reweight`, which compares the answer
+        against each species' declared `character_states` and applies a
+        deliberately asymmetric likelihood: contradicting a deadly candidate
+        moves it far less than contradicting a harmless one, and no answer may
+        drive a deadly candidate below the threshold at which the safety layer
+        still warns about it.
 
-        `strength` is deliberately well below 1.0: a user peering at gills in
-        poor light is a noisy sensor, and treating their answer as certain
-        would be exactly the overconfidence this project exists to avoid.
+        A species that declares no states for the character is left untouched,
+        because an absence of description on our side is not evidence about
+        the mushroom. The table is empty until the field-character review in
+        docs/REVIEW.md lands, so today this is a no-op for every answer.
 
-        TODO: replace with a per-species character-state matrix once the
-        taxonomy is reviewed by a mycologist. See docs/ROADMAP.md.
+        That is a deliberate change from the previous placeholder, which
+        boosted a species when the answer string happened to appear somewhere
+        in that species' free-text `notes`. It fired on 34 of 157 possible
+        answers, but on grounds unrelated to whether the character was
+        diagnostic -- any species whose prose mentioned "White" was promoted
+        by a white gill answer. Coincidence presented as evidence is worse
+        than no evidence, particularly in a system whose whole claim is that
+        it reports uncertainty honestly.
         """
-        answer_norm = answer.strip().lower()
-        out: list[tuple[str, float]] = []
-
-        for key, score in ranked:
-            sp = self.taxonomy.get(key)
-            if sp is None:
-                out.append((key, score))
-                continue
-
-            multiplier = 1.0
-            if character_key in sp.diagnostic_characters:
-                # Mention of the answer in the species notes is weak positive
-                # evidence; absence is not treated as evidence at all.
-                if answer_norm and answer_norm in sp.notes.lower():
-                    multiplier = 1.0 + strength
-            out.append((key, score * multiplier))
-
-        total = sum(s for _, s in out)
-        if total <= 0:
-            return ranked
-        return sorted([(k, s / total) for k, s in out], key=lambda kv: -kv[1])
+        return reweight(ranked, character_key, answer, self.taxonomy)

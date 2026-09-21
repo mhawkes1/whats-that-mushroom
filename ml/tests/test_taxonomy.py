@@ -134,3 +134,25 @@ def test_deadly_species_all_declare_diagnostic_characters(taxonomy):
         k for k in taxonomy.deadly_keys() if not taxonomy[k].diagnostic_characters
     ]
     assert not missing, f"deadly species with no diagnostic characters: {missing}"
+
+
+def test_species_stays_hashable_with_character_states():
+    """`character_states` is a dict on a frozen dataclass.
+
+    A frozen dataclass hashes on its fields, so an unguarded dict field makes
+    every Species unhashable. Nothing hashes one today, which is exactly why
+    this needs a test: the breakage would surface later, far from the cause,
+    in whatever code first put a species in a set.
+    """
+    from dataclasses import replace
+
+    from fungi_ml.taxonomy import Species, Toxicity
+
+    plain = Species(key="x", scientific_name="Xus xus", genus="Xus")
+    described = replace(plain, character_states={"gill_colour": ("White",)})
+
+    assert len({plain, described}) >= 1  # hashable at all
+    assert hash(replace(described)) == hash(described)
+    # Equality still distinguishes them, even though the hash ignores states.
+    assert described != replace(plain, character_states={"gill_colour": ("Pink",)})
+    assert Toxicity.UNKNOWN is plain.toxicity

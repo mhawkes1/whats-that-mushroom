@@ -63,6 +63,45 @@ export interface FieldContext {
   longitude?: number;
 }
 
+/** The three views asked for at capture. Only `top` is required. */
+export interface Views {
+  top: string;
+  side?: string;
+  underside?: string;
+}
+
+/** Character key -> chosen option. Every entry is optional. */
+export type FieldNotes = Record<string, string>;
+
+export interface FieldFormField {
+  key: string;
+  label: string;
+  prompt: string;
+  how: string;
+  options: string[];
+  effort: 'instant' | 'minutes' | 'hours';
+}
+
+export interface FieldForm {
+  fields: FieldFormField[];
+  note: string;
+}
+
+/**
+ * Fetch the capture form.
+ *
+ * The fields and their options come from the server rather than being written
+ * out here. The answer strings are validated against the character catalogue
+ * on submission, so a hardcoded copy that drifted would start producing
+ * rejected requests -- or, worse, answers the user believes were recorded.
+ */
+export async function getFieldForm(): Promise<FieldForm> {
+  const response = await fetch(`${BASE_URL}/field-form`, {
+    headers: { Accept: 'application/json' },
+  });
+  return handle<FieldForm>(response);
+}
+
 async function handle<T>(response: Response): Promise<T> {
   if (!response.ok) {
     const detail = await response.text().catch(() => '');
@@ -73,16 +112,26 @@ async function handle<T>(response: Response): Promise<T> {
   return (await response.json()) as T;
 }
 
-export async function identify(
-  imageUri: string,
-  context: FieldContext = {},
-): Promise<IdentifyResponse> {
-  const form = new FormData();
-  form.append('image', {
-    uri: imageUri,
-    name: 'mushroom.jpg',
+function appendPhoto(form: FormData, field: string, uri: string): void {
+  form.append(field, {
+    uri,
+    name: `${field}.jpg`,
     type: 'image/jpeg',
   } as unknown as Blob);
+}
+
+export async function identify(
+  views: Views,
+  context: FieldContext = {},
+  notes: FieldNotes = {},
+): Promise<IdentifyResponse> {
+  const form = new FormData();
+
+  // `image` is the top view. The name is historical -- it was the only
+  // photograph the API took -- and is kept so a single-photo client still works.
+  appendPhoto(form, 'image', views.top);
+  if (views.side) appendPhoto(form, 'side', views.side);
+  if (views.underside) appendPhoto(form, 'underside', views.underside);
 
   if (context.month) form.append('month', String(context.month));
   if (context.latitude !== undefined) {
@@ -90,6 +139,13 @@ export async function identify(
   }
   if (context.longitude !== undefined) {
     form.append('longitude', String(context.longitude));
+  }
+
+  const answered = Object.fromEntries(
+    Object.entries(notes).filter(([, value]) => value),
+  );
+  if (Object.keys(answered).length > 0) {
+    form.append('field_notes', JSON.stringify(answered));
   }
 
   const response = await fetch(`${BASE_URL}/identify`, {

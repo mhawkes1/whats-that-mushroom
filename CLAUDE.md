@@ -40,8 +40,13 @@ Everything works **except the model**. There is no trained classifier; the API
 serves a stub backend with deterministic fake predictions. Every other layer
 is real and tested.
 
-80 tests pass. `/health` honestly reports `model_loaded: false`,
+148 tests pass. `/health` honestly reports `model_loaded: false`,
 `calibrated: false`, `taxonomy_reviewed: false`.
+
+The training pipeline has been rehearsed end to end on synthetic data
+(`python scripts/smoke_e2e.py`, ~1 minute on CPU, no dataset or network
+needed). Run it before paying for GPU time and after any change to the model,
+the config schema or the export path.
 
 **Blocking for any public release: the taxonomy has not been reviewed by a
 qualified mycologist.** Toxicity data, lookalike relationships and diagnostic
@@ -84,6 +89,21 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   bug; there is a regression test.
 - **Splits are on `observation_id`, never on image.** If accuracy looks too
   good, check this before believing it.
+- **Answers are inert until `character_states` is filled in, by design.**
+  `apply_answer` now delegates to `server/app/evidence.py`, which compares the
+  answer against each species' declared states. No declared states means *no
+  evidence*, not a mismatch, so with the table empty the ranking does not move
+  at all. `/health` reports `character_states_described: 0` and
+  `python scripts/character_states.py status` says the same. **Do not read
+  this as a bug.** The previous placeholder moved 34 of 157 answers by
+  matching the answer string against free-text `notes`, which fired on
+  coincidence rather than on whether the character was diagnostic; it was
+  removed deliberately.
+- **Filling the table is a worksheet job, not a code job.** `python
+  scripts/character_states.py emit` writes `docs/character-states-worksheet.csv`
+  (190 rows, deadliest first); `import` validates and writes back. A state
+  that is not exactly one of the character's answer options is refused,
+  because it would store cleanly and never match anything.
 - **`notes` is rendered verbatim to users.** Rationale, policy and review
   flags go in `internal_note`, which is never surfaced.
 - **Expect 50–70% species top-1** on a first training run, with genus accuracy

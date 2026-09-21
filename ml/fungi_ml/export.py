@@ -26,7 +26,7 @@ def export_onnx(
     verify: bool = True,
     tolerance: float = 1e-3,
 ) -> Path:
-    from .models.build import FungiClassifier
+    from .models.build import load_checkpoint_model
 
     checkpoint_path = Path(checkpoint_path)
     checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
@@ -34,32 +34,13 @@ def export_onnx(
     config = checkpoint["config"]
     image_size = config["data"]["image_size"]
 
-    model = FungiClassifier(
-        num_classes=len(classes),
-        backbone=config["model"]["backbone"],
-        pretrained=False,
-    )
-    model.load_state_dict(checkpoint["model"])
-    model.eval()
+    model = load_checkpoint_model(checkpoint)
 
     out_path = Path(out_path or checkpoint_path.with_name("model.onnx"))
     dummy_image = torch.randn(1, 3, image_size, image_size)
     dummy_metadata = torch.zeros(1, 7)
 
-    torch.onnx.export(
-        model,
-        (dummy_image, dummy_metadata),
-        str(out_path),
-        input_names=["image", "metadata"],
-        output_names=["logits"],
-        dynamic_axes={
-            "image": {0: "batch"},
-            "metadata": {0: "batch"},
-            "logits": {0: "batch"},
-        },
-        opset_version=opset,
-        do_constant_folding=True,
-    )
+    _export_at_opset(model, (dummy_image, dummy_metadata), out_path, opset)
     log.info("Exported to %s", out_path)
 
     # Ship the label order beside the model. A model whose class order does
@@ -73,6 +54,72 @@ def export_onnx(
         _verify(model, out_path, dummy_image, dummy_metadata, tolerance)
 
     return out_path
+
+
+def emitted_opset(path: Path) -> int:
+    """The default-domain opset the file on disk actually declares."""
+    import onnx
+
+    model = onnx.load(str(path), load_external_data=False)
+    for entry in model.opset_import:
+        if entry.domain in ("", "ai.onnx"):
+            return int(entry.version)
+    raise RuntimeError(f"{path} declares no default-domain opset")
+
+
+def _export_at_opset(model, inputs, out_path: Path, opset: int) -> None:
+    """Write the ONNX file, and guarantee the opset we asked for is the one we got.
+
+    `torch.onnx.export` takes `opset_version` as a request, not a promise. The
+    torch.export-based exporter (the default since torch 2.9) emits at its own
+    opset and then tries to down-convert; when that conversion fails it logs a
+    warning, leaves the model at the higher opset and returns successfully.
+    We measured that here: asking for 17 produced a file declaring 18, with no
+    non-zero exit and no exception.
+
+    Nothing downstream would have caught it. onnxruntime on the dev box is new
+    enough to run either, so the export verifies, serves and looks correct --
+    right up until it meets a pinned runtime or the Core ML/TFLite converters
+    the on-device work needs, which do enforce the opset they advertise.
+
+    So: export, read back what was actually written, and if it is not what was
+    asked for, retry with the TorchScript exporter, which honours
+    `opset_version` exactly. If neither can produce it, raise -- an export at
+    an opset the caller did not ask for is exactly the silently-wrong artefact
+    this module exists to refuse to ship.
+    """
+    image, metadata = inputs
+    common = dict(
+        input_names=["image", "metadata"],
+        output_names=["logits"],
+        dynamic_axes={
+            "image": {0: "batch"},
+            "metadata": {0: "batch"},
+            "logits": {0: "batch"},
+        },
+        opset_version=opset,
+        do_constant_folding=True,
+    )
+
+    torch.onnx.export(model, (image, metadata), str(out_path), **common)
+    written = emitted_opset(out_path)
+    if written == opset:
+        return
+
+    log.warning(
+        "Exporter emitted opset %d despite a request for %d; retrying with the "
+        "TorchScript exporter, which honours it.",
+        written, opset,
+    )
+    torch.onnx.export(model, (image, metadata), str(out_path), dynamo=False, **common)
+
+    written = emitted_opset(out_path)
+    if written != opset:
+        raise RuntimeError(
+            f"Could not export at opset {opset}; got {written}. Either install a "
+            f"toolchain that supports it or pass --opset {written} deliberately. "
+            f"Do not ship a model whose opset is not the one you asked for."
+        )
 
 
 def _verify(model, onnx_path: Path, image, metadata, tolerance: float) -> None:
@@ -92,7 +139,10 @@ def _verify(model, onnx_path: Path, image, metadata, tolerance: float) -> None:
             f"ONNX export diverges from the PyTorch model by {max_difference:.6f} "
             f"(tolerance {tolerance}). Do not ship this model."
         )
-    log.info("Export verified: max difference %.2e", max_difference)
+    log.info(
+        "Export verified: max difference %.2e, opset %d",
+        max_difference, emitted_opset(onnx_path),
+    )
 
 
 if __name__ == "__main__":
