@@ -9,6 +9,24 @@ reports `taxonomy_reviewed: false`.
 row per species, sorted by review priority, with blank columns for the
 reviewer to complete.
 
+`character-states-worksheet.csv` is the second document, and it is the one
+that now needs checking first. It records **which state of each character a
+species actually shows** -- white spore print for the death cap, decurrent
+gills for the deadly *Clitocybe* -- and the app uses it to decide what a
+user's answer rules in or out. The 30 rows covering the 8 deadly species have
+been filled in from this repository's own descriptive notes, **not by a
+mycologist**, so that the mechanism could be tested. Those 30 rows are the
+highest-priority thing in this folder to verify or correct. The remaining 160
+rows are blank.
+
+One convention matters when completing it: **list every state the species can
+show, not just the typical one.** A state left off turns a correct observation
+into a contradiction and pushes that species down the candidate list, which
+for a deadly species is the dangerous direction. Listing an extra state only
+makes the character less useful for telling species apart. If you are unsure,
+leave the row blank -- blank means "not described", which the app treats as no
+evidence at all.
+
 ## Priority tiers
 
 ### Tier 1 — Critical (12 species)

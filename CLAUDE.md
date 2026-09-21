@@ -37,7 +37,7 @@ Everything works **except the model**. There is no trained classifier; the API
 serves a stub backend with deterministic fake predictions. Every other layer
 is real and tested.
 
-148 tests pass. `/health` honestly reports `model_loaded: false`,
+157 tests pass. `/health` honestly reports `model_loaded: false`,
 `calibrated: false`, `taxonomy_reviewed: false`.
 
 The training pipeline has been rehearsed end to end on synthetic data
@@ -86,16 +86,26 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   bug; there is a regression test.
 - **Splits are on `observation_id`, never on image.** If accuracy looks too
   good, check this before believing it.
-- **Answers are inert until `character_states` is filled in, by design.**
-  `apply_answer` now delegates to `server/app/evidence.py`, which compares the
-  answer against each species' declared states. No declared states means *no
-  evidence*, not a mismatch, so with the table empty the ranking does not move
-  at all. `/health` reports `character_states_described: 0` and
-  `python scripts/character_states.py status` says the same. **Do not read
-  this as a bug.** The previous placeholder moved 34 of 157 answers by
-  matching the answer string against free-text `notes`, which fired on
-  coincidence rather than on whether the character was diagnostic; it was
-  removed deliberately.
+- **`character_states` covers the 8 DEADLY species and nothing else, and is
+  UNREVIEWED.** It was derived from the taxonomy's own `notes`, not from a
+  mycologist, and every entry needs field-character review before release.
+  The other 49 species are undescribed, which the matcher treats as *no
+  evidence* rather than a mismatch, so answers about them still move nothing.
+  `/health` reports `character_states_described`;
+  `python scripts/character_states.py status` prints the same.
+- **State lists are deliberately generous, and must stay that way.** Omitting
+  a state a species can show turns a true observation into a contradiction and
+  pushes a lethal candidate *down* — the one direction this project cannot
+  tolerate. An extra state only makes the character less discriminating.
+  Galerina lists all four ring states for this reason; the death cap lists
+  five cap colours. Where the notes made no claim the entry is omitted, and
+  omitted is always safe.
+- **Some answer options are non-observations, not states.** `volva`'s "I cut
+  it off" and `cortina`'s "Can't tell" are in `uninformative_options` and get
+  a likelihood of 1.0. Without that, the commonest field mistake — cutting the
+  stem base off — would have pushed the death cap from 0.50 to 0.355 against a
+  field mushroom. Any new option meaning "I could not look" must be added
+  there; a test asserts no committed state is one.
 - **Filling the table is a worksheet job, not a code job.** `python
   scripts/character_states.py emit` writes `docs/character-states-worksheet.csv`
   (190 rows, deadliest first); `import` validates and writes back. A state

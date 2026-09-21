@@ -29,6 +29,15 @@ class Character:
     options: tuple[str, ...] = ()
     safety_note: str = ""
     requires_photo: bool = False
+    # Options that report a failed observation rather than a state of the
+    # mushroom. "I cut it off" says nothing about whether there was a volva;
+    # it says the user destroyed the evidence. Treating that as a state would
+    # let it contradict a species that does have one -- and the species with
+    # volvas are the ones that kill people, missed in exactly this way.
+    #
+    # `evidence.py` gives these a likelihood of 1.0, the same as a character
+    # nobody has described: no information, so nothing moves.
+    uninformative_options: tuple[str, ...] = ()
 
 
 CHARACTERS: dict[str, Character] = {
@@ -43,6 +52,7 @@ CHARACTERS: dict[str, Character] = {
         ),
         effort="minutes",
         options=("Clear cup or sac", "Swollen but no cup", "Neither", "I cut it off"),
+        uninformative_options=("I cut it off",),
         safety_note=(
             "This is the single most important check in mushroom foraging. The sac at "
             "the base is the mark of Amanita, the genus responsible for most fatal "
@@ -250,6 +260,7 @@ CHARACTERS: dict[str, Character] = {
             "often leaves a rusty band on the stem once it collapses."
         ),
         options=("Yes, cobwebby", "No", "Can't tell"),
+        uninformative_options=("Can't tell",),
         safety_note=(
             "A cortina places a mushroom in or near Cortinarius, a genus containing "
             "species that destroy the kidneys weeks after being eaten."

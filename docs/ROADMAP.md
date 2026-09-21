@@ -4,7 +4,7 @@
 
 Working: taxonomy and risk model, dataset pipeline, training loop,
 calibration, evaluation and model card generation, safety layer,
-interrogation engine, HTTP API, Expo client. 148 tests pass.
+interrogation engine, HTTP API, Expo client. 157 tests pass.
 
 The chain from raw manifest through to a served ONNX model has now been run
 end to end on synthetic data (`scripts/smoke_e2e.py`), so the stages are known
@@ -100,10 +100,10 @@ Expect species-level top-1 somewhere in the 50-70% range on a first pass with
 this label space, and genus accuracy substantially higher. If the first run
 reports 95%, there is a leak — check the observation-level split first.
 
-### 3. Fill in the character-state table
+### 3. Fill in the rest of the character-state table
 
-**The mechanism is built. What is missing is the data, and the data needs a
-reviewer rather than a programmer.**
+**The mechanism is built and the 8 deadly species are filled in, unreviewed.
+The remaining 49 need a reviewer rather than a programmer.**
 
 `apply_answer` now delegates to `server/app/evidence.py`, which compares an
 answer against each species' declared `character_states` and applies a
@@ -113,10 +113,29 @@ our side is not evidence about the mushroom. Contradicting a deadly species
 costs it far less than contradicting a harmless one, and no answer may drive a
 deadly candidate below the threshold at which the safety layer still warns.
 
-With the table empty every likelihood is 1.0, so answers change nothing. That
-is the honest degradation, and it is visible rather than disguised:
-`/health` reports `character_states_described`, and
+An undescribed species gets a likelihood of 1.0, so answers about the 49
+species still undescribed change nothing. That degradation is visible rather
+than disguised: `/health` reports `character_states_described`, and
 `python scripts/character_states.py status` prints coverage.
+
+The 8 deadly species were filled in from this repository's own `notes`, via
+the worksheet and importer below rather than by hand, so every state was
+validated against the answer options. They are marked UNREVIEWED in the
+taxonomy, in the worksheet and in `docs/REVIEW.md`, and still need
+field-character sign-off.
+
+Filling them in surfaced a hazard in the mechanism that an empty table hid.
+`volva` offers "I cut it off" and `cortina` offers "Can't tell" -- answers
+that report a failed observation rather than a state of the mushroom. Treated
+as states they *contradicted* the species that have a volva, so cutting the
+stem base off, which is precisely how an Amanita gets missed, pushed the death
+cap from 0.50 to 0.355 against a field mushroom. Those options are now marked
+`uninformative_options` and carry no evidence either way.
+
+**Write the lists generously.** Omitting a state a species can show turns a
+true observation into a contradiction and pushes a lethal candidate down. An
+extra state merely makes the character less discriminating. Leave a row blank
+wherever you are unsure: blank means undescribed, which is always safe.
 
 To fill it in:
 
@@ -127,7 +146,7 @@ python scripts/character_states.py import --dry-run
 python scripts/character_states.py import
 ```
 
-190 rows, one per (species, diagnostic character) pair. Import refuses any
+190 rows, one per (species, diagnostic character) pair; 30 filled, 160 open. Import refuses any
 state that is not exactly one of that character's answer options, since such a
 state would store cleanly and never match anything -- a populated table that
 cannot fire is worse than an empty one.

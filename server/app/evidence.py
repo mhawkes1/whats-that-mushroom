@@ -51,6 +51,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from .characters import CHARACTERS
 from .taxonomy_service import Species, TaxonomyService, Toxicity
 
 # A consistent answer leaves a candidate where it is. Evidence here only ever
@@ -71,6 +72,14 @@ DEADLY_INCONSISTENT = 0.55
 # mushroom. This is what makes the mechanism a no-op while the table is empty.
 UNDESCRIBED = 1.0
 
+# An answer that reports a failed observation rather than a state, such as
+# "I cut it off" for the stem base. Also no evidence: the user has told us
+# about themselves, not about the mushroom. Getting this wrong would be
+# actively dangerous -- cutting the base off is the classic way an Amanita is
+# missed, so letting it count against the species that have a volva would
+# make the app worse than useless on precisely the case it exists for.
+UNOBSERVED = 1.0
+
 # No answer may drive a deadly species below this. Matches the threshold in
 # docs/SAFETY.md at which a deadly candidate still triggers the full warning.
 DEADLY_PROBABILITY_FLOOR = 0.02
@@ -82,11 +91,28 @@ class Evidence:
 
     species_key: str
     likelihood: float
-    verdict: str  # "consistent" | "inconsistent" | "undescribed"
+    verdict: str  # "consistent" | "inconsistent" | "undescribed" | "unobserved"
+
+
+def is_uninformative(character_key: str, answer: str) -> bool:
+    """Does this answer report a failed observation rather than a state?"""
+    character = CHARACTERS.get(character_key)
+    if character is None:
+        return False
+    normalised = answer.strip().casefold()
+    return any(
+        option.strip().casefold() == normalised
+        for option in character.uninformative_options
+    )
 
 
 def likelihood_for(species: Species, character_key: str, answer: str) -> Evidence:
     """How much one answer supports or undermines one species."""
+    # Checked before the state table, because an unobserved character tells us
+    # nothing whether or not we have described the species.
+    if is_uninformative(character_key, answer):
+        return Evidence(species.key, UNOBSERVED, "unobserved")
+
     states = species.character_states.get(character_key)
 
     if not states:
@@ -131,7 +157,7 @@ def reweight(
             continue
 
         evidence = likelihood_for(species, character_key, answer)
-        if evidence.verdict != "undescribed":
+        if evidence.verdict in ("consistent", "inconsistent"):
             moved = True
         weighted.append((key, score * evidence.likelihood))
 

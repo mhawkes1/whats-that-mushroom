@@ -1,9 +1,11 @@
 """The answer-weighting mechanism.
 
-The character-state table is empty, so most of these build a taxonomy with
-states filled in by hand. That is the point: the mechanism has to be correct
-before the data arrives, or there is no way to tell a wrong table from a
-wrong update when it does.
+Most of these build a taxonomy with states filled in by hand rather than
+using the committed ones, so they test the update rather than the data. The
+two are separate failures and conflating them makes a wrong table look like a
+wrong mechanism.
+
+The tests over the real, committed table are at the bottom.
 """
 
 from __future__ import annotations
@@ -49,26 +51,33 @@ def with_states(
 # --- With the table empty, which is today ------------------------------------
 
 
-def test_an_empty_table_leaves_the_ranking_exactly_as_it_was(taxonomy):
+def test_an_undescribed_character_leaves_the_ranking_exactly_as_it_was(taxonomy):
     """No description means no evidence, so nothing may move.
 
-    This is the honest no-op the mechanism degrades to before the review
-    lands. It must be exact: a ranking that drifts slightly would be worse
-    than one that does not move, because it would look like it worked.
+    Most of the taxonomy is still undescribed, and for those characters the
+    update must be an exact no-op. A ranking that drifted slightly would be
+    worse than one that does not move, because it would look like it worked.
     """
-    ranked = [(DEATH_CAP, 0.5), (FIELD_MUSHROOM, 0.3), (CHANTERELLE, 0.2)]
+    ranked = [(CHANTERELLE, 0.5), (FIELD_MUSHROOM, 0.3), ("morchella-esculenta", 0.2)]
     assert reweight(ranked, "gill_colour", "White", taxonomy) == ranked
 
 
-def test_the_seed_taxonomy_ships_with_no_states_described(taxonomy):
-    """A guard on the claim the docs make.
+def test_every_deadly_species_is_described(taxonomy):
+    """The species that can kill are the ones an answer most needs to move."""
+    deadly = taxonomy.deadly_keys()
+    undescribed = sorted(k for k in deadly if not taxonomy[k].character_states)
+    assert undescribed == [], f"deadly species with no states: {undescribed}"
 
-    If someone fills the table in, this fails and the docs saying answers are
-    inert need updating with it.
+
+def test_most_of_the_taxonomy_is_still_undescribed(taxonomy):
+    """A guard on the claim the docs make about coverage.
+
+    If someone describes the rest, this fails and the docs saying only the
+    deadly species are filled in need updating with it.
     """
     coverage = described_coverage(taxonomy)
-    assert coverage["described"] == 0
-    assert coverage["fraction"] == 0.0
+    assert coverage["described"] == len(taxonomy.deadly_keys())
+    assert 0.0 < coverage["fraction"] < 0.5
 
 
 # --- The likelihood, per species ---------------------------------------------
@@ -253,15 +262,110 @@ def test_a_deadly_candidate_still_falls_when_contradicted(taxonomy):
     assert updated[DEATH_CAP] < 0.6
 
 
-def test_coverage_reports_what_has_been_described(taxonomy):
+def test_coverage_counts_species_and_entries(taxonomy):
+    baseline = described_coverage(taxonomy)
     described = with_states(
         taxonomy,
         {
-            DEATH_CAP: {"gill_colour": ("White",), "ring": ("Firm skirt-like ring",)},
+            CHANTERELLE: {"gill_type": ("Blunt forking ridges",)},
             FIELD_MUSHROOM: {"gill_colour": ("Pink",)},
         },
     )
     coverage = described_coverage(described)
-    assert coverage["described"] == 2
-    assert coverage["state_entries"] == 3
+    assert coverage["described"] == baseline["described"] + 2
+    assert coverage["state_entries"] == baseline["state_entries"] + 2
     assert 0 < coverage["fraction"] < 1
+
+
+# --- Over the real, committed table ------------------------------------------
+#
+# Everything above tests the update with hand-built data. These test the data
+# that actually ships, on the confusions it exists to handle.
+
+
+def test_destroying_the_evidence_does_not_clear_an_amanita(taxonomy):
+    """"I cut it off" says nothing about whether there was a volva.
+
+    It is the single most important case in the file. Cutting the stem at
+    ground level is how an Amanita is missed in the field -- the character's
+    own safety note says so -- and treating it as a state would let the most
+    common field mistake push the deadliest genus down the list.
+    """
+    ranked = [(DEATH_CAP, 0.5), (FIELD_MUSHROOM, 0.5)]
+    assert reweight(ranked, "volva", "I cut it off", taxonomy) == ranked
+
+    evidence = likelihood_for(taxonomy[DEATH_CAP], "volva", "I cut it off")
+    assert evidence.verdict == "unobserved"
+    assert evidence.likelihood == 1.0
+
+
+def test_not_being_able_to_tell_is_not_evidence_either(taxonomy):
+    """The same, for the webcap's cortina."""
+    webcap = "cortinarius-rubellus"
+    ranked = [(webcap, 0.5), (CHANTERELLE, 0.5)]
+    assert reweight(ranked, "cortina", "Can't tell", taxonomy) == ranked
+
+
+def test_seeing_a_volva_keeps_the_death_cap_in_play(taxonomy):
+    """A consistent answer must never push a deadly candidate down."""
+    ranked = [(FIELD_MUSHROOM, 0.7), (DEATH_CAP, 0.3)]
+    updated = dict(reweight(ranked, "volva", "Clear cup or sac", taxonomy))
+    assert updated[DEATH_CAP] >= 0.3
+
+
+def test_a_rust_spore_print_does_not_clear_the_funeral_bell(taxonomy):
+    """The confusion the notes call the most dangerous for experienced foragers.
+
+    Galerina marginata and Kuehneromyces mutabilis share a rust-brown spore
+    print and dead wood. An answer consistent with both must not separate
+    them -- if anything could, this pair would not be dangerous.
+    """
+    ranked = [("galerina-marginata", 0.5), ("kuehneromyces-mutabilis", 0.5)]
+    updated = dict(reweight(ranked, "spore_print_colour", "Rust or cinnamon brown", taxonomy))
+    assert updated["galerina-marginata"] >= 0.5
+
+
+def test_no_ring_does_not_clear_the_funeral_bell(taxonomy):
+    """Galerina's ring is fragile and frequently absent by the time it is found.
+
+    All four ring states are listed for it on purpose, so that seeing no ring
+    cannot be used to rule it out.
+    """
+    ranked = [("galerina-marginata", 0.5), ("kuehneromyces-mutabilis", 0.5)]
+    updated = dict(reweight(ranked, "ring", "No ring", taxonomy))
+    assert updated["galerina-marginata"] >= 0.5
+
+
+def test_a_pale_cap_does_not_clear_the_death_cap(taxonomy):
+    """Cap colour is listed generously because death caps are not reliably olive.
+
+    Pinning cap_colour to olive alone would let a pale specimen -- which is
+    exactly what gets mistaken for a field mushroom -- be dismissed.
+    """
+    for colour in ("White or cream", "Yellow", "Brown", "Grey", "Olive or greenish"):
+        ranked = [(FIELD_MUSHROOM, 0.5), (DEATH_CAP, 0.5)]
+        updated = dict(reweight(ranked, "cap_colour", colour, taxonomy))
+        assert updated[DEATH_CAP] >= 0.5, f"a {colour.lower()} cap dismissed the death cap"
+
+
+def test_every_committed_state_is_a_real_answer_option(taxonomy):
+    """A state no answer can equal would be a table entry that never fires."""
+    from app.characters import CHARACTERS
+
+    for species in taxonomy.species.values():
+        for character_key, states in species.character_states.items():
+            character = CHARACTERS[character_key]
+            for state in states:
+                assert state in character.options, f"{species.key}/{character_key}: {state!r}"
+
+
+def test_no_committed_state_is_an_unobservable_answer(taxonomy):
+    """A species cannot "be" an answer that means the user failed to look."""
+    from app.evidence import is_uninformative
+
+    for species in taxonomy.species.values():
+        for character_key, states in species.character_states.items():
+            for state in states:
+                assert not is_uninformative(character_key, state), (
+                    f"{species.key}/{character_key}: {state!r} is a non-observation"
+                )

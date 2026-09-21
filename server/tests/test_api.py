@@ -324,31 +324,32 @@ def test_field_notes_never_unlock_a_species_verdict(client):
 
 
 def test_health_reports_character_state_coverage(client):
-    """A zero here is the honest signal that field notes cannot yet bite.
+    """How much of the table is filled in, so an operator can tell.
 
-    Without it, an operator seeing answers change nothing has no way to tell
-    an empty table from a broken update.
+    Answers only re-weight species that have states. Without this number,
+    a ranking that does not move looks identical to a broken update.
     """
+    from app.config import settings
+    from app.taxonomy_service import TaxonomyService
+
+    taxonomy = TaxonomyService.load(settings.taxonomy_path)
     body = client.get("/health").json()
-    assert "character_states_described" in body
-    assert body["character_states_described"] == 0
+
+    assert body["character_states_described"] == len(taxonomy.deadly_keys())
 
 
-def test_field_notes_are_inert_while_the_state_table_is_empty(client):
-    """Documents today's behaviour so a future fill-in has to update it.
+def test_field_notes_now_change_the_assessment(client):
+    """The deadly species are described, so an answer about them must bite.
 
-    The same photographs with and without field notes must produce an
-    identical ranking, because no species declares any states yet.
+    This is the end of the loop the capture form started: something the user
+    saw, submitted on the form, reaching the ranking.
     """
     import json
 
-    from app.characters import CHARACTERS
-
     photo = a_photo((150, 120, 90))
-    notes = {
-        "habitat": CHARACTERS["habitat"].options[0],
-        "gill_colour": CHARACTERS["gill_colour"].options[0],
-    }
+    # Spore print is described for every deadly species, so whichever ones the
+    # stub ranks, this answer is evidence about them.
+    notes = {"spore_print_colour": "Black"}
 
     without = client.post(
         "/identify", files={"image": ("m.jpg", photo, "image/jpeg")}
@@ -362,4 +363,4 @@ def test_field_notes_are_inert_while_the_state_table_is_empty(client):
     rank = lambda body: [  # noqa: E731
         (c["species_key"], round(c["confidence"], 9)) for c in body["candidates"]
     ]
-    assert rank(without) == rank(with_notes)
+    assert rank(without) != rank(with_notes)

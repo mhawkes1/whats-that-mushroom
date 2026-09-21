@@ -37,11 +37,22 @@ script = _load_script()
 WORKSHEET = ROOT / "docs" / "character-states-worksheet.csv"
 
 
-def test_the_committed_worksheet_is_present_and_blank():
-    """It ships blank: the states it will hold are unreviewed claims."""
+def test_the_committed_worksheet_carries_the_deadly_species_and_nothing_else():
+    """Only the species that can kill are filled in, and they are flagged.
+
+    Everything else waits for a reviewer. The filled rows are marked
+    unreviewed in the sheet itself so nobody mistakes them for sign-off.
+    """
     rows = list(csv.DictReader(WORKSHEET.open(encoding="utf-8")))
     assert rows, "the worksheet should list rows for a reviewer to fill"
-    assert all(not row["REVIEW_states"].strip() for row in rows)
+
+    filled = [row for row in rows if row["REVIEW_states"].strip()]
+    assert filled, "the deadly species rows should be filled"
+    assert {row["toxicity"] for row in filled} == {"DEADLY"}
+    assert all("UNREVIEWED" in row["REVIEW_notes"] for row in filled)
+
+    blank = [row for row in rows if not row["REVIEW_states"].strip()]
+    assert blank, "everything past the deadly species is still a reviewer's job"
 
 
 def test_every_worksheet_row_offers_the_real_answer_options():
@@ -75,7 +86,14 @@ def test_deadly_species_are_listed_first():
 
 
 def _worksheet_with(tmp_path: Path, filled: list[dict]) -> Path:
+    """A copy of the worksheet with everything cleared but these rows.
+
+    Blanked first so these tests assert the parser's behaviour rather than
+    whatever happens to be filled in at the time.
+    """
     rows = list(csv.DictReader(WORKSHEET.open(encoding="utf-8")))
+    for row in rows:
+        row["REVIEW_states"] = ""
     for target in filled:
         for row in rows:
             if (

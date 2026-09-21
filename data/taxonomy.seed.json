@@ -3,6 +3,8 @@
   "version": "0.1.0-draft",
   "region": "GB",
   "reviewed_by": null,
+  "$policy": "The `toxicity` field records the consequence of EATING a species, and is used only to drive warnings. It is never rendered as a recommendation. No species is ever labelled edible: the highest-safety value is INEDIBLE. The `notes` field is shown to users verbatim and must describe only what is observable. Rationale, policy and review flags belong in `internal_note`, which is never surfaced.",
+  "$character_states": "character_states is present for the 8 DEADLY species only, and is UNREVIEWED. It was derived from this file's own `notes` for each species rather than from a mycologist, to make the answer-weighting mechanism in server/app/evidence.py testable end to end. State lists are deliberately generous: omitting a state a species can show turns a true observation into a contradiction and pushes a lethal candidate down, which is the one direction this project cannot tolerate, whereas an extra state only makes the character less discriminating. Where the notes made no claim -- bruising_reaction for Amanita virosa, smell for Inocybe erubescens -- the entry is omitted, because omitted means 'no evidence' and is always safe. Every entry needs field-character review before release. See docs/REVIEW.md and docs/character-states-worksheet.csv.",
   "species": [
     {
       "key": "amanita-phalloides",
@@ -27,7 +29,28 @@
         "gill_attachment",
         "cap_colour"
       ],
-      "notes": "Responsible for the majority of fatal mushroom poisonings worldwide. Free white gills, white spore print, membranous ring, and a sac-like volva at the stem base which is often buried and missed. Olive-green to yellowish cap. Ectomycorrhizal, usually with oak or beech."
+      "notes": "Responsible for the majority of fatal mushroom poisonings worldwide. Free white gills, white spore print, membranous ring, and a sac-like volva at the stem base which is often buried and missed. Olive-green to yellowish cap. Ectomycorrhizal, usually with oak or beech.",
+      "character_states": {
+        "volva": [
+          "Clear cup or sac"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "gill_attachment": [
+          "Free, not touching the stem"
+        ],
+        "cap_colour": [
+          "Olive or greenish",
+          "Yellow",
+          "White or cream",
+          "Brown",
+          "Grey"
+        ]
+      }
     },
     {
       "key": "amanita-virosa",
@@ -51,7 +74,22 @@
         "gill_colour",
         "bruising_reaction"
       ],
-      "notes": "Entirely white, including the gills, which stay white at all ages. White spore print. Ragged ring and a sac-like volva. Young buttons are readily mistaken for puffballs; sectioning vertically reveals the developing cap and gills."
+      "notes": "Entirely white, including the gills, which stay white at all ages. White spore print. Ragged ring and a sac-like volva. Young buttons are readily mistaken for puffballs; sectioning vertically reveals the developing cap and gills.",
+      "character_states": {
+        "volva": [
+          "Clear cup or sac"
+        ],
+        "ring": [
+          "Firm skirt-like ring",
+          "Faint zone only"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "gill_colour": [
+          "White"
+        ]
+      }
     },
     {
       "key": "galerina-marginata",
@@ -74,7 +112,24 @@
         "ring",
         "stipe_surface"
       ],
-      "notes": "Contains the same amatoxins as the Death Cap. Grows in clusters on dead wood, which is exactly where foragers look for Sheathed Woodtuft. Rust-brown spore print. The distinction from Kuehneromyces mutabilis is genuinely difficult and is the single most dangerous confusion for experienced foragers."
+      "notes": "Contains the same amatoxins as the Death Cap. Grows in clusters on dead wood, which is exactly where foragers look for Sheathed Woodtuft. Rust-brown spore print. The distinction from Kuehneromyces mutabilis is genuinely difficult and is the single most dangerous confusion for experienced foragers.",
+      "character_states": {
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "ring": [
+          "Firm skirt-like ring",
+          "Faint zone only",
+          "No ring"
+        ],
+        "stipe_surface": [
+          "Fibrous",
+          "Smooth"
+        ]
+      }
     },
     {
       "key": "cortinarius-rubellus",
@@ -96,7 +151,21 @@
         "gill_type",
         "habitat"
       ],
-      "notes": "Contains orellanine. Kidney failure onset is delayed by 2-3 weeks, so victims rarely connect the illness to the meal. Rusty-brown spore print, cobwebby cortina on the stem, true gills. Conifer woodland, often among Sphagnum."
+      "notes": "Contains orellanine. Kidney failure onset is delayed by 2-3 weeks, so victims rarely connect the illness to the meal. Rusty-brown spore print, cobwebby cortina on the stem, true gills. Conifer woodland, often among Sphagnum.",
+      "character_states": {
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
+        ],
+        "cortina": [
+          "Yes, cobwebby"
+        ],
+        "gill_type": [
+          "Blade-like gills"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ]
+      }
     },
     {
       "key": "gyromitra-esculenta",
@@ -116,7 +185,19 @@
         "interior_structure",
         "season"
       ],
-      "notes": "Contains gyromitrin, which metabolises to monomethylhydrazine. The cap is irregularly brain-like or saddle-shaped, not regularly pitted like a true morel, and the interior is chambered rather than a single hollow cavity. Spring, usually with conifers."
+      "notes": "Contains gyromitrin, which metabolises to monomethylhydrazine. The cap is irregularly brain-like or saddle-shaped, not regularly pitted like a true morel, and the interior is chambered rather than a single hollow cavity. Spring, usually with conifers.",
+      "character_states": {
+        "cap_surface": [
+          "Brain-like or folded"
+        ],
+        "interior_structure": [
+          "Chambered or cottony"
+        ],
+        "season": [
+          "Spring",
+          "Summer"
+        ]
+      }
     },
     {
       "key": "clitocybe-rivulosa",
@@ -139,7 +220,22 @@
         "habitat",
         "cap_surface"
       ],
-      "notes": "High muscarine content; fatalities are rare but recorded. Decurrent gills running down the stem, versus the free-to-adnexed gills of Marasmius oreades. Shares the same short grassland and lawn habitat, and often the same fairy rings."
+      "notes": "High muscarine content; fatalities are rare but recorded. Decurrent gills running down the stem, versus the free-to-adnexed gills of Marasmius oreades. Shares the same short grassland and lawn habitat, and often the same fairy rings.",
+      "character_states": {
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "No trees nearby",
+          "Mixed broadleaf"
+        ],
+        "cap_surface": [
+          "Smooth and dry"
+        ]
+      }
     },
     {
       "key": "inocybe-erubescens",
@@ -160,7 +256,19 @@
         "spore_print_colour",
         "smell"
       ],
-      "notes": "Severe muscarine poisoning; fatalities recorded. Radially fibrous cap staining red where handled or bruised. Appears in spring alongside St George's Mushroom, with which it has been fatally confused."
+      "notes": "Severe muscarine poisoning; fatalities recorded. Radially fibrous cap staining red where handled or bruised. Appears in spring alongside St George's Mushroom, with which it has been fatally confused.",
+      "character_states": {
+        "bruising_reaction": [
+          "Red or pink"
+        ],
+        "cap_surface": [
+          "Fibrous"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown",
+          "Chocolate or purple-brown"
+        ]
+      }
     },
     {
       "key": "paxillus-involutus",
@@ -1145,7 +1253,19 @@
         "gill_spacing",
         "habitat"
       ],
-      "notes": "Taxonomically entangled with Clitocybe rivulosa and treated as equivalently dangerous. Crowded decurrent gills in short grassland."
+      "notes": "Taxonomically entangled with Clitocybe rivulosa and treated as equivalently dangerous. Crowded decurrent gills in short grassland.",
+      "character_states": {
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "gill_spacing": [
+          "Crowded"
+        ],
+        "habitat": [
+          "No trees nearby",
+          "Mixed broadleaf"
+        ]
+      }
     },
     {
       "key": "suillus-granulatus",
@@ -1166,6 +1286,5 @@
       ],
       "notes": "No ring, and young pores exude milky droplets."
     }
-  ],
-  "$policy": "The `toxicity` field records the consequence of EATING a species, and is used only to drive warnings. It is never rendered as a recommendation. No species is ever labelled edible: the highest-safety value is INEDIBLE. The `notes` field is shown to users verbatim and must describe only what is observable. Rationale, policy and review flags belong in `internal_note`, which is never surfaced."
+  ]
 }
