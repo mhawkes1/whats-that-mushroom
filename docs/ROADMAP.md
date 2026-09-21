@@ -4,7 +4,7 @@
 
 Working: taxonomy and risk model, dataset pipeline, training loop,
 calibration, evaluation and model card generation, safety layer,
-interrogation engine, HTTP API, Expo client. 195 tests pass.
+interrogation engine, HTTP API, Expo client. 210 tests pass.
 
 The chain from raw manifest through to a served ONNX model has now been run
 end to end on synthetic data (`scripts/smoke_e2e.py`), so the stages are known
@@ -245,11 +245,23 @@ model in the bundle. The safety layer must move client-side with it —
 critically, it must not be possible to get a species answer with the safety
 rules bypassed because the network was unavailable.
 
-### 6. Guided spore print workflow
+### 6. Guided spore print workflow *(done)*
 
-Nobody has built this and it is the most diagnostic cheap test in mycology.
-Guided capture, a timer, and colour matching against a reference chart under
-controlled white balance. A genuine differentiator and a genuine contribution.
+Four steps, in `app/src/screens/SporePrintScreen.tsx`: how to set a print up,
+a timer that outlives the app being closed, a guided photograph against the
+half-white card, and a colour match the user confirms. Reached from the
+question card whenever the engine asks for a spore print, which is the one
+character it will send someone away for hours to obtain.
+
+The matcher in `server/app/spore_print.py` already existed and was wired to
+nothing. `POST /spore-print/match` now takes the photograph plus two regions
+as fractions of the image and samples them server-side, because pixel access
+is awkward on the device and the colour judgement already lives beside the
+answer strings it has to produce. The sample is a median rather than a mean,
+so dust specks and glare do not drag a black print toward grey.
+
+Nothing is submitted automatically. A confident reading is shown as a
+suggestion beside the full manual list, and the user picks.
 
 ### 7. Observation log
 
@@ -280,8 +292,7 @@ community verification.
 - **Spore print colour matching** (`server/app/spore_print.py`). Matches a
   photographed deposit against a reference chart in CIELAB using CIEDE2000,
   correcting exposure and colour cast against the white half of the card. It
-  refuses far more often than it answers, which is the point. Not yet wired
-  to a guided-capture screen -- the matcher exists, the camera flow does not.
+  refuses far more often than it answers, which is the point.
 
 ## Explicitly not doing
 

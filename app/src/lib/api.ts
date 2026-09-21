@@ -192,3 +192,55 @@ export function verdictColour(
   if (verdict === 'species') return colours.confident;
   return colours.caution;
 }
+
+/** A rectangle on the photograph, in fractions of its width and height. */
+export interface Region {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface ColourMatch {
+  option: string;
+  distance: number;
+}
+
+export interface SporePrintReading {
+  confident: boolean;
+  /** Null whenever no match may be asserted. Never guess past this. */
+  option: string | null;
+  reason: string;
+  ranked: ColourMatch[];
+  corrected_rgb: number[] | null;
+}
+
+/**
+ * Match a photographed spore print against the reference chart.
+ *
+ * The two patches are marked rather than sampled here: reading pixels is
+ * awkward on the device, and the server already owns the colour judgement and
+ * the answer strings it has to produce.
+ *
+ * The result is a suggestion. A reading with `confident: false` has no option
+ * and must not be submitted; the ranking it carries is for ordering the manual
+ * picker, nothing more.
+ */
+export async function matchSporePrint(
+  imageUri: string,
+  sample: Region,
+  white: Region,
+): Promise<SporePrintReading> {
+  const form = new FormData();
+  appendPhoto(form, 'image', imageUri);
+  const asField = (r: Region) => `${r.x},${r.y},${r.width},${r.height}`;
+  form.append('sample_region', asField(sample));
+  form.append('white_region', asField(white));
+
+  const response = await fetch(`${BASE_URL}/spore-print/match`, {
+    method: 'POST',
+    body: form,
+    headers: { Accept: 'application/json' },
+  });
+  return handle<SporePrintReading>(response);
+}

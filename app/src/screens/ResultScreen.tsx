@@ -28,7 +28,7 @@ import { theme } from '../lib/theme';
  * The candidate list is not the headline. Putting a species name and a big
  * percentage at the top is precisely the design that gets people poisoned.
  */
-export function ResultScreen({ route }: { route: any }) {
+export function ResultScreen({ navigation, route }: { navigation: any; route: any }) {
   const { imageUri } = route.params as { imageUri?: string };
   const [result, setResult] = useState<IdentifyResponse>(route.params.result);
   const [busy, setBusy] = useState(false);
@@ -64,6 +64,19 @@ export function ResultScreen({ route }: { route: any }) {
             question={nextQuestion}
             disabled={busy}
             onAnswer={(answer) => onAnswer(nextQuestion.key, answer)}
+            // The only character the app can currently walk someone through
+            // obtaining. It is also the one that takes hours and the one that
+            // most often settles a lethal ambiguity.
+            onGuide={
+              nextQuestion.key === 'spore_print_colour'
+                ? () =>
+                    navigation.navigate('SporePrint', {
+                      observationId: result.observation_id,
+                      onMatched: (option: string) =>
+                        onAnswer('spore_print_colour', option),
+                    })
+                : undefined
+            }
           />
           {result.questions.length > 1 ? (
             <Text style={styles.remaining}>

@@ -7,6 +7,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { CaptureScreen } from './src/screens/CaptureScreen';
 import { FieldNotesScreen } from './src/screens/FieldNotesScreen';
 import { ResultScreen } from './src/screens/ResultScreen';
+import { SporePrintScreen } from './src/screens/SporePrintScreen';
 import { theme } from './src/lib/theme';
 
 const Stack = createNativeStackNavigator();
@@ -50,6 +51,11 @@ export default function App() {
             name="Result"
             component={ResultScreen}
             options={{ title: 'What I can tell you' }}
+          />
+          <Stack.Screen
+            name="SporePrint"
+            component={SporePrintScreen}
+            options={{ title: 'Spore print' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

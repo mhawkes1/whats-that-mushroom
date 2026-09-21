@@ -366,3 +366,108 @@ def test_field_notes_now_change_the_assessment(client):
         (c["species_key"], round(c["confidence"], 9)) for c in body["candidates"]
     ]
     assert rank(without) != rank(with_notes)
+
+
+# --- Spore print matching ----------------------------------------------------
+
+
+def a_spore_card(deposit=(38, 35, 34), white=(243, 243, 243)) -> bytes:
+    """Half deposit, half white reference card, as the instructions describe."""
+    buffer = io.BytesIO()
+    image = Image.new("RGB", (400, 200), white)
+    image.paste(Image.new("RGB", (200, 200), deposit), (0, 0))
+    image.save(buffer, "PNG")  # lossless: JPEG artefacts would move the colours
+    return buffer.getvalue()
+
+
+SAMPLE_REGION = "0.05,0.2,0.35,0.6"
+WHITE_REGION = "0.6,0.2,0.35,0.6"
+
+
+def test_matching_a_photographed_spore_print(client):
+    response = client.post(
+        "/spore-print/match",
+        files={"image": ("print.png", a_spore_card(), "image/png")},
+        data={"sample_region": SAMPLE_REGION, "white_region": WHITE_REGION},
+    )
+    assert response.status_code == 200
+    body = response.json()
+
+    assert body["confident"] is True
+    assert body["option"] == "Black"
+    assert body["ranked"][0]["option"] == "Black"
+    assert body["corrected_rgb"]
+
+
+def test_a_matched_colour_is_submittable_to_answer(client):
+    """The loop this closes: the engine asks, the camera reads, /answer takes it."""
+    from app.characters import CHARACTERS
+
+    body = client.post(
+        "/spore-print/match",
+        files={"image": ("print.png", a_spore_card(), "image/png")},
+        data={"sample_region": SAMPLE_REGION, "white_region": WHITE_REGION},
+    ).json()
+
+    assert body["option"] in CHARACTERS["spore_print_colour"].options
+
+
+def test_an_ambiguous_print_returns_no_option_but_still_ranks(client):
+    """White against pink is the boundary that matters, and it must decline."""
+    white = REFERENCE_WHITE = (245, 240, 228)
+    pink = (226, 186, 180)
+    midpoint = tuple((a + b) // 2 for a, b in zip(white, pink))
+
+    body = client.post(
+        "/spore-print/match",
+        files={"image": ("print.png", a_spore_card(deposit=midpoint), "image/png")},
+        data={"sample_region": SAMPLE_REGION, "white_region": WHITE_REGION},
+    ).json()
+
+    assert body["confident"] is False
+    assert body["option"] is None
+    assert len(body["ranked"]) > 1, "the manual picker still needs an ordering"
+    assert body["reason"]
+
+
+def test_a_malformed_region_is_rejected(client):
+    for bad in ["0.1,0.2", "a,b,c,d", ""]:
+        response = client.post(
+            "/spore-print/match",
+            files={"image": ("print.png", a_spore_card(), "image/png")},
+            data={"sample_region": bad, "white_region": WHITE_REGION},
+        )
+        assert response.status_code in (400, 422), bad
+
+
+def test_a_region_off_the_edge_of_the_image_is_rejected(client):
+    response = client.post(
+        "/spore-print/match",
+        files={"image": ("print.png", a_spore_card(), "image/png")},
+        data={"sample_region": "0.8,0.0,0.5,0.5", "white_region": WHITE_REGION},
+    )
+    assert response.status_code == 400
+
+
+def test_a_broken_upload_names_the_spore_print(client):
+    response = client.post(
+        "/spore-print/match",
+        files={"image": ("x.txt", b"not an image", "text/plain")},
+        data={"sample_region": SAMPLE_REGION, "white_region": WHITE_REGION},
+    )
+    assert response.status_code == 400
+    assert "spore print" in response.json()["detail"]
+
+
+def test_matching_never_asserts_edibility(client):
+    """Rule 1, on a path that returns free text."""
+    import re
+
+    affirmative = re.compile(r"\b(edible|safe to eat|good to eat)\b", re.I)
+    for deposit in [(38, 35, 34), (245, 240, 228), (166, 104, 56)]:
+        body = client.post(
+            "/spore-print/match",
+            files={"image": ("print.png", a_spore_card(deposit=deposit), "image/png")},
+            data={"sample_region": SAMPLE_REGION, "white_region": WHITE_REGION},
+        ).json()
+        assert not affirmative.search(body["reason"]), body["reason"]

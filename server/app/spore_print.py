@@ -12,7 +12,7 @@ as a white-balance reference -- kitchen lighting runs anywhere from 2700K
 tungsten to overcast daylight, and an uncorrected "white or cream" under a
 warm bulb measures as distinctly cream, which is a different answer.
 
-The caller samples two patches and sends their mean sRGB values. All the
+The caller marks two patches on the photograph and the server samples them. All the
 judgement lives here, on the server, for two reasons:
 
   * The six answer strings are defined in `characters.py`. A second copy in
@@ -40,6 +40,9 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+
+import numpy as np
+from PIL import Image
 
 # The chart. Keys are the `spore_print_colour` options from `characters.py`
 # verbatim, because the matched key is submitted straight back to `/answer`.
@@ -326,4 +329,67 @@ def match_spore_print(
         ),
         ranked=ranked,
         corrected_rgb=corrected,
+    )
+
+
+# --- Reading the patches off a photograph ------------------------------------
+
+# The smallest patch worth a median. Below this a single speck of dust is a
+# large share of the sample.
+MIN_PATCH_PIXELS = 25
+
+
+def sample_patch(
+    image: Image.Image, region: tuple[float, float, float, float]
+) -> tuple[float, float, float]:
+    """Mean-free sample of a rectangle, as (r, g, b).
+
+    `region` is (x, y, width, height) in fractions of the image, so the client
+    can mark a patch without knowing the resolution it captured at.
+
+    The statistic is the **median** per channel, not the mean. A spore deposit
+    photographed on paper picks up dust specks, a stray fibre, and a glare
+    highlight or two, and a mean folds all of them into the answer -- one
+    bright speck on a black print drags the sample toward grey, which is a
+    different chart entry. A median ignores anything that is not most of the
+    patch, which is exactly the right behaviour when the patch is meant to be
+    one flat colour.
+    """
+    x, y, width, height = region
+    if not all(0.0 <= v <= 1.0 for v in (x, y)) or width <= 0 or height <= 0:
+        raise ValueError("region must be (x, y, w, h) as fractions of the image")
+    if x + width > 1.0 + 1e-6 or y + height > 1.0 + 1e-6:
+        raise ValueError("region falls outside the image")
+
+    rgb = image.convert("RGB")
+    left = int(round(x * rgb.width))
+    top = int(round(y * rgb.height))
+    right = max(left + 1, int(round((x + width) * rgb.width)))
+    bottom = max(top + 1, int(round((y + height) * rgb.height)))
+    patch = rgb.crop((left, top, min(right, rgb.width), min(bottom, rgb.height)))
+
+    pixels = np.asarray(patch, dtype=np.float64).reshape(-1, 3)
+    if len(pixels) < MIN_PATCH_PIXELS:
+        raise ValueError(
+            f"patch is only {len(pixels)} pixels; mark a larger area"
+        )
+
+    channels = np.median(pixels, axis=0)
+    return (float(channels[0]), float(channels[1]), float(channels[2]))
+
+
+def read_from_photograph(
+    image: Image.Image,
+    sample_region: tuple[float, float, float, float],
+    white_region: tuple[float, float, float, float],
+) -> SporePrintReading:
+    """Sample both patches off one photograph and match the deposit.
+
+    Both patches come from the same frame deliberately: the white card is only
+    a usable reference for the light the deposit was under if it was lit by
+    that same light, in that same exposure.
+    """
+    return match_spore_print(
+        sample_patch(image, sample_region),
+        sample_patch(image, white_region),
     )

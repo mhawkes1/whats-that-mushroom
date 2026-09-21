@@ -92,7 +92,8 @@ whats-that-mushroom/
 │       ├── characters.py      how to ask a non-expert for evidence
 │       └── main.py            HTTP API
 ├── app/                       Expo React Native client
-│   └── src/screens/           capture -> field notes -> result
+│   └── src/screens/           capture -> field notes -> result, plus the
+│                               guided spore print
 ├── CLAUDE.md                  orientation for anyone (or any agent) picking this up
 └── docs/
     ├── SAFETY.md              the policy that governs the product
@@ -109,7 +110,7 @@ and no dataset yet; the API serves a stub backend producing deterministic fake
 predictions so the safety layer, interrogation engine, API and mobile client
 can all be developed and tested. Every other layer is real and tested.
 
-195 tests pass, covering split integrity, the risk asymmetry, calibration, the
+210 tests pass, covering split integrity, the risk asymmetry, calibration, the
 checkpoint-to-ONNX seam, spore print colour matching, the evidence model's
 safety floors, and the classic fatal confusions end to end.
 

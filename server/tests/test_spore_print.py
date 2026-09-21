@@ -180,3 +180,120 @@ def test_a_confident_reading_always_names_a_real_answer_option(option):
     reading = match_spore_print(tuple(float(c) for c in REFERENCE_CHART[option]), NEUTRAL_WHITE)
     if reading.confident:
         assert reading.option in CHARACTERS["spore_print_colour"].options
+
+
+# --- Reading the patches off a photograph ------------------------------------
+
+
+def a_card(
+    deposit: tuple[int, int, int],
+    white: tuple[int, int, int] = (243, 243, 243),
+    size: tuple[int, int] = (400, 200),
+):
+    """A half-white card with a deposit on the left, white reference right."""
+    from PIL import Image
+
+    image = Image.new("RGB", size, white)
+    image.paste(
+        Image.new("RGB", (size[0] // 2, size[1]), deposit), (0, 0)
+    )
+    return image
+
+
+LEFT_HALF = (0.05, 0.2, 0.35, 0.6)
+RIGHT_HALF = (0.6, 0.2, 0.35, 0.6)
+
+
+def test_a_photographed_print_matches_the_chart():
+    from app.spore_print import read_from_photograph
+
+    for option, rgb in REFERENCE_CHART.items():
+        reading = read_from_photograph(a_card(rgb), LEFT_HALF, RIGHT_HALF)
+        assert reading.confident, f"{option}: {reading.reason}"
+        assert reading.option == option
+
+
+def test_sampling_takes_the_median_not_the_mean():
+    """The reason the statistic is a median.
+
+    A black deposit on paper collects dust specks and a glare highlight or
+    two. A mean folds them in and drags the sample toward grey, which is a
+    different chart entry; a median ignores anything that is not most of the
+    patch.
+    """
+    from app.spore_print import read_from_photograph, sample_patch
+
+    image = a_card(REFERENCE_CHART["Black"])
+    # Scatter bright specks across the deposit, as dust and glare would.
+    for x in range(5, 190, 9):
+        for y in range(45, 155, 11):
+            image.putpixel((x, y), (255, 255, 255))
+
+    sampled = sample_patch(image, LEFT_HALF)
+    assert sampled == pytest.approx(REFERENCE_CHART["Black"], abs=1.0), (
+        "specks should not move a median"
+    )
+
+    reading = read_from_photograph(image, LEFT_HALF, RIGHT_HALF)
+    assert reading.option == "Black"
+
+
+def test_sampling_is_independent_of_image_resolution():
+    """Regions are fractions, so the client need not know what it captured at."""
+    from app.spore_print import sample_patch
+
+    small = sample_patch(a_card((120, 90, 60), size=(200, 100)), LEFT_HALF)
+    large = sample_patch(a_card((120, 90, 60), size=(1600, 800)), LEFT_HALF)
+    assert small == pytest.approx(large, abs=1.0)
+
+
+def test_a_region_outside_the_image_is_refused():
+    from app.spore_print import sample_patch
+
+    for bad in [(0.8, 0.0, 0.5, 0.5), (0.0, 0.9, 0.2, 0.4), (-0.1, 0.0, 0.2, 0.2)]:
+        with pytest.raises(ValueError):
+            sample_patch(a_card((100, 100, 100)), bad)
+
+
+def test_a_region_with_no_area_is_refused():
+    from app.spore_print import sample_patch
+
+    for bad in [(0.1, 0.1, 0.0, 0.2), (0.1, 0.1, 0.2, -0.1)]:
+        with pytest.raises(ValueError):
+            sample_patch(a_card((100, 100, 100)), bad)
+
+
+def test_a_patch_too_small_to_average_is_refused():
+    """A handful of pixels is one speck away from a different answer."""
+    from app.spore_print import sample_patch
+
+    with pytest.raises(ValueError, match="larger area"):
+        sample_patch(a_card((100, 100, 100), size=(40, 40)), (0.0, 0.0, 0.05, 0.05))
+
+
+def test_a_photograph_under_a_warm_bulb_still_matches():
+    """The white half is in the same frame precisely so this works."""
+    from app.spore_print import read_from_photograph
+
+    cast, exposure = (1.25, 1.0, 0.75), 0.75
+    for option in ("Black", "Rust or cinnamon brown", "Chocolate or purple-brown"):
+        lit = tuple(
+            int(min(255, c * k * exposure))
+            for c, k in zip(REFERENCE_CHART[option], cast)
+        )
+        lit_white = tuple(int(min(255, 243 * k * exposure)) for k in cast)
+        reading = read_from_photograph(
+            a_card(lit, lit_white), LEFT_HALF, RIGHT_HALF
+        )
+        assert reading.confident, f"{option}: {reading.reason}"
+        assert reading.option == option
+
+
+def test_photographing_the_card_instead_of_the_print_is_refused():
+    """Both patches on the white half: nothing on the chart is that colour."""
+    from app.spore_print import read_from_photograph
+
+    reading = read_from_photograph(a_card((243, 243, 243)), LEFT_HALF, RIGHT_HALF)
+    # White paper is itself close to "White or cream", so the honest failure
+    # here is ambiguity or a refusal -- never a confident dark answer.
+    assert reading.option in (None, "White or cream")

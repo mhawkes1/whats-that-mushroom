@@ -77,6 +77,35 @@ class AnswerRequest(BaseModel):
     answer: str
 
 
+class ColourMatchOut(BaseModel):
+    option: str
+    distance: float = Field(
+        description="Perceptual distance (CIEDE2000). Lower is closer."
+    )
+
+
+class SporePrintReadingOut(BaseModel):
+    """What the colour match concluded, and whether it may be acted on.
+
+    `confident` is the only field a client should branch on. When it is false
+    there is no matched option and the ranking is for ordering the manual
+    picker, not for presenting as an answer.
+    """
+
+    confident: bool
+    option: str | None = Field(
+        description=(
+            "The matched spore_print_colour answer, or null when no match may "
+            "be asserted. Submit it to /answer unchanged."
+        )
+    )
+    reason: str
+    ranked: list[ColourMatchOut]
+    corrected_rgb: list[int] | None = Field(
+        description="The sample after white-balance correction, for display."
+    )
+
+
 class SpeciesOut(BaseModel):
     species_key: str
     scientific_name: str

@@ -4,6 +4,7 @@ Endpoints are deliberately few:
 
   POST /identify    photographs plus optional field notes -> assessment
   POST /answer      answer a diagnostic question -> revised assessment
+  POST /spore-print/match  a photographed spore print -> which chart colour
   GET  /field-form  the characters to offer on the capture form
   GET  /species     reference data for one species
   GET  /health      readiness, including whether calibration is loaded
@@ -29,10 +30,12 @@ from .config import settings
 from .inference import Classifier, OnnxBackend
 from .interrogation import InterrogationEngine
 from .safety import SafetyLayer
+from .spore_print import read_from_photograph
 from .characters import CHARACTERS, field_note_characters
 from .evidence import described_coverage
 from .schemas import (
     AnswerRequest,
+    ColourMatchOut,
     CandidateOut,
     FieldFormOut,
     FieldNoteFieldOut,
@@ -40,6 +43,7 @@ from .schemas import (
     IdentifyResponse,
     QuestionOut,
     SpeciesOut,
+    SporePrintReadingOut,
 )
 from .taxonomy_service import TaxonomyService
 
@@ -314,6 +318,66 @@ def answer(request: AnswerRequest) -> IdentifyResponse:
 
     return _build_response(
         request.observation_id, ranked, record["answered"], record.get("energy")
+    )
+
+
+def _region(raw: str, what: str) -> tuple[float, float, float, float]:
+    """Parse an "x,y,w,h" patch, in fractions of the image."""
+    parts = [piece.strip() for piece in raw.split(",")]
+    if len(parts) != 4:
+        raise HTTPException(
+            400, f"The {what} region must be four numbers: x,y,width,height."
+        )
+    try:
+        values = tuple(float(piece) for piece in parts)
+    except ValueError:
+        raise HTTPException(400, f"The {what} region must be four numbers.")
+    return values  # type: ignore[return-value]
+
+
+@app.post("/spore-print/match", response_model=SporePrintReadingOut)
+async def match_spore_print_photo(
+    image: UploadFile = File(..., description="The print on the half-white card."),
+    sample_region: str = Form(
+        ..., description="x,y,w,h of the deposit, as fractions of the image."
+    ),
+    white_region: str = Form(
+        ..., description="x,y,w,h of the card's white half."
+    ),
+) -> SporePrintReadingOut:
+    """Match a photographed spore print against the reference chart.
+
+    The client marks two patches rather than sampling them: reading pixels is
+    awkward on the device, and doing it here keeps the judgement beside the
+    answer strings it has to produce.
+
+    This never submits anything. A confident reading returns the option for
+    the user to confirm, and every other outcome returns a reason and a
+    ranking to order the manual picker by. Spore print colour separates
+    deadly species from edible lookalikes, so the app proposes and the person
+    decides.
+    """
+    if not state:
+        raise HTTPException(503, "Service is still starting.")
+
+    picture = await _read_photo(image, "spore print")
+    sample = _region(sample_region, "sample")
+    white = _region(white_region, "white card")
+
+    try:
+        reading = read_from_photograph(picture, sample, white)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+
+    return SporePrintReadingOut(
+        confident=reading.confident,
+        option=reading.option,
+        reason=reading.reason,
+        ranked=[
+            ColourMatchOut(option=m.option, distance=round(m.distance, 3))
+            for m in reading.ranked
+        ],
+        corrected_rgb=list(reading.corrected_rgb) if reading.corrected_rgb else None,
     )
 
 

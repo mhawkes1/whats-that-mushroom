@@ -37,7 +37,7 @@ Everything works **except the model**. There is no trained classifier; the API
 serves a stub backend with deterministic fake predictions. Every other layer
 is real and tested.
 
-195 tests pass. `/health` honestly reports `model_loaded: false`,
+210 tests pass. `/health` honestly reports `model_loaded: false`,
 `calibrated: false`, `taxonomy_reviewed: false`.
 
 The training pipeline has been rehearsed end to end on synthetic data
@@ -62,6 +62,7 @@ characters come from standard references but are unverified.
 | `server/app/interrogation.py` | Question selection; gain computed in `evidence.py` |
 | `server/app/evidence.py` | Answer likelihoods, the safety floors, expected gain |
 | `server/app/ood.py` | Free-energy check for "that isn't something I know" |
+| `server/app/spore_print.py` | Reads a photographed spore print against a colour chart |
 | `server/app/characters.py` | How to ask a non-expert for evidence |
 | `app/` | Expo React Native client |
 
@@ -157,6 +158,21 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   knowingly; it must never invent a threshold.
 - **Views are averaged, not minimised.** One well-framed photo must not vouch
   for a set that is otherwise unreadable.
+- **The client never reads pixels; the server samples the patches.** Pixel
+  access is awkward in React Native, so `/spore-print/match` takes the photo
+  plus two regions as fractions (`x,y,w,h`) and samples them with PIL. The
+  statistic is a **median**, not a mean — a deposit on paper picks up dust
+  specks and glare, and one bright speck on a black print drags a mean toward
+  grey, which is a different chart entry.
+- **The spore print timer is a stored timestamp, not a countdown.** The wait
+  is 2–12 hours, far longer than an app session, so everything derives from
+  one `startedAt` in AsyncStorage. A countdown does not survive the process
+  being killed. `waitStatus` is pure and the storage accessors each swallow
+  their own failure.
+- **A matched spore colour is never auto-submitted.** The match returns a
+  suggestion beside the manual list and the user picks. Spore print colour is
+  what separates an *Amanita* from a young *Agaricus*, so the app proposes and
+  the person decides.
 - **`notes` is rendered verbatim to users.** Rationale, policy and review
   flags go in `internal_note`, which is never surfaced.
 - **Expect 50–70% species top-1** on a first training run, with genus accuracy

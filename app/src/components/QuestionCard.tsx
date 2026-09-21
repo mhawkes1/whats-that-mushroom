@@ -20,10 +20,13 @@ const EFFORT_LABEL: Record<Question['effort'], string> = {
 export function QuestionCard({
   question,
   onAnswer,
+  onGuide,
   disabled = false,
 }: {
   question: Question;
   onAnswer: (answer: string) => void;
+  /** Offered when the app can walk the user through obtaining the evidence. */
+  onGuide?: () => void;
   disabled?: boolean;
 }) {
   const critical = Boolean(question.safety_note);
@@ -47,6 +50,17 @@ export function QuestionCard({
       ) : null}
 
       <Text style={styles.how}>{question.how}</Text>
+
+      {onGuide ? (
+        <Pressable
+          style={styles.guide}
+          onPress={onGuide}
+          disabled={disabled}
+          accessibilityRole="button"
+        >
+          <Text style={styles.guideText}>Walk me through it</Text>
+        </Pressable>
+      ) : null}
 
       <View style={styles.options}>
         {question.options.map((option) => (
@@ -116,6 +130,17 @@ const styles = StyleSheet.create({
     fontSize: theme.font.small,
     color: theme.colour.textMuted,
     lineHeight: 20,
+  },
+  guide: {
+    backgroundColor: theme.colour.accent,
+    borderRadius: theme.radius.md,
+    paddingVertical: theme.spacing(1.5),
+    alignItems: 'center',
+  },
+  guideText: {
+    fontSize: theme.font.body,
+    fontWeight: '700',
+    color: theme.colour.background,
   },
   options: { gap: theme.spacing(1), marginTop: theme.spacing(0.5) },
   option: {
