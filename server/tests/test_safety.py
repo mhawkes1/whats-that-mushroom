@@ -201,3 +201,48 @@ def test_candidates_are_returned_with_toxicity_labels(layer):
     result = layer.assess(ranked)
     toxicities = {c.species_key: c.toxicity for c in result.candidates}
     assert toxicities["amanita-phalloides"] == "DEADLY"
+
+
+def test_field_notes_cannot_talk_the_safety_layer_into_naming_a_species():
+    """CLAUDE.md rule 2, under pressure from the evidence mechanism.
+
+    Describing the safe half of a lethal pair gave a user's answers the power
+    to push mass toward the harmless lookalike. That is the point of it, but
+    it also creates the route by which a run of favourable answers might talk
+    the app into a species-level answer on a confusion it has no business
+    resolving.
+
+    Galerina marginata and Kuehneromyces mutabilis are the worst case: the
+    taxonomy's own notes call them the single most dangerous confusion for
+    experienced foragers. However far the answers favour the woodtuft, the
+    verdict must stay a refusal.
+    """
+    import sys
+    from pathlib import Path
+
+    ROOT = Path(__file__).resolve().parents[2]
+    sys.path.insert(0, str(ROOT / "server"))
+
+    from app.config import settings
+    from app.evidence import reweight
+    from app.taxonomy_service import TaxonomyService
+
+    taxonomy = TaxonomyService.load(settings.taxonomy_path)
+    safety = SafetyLayer(taxonomy, confidence_threshold=0.80)
+
+    funeral_bell, woodtuft = "galerina-marginata", "kuehneromyces-mutabilis"
+    ranked = [(woodtuft, 0.5), (funeral_bell, 0.5)] + [
+        (key, 0.0) for key in taxonomy.species if key not in (woodtuft, funeral_bell)
+    ]
+
+    for _ in range(4):
+        for character, answer in [
+            ("stipe_surface", "Scaly or shaggy"),
+            ("cap_surface", "Smooth and dry"),
+        ]:
+            ranked = reweight(ranked, character, answer, taxonomy)
+        assessment = safety.assess(ranked)
+        assert assessment.verdict is not Verdict.SPECIES, (
+            f"named a species with a funeral bell still at "
+            f"{dict(ranked)[funeral_bell]:.3f}"
+        )

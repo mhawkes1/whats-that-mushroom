@@ -32,6 +32,13 @@ DEATH_CAP = "amanita-phalloides"
 FIELD_MUSHROOM = "agaricus-campestris"
 CHANTERELLE = "cantharellus-cibarius"
 
+# Species with no character_states at all: neither deadly nor the safe half of
+# a lethal pair, so nothing has described them yet. Used where a test needs
+# the undescribed path rather than the committed data.
+UNDESCRIBED_A = "boletus-edulis"
+UNDESCRIBED_B = "hydnum-repandum"
+UNDESCRIBED_C = "sparassis-crispa"
+
 
 @pytest.fixture
 def taxonomy() -> TaxonomyService:
@@ -58,7 +65,7 @@ def test_an_undescribed_character_leaves_the_ranking_exactly_as_it_was(taxonomy)
     update must be an exact no-op. A ranking that drifted slightly would be
     worse than one that does not move, because it would look like it worked.
     """
-    ranked = [(CHANTERELLE, 0.5), (FIELD_MUSHROOM, 0.3), ("morchella-esculenta", 0.2)]
+    ranked = [(UNDESCRIBED_A, 0.5), (UNDESCRIBED_B, 0.3), (UNDESCRIBED_C, 0.2)]
     assert reweight(ranked, "gill_colour", "White", taxonomy) == ranked
 
 
@@ -69,22 +76,38 @@ def test_every_deadly_species_is_described(taxonomy):
     assert undescribed == [], f"deadly species with no states: {undescribed}"
 
 
-def test_most_of_the_taxonomy_is_still_undescribed(taxonomy):
+def test_every_species_in_a_lethal_pair_is_described(taxonomy):
+    """Both halves of every dangerous pair carry states.
+
+    The deadly half alone is not enough. With only the deadly species
+    described, evidence could move mass away from a lethal candidate but
+    never back toward one, because nothing could contradict the safe
+    lookalike sitting opposite it.
+    """
+    in_a_lethal_pair = {key for pair in taxonomy.dangerous_pairs() for key in pair}
+    undescribed = sorted(
+        k for k in in_a_lethal_pair if not taxonomy[k].character_states
+    )
+    assert undescribed == [], f"a lethal pair has an undescribed half: {undescribed}"
+
+
+def test_the_species_outside_a_lethal_pair_are_still_undescribed(taxonomy):
     """A guard on the claim the docs make about coverage.
 
     If someone describes the rest, this fails and the docs saying only the
-    deadly species are filled in need updating with it.
+    lethal pairs are filled in need updating with it.
     """
     coverage = described_coverage(taxonomy)
-    assert coverage["described"] == len(taxonomy.deadly_keys())
-    assert 0.0 < coverage["fraction"] < 0.5
+    in_a_lethal_pair = {key for pair in taxonomy.dangerous_pairs() for key in pair}
+    assert coverage["described"] == len(in_a_lethal_pair)
+    assert 0.0 < coverage["fraction"] < 1.0
 
 
 # --- The likelihood, per species ---------------------------------------------
 
 
 def test_an_undescribed_species_is_untouched(taxonomy):
-    evidence = likelihood_for(taxonomy[CHANTERELLE], "gill_colour", "White")
+    evidence = likelihood_for(taxonomy[UNDESCRIBED_A], "gill_colour", "White")
     assert evidence.verdict == "undescribed"
     assert evidence.likelihood == 1.0
 
@@ -267,8 +290,8 @@ def test_coverage_counts_species_and_entries(taxonomy):
     described = with_states(
         taxonomy,
         {
-            CHANTERELLE: {"gill_type": ("Blunt forking ridges",)},
-            FIELD_MUSHROOM: {"gill_colour": ("Pink",)},
+            UNDESCRIBED_A: {"pore_colour": ("White",)},
+            UNDESCRIBED_B: {"hymenium_type": ("Spines or teeth",)},
         },
     )
     coverage = described_coverage(described)
@@ -369,3 +392,110 @@ def test_no_committed_state_is_an_unobservable_answer(taxonomy):
                 assert not is_uninformative(character_key, state), (
                     f"{species.key}/{character_key}: {state!r} is a non-observation"
                 )
+
+
+# --- The safe half of a lethal pair ------------------------------------------
+#
+# Describing only the deadly species was not enough. With the safe lookalike
+# undescribed, nothing a user reported could contradict it, so evidence could
+# move mass away from a lethal candidate but never back toward one.
+
+
+def test_describing_an_amanita_raises_the_death_cap_over_the_field_mushroom(taxonomy):
+    """The case the whole project exists for.
+
+    A user who has picked a death cap and believes it is a field mushroom
+    reports what they see. Each observation is consistent with the death cap
+    and contradicts the field mushroom, so the ranking has to move toward the
+    lethal candidate, not away from it.
+    """
+    ranked = [(FIELD_MUSHROOM, 0.70), (DEATH_CAP, 0.30)]
+    for character, answer in [
+        ("volva", "Clear cup or sac"),
+        ("spore_print_colour", "White or cream"),
+        ("gill_colour", "White"),
+    ]:
+        ranked = reweight(ranked, character, answer, taxonomy)
+
+    updated = dict(ranked)
+    assert updated[DEATH_CAP] > updated[FIELD_MUSHROOM]
+    assert updated[DEATH_CAP] > 0.9, "three consistent observations should be decisive"
+
+
+def test_that_movement_depends_on_the_safe_half_being_described(taxonomy):
+    """Pins why Tier 2 mattered, so nobody strips it as redundant.
+
+    With only the deadly species described the same three answers move the
+    death cap exactly nowhere, because nothing contradicts the field mushroom.
+    """
+    from dataclasses import replace
+
+    deadly = taxonomy.deadly_keys()
+    tier_one_only = TaxonomyService(
+        species={
+            key: (s if key in deadly else replace(s, character_states={}))
+            for key, s in taxonomy.species.items()
+        }
+    )
+
+    answers = [
+        ("volva", "Clear cup or sac"),
+        ("spore_print_colour", "White or cream"),
+        ("gill_colour", "White"),
+    ]
+    ranked = [(FIELD_MUSHROOM, 0.70), (DEATH_CAP, 0.30)]
+    for character, answer in answers:
+        ranked = reweight(ranked, character, answer, tier_one_only)
+
+    assert dict(ranked)[DEATH_CAP] == pytest.approx(0.30), (
+        "with the safe half undescribed this evidence is inert"
+    )
+
+
+def test_decurrent_crowded_gills_move_away_from_the_fairy_ring_champignon(taxonomy):
+    """Both deadly Clitocybe species share lawns and fairy rings with it.
+
+    The separation is gill attachment and spacing: crowded and running down
+    the stem for the Clitocybe, well spaced and free for Marasmius.
+    """
+    ranked = [("marasmius-oreades", 0.7), ("clitocybe-rivulosa", 0.3)]
+    for character, answer in [
+        ("gill_attachment", "Running down the stem"),
+        ("gill_spacing", "Crowded"),
+    ]:
+        ranked = reweight(ranked, character, answer, taxonomy)
+
+    updated = dict(ranked)
+    assert updated["clitocybe-rivulosa"] > updated["marasmius-oreades"]
+
+
+def test_a_chambered_interior_moves_away_from_the_true_morel(taxonomy):
+    """A true morel is hollow from tip to base; the false morel is chambered."""
+    ranked = [("morchella-esculenta", 0.7), ("gyromitra-esculenta", 0.3)]
+    for character, answer in [
+        ("cap_surface", "Brain-like or folded"),
+        ("interior_structure", "Chambered or cottony"),
+    ]:
+        ranked = reweight(ranked, character, answer, taxonomy)
+
+    updated = dict(ranked)
+    assert updated["gyromitra-esculenta"] > updated["morchella-esculenta"]
+
+
+def test_a_volva_alone_does_not_settle_anything(taxonomy):
+    """Volvopluteus is in the label space precisely to break that shortcut.
+
+    It has a volva and no ring, so "there is a volva" is consistent with both
+    it and the death cap, and must not separate them.
+    """
+    ranked = [(DEATH_CAP, 0.5), ("volvopluteus-gloiocephalus", 0.5)]
+    updated = dict(reweight(ranked, "volva", "Clear cup or sac", taxonomy))
+    assert updated[DEATH_CAP] == pytest.approx(0.5)
+    assert updated["volvopluteus-gloiocephalus"] == pytest.approx(0.5)
+
+
+def test_a_pink_spore_print_is_what_separates_volvopluteus(taxonomy):
+    """The check that actually works, once the user has been sent to make it."""
+    ranked = [(DEATH_CAP, 0.5), ("volvopluteus-gloiocephalus", 0.5)]
+    updated = dict(reweight(ranked, "spore_print_colour", "Pink", taxonomy))
+    assert updated["volvopluteus-gloiocephalus"] > updated[DEATH_CAP]

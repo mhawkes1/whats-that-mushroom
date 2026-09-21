@@ -4,7 +4,7 @@
 
 Working: taxonomy and risk model, dataset pipeline, training loop,
 calibration, evaluation and model card generation, safety layer,
-interrogation engine, HTTP API, Expo client. 157 tests pass.
+interrogation engine, HTTP API, Expo client. 165 tests pass.
 
 The chain from raw manifest through to a served ONNX model has now been run
 end to end on synthetic data (`scripts/smoke_e2e.py`), so the stages are known
@@ -102,8 +102,8 @@ reports 95%, there is a leak — check the observation-level split first.
 
 ### 3. Fill in the rest of the character-state table
 
-**The mechanism is built and the 8 deadly species are filled in, unreviewed.
-The remaining 49 need a reviewer rather than a programmer.**
+**The mechanism is built and all 30 species in lethal pairs are filled in,
+unreviewed. The remaining 27 need a reviewer rather than a programmer.**
 
 `apply_answer` now delegates to `server/app/evidence.py`, which compares an
 answer against each species' declared `character_states` and applies a
@@ -113,14 +113,22 @@ our side is not evidence about the mushroom. Contradicting a deadly species
 costs it far less than contradicting a harmless one, and no answer may drive a
 deadly candidate below the threshold at which the safety layer still warns.
 
-An undescribed species gets a likelihood of 1.0, so answers about the 49
+An undescribed species gets a likelihood of 1.0, so answers about the 27
 species still undescribed change nothing. That degradation is visible rather
 than disguised: `/health` reports `character_states_described`, and
 `python scripts/character_states.py status` prints coverage.
 
-The 8 deadly species were filled in from this repository's own `notes`, via
-the worksheet and importer below rather than by hand, so every state was
-validated against the answer options. They are marked UNREVIEWED in the
+The 30 species forming the lethal confusion pairs -- the 8 deadly ones and
+the 22 safe lookalikes opposite them -- were filled in from this repository's
+own `notes`, via the worksheet and importer below rather than by hand, so
+every state was validated against the answer options.
+
+Doing the safe half was not optional padding. With only the deadly species
+described, nothing a user reported could contradict the harmless lookalike, so
+evidence could move mass *away* from a lethal candidate but never toward one:
+a user describing a death cap -- volva, white spore print, white gills --
+moved it 0.300 to 0.300. With both halves described the same three answers
+move it 0.300 to 0.965. They are marked UNREVIEWED in the
 taxonomy, in the worksheet and in `docs/REVIEW.md`, and still need
 field-character sign-off.
 
@@ -146,7 +154,7 @@ python scripts/character_states.py import --dry-run
 python scripts/character_states.py import
 ```
 
-190 rows, one per (species, diagnostic character) pair; 30 filled, 160 open. Import refuses any
+190 rows, one per (species, diagnostic character) pair; 107 filled, 83 open. Import refuses any
 state that is not exactly one of that character's answer options, since such a
 state would store cleanly and never match anything -- a populated table that
 cannot fire is worse than an empty one.

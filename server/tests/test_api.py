@@ -330,12 +330,14 @@ def test_health_reports_character_state_coverage(client):
     a ranking that does not move looks identical to a broken update.
     """
     from app.config import settings
+    from app.evidence import described_coverage
     from app.taxonomy_service import TaxonomyService
 
     taxonomy = TaxonomyService.load(settings.taxonomy_path)
     body = client.get("/health").json()
 
-    assert body["character_states_described"] == len(taxonomy.deadly_keys())
+    assert body["character_states_described"] == described_coverage(taxonomy)["described"]
+    assert body["character_states_described"] > 0
 
 
 def test_field_notes_now_change_the_assessment(client):

@@ -37,22 +37,27 @@ script = _load_script()
 WORKSHEET = ROOT / "docs" / "character-states-worksheet.csv"
 
 
-def test_the_committed_worksheet_carries_the_deadly_species_and_nothing_else():
-    """Only the species that can kill are filled in, and they are flagged.
+def test_the_committed_worksheet_covers_the_lethal_pairs_and_flags_them():
+    """Both halves of every lethal confusion are filled in, and marked unreviewed.
 
-    Everything else waits for a reviewer. The filled rows are marked
-    unreviewed in the sheet itself so nobody mistakes them for sign-off.
+    Species outside those pairs are still a reviewer's job. The filled rows
+    say UNREVIEWED in the sheet itself so nobody mistakes them for sign-off.
     """
+    from fungi_ml.taxonomy import Taxonomy
+
+    taxonomy = Taxonomy.load(ROOT / "data" / "taxonomy.seed.json")
+    in_a_lethal_pair = {key for pair in taxonomy.dangerous_pairs() for key in pair}
+
     rows = list(csv.DictReader(WORKSHEET.open(encoding="utf-8")))
     assert rows, "the worksheet should list rows for a reviewer to fill"
 
     filled = [row for row in rows if row["REVIEW_states"].strip()]
-    assert filled, "the deadly species rows should be filled"
-    assert {row["toxicity"] for row in filled} == {"DEADLY"}
+    assert filled, "the lethal-pair rows should be filled"
+    assert {row["species_key"] for row in filled} <= in_a_lethal_pair
     assert all("UNREVIEWED" in row["REVIEW_notes"] for row in filled)
 
     blank = [row for row in rows if not row["REVIEW_states"].strip()]
-    assert blank, "everything past the deadly species is still a reviewer's job"
+    assert blank, "species outside a lethal pair are still a reviewer's job"
 
 
 def test_every_worksheet_row_offers_the_real_answer_options():

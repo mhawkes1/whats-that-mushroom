@@ -4,7 +4,7 @@
   "region": "GB",
   "reviewed_by": null,
   "$policy": "The `toxicity` field records the consequence of EATING a species, and is used only to drive warnings. It is never rendered as a recommendation. No species is ever labelled edible: the highest-safety value is INEDIBLE. The `notes` field is shown to users verbatim and must describe only what is observable. Rationale, policy and review flags belong in `internal_note`, which is never surfaced.",
-  "$character_states": "character_states is present for the 8 DEADLY species only, and is UNREVIEWED. It was derived from this file's own `notes` for each species rather than from a mycologist, to make the answer-weighting mechanism in server/app/evidence.py testable end to end. State lists are deliberately generous: omitting a state a species can show turns a true observation into a contradiction and pushes a lethal candidate down, which is the one direction this project cannot tolerate, whereas an extra state only makes the character less discriminating. Where the notes made no claim -- bruising_reaction for Amanita virosa, smell for Inocybe erubescens -- the entry is omitted, because omitted means 'no evidence' and is always safe. Every entry needs field-character review before release. See docs/REVIEW.md and docs/character-states-worksheet.csv.",
+  "$character_states": "character_states is present for the 30 species that form the lethal confusion pairs -- the 8 DEADLY species and the 22 safe lookalikes opposite them -- and is UNREVIEWED. It was derived from this file's own `notes` for each species rather than from a mycologist, to make the answer-weighting mechanism in server/app/evidence.py testable end to end. The remaining 27 species are undescribed, which the matcher treats as no evidence. The convention differs by role, and the difference follows from the risk matrix. For a DEADLY species a contradiction pushes it down, so the state lists are generous: omitting a state it can show would turn a true observation into a false dismissal of something lethal. For the safe half of a pair a contradiction pushes the SAFE species down, moving mass back toward the deadly one, so tighter lists are the cautious choice and the cost of error is a false alarm rather than a missed poisoning. Where the notes made no positive claim, or the character's option list has no state that fits -- the chanterelle's apricot smell, the saffron milkcap's green staining -- the entry is omitted, because omitted means 'no evidence' and is always safe. Every entry needs field-character review before release. See docs/REVIEW.md and docs/character-states-worksheet.csv.",
   "species": [
     {
       "key": "amanita-phalloides",
@@ -289,7 +289,23 @@
         "gill_attachment",
         "spore_print_colour"
       ],
-      "notes": "Causes a cumulative immune-mediated haemolytic syndrome that can be fatal and may develop only after years of apparently safe consumption. Strongly inrolled cap margin; gills bruise reddish-brown. Formerly eaten after cooking in parts of Europe; now regarded as unsafe in all preparations."
+      "notes": "Causes a cumulative immune-mediated haemolytic syndrome that can be fatal and may develop only after years of apparently safe consumption. Strongly inrolled cap margin; gills bruise reddish-brown. Formerly eaten after cooking in parts of Europe; now regarded as unsafe in all preparations.",
+      "character_states": {
+        "cap_margin": [
+          "Strongly inrolled"
+        ],
+        "bruising_reaction": [
+          "Brown",
+          "Red or pink"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown",
+          "Chocolate or purple-brown"
+        ]
+      }
     },
     {
       "key": "entoloma-sinuatum",
@@ -333,7 +349,21 @@
         "gill_colour",
         "habitat"
       ],
-      "notes": "Long eaten in Europe, then linked to fatal rhabdomyolysis after repeated large meals. Now legally restricted in some countries. Yellow gills and flesh; sandy pine woodland."
+      "notes": "Long eaten in Europe, then linked to fatal rhabdomyolysis after repeated large meals. Now legally restricted in some countries. Yellow gills and flesh; sandy pine woodland.",
+      "character_states": {
+        "volva": [
+          "Neither"
+        ],
+        "ring": [
+          "No ring"
+        ],
+        "gill_colour": [
+          "Yellow or green"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ]
+      }
     },
     {
       "key": "agaricus-xanthodermus",
@@ -375,7 +405,23 @@
         "spore_print_colour",
         "substrate"
       ],
-      "notes": "Very common on stumps and dead wood. Greenish-yellow gills darkening to purple-brown, and an intensely bitter taste. Its clustered habit on wood mirrors that of the woodland species foragers commonly collect."
+      "notes": "Very common on stumps and dead wood. Greenish-yellow gills darkening to purple-brown, and an intensely bitter taste. Its clustered habit on wood mirrors that of the woodland species foragers commonly collect.",
+      "character_states": {
+        "gill_colour": [
+          "Yellow or green",
+          "Brown",
+          "Chocolate or black"
+        ],
+        "taste": [
+          "Bitter"
+        ],
+        "spore_print_colour": [
+          "Chocolate or purple-brown"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ]
+      }
     },
     {
       "key": "scleroderma-citrinum",
@@ -416,7 +462,24 @@
         "ring",
         "cap_surface"
       ],
-      "notes": "Ibotenic acid and muscimol; deliriant rather than lethal, but hospitalisation is common. Included in the label space because it is the most photographed fungus in the world and the model must handle it confidently."
+      "notes": "Ibotenic acid and muscimol; deliriant rather than lethal, but hospitalisation is common. Included in the label space because it is the most photographed fungus in the world and the model must handle it confidently.",
+      "character_states": {
+        "cap_colour": [
+          "Red",
+          "Orange",
+          "Yellow"
+        ],
+        "volva": [
+          "Swollen but no cup"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "cap_surface": [
+          "Scaly",
+          "Smooth and dry"
+        ]
+      }
     },
     {
       "key": "amanita-rubescens",
@@ -438,7 +501,22 @@
         "cap_surface"
       ],
       "notes": "Flesh reddens where damaged or grub-eaten, which is the character the common name refers to. Toxic raw.",
-      "internal_note": "Widely treated as edible when thoroughly cooked. Classified TOXIC here because it is toxic raw and because the margin for error sits inside Amanita, where a misidentification is potentially fatal. Do not relax this without mycological review."
+      "internal_note": "Widely treated as edible when thoroughly cooked. Classified TOXIC here because it is toxic raw and because the margin for error sits inside Amanita, where a misidentification is potentially fatal. Do not relax this without mycological review.",
+      "character_states": {
+        "bruising_reaction": [
+          "Red or pink"
+        ],
+        "volva": [
+          "Swollen but no cup"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "cap_surface": [
+          "Scaly",
+          "Smooth and dry"
+        ]
+      }
     },
     {
       "key": "agaricus-campestris",
@@ -461,7 +539,24 @@
         "bruising_reaction"
       ],
       "notes": "Gills pink when young, darkening to chocolate-brown. Brown spore print. No volva at the stem base and no chrome-yellow staining when cut.",
-      "internal_note": "Recorded as INEDIBLE rather than edible by deliberate policy: this app never asserts edibility for any species. See docs/SAFETY.md."
+      "internal_note": "Recorded as INEDIBLE rather than edible by deliberate policy: this app never asserts edibility for any species. See docs/SAFETY.md.",
+      "character_states": {
+        "gill_colour": [
+          "Pink",
+          "Brown",
+          "Chocolate or black"
+        ],
+        "spore_print_colour": [
+          "Chocolate or purple-brown"
+        ],
+        "volva": [
+          "Neither"
+        ],
+        "bruising_reaction": [
+          "No change",
+          "Red or pink"
+        ]
+      }
     },
     {
       "key": "agaricus-arvensis",
@@ -484,7 +579,18 @@
         "volva"
       ],
       "notes": "Aniseed smell and a pendulous cog-wheel ring. The critical checks are absence of a volva and absence of chrome-yellow staining at the stem base.",
-      "internal_note": "Recorded as INEDIBLE by the same policy as agaricus-campestris."
+      "internal_note": "Recorded as INEDIBLE by the same policy as agaricus-campestris.",
+      "character_states": {
+        "smell": [
+          "Aniseed or almond"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "volva": [
+          "Neither"
+        ]
+      }
     },
     {
       "key": "macrolepiota-procera",
@@ -505,7 +611,21 @@
         "bruising_reaction",
         "spore_print_colour"
       ],
-      "notes": "Snakeskin-patterned stem and a double ring that slides freely. Flesh does not redden strongly, separating it from Chlorophyllum."
+      "notes": "Snakeskin-patterned stem and a double ring that slides freely. Flesh does not redden strongly, separating it from Chlorophyllum.",
+      "character_states": {
+        "stipe_surface": [
+          "Snakeskin-patterned"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "bruising_reaction": [
+          "No change"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
     },
     {
       "key": "chlorophyllum-brunneum",
@@ -546,7 +666,22 @@
         "cap_surface",
         "substrate"
       ],
-      "notes": "Scaly stem below the ring and a two-toned hygrophanous cap. The app will not return this at species level when Galerina marginata is in the candidate set, because the two cannot be reliably separated from photographs."
+      "notes": "Scaly stem below the ring and a two-toned hygrophanous cap. The app will not return this at species level when Galerina marginata is in the candidate set, because the two cannot be reliably separated from photographs.",
+      "character_states": {
+        "stipe_surface": [
+          "Scaly or shaggy"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
+        ],
+        "cap_surface": [
+          "Smooth and dry",
+          "Slimy or greasy"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ]
+      }
     },
     {
       "key": "armillaria-mellea",
@@ -568,7 +703,23 @@
         "cap_surface",
         "substrate"
       ],
-      "notes": "White to cream spore print, which separates it from the rust-brown Galerina. Toxic raw and upsetting to some people even cooked."
+      "notes": "White to cream spore print, which separates it from the rust-brown Galerina. Toxic raw and upsetting to some people even cooked.",
+      "character_states": {
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "cap_surface": [
+          "Scaly",
+          "Smooth and dry"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "A living tree"
+        ]
+      }
     },
     {
       "key": "cantharellus-cibarius",
@@ -590,7 +741,15 @@
         "smell",
         "flesh_colour"
       ],
-      "notes": "Blunt forking false gills running down the stem, not true blade-like gills. Apricot smell. Flesh white throughout when torn."
+      "notes": "Blunt forking false gills running down the stem, not true blade-like gills. Apricot smell. Flesh white throughout when torn.",
+      "character_states": {
+        "gill_type": [
+          "Blunt forking ridges"
+        ],
+        "flesh_colour": [
+          "White"
+        ]
+      }
     },
     {
       "key": "hygrophoropsis-aurantiaca",
@@ -711,7 +870,18 @@
         "interior_structure",
         "season"
       ],
-      "notes": "Regularly pitted honeycomb cap, fully hollow from cap tip to stem base when sectioned lengthways, and the cap fused to the stem along its length."
+      "notes": "Regularly pitted honeycomb cap, fully hollow from cap tip to stem base when sectioned lengthways, and the cap fused to the stem along its length.",
+      "character_states": {
+        "cap_surface": [
+          "Pitted or honeycombed"
+        ],
+        "interior_structure": [
+          "Completely hollow"
+        ],
+        "season": [
+          "Spring"
+        ]
+      }
     },
     {
       "key": "marasmius-oreades",
@@ -732,7 +902,22 @@
         "stipe_texture",
         "spore_print_colour"
       ],
-      "notes": "Widely spaced free gills, a tough pliable stem, and a broad umbo. Shares lawns and fairy rings with the deadly Clitocybe species, which have crowded decurrent gills."
+      "notes": "Widely spaced free gills, a tough pliable stem, and a broad umbo. Shares lawns and fairy rings with the deadly Clitocybe species, which have crowded decurrent gills.",
+      "character_states": {
+        "gill_attachment": [
+          "Free, not touching the stem",
+          "Notched just before the stem"
+        ],
+        "gill_spacing": [
+          "Well spaced"
+        ],
+        "stipe_texture": [
+          "Tough and pliable, springs back"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
     },
     {
       "key": "calocybe-gambosa",
@@ -754,7 +939,21 @@
         "season",
         "gill_attachment"
       ],
-      "notes": "Strong mealy smell of fresh bread dough, white spore print, spring fruiting. Shares its season with the deadly Inocybe erubescens."
+      "notes": "Strong mealy smell of fresh bread dough, white spore print, spring fruiting. Shares its season with the deadly Inocybe erubescens.",
+      "character_states": {
+        "smell": [
+          "Fresh bread dough"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "season": [
+          "Spring"
+        ],
+        "gill_attachment": [
+          "Notched just before the stem"
+        ]
+      }
     },
     {
       "key": "clitopilus-prunulus",
@@ -775,7 +974,22 @@
         "smell",
         "cap_surface"
       ],
-      "notes": "Strongly decurrent gills and a pink spore print. The decurrent gills are the separation from the dangerous Entoloma sinuatum, whose gills are sinuate."
+      "notes": "Strongly decurrent gills and a pink spore print. The decurrent gills are the separation from the dangerous Entoloma sinuatum, whose gills are sinuate.",
+      "character_states": {
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "spore_print_colour": [
+          "Pink"
+        ],
+        "smell": [
+          "Fresh bread dough"
+        ],
+        "cap_surface": [
+          "Velvety",
+          "Smooth and dry"
+        ]
+      }
     },
     {
       "key": "lycoperdon-perlatum",
@@ -794,7 +1008,15 @@
         "interior_structure",
         "skin_thickness"
       ],
-      "notes": "Interior uniformly pure white and homogeneous when young. Any trace of gill structure means an Amanita button; any darkening means an earthball or an over-mature specimen."
+      "notes": "Interior uniformly pure white and homogeneous when young. Any trace of gill structure means an Amanita button; any darkening means an earthball or an over-mature specimen.",
+      "character_states": {
+        "interior_structure": [
+          "Solid and pure white"
+        ],
+        "skin_thickness": [
+          "Thin, like paper"
+        ]
+      }
     },
     {
       "key": "calvatia-gigantea",
@@ -962,7 +1184,21 @@
         "volva",
         "taste"
       ],
-      "notes": "Flexible greasy gills that do not shatter, and brittle chalk-like stem flesh. Green-capped Russula species have been fatally confused with the Death Cap; absence of volva and ring is the decisive check."
+      "notes": "Flexible greasy gills that do not shatter, and brittle chalk-like stem flesh. Green-capped Russula species have been fatally confused with the Death Cap; absence of volva and ring is the decisive check.",
+      "character_states": {
+        "gill_texture": [
+          "Flexible and greasy"
+        ],
+        "stipe_texture": [
+          "Snaps cleanly like chalk"
+        ],
+        "volva": [
+          "Neither"
+        ],
+        "taste": [
+          "Mild"
+        ]
+      }
     },
     {
       "key": "russula-emetica",
@@ -1022,7 +1258,16 @@
         "bruising_reaction",
         "cap_surface"
       ],
-      "notes": "Exudes carrot-orange latex that slowly stains green. Pine woodland."
+      "notes": "Exudes carrot-orange latex that slowly stains green. Pine woodland.",
+      "character_states": {
+        "latex_colour": [
+          "Orange or carrot"
+        ],
+        "cap_surface": [
+          "Smooth and dry",
+          "Slimy or greasy"
+        ]
+      }
     },
     {
       "key": "lactarius-torminosus",
@@ -1154,7 +1399,22 @@
         "spore_print_colour",
         "gill_colour"
       ],
-      "notes": "Has a volva but no ring, and a pink spore print. Included specifically because it is the classic trap for anyone taught that a volva alone identifies an Amanita."
+      "notes": "Has a volva but no ring, and a pink spore print. Included specifically because it is the classic trap for anyone taught that a volva alone identifies an Amanita.",
+      "character_states": {
+        "volva": [
+          "Clear cup or sac"
+        ],
+        "ring": [
+          "No ring"
+        ],
+        "spore_print_colour": [
+          "Pink"
+        ],
+        "gill_colour": [
+          "White",
+          "Pink"
+        ]
+      }
     },
     {
       "key": "cortinarius-violaceus",
@@ -1173,7 +1433,19 @@
         "spore_print_colour",
         "cap_surface"
       ],
-      "notes": "Deep violet throughout with a scaly cap and rusty spore print. Present in the label space so the model learns the Cortinarius/Lepista boundary, which matters because the genus contains deadly members."
+      "notes": "Deep violet throughout with a scaly cap and rusty spore print. Present in the label space so the model learns the Cortinarius/Lepista boundary, which matters because the genus contains deadly members.",
+      "character_states": {
+        "cortina": [
+          "Yes, cobwebby"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
+        ],
+        "cap_surface": [
+          "Scaly",
+          "Fibrous"
+        ]
+      }
     },
     {
       "key": "pholiota-squarrosa",
@@ -1193,7 +1465,19 @@
         "spore_print_colour",
         "substrate"
       ],
-      "notes": "Dry upturned scales on cap and stem; clustered at the base of living trees."
+      "notes": "Dry upturned scales on cap and stem; clustered at the base of living trees.",
+      "character_states": {
+        "cap_surface": [
+          "Scaly"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
+        ],
+        "substrate": [
+          "A living tree",
+          "Dead wood or a stump"
+        ]
+      }
     },
     {
       "key": "crepidotus-mollis",
@@ -1233,7 +1517,18 @@
         "interior_structure",
         "season"
       ],
-      "notes": "Cap attached to the stem only at the very apex and hanging free like a thimble, unlike a true morel whose cap is fused along its length. Causes loss of muscular coordination in some people."
+      "notes": "Cap attached to the stem only at the very apex and hanging free like a thimble, unlike a true morel whose cap is fused along its length. Causes loss of muscular coordination in some people.",
+      "character_states": {
+        "cap_attachment": [
+          "Attached only at the top"
+        ],
+        "interior_structure": [
+          "Chambered or cottony"
+        ],
+        "season": [
+          "Spring"
+        ]
+      }
     },
     {
       "key": "clitocybe-dealbata",

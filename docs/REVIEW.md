@@ -19,13 +19,47 @@ mycologist**, so that the mechanism could be tested. Those 30 rows are the
 highest-priority thing in this folder to verify or correct. The remaining 160
 rows are blank.
 
-One convention matters when completing it: **list every state the species can
-show, not just the typical one.** A state left off turns a correct observation
-into a contradiction and pushes that species down the candidate list, which
-for a deadly species is the dangerous direction. Listing an extra state only
-makes the character less useful for telling species apart. If you are unsure,
-leave the row blank -- blank means "not described", which the app treats as no
-evidence at all.
+All 107 rows covering the 30 species that form the lethal confusion pairs --
+the 8 deadly species and the 22 safe lookalikes opposite them -- have now been
+filled in this way. The 83 remaining rows, for species not involved in a
+lethal pair, are blank.
+
+**Note on the tier counts.** The Tier 2 list below names 20 species. Derived
+from the lookalike graph, 22 species sit opposite a deadly one: the extra two
+are *Paxillus involutus* and *Tricholoma equestre*, which appear in the Tier 1
+table above because they are themselves SERIOUS. Both have been filled in.
+
+### How to complete a row
+
+**How wide the list should be depends on which side of a confusion the species
+is on.** The app treats a state you list as "consistent" and anything else as
+"contradicted", and a contradiction pushes that species down the list.
+
+- For a **deadly** species, list every state it can show, including uncommon
+  ones. A state left off turns a correct observation into a contradiction and
+  pushes the lethal species down, which is the dangerous direction. *Galerina
+  marginata* therefore lists all four ring states, because its ring is fragile
+  and often gone, and nobody should be able to dismiss a funeral bell for want
+  of one.
+- For the **safe lookalike**, a contradiction pushes the harmless species
+  down, which moves the app back toward caution. Here a tighter list is the
+  careful choice: being wrong costs a false alarm rather than a missed
+  poisoning.
+- **If you are unsure, leave the row blank.** Blank means "not described",
+  which the app treats as no evidence at all, and that is always safe.
+
+### Two gaps in the answer options, for your judgement
+
+Two species could not be described because the app offers no answer that fits.
+Both are worth knowing about, since the fix is to change what the app asks
+rather than what it records:
+
+1. ***Cantharellus cibarius* smell.** The apricot smell is one of its most
+   reliable characters, and the `smell` options offer nothing close. Should an
+   apricot or fruity option be added?
+2. ***Lactarius deliciosus* bruising.** The latex stains green, and
+   `bruising_reaction` offers yellow, red, blue, brown or no change. Should
+   green be added?
 
 ## Priority tiers
 

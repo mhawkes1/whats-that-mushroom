@@ -37,7 +37,7 @@ Everything works **except the model**. There is no trained classifier; the API
 serves a stub backend with deterministic fake predictions. Every other layer
 is real and tested.
 
-157 tests pass. `/health` honestly reports `model_loaded: false`,
+165 tests pass. `/health` honestly reports `model_loaded: false`,
 `calibrated: false`, `taxonomy_reviewed: false`.
 
 The training pipeline has been rehearsed end to end on synthetic data
@@ -86,20 +86,27 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   bug; there is a regression test.
 - **Splits are on `observation_id`, never on image.** If accuracy looks too
   good, check this before believing it.
-- **`character_states` covers the 8 DEADLY species and nothing else, and is
-  UNREVIEWED.** It was derived from the taxonomy's own `notes`, not from a
-  mycologist, and every entry needs field-character review before release.
-  The other 49 species are undescribed, which the matcher treats as *no
-  evidence* rather than a mismatch, so answers about them still move nothing.
-  `/health` reports `character_states_described`;
+- **`character_states` covers the 30 species in lethal pairs (8 deadly + 22
+  safe lookalikes) and is UNREVIEWED.** Derived from the taxonomy's own
+  `notes`, not from a mycologist; every entry needs field-character review
+  before release. The other 27 species are undescribed, which the matcher
+  treats as *no evidence*. `/health` reports `character_states_described`;
   `python scripts/character_states.py status` prints the same.
-- **State lists are deliberately generous, and must stay that way.** Omitting
-  a state a species can show turns a true observation into a contradiction and
-  pushes a lethal candidate *down* — the one direction this project cannot
-  tolerate. An extra state only makes the character less discriminating.
-  Galerina lists all four ring states for this reason; the death cap lists
-  five cap colours. Where the notes made no claim the entry is omitted, and
-  omitted is always safe.
+- **Both halves of a lethal pair must be described, or evidence only works
+  one way.** With just the deadly half described, nothing could contradict the
+  safe lookalike, so answers could move mass *away* from a lethal candidate
+  but never toward one: a user describing a death cap (volva, white spore
+  print, white gills) moved it 0.300 → 0.300. With both halves, 0.300 → 0.965.
+  There is a test pinning this; don't strip the safe-half states as redundant.
+- **The list-width convention differs by role, and follows from the risk
+  matrix.** For a *deadly* species a contradiction pushes it down, so lists are
+  **generous** — omitting a state it can show would falsely dismiss something
+  lethal. Galerina lists all four ring states; the death cap lists five cap
+  colours. For the *safe half* of a pair a contradiction pushes the safe
+  species down, moving mass back toward the deadly one, so lists are **tight**
+  — the cost of error there is a false alarm, not a missed poisoning. Where
+  the notes make no positive claim, or no option fits (the chanterelle's
+  apricot smell, the milkcap's green staining), the entry is omitted.
 - **Some answer options are non-observations, not states.** `volva`'s "I cut
   it off" and `cortina`'s "Can't tell" are in `uninformative_options` and get
   a likelihood of 1.0. Without that, the commonest field mistake — cutting the
