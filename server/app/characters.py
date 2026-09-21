@@ -185,8 +185,8 @@ CHARACTERS: dict[str, Character] = {
         how="Break a piece and smell it immediately, close up.",
         options=(
             "Pleasantly mushroomy", "Aniseed or almond", "Apricot or fruity",
-            "Fresh bread dough", "Radish", "Ink or chemicals", "Rotting or foul",
-            "Nothing much",
+            "Fresh bread dough", "Radish", "Raw potato or earthy",
+            "Ink or chemicals", "Rotting or foul", "Nothing much",
         ),
         safety_note=(
             "A phenolic or inky smell, strongest at the stem base, is a reliable "

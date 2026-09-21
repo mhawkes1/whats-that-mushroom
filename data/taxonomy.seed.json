@@ -113,6 +113,131 @@
       }
     },
     {
+      "key": "amanita-citrina",
+      "scientific_name": "Amanita citrina",
+      "genus": "Amanita",
+      "common_names": [
+        "False Deathcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "amanita-phalloides",
+        "amanita-virosa",
+        "amanita-rubescens"
+      ],
+      "diagnostic_characters": [
+        "volva",
+        "ring",
+        "cap_colour",
+        "smell",
+        "spore_print_colour"
+      ],
+      "notes": "Pale lemon to almost white, with a rounded basal bulb that has a distinct rim rather than a loose sac. Smells strongly of raw potato, which the Death Cap does not. Not itself dangerous, but it is the species most often taken for a Death Cap and the one most often used to argue that a Death Cap is harmless.",
+      "internal_note": "Recorded INEDIBLE rather than harmless per the project convention: the safest value is INEDIBLE, and this sits inside Amanita where the cost of a confident mistake is fatal.",
+      "character_states": {
+        "volva": [
+          "Swollen but no cup"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "cap_colour": [
+          "Yellow",
+          "White or cream"
+        ],
+        "smell": [
+          "Raw potato or earthy"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
+      "key": "amanita-excelsa",
+      "scientific_name": "Amanita excelsa",
+      "genus": "Amanita",
+      "common_names": [
+        "Grey Spotted Amanita"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "amanita-pantherina",
+        "amanita-rubescens",
+        "amanita-phalloides"
+      ],
+      "diagnostic_characters": [
+        "volva",
+        "ring",
+        "cap_colour",
+        "cap_surface",
+        "bruising_reaction"
+      ],
+      "notes": "Grey-brown cap with grey, easily washed-off patches, a grooved ring, and a basal bulb without a free sac. Sits between the Blusher and the Panther Cap in appearance: it does not redden like the first and does not have the sharp collar of the second.",
+      "internal_note": "Added because the app carried both species it is confused with and not the thing between them, so a photograph of it was forced into one of the two.",
+      "character_states": {
+        "volva": [
+          "Swollen but no cup"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "cap_surface": [
+          "Scaly",
+          "Smooth and dry"
+        ],
+        "bruising_reaction": [
+          "No change"
+        ]
+      }
+    },
+    {
+      "key": "amanita-gemmata",
+      "scientific_name": "Amanita gemmata",
+      "genus": "Amanita",
+      "common_names": [
+        "Jewelled Amanita"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "amanita-pantherina",
+        "amanita-muscaria",
+        "amanita-citrina"
+      ],
+      "diagnostic_characters": [
+        "volva",
+        "ring",
+        "cap_colour",
+        "cap_surface"
+      ],
+      "notes": "Pale yellow cap with white patches and a fragile ring that frequently disappears. Shares the ibotenic acid and muscimol of the Panther Cap, which it hybridises and intergrades with.",
+      "character_states": {
+        "volva": [
+          "Swollen but no cup"
+        ],
+        "ring": [
+          "Firm skirt-like ring",
+          "Faint zone only",
+          "No ring"
+        ],
+        "cap_colour": [
+          "Yellow",
+          "White or cream"
+        ],
+        "cap_surface": [
+          "Scaly",
+          "Smooth and dry"
+        ]
+      }
+    },
+    {
       "key": "amanita-muscaria",
       "scientific_name": "Amanita muscaria",
       "genus": "Amanita",
@@ -518,6 +643,46 @@
       }
     },
     {
+      "key": "cerioporus-squamosus",
+      "scientific_name": "Cerioporus squamosus",
+      "genus": "Cerioporus",
+      "common_names": [
+        "Dryad's Saddle",
+        "Pheasant's Back"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "cap_surface",
+        "hymenium_type",
+        "substrate",
+        "growth_form",
+        "smell"
+      ],
+      "notes": "Large fan-shaped bracket with flattened brown scales in concentric rows, on standing and fallen hardwood in spring. Smells of watermelon rind.",
+      "internal_note": "Also published as Polyporus squamosus, which is the name the First Nature index uses. Recorded under the current combination; flagged in REVIEW.md. Also confused with polyporus tuberaster, which are outside the label space. Recorded here rather than in `lookalikes` because that graph must only reference species the model can actually name; they are candidates if the label space grows.",
+      "character_states": {
+        "cap_surface": [
+          "Scaly"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "substrate": [
+          "A living tree",
+          "Dead wood or a stump"
+        ],
+        "growth_form": [
+          "As a bracket",
+          "Singly"
+        ],
+        "smell": [
+          "Pleasantly mushroomy"
+        ]
+      }
+    },
+    {
       "key": "chlorophyllum-brunneum",
       "scientific_name": "Chlorophyllum brunneum",
       "genus": "Chlorophyllum",
@@ -576,6 +741,53 @@
         "habitat": [
           "No trees nearby",
           "Mixed broadleaf"
+        ]
+      }
+    },
+    {
+      "key": "clitocybe-nebularis",
+      "scientific_name": "Clitocybe nebularis",
+      "genus": "Clitocybe",
+      "common_names": [
+        "Clouded Funnel",
+        "Clouded Agaric"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "clitocybe-dealbata",
+        "entoloma-sinuatum",
+        "lepista-nuda"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_attachment",
+        "smell",
+        "spore_print_colour",
+        "growth_form"
+      ],
+      "notes": "Large, grey and cloud-capped, in troops and rings in leaf litter. Strong mealy smell. Upsets a substantial minority of people even when cooked, and shares its habitat and season with the dangerous Entoloma sinuatum.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "White or cream",
+          "Brown"
+        ],
+        "gill_attachment": [
+          "Running down the stem",
+          "Squarely attached"
+        ],
+        "smell": [
+          "Fresh bread dough"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "growth_form": [
+          "In a ring",
+          "Scattered",
+          "In a tight cluster"
         ]
       }
     },
@@ -890,6 +1102,42 @@
       }
     },
     {
+      "key": "daldinia-concentrica",
+      "scientific_name": "Daldinia concentrica",
+      "genus": "Daldinia",
+      "common_names": [
+        "King Alfred's Cakes",
+        "Cramp Balls"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "texture",
+        "substrate",
+        "interior_structure",
+        "growth_form"
+      ],
+      "notes": "Hard black hemispheres on dead ash and beech, showing concentric silver-and-black rings when cut through. Woody rather than fleshy, and present all year.",
+      "internal_note": "Also confused with kretzschmaria deusta, which are outside the label space. Recorded here rather than in `lookalikes` because that graph must only reference species the model can actually name; they are candidates if the label space grows.",
+      "character_states": {
+        "texture": [
+          "Woody"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "A living tree"
+        ],
+        "interior_structure": [
+          "Solid and dark"
+        ],
+        "growth_form": [
+          "Scattered",
+          "In a tight cluster"
+        ]
+      }
+    },
+    {
       "key": "entoloma-sinuatum",
       "scientific_name": "Entoloma sinuatum",
       "genus": "Entoloma",
@@ -950,6 +1198,82 @@
         "growth_form": [
           "As a bracket",
           "Singly"
+        ]
+      }
+    },
+    {
+      "key": "fomes-fomentarius",
+      "scientific_name": "Fomes fomentarius",
+      "genus": "Fomes",
+      "common_names": [
+        "Hoof Fungus",
+        "Tinder Fungus"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "fomitopsis-betulina"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "texture",
+        "growth_form"
+      ],
+      "notes": "Grey hoof-shaped bracket, hard as wood, banded in concentric ridges, high on birch and beech trunks. Perennial, so the same bracket is there year after year.",
+      "internal_note": "Also confused with ganoderma applanatum, which are outside the label space. Recorded here rather than in `lookalikes` because that graph must only reference species the model can actually name; they are candidates if the label space grows.",
+      "character_states": {
+        "hymenium_type": [
+          "Pores"
+        ],
+        "substrate": [
+          "A living tree",
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "growth_form": [
+          "As a bracket",
+          "Singly"
+        ]
+      }
+    },
+    {
+      "key": "fomitopsis-betulina",
+      "scientific_name": "Fomitopsis betulina",
+      "genus": "Fomitopsis",
+      "common_names": [
+        "Birch Polypore",
+        "Razorstrop Fungus"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "fomes-fomentarius"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "habitat",
+        "texture"
+      ],
+      "notes": "Smooth pale kidney-shaped bracket, only ever on birch. Rubbery when young and corky when old, with a white pore surface.",
+      "internal_note": "Also published as Piptoporus betulinus, the name used by the First Nature index. Recorded under the current combination; flagged in REVIEW.md. Also confused with ganoderma applanatum, which are outside the label space. Recorded here rather than in `lookalikes` because that graph must only reference species the model can actually name; they are candidates if the label space grows.",
+      "character_states": {
+        "hymenium_type": [
+          "Pores"
+        ],
+        "substrate": [
+          "A living tree",
+          "Dead wood or a stump"
+        ],
+        "habitat": [
+          "Birch"
+        ],
+        "texture": [
+          "Firm and fleshy",
+          "Woody"
         ]
       }
     },
@@ -1184,6 +1508,44 @@
       }
     },
     {
+      "key": "laccaria-amethystina",
+      "scientific_name": "Laccaria amethystina",
+      "genus": "Laccaria",
+      "common_names": [
+        "Amethyst Deceiver"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "lepista-nuda",
+        "cortinarius-violaceus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_colour",
+        "spore_print_colour",
+        "gill_spacing"
+      ],
+      "notes": "Deep violet throughout when fresh, fading to buff as it dries, which is where the name comes from. Thick, widely spaced gills and a white spore print.",
+      "internal_note": "Also confused with mycena pura, which are outside the label space. Recorded here rather than in `lookalikes` because that graph must only reference species the model can actually name; they are candidates if the label space grows.",
+      "character_states": {
+        "cap_colour": [
+          "Purple",
+          "Brown"
+        ],
+        "gill_colour": [
+          "Pink",
+          "Grey"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "gill_spacing": [
+          "Well spaced"
+        ]
+      }
+    },
+    {
       "key": "lactarius-deliciosus",
       "scientific_name": "Lactarius deliciosus",
       "genus": "Lactarius",
@@ -1331,6 +1693,100 @@
       ],
       "notes": "Contains the same amatoxins as the Death Cap. Small, with a pale cap broken into pinkish-brown concentric scales and a fragile ring that is often gone. Fruits in grass -- lawns, parks, roadside verges -- where nobody expects a lethal mushroom, and has caused repeated fatal poisonings in Europe among people gathering small field mushrooms.",
       "internal_note": "Added because docs/REVIEW.md item 10 named the small brown Lepiota species as the most significant gap in the label space: amatoxin-containing, present in the UK, and absent from the taxonomy. A species the model has never seen cannot be flagged, and would be forced into the nearest class it knows -- here, a lawn mushroom.",
+      "character_states": {
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "ring": [
+          "Firm skirt-like ring",
+          "Faint zone only",
+          "No ring"
+        ],
+        "cap_surface": [
+          "Scaly",
+          "Fibrous",
+          "Smooth and dry"
+        ],
+        "size": [
+          "Under 2 cm",
+          "2-5 cm",
+          "5-10 cm"
+        ],
+        "habitat": [
+          "No trees nearby",
+          "Mixed broadleaf"
+        ]
+      }
+    },
+    {
+      "key": "lepiota-cristata",
+      "scientific_name": "Lepiota cristata",
+      "genus": "Lepiota",
+      "common_names": [
+        "Stinking Dapperling"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "lepiota-brunneoincarnata",
+        "lepiota-subincarnata",
+        "macrolepiota-procera"
+      ],
+      "diagnostic_characters": [
+        "spore_print_colour",
+        "smell",
+        "cap_surface",
+        "size",
+        "ring"
+      ],
+      "notes": "Small, with a white cap bearing concentric reddish-brown scales and a dark central disc. Smells unpleasantly of rubber or burnt hair. Very common in gardens, verges and woodland paths.",
+      "internal_note": "Included mainly as a reference class for the small Lepiota group: it is the one people actually meet, and without it the lethal members have no common sibling to be distinguished from.",
+      "character_states": {
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "smell": [
+          "Ink or chemicals",
+          "Rotting or foul"
+        ],
+        "cap_surface": [
+          "Scaly"
+        ],
+        "size": [
+          "Under 2 cm",
+          "2-5 cm"
+        ],
+        "ring": [
+          "Faint zone only",
+          "No ring",
+          "Firm skirt-like ring"
+        ]
+      }
+    },
+    {
+      "key": "lepiota-subincarnata",
+      "scientific_name": "Lepiota subincarnata",
+      "genus": "Lepiota",
+      "common_names": [
+        "Fatal Dapperling"
+      ],
+      "toxicity": "DEADLY",
+      "gbif_key": null,
+      "lookalikes": [
+        "lepiota-brunneoincarnata",
+        "lepiota-cristata",
+        "marasmius-oreades",
+        "agaricus-campestris"
+      ],
+      "diagnostic_characters": [
+        "spore_print_colour",
+        "ring",
+        "cap_surface",
+        "size",
+        "habitat"
+      ],
+      "notes": "Contains the same amatoxins as the Death Cap. Small, with a pinkish-brown scaly cap on a paler ground and a fragile ring that is often gone by the time it is found. Grass, verges and garden borders, alongside the small lawn mushrooms people pick.",
+      "internal_note": "Added alongside L. brunneoincarnata: carrying one lethal small Lepiota and not its sibling is arbitrary, and the two are not separable in the field by a non-expert.",
       "character_states": {
         "spore_print_colour": [
           "White or cream"
@@ -1514,6 +1970,82 @@
       }
     },
     {
+      "key": "neoboletus-luridiformis",
+      "scientific_name": "Neoboletus luridiformis",
+      "genus": "Neoboletus",
+      "common_names": [
+        "Scarletina Bolete"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "rubroboletus-satanas",
+        "boletus-edulis"
+      ],
+      "diagnostic_characters": [
+        "pore_colour",
+        "bruising_reaction",
+        "stipe_surface",
+        "flesh_colour"
+      ],
+      "notes": "Red-orange pores and flesh that turns deep blue within seconds of cutting. Toxic raw. The stem is covered in fine red dots rather than the raised net of the Devil's Bolete.",
+      "internal_note": "Also confused with suillellus luridus, which are outside the label space. Recorded here rather than in `lookalikes` because that graph must only reference species the model can actually name; they are candidates if the label space grows.",
+      "character_states": {
+        "pore_colour": [
+          "Red or orange"
+        ],
+        "bruising_reaction": [
+          "Blue"
+        ],
+        "stipe_surface": [
+          "Fibrous",
+          "Smooth"
+        ],
+        "flesh_colour": [
+          "Yellow"
+        ]
+      }
+    },
+    {
+      "key": "omphalotus-illudens",
+      "scientific_name": "Omphalotus illudens",
+      "genus": "Omphalotus",
+      "common_names": [
+        "Jack o' Lantern"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "cantharellus-cibarius",
+        "hygrophoropsis-aurantiaca",
+        "omphalotus-olearius"
+      ],
+      "diagnostic_characters": [
+        "gill_type",
+        "substrate",
+        "flesh_colour",
+        "growth_form"
+      ],
+      "notes": "Sharp-edged true gills running down the stem, orange throughout, clustered on buried roots and stumps. Severe gastrointestinal poisoning. The gills are the separation from the Chanterelle, which has blunt forking ridges rather than blades.",
+      "character_states": {
+        "gill_type": [
+          "Blade-like gills"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "A living tree",
+          "Soil or leaf litter"
+        ],
+        "flesh_colour": [
+          "Orange",
+          "Yellow"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ]
+      }
+    },
+    {
       "key": "omphalotus-olearius",
       "scientific_name": "Omphalotus olearius",
       "genus": "Omphalotus",
@@ -1585,6 +2117,45 @@
       }
     },
     {
+      "key": "phallus-impudicus",
+      "scientific_name": "Phallus impudicus",
+      "genus": "Phallus",
+      "common_names": [
+        "Stinkhorn",
+        "Common Stinkhorn"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "lycoperdon-perlatum"
+      ],
+      "diagnostic_characters": [
+        "smell",
+        "growth_form",
+        "substrate",
+        "cap_surface"
+      ],
+      "notes": "Found by smell long before sight: a carrion stench that draws flies to the olive slime on the cap. Emerges from a white egg in leaf litter and woodchip.",
+      "internal_note": "Also confused with mutinus caninus, which are outside the label space. Recorded here rather than in `lookalikes` because that graph must only reference species the model can actually name; they are candidates if the label space grows.",
+      "character_states": {
+        "smell": [
+          "Rotting or foul"
+        ],
+        "growth_form": [
+          "Singly",
+          "Scattered"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Dead wood or a stump"
+        ],
+        "cap_surface": [
+          "Slimy or greasy",
+          "Pitted or honeycombed"
+        ]
+      }
+    },
+    {
       "key": "pholiota-squarrosa",
       "scientific_name": "Pholiota squarrosa",
       "genus": "Pholiota",
@@ -1613,6 +2184,44 @@
         "substrate": [
           "A living tree",
           "Dead wood or a stump"
+        ]
+      }
+    },
+    {
+      "key": "pleurocybella-porrigens",
+      "scientific_name": "Pleurocybella porrigens",
+      "genus": "Pleurocybella",
+      "common_names": [
+        "Angel's Wings"
+      ],
+      "toxicity": "SERIOUS",
+      "gbif_key": null,
+      "lookalikes": [
+        "pleurotus-ostreatus",
+        "crepidotus-mollis"
+      ],
+      "diagnostic_characters": [
+        "spore_print_colour",
+        "substrate",
+        "stipe_presence",
+        "texture"
+      ],
+      "notes": "Thin, pure white, ear-shaped and stemless, on conifer wood. Long eaten, then linked to a cluster of fatal encephalopathy cases, chiefly in people with impaired kidney function.",
+      "internal_note": "Recorded SERIOUS rather than DEADLY: the deaths are documented but concentrated in a susceptible group. The classification is a judgement call and is flagged in REVIEW.md.",
+      "character_states": {
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "stipe_presence": [
+          "No stem",
+          "Stem at the side"
+        ],
+        "texture": [
+          "Soft and fragile",
+          "Firm and fleshy"
         ]
       }
     },
@@ -1751,6 +2360,43 @@
       }
     },
     {
+      "key": "russula-nobilis",
+      "scientific_name": "Russula nobilis",
+      "genus": "Russula",
+      "common_names": [
+        "Beechwood Sickener"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "russula-emetica",
+        "russula-cyanoxantha",
+        "russula-ochroleuca"
+      ],
+      "diagnostic_characters": [
+        "taste",
+        "cap_colour",
+        "habitat",
+        "gill_texture"
+      ],
+      "notes": "Scarlet cap, white gills and stem, acrid and burning to taste. Under beech, where the Sickener proper is with conifers.",
+      "character_states": {
+        "taste": [
+          "Burning or peppery"
+        ],
+        "cap_colour": [
+          "Red"
+        ],
+        "habitat": [
+          "Beech",
+          "Mixed broadleaf"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ]
+      }
+    },
+    {
       "key": "russula-ochroleuca",
       "scientific_name": "Russula ochroleuca",
       "genus": "Russula",
@@ -1775,6 +2421,43 @@
         ],
         "gill_texture": [
           "Brittle, shattering like chalk"
+        ]
+      }
+    },
+    {
+      "key": "sarcoscypha-austriaca",
+      "scientific_name": "Sarcoscypha austriaca",
+      "genus": "Sarcoscypha",
+      "common_names": [
+        "Scarlet Elfcup"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "cap_shape",
+        "flesh_colour",
+        "substrate",
+        "season"
+      ],
+      "notes": "A scarlet cup on mossy fallen hardwood, through the winter and into spring when almost nothing else is fruiting.",
+      "internal_note": "Also confused with aleuria aurantia, which are outside the label space. Recorded here rather than in `lookalikes` because that graph must only reference species the model can actually name; they are candidates if the label space grows.",
+      "character_states": {
+        "cap_shape": [
+          "Funnel-shaped",
+          "Irregular"
+        ],
+        "flesh_colour": [
+          "Red",
+          "White"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "Moss"
+        ],
+        "season": [
+          "Winter",
+          "Spring"
         ]
       }
     },
@@ -1895,6 +2578,46 @@
       }
     },
     {
+      "key": "trametes-versicolor",
+      "scientific_name": "Trametes versicolor",
+      "genus": "Trametes",
+      "common_names": [
+        "Turkeytail"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "growth_form",
+        "cap_surface",
+        "texture"
+      ],
+      "notes": "Thin, flexible, banded in concentric zones of every colour from cream to near-black, in overlapping tiers on dead hardwood. The underside is finely pored, which separates it from the crusts it grows beside.",
+      "internal_note": "Also confused with stereum hirsutum, trametes gibbosa, which are outside the label space. Recorded here rather than in `lookalikes` because that graph must only reference species the model can actually name; they are candidates if the label space grows.",
+      "character_states": {
+        "hymenium_type": [
+          "Pores"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "growth_form": [
+          "As a bracket",
+          "In a tight cluster"
+        ],
+        "cap_surface": [
+          "Velvety",
+          "Smooth and dry"
+        ],
+        "texture": [
+          "Firm and fleshy",
+          "Woody"
+        ]
+      }
+    },
+    {
       "key": "tricholoma-equestre",
       "scientific_name": "Tricholoma equestre",
       "genus": "Tricholoma",
@@ -1927,6 +2650,48 @@
         ],
         "habitat": [
           "Pine or spruce"
+        ]
+      }
+    },
+    {
+      "key": "tricholoma-pardinum",
+      "scientific_name": "Tricholoma pardinum",
+      "genus": "Tricholoma",
+      "common_names": [
+        "Leopard Knight"
+      ],
+      "toxicity": "SERIOUS",
+      "gbif_key": null,
+      "lookalikes": [
+        "tricholoma-equestre",
+        "calocybe-gambosa",
+        "clitocybe-nebularis"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "gill_colour",
+        "spore_print_colour",
+        "smell",
+        "habitat"
+      ],
+      "notes": "Grey cap broken into darker fibrous scales, white gills and a stout white stem. Causes violent and prolonged gastrointestinal poisoning and is a leading cause of mushroom poisoning in parts of Europe. Calcareous woodland, often with beech.",
+      "character_states": {
+        "cap_surface": [
+          "Scaly",
+          "Fibrous"
+        ],
+        "gill_colour": [
+          "White"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "smell": [
+          "Fresh bread dough"
+        ],
+        "habitat": [
+          "Beech",
+          "Mixed broadleaf"
         ]
       }
     },

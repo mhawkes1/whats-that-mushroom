@@ -53,7 +53,7 @@ characters come from standard references but are unverified.
 
 | Path | What it holds |
 | --- | --- |
-| `data/taxonomy.seed.json` | 60 UK species, lookalike graph, toxicity, diagnostic characters, character states |
+| `data/taxonomy.seed.json` | 79 UK species, lookalike graph, toxicity, diagnostic characters, character states |
 | `ml/fungi_ml/taxonomy.py` | Species model and the asymmetric risk matrix |
 | `ml/fungi_ml/losses.py` | Risk-weighted objective |
 | `ml/fungi_ml/calibrate.py` | Temperature scaling, threshold fitting |
@@ -89,7 +89,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   bug; there is a regression test.
 - **Splits are on `observation_id`, never on image.** If accuracy looks too
   good, check this before believing it.
-- **`character_states` is complete for all 60 species and UNREVIEWED
+- **`character_states` is complete for all 79 species and UNREVIEWED
   throughout.** Derived from the taxonomy's own `notes`, not from a
   mycologist. Complete is not reviewed: `reviewed_by` is still null and
   `/health` still reports `taxonomy_reviewed: false`. A forager's eye over
@@ -139,10 +139,18 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   there; a test asserts no committed state is one.
 - **Filling the table is a worksheet job, not a code job.** `python
   scripts/character_states.py emit` writes `docs/character-states-worksheet.csv`
-  (205 rows, deadliest first, and it preserves answers already in the sheet);
-  `import` validates and writes back. A state
-  that is not exactly one of the character's answer options is refused,
-  because it would store cleanly and never match anything.
+  (289 rows, deadliest first, and it preserves answers already in the sheet);
+  `import` validates and writes back. A state that is not exactly one of the
+  character's answer options is refused, because it would store cleanly and
+  never match anything.
+- **`import` is authoritative and wipes states not in the sheet.** Writing
+  `character_states` straight into the JSON and then running `emit`/`import`
+  silently removes them. Add a species' states by filling its worksheet rows,
+  not by editing the taxonomy — a round trip must be lossless or the sheet
+  stops being the source of truth.
+- **`lookalikes` may only reference species in the label space**, and a test
+  enforces it. A lookalike outside the label space goes in `internal_note`
+  instead, where it doubles as the candidate list if the label space grows.
 - **Softmax cannot detect out-of-distribution input, and that is why
   `ood.py` exists.** Softmax depends only on *differences* between logits, so
   shifting every logit down leaves it byte-identical while the network has

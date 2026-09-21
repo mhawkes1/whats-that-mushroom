@@ -65,6 +65,57 @@ that fitted. Both have been added, and both change what users are asked:
 If either reads wrongly to you, say so -- they are user-facing question
 wording as much as data.
 
+### Corroboration from the First Nature UK index
+
+A UK binomial index was checked against the label space. Only two of the app's
+species failed to appear in it under the same name, and both were already open
+queries here:
+
+1. ***Clitocybe dealbata*** is **absent from that index**, which carries only
+   *C. rivulosa*. That is independent support for query 1 below -- the two may
+   be one species under two names, in which case the app is carrying a
+   meaningless "dangerous pair". **This has not been acted on.** Merging them
+   would delete a DEADLY entry from the label space on the strength of one
+   index, which is a call for you rather than for us.
+2. ***Chlorophyllum brunneum*** appears in the index as ***C. rhacodes***.
+   Both are called Shaggy Parasol. Which name should the app carry?
+
+### Nineteen species were added to the label space
+
+Ten of them close a confusion the app already half-modelled -- it held the
+Death Cap but not the False Deathcap people mistake for it, one lethal
+*Lepiota* but not its sibling, the Blusher and the Panther Cap but not the
+*Amanita* that resembles both. The other nine are the species the companion
+ebook teaches and the app could not name.
+
+Two classifications are judgement calls and want a second opinion:
+
+- ***Pleurocybella porrigens*** recorded **SERIOUS**, not DEADLY. The fatal
+  encephalopathy cases are documented but concentrated among people with
+  impaired kidney function.
+- ***Amanita citrina*** and ***Amanita excelsa*** recorded **INEDIBLE** under
+  the project convention that INEDIBLE is the safest value, rather than as a
+  positive claim about either.
+
+Two are carried under a current name where the index uses an older one, so
+both spellings are worth confirming:
+
+| Recorded as | Index uses |
+| --- | --- |
+| *Cerioporus squamosus* | *Polyporus squamosus* |
+| *Fomitopsis betulina* | *Piptoporus betulinus* |
+
+### A third answer option was added
+
+**"Raw potato or earthy"** on `smell`, because it is what separates *Amanita
+citrina* from the Death Cap and the app had no way to say it.
+
+Related, and deliberately left alone: **the Death Cap's own smell is not
+recorded**, because this repository's notes make no claim about it. That means
+a user reporting a raw-potato smell cannot push the Death Cap down the list --
+the safe direction, but a gap. Should *A. phalloides* carry a smell entry, and
+if so which states?
+
 ### Three species were added to the label space
 
 Closing items 10-12 below. A species the model has never seen cannot be
