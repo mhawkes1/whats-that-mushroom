@@ -60,9 +60,32 @@ COLUMNS = [
 SEPARATOR = ";"
 
 
+def _existing_answers(path: Path) -> dict[tuple[str, str], dict[str, str]]:
+    """Whatever a reviewer has already written, keyed by species and character.
+
+    `emit` has to be re-runnable: the species list grows and a character's
+    answer options change, and both make the generated columns stale. Losing
+    the reviewer's work to a regeneration would be the fastest way to stop
+    anyone filling this in.
+    """
+    if not path.exists():
+        return {}
+    kept: dict[tuple[str, str], dict[str, str]] = {}
+    with path.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            answered = {
+                column: (row.get(column) or "")
+                for column in ("REVIEW_states", "REVIEW_notes", "REVIEWER", "REVIEW_DATE")
+            }
+            if any(value.strip() for value in answered.values()):
+                kept[(row["species_key"], row["character"])] = answered
+    return kept
+
+
 def emit(taxonomy_path: Path, out_path: Path) -> int:
-    """Write a blank worksheet, deadliest species first."""
+    """Write the worksheet, deadliest species first, keeping existing answers."""
     taxonomy = Taxonomy.load(taxonomy_path)
+    preserved = _existing_answers(out_path)
 
     def priority(key: str) -> tuple:
         sp = taxonomy[key]
@@ -86,10 +109,13 @@ def emit(taxonomy_path: Path, out_path: Path) -> int:
                     "character_label": character.label,
                     "question": character.prompt,
                     "permitted_states": SEPARATOR.join(character.options),
-                    "REVIEW_states": "",
-                    "REVIEW_notes": "",
-                    "REVIEWER": "",
-                    "REVIEW_DATE": "",
+                    **{
+                        "REVIEW_states": "",
+                        "REVIEW_notes": "",
+                        "REVIEWER": "",
+                        "REVIEW_DATE": "",
+                        **preserved.get((sp.key, character_key), {}),
+                    },
                 }
             )
 
@@ -99,7 +125,16 @@ def emit(taxonomy_path: Path, out_path: Path) -> int:
         writer.writeheader()
         writer.writerows(rows)
 
+    carried = sum(
+        1 for row in rows if (row["species_key"], row["character"]) in preserved
+    )
+    dropped = len(preserved) - carried
     print(f"Wrote {len(rows)} rows to {out_path}")
+    if carried:
+        print(f"Carried over {carried} answered row(s).")
+    if dropped:
+        # A row can only vanish if the species or the character went away.
+        print(f"WARNING: {dropped} answered row(s) no longer have a place and were dropped.")
     print()
     print("For each row, put the state(s) that species actually shows into")
     print(f"REVIEW_states, copied exactly from permitted_states, {SEPARATOR!r}-separated")

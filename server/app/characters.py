@@ -140,7 +140,7 @@ CHARACTERS: dict[str, Character] = {
         effort="minutes",
         options=(
             "Yellow, especially at the stem base", "Red or pink", "Blue",
-            "Brown", "No change",
+            "Green", "Brown", "No change",
         ),
         safety_note=(
             "Chrome-yellow staining at the base of the stem marks the Yellow Stainer, "
@@ -184,8 +184,9 @@ CHARACTERS: dict[str, Character] = {
         prompt="What does it smell like?",
         how="Break a piece and smell it immediately, close up.",
         options=(
-            "Pleasantly mushroomy", "Aniseed or almond", "Fresh bread dough",
-            "Radish", "Ink or chemicals", "Rotting or foul", "Nothing much",
+            "Pleasantly mushroomy", "Aniseed or almond", "Apricot or fruity",
+            "Fresh bread dough", "Radish", "Ink or chemicals", "Rotting or foul",
+            "Nothing much",
         ),
         safety_note=(
             "A phenolic or inky smell, strongest at the stem base, is a reliable "

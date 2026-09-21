@@ -37,27 +37,39 @@ script = _load_script()
 WORKSHEET = ROOT / "docs" / "character-states-worksheet.csv"
 
 
-def test_the_committed_worksheet_covers_the_lethal_pairs_and_flags_them():
-    """Both halves of every lethal confusion are filled in, and marked unreviewed.
-
-    Species outside those pairs are still a reviewer's job. The filled rows
-    say UNREVIEWED in the sheet itself so nobody mistakes them for sign-off.
-    """
+def test_every_species_appears_in_the_worksheet():
+    """The worksheet is the reviewer's view of the table, so it must be complete."""
     from fungi_ml.taxonomy import Taxonomy
 
     taxonomy = Taxonomy.load(ROOT / "data" / "taxonomy.seed.json")
-    in_a_lethal_pair = {key for pair in taxonomy.dangerous_pairs() for key in pair}
+    listed = {row["species_key"] for row in csv.DictReader(WORKSHEET.open(encoding="utf-8"))}
 
+    # A species whose diagnostic characters are all free-photograph ones has
+    # no discrete states to record and legitimately has no rows.
+    expected = {
+        key
+        for key, species in taxonomy.species.items()
+        if any(
+            CHARACTERS[c].options
+            for c in species.diagnostic_characters
+            if c in CHARACTERS
+        )
+    }
+    assert listed == expected
+
+
+def test_every_filled_row_is_flagged_unreviewed():
+    """Nothing in the sheet may read as sign-off.
+
+    Every state was compiled from the taxonomy's own notes rather than from a
+    mycologist, and the sheet has to say so on each row, because the sheet is
+    what a reviewer will actually open.
+    """
     rows = list(csv.DictReader(WORKSHEET.open(encoding="utf-8")))
-    assert rows, "the worksheet should list rows for a reviewer to fill"
-
     filled = [row for row in rows if row["REVIEW_states"].strip()]
-    assert filled, "the lethal-pair rows should be filled"
-    assert {row["species_key"] for row in filled} <= in_a_lethal_pair
+    assert filled, "the worksheet should be filled in"
     assert all("UNREVIEWED" in row["REVIEW_notes"] for row in filled)
-
-    blank = [row for row in rows if not row["REVIEW_states"].strip()]
-    assert blank, "species outside a lethal pair are still a reviewer's job"
+    assert all(row["REVIEWER"].strip() for row in filled)
 
 
 def test_every_worksheet_row_offers_the_real_answer_options():

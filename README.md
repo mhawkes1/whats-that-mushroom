@@ -75,7 +75,7 @@ candidate space more than incremental backbone capacity does.
 
 ```
 whats-that-mushroom/
-├── data/taxonomy.seed.json    57 UK species, lookalike graph, risk data
+├── data/taxonomy.seed.json    60 UK species, lookalike graph, risk data
 ├── ml/                        dataset pipeline, training, calibration, export
 │   ├── fungi_ml/
 │   │   ├── taxonomy.py        species model and the risk matrix
@@ -109,7 +109,7 @@ and no dataset yet; the API serves a stub backend producing deterministic fake
 predictions so the safety layer, interrogation engine, API and mobile client
 can all be developed and tested. Every other layer is real and tested.
 
-165 tests pass, covering split integrity, the risk asymmetry, calibration, the
+175 tests pass, covering split integrity, the risk asymmetry, calibration, the
 checkpoint-to-ONNX seam, spore print colour matching, the evidence model's
 safety floors, and the classic fatal confusions end to end.
 

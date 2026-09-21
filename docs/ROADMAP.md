@@ -4,7 +4,7 @@
 
 Working: taxonomy and risk model, dataset pipeline, training loop,
 calibration, evaluation and model card generation, safety layer,
-interrogation engine, HTTP API, Expo client. 165 tests pass.
+interrogation engine, HTTP API, Expo client. 175 tests pass.
 
 The chain from raw manifest through to a served ONNX model has now been run
 end to end on synthetic data (`scripts/smoke_e2e.py`), so the stages are known
@@ -100,10 +100,11 @@ Expect species-level top-1 somewhere in the 50-70% range on a first pass with
 this label space, and genus accuracy substantially higher. If the first run
 reports 95%, there is a leak — check the observation-level split first.
 
-### 3. Fill in the rest of the character-state table
+### 3. Get the character-state table reviewed
 
-**The mechanism is built and all 30 species in lethal pairs are filled in,
-unreviewed. The remaining 27 need a reviewer rather than a programmer.**
+**The mechanism is built and the table is complete for all 60 species. What
+is left is not filling it in but checking it, and that needs a forager or a
+mycologist rather than a programmer.**
 
 `apply_answer` now delegates to `server/app/evidence.py`, which compares an
 answer against each species' declared `character_states` and applies a
@@ -113,8 +114,8 @@ our side is not evidence about the mushroom. Contradicting a deadly species
 costs it far less than contradicting a harmless one, and no answer may drive a
 deadly candidate below the threshold at which the safety layer still warns.
 
-An undescribed species gets a likelihood of 1.0, so answers about the 27
-species still undescribed change nothing. That degradation is visible rather
+An undescribed species -- or a species undescribed for the character being
+asked about -- gets a likelihood of 1.0 and is left alone. That degradation is visible rather
 than disguised: `/health` reports `character_states_described`, and
 `python scripts/character_states.py status` prints coverage.
 
@@ -154,7 +155,7 @@ python scripts/character_states.py import --dry-run
 python scripts/character_states.py import
 ```
 
-190 rows, one per (species, diagnostic character) pair; 107 filled, 83 open. Import refuses any
+205 rows, one per (species, diagnostic character) pair, all filled and all unreviewed. Import refuses any
 state that is not exactly one of that character's answer options, since such a
 state would store cleanly and never match anything -- a populated table that
 cannot fire is worse than an empty one.

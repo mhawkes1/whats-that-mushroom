@@ -19,10 +19,14 @@ mycologist**, so that the mechanism could be tested. Those 30 rows are the
 highest-priority thing in this folder to verify or correct. The remaining 160
 rows are blank.
 
-All 107 rows covering the 30 species that form the lethal confusion pairs --
-the 8 deadly species and the 22 safe lookalikes opposite them -- have now been
-filled in this way. The 83 remaining rows, for species not involved in a
-lethal pair, are blank.
+**All 205 rows are now filled in, and all 205 are unreviewed.** They were
+compiled from this repository's own descriptive notes, not by a mycologist.
+Checking them is the highest-value work in this folder: the app uses them to
+decide what a user's answer rules in or out, so an error here changes what
+the app tells someone holding a mushroom.
+
+Start with the species that can kill, then the safe lookalikes opposite them,
+then the rest. The worksheet is already sorted in that order.
 
 **Note on the tier counts.** The Tier 2 list below names 20 species. Derived
 from the lookalike graph, 22 species sit opposite a deadly one: the extra two
@@ -48,18 +52,33 @@ is on.** The app treats a state you list as "consistent" and anything else as
 - **If you are unsure, leave the row blank.** Blank means "not described",
   which the app treats as no evidence at all, and that is always safe.
 
-### Two gaps in the answer options, for your judgement
+### Two answer options were added
 
-Two species could not be described because the app offers no answer that fits.
-Both are worth knowing about, since the fix is to change what the app asks
-rather than what it records:
+Two characters could not be recorded at all, because the app offered no answer
+that fitted. Both have been added, and both change what users are asked:
 
-1. ***Cantharellus cibarius* smell.** The apricot smell is one of its most
-   reliable characters, and the `smell` options offer nothing close. Should an
-   apricot or fruity option be added?
-2. ***Lactarius deliciosus* bruising.** The latex stains green, and
-   `bruising_reaction` offers yellow, red, blue, brown or no change. Should
-   green be added?
+1. **"Apricot or fruity"** on `smell`, for *Cantharellus cibarius*, whose
+   apricot smell is one of its most reliable characters.
+2. **"Green"** on `bruising_reaction`, for *Lactarius deliciosus*, whose latex
+   stains green.
+
+If either reads wrongly to you, say so -- they are user-facing question
+wording as much as data.
+
+### Three species were added to the label space
+
+Closing items 10-12 below. A species the model has never seen cannot be
+flagged as dangerous: it is forced into the nearest class it knows, which for
+a lethal lawn mushroom means something harmless.
+
+| Species | Recorded as | Why |
+| --- | --- | --- |
+| *Lepiota brunneoincarnata* | DEADLY | Amatoxins, fruits in grass and parks, repeated fatal poisonings in Europe. REVIEW item 10 called this the most significant gap. |
+| *Amanita pantherina* | SERIOUS | Present in the UK, hospitalisation usual, deaths rare. Recorded SERIOUS rather than DEADLY — please confirm. |
+| *Cortinarius orellanus* | DEADLY | The other orellanine webcap; only *C. rubellus* was present. |
+
+All three need the same checking as the rest, and the *A. pantherina*
+classification in particular is a judgement call worth a second opinion.
 
 ## Priority tiers
 

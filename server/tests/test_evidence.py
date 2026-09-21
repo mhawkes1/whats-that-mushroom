@@ -32,12 +32,12 @@ DEATH_CAP = "amanita-phalloides"
 FIELD_MUSHROOM = "agaricus-campestris"
 CHANTERELLE = "cantharellus-cibarius"
 
-# Species with no character_states at all: neither deadly nor the safe half of
-# a lethal pair, so nothing has described them yet. Used where a test needs
-# the undescribed path rather than the committed data.
-UNDESCRIBED_A = "boletus-edulis"
-UNDESCRIBED_B = "hydnum-repandum"
-UNDESCRIBED_C = "sparassis-crispa"
+# Every species now carries some states, but only for the characters it
+# declares as diagnostic. These three describe nothing about gills, so an
+# answer about gill colour still takes the undescribed path through them.
+NO_GILL_STATES_A = "boletus-edulis"
+NO_GILL_STATES_B = "hydnum-repandum"
+NO_GILL_STATES_C = "sparassis-crispa"
 
 
 @pytest.fixture
@@ -65,7 +65,7 @@ def test_an_undescribed_character_leaves_the_ranking_exactly_as_it_was(taxonomy)
     update must be an exact no-op. A ranking that drifted slightly would be
     worse than one that does not move, because it would look like it worked.
     """
-    ranked = [(UNDESCRIBED_A, 0.5), (UNDESCRIBED_B, 0.3), (UNDESCRIBED_C, 0.2)]
+    ranked = [(NO_GILL_STATES_A, 0.5), (NO_GILL_STATES_B, 0.3), (NO_GILL_STATES_C, 0.2)]
     assert reweight(ranked, "gill_colour", "White", taxonomy) == ranked
 
 
@@ -91,23 +91,37 @@ def test_every_species_in_a_lethal_pair_is_described(taxonomy):
     assert undescribed == [], f"a lethal pair has an undescribed half: {undescribed}"
 
 
-def test_the_species_outside_a_lethal_pair_are_still_undescribed(taxonomy):
-    """A guard on the claim the docs make about coverage.
+def test_every_species_in_the_taxonomy_is_described(taxonomy):
+    """The table is complete: every species carries states for its own characters.
 
-    If someone describes the rest, this fails and the docs saying only the
-    lethal pairs are filled in need updating with it.
+    Complete is not the same as reviewed. Every entry was compiled from the
+    taxonomy's own notes and still needs field-character sign-off; `/health`
+    reports `taxonomy_reviewed: false` and this test says nothing about that.
     """
     coverage = described_coverage(taxonomy)
-    in_a_lethal_pair = {key for pair in taxonomy.dangerous_pairs() for key in pair}
-    assert coverage["described"] == len(in_a_lethal_pair)
-    assert 0.0 < coverage["fraction"] < 1.0
+    assert coverage["described"] == len(taxonomy.species)
+    assert coverage["fraction"] == 1.0
+
+    undescribed = sorted(k for k, s in taxonomy.species.items() if not s.character_states)
+    assert undescribed == []
+
+
+def test_a_species_is_only_described_for_characters_it_declares(taxonomy):
+    """States are recorded against diagnostic characters, not arbitrary ones.
+
+    A state on a character the species does not declare would never be asked
+    about in the first place, so it could only ever fire by accident.
+    """
+    for species in taxonomy.species.values():
+        extra = set(species.character_states) - set(species.diagnostic_characters)
+        assert extra == set(), f"{species.key} describes undeclared {sorted(extra)}"
 
 
 # --- The likelihood, per species ---------------------------------------------
 
 
 def test_an_undescribed_species_is_untouched(taxonomy):
-    evidence = likelihood_for(taxonomy[UNDESCRIBED_A], "gill_colour", "White")
+    evidence = likelihood_for(taxonomy[NO_GILL_STATES_A], "gill_colour", "White")
     assert evidence.verdict == "undescribed"
     assert evidence.likelihood == 1.0
 
@@ -286,17 +300,19 @@ def test_a_deadly_candidate_still_falls_when_contradicted(taxonomy):
 
 
 def test_coverage_counts_species_and_entries(taxonomy):
+    """Every species is described, so this clears two and checks the fall."""
     baseline = described_coverage(taxonomy)
-    described = with_states(
-        taxonomy,
-        {
-            UNDESCRIBED_A: {"pore_colour": ("White",)},
-            UNDESCRIBED_B: {"hymenium_type": ("Spines or teeth",)},
-        },
+    lost = sum(
+        len(taxonomy[key].character_states)
+        for key in (NO_GILL_STATES_A, NO_GILL_STATES_B)
     )
-    coverage = described_coverage(described)
-    assert coverage["described"] == baseline["described"] + 2
-    assert coverage["state_entries"] == baseline["state_entries"] + 2
+    assert lost > 0, "fixture species should already carry states"
+
+    stripped = with_states(taxonomy, {NO_GILL_STATES_A: {}, NO_GILL_STATES_B: {}})
+    coverage = described_coverage(stripped)
+
+    assert coverage["described"] == baseline["described"] - 2
+    assert coverage["state_entries"] == baseline["state_entries"] - lost
     assert 0 < coverage["fraction"] < 1
 
 
@@ -499,3 +515,114 @@ def test_a_pink_spore_print_is_what_separates_volvopluteus(taxonomy):
     ranked = [(DEATH_CAP, 0.5), ("volvopluteus-gloiocephalus", 0.5)]
     updated = dict(reweight(ranked, "spore_print_colour", "Pink", taxonomy))
     assert updated["volvopluteus-gloiocephalus"] > updated[DEATH_CAP]
+
+
+# --- Species added to close the gaps docs/REVIEW.md named --------------------
+
+
+def test_the_gaps_review_named_are_now_in_the_label_space(taxonomy):
+    """A species the model has never seen cannot be flagged as dangerous.
+
+    REVIEW.md items 10-12: the amatoxin-containing small Lepiota, the Panther
+    Cap, and the second orellanine webcap. Absent from the label space, each
+    would have been forced into the nearest class the model knows -- for the
+    Lepiota, a lawn mushroom.
+    """
+    for key in (
+        "lepiota-brunneoincarnata",
+        "amanita-pantherina",
+        "cortinarius-orellanus",
+    ):
+        assert key in taxonomy.species, key
+        assert taxonomy[key].character_states, f"{key} was added but not described"
+
+
+def test_the_deadly_dapperling_is_a_lethal_pair_with_the_lawn_mushrooms(taxonomy):
+    """It fruits in grass, which is where people gather small field mushrooms."""
+    pairs = taxonomy.dangerous_pairs()
+    partners = {
+        (b if a == "lepiota-brunneoincarnata" else a)
+        for a, b in pairs
+        if "lepiota-brunneoincarnata" in (a, b)
+    }
+    assert "marasmius-oreades" in partners
+    assert taxonomy["lepiota-brunneoincarnata"].toxicity is Toxicity.DEADLY
+
+
+def test_a_spore_print_does_not_separate_the_dapperling_from_the_champignon(taxonomy):
+    """Both have a white spore print, so the test cannot tell them apart.
+
+    And when an answer contradicts both -- a rust print fits neither -- the
+    deadly one falls more slowly and therefore ends up ahead. That is the
+    intended asymmetry: an observation that rules out everything should leave
+    you more worried, not less.
+    """
+    ranked = [("marasmius-oreades", 0.5), ("lepiota-brunneoincarnata", 0.5)]
+
+    same = dict(reweight(ranked, "spore_print_colour", "White or cream", taxonomy))
+    assert same["lepiota-brunneoincarnata"] == pytest.approx(0.5)
+
+    neither = dict(reweight(ranked, "spore_print_colour", "Rust or cinnamon brown", taxonomy))
+    assert neither["lepiota-brunneoincarnata"] > neither["marasmius-oreades"]
+
+
+def test_flesh_that_does_not_redden_moves_toward_the_panther_cap(taxonomy):
+    """The Blusher reddens where cut; the Panther Cap does not.
+
+    That single reaction is the separation between a mushroom people eat and
+    one that hospitalises them.
+    """
+    ranked = [("amanita-rubescens", 0.5), ("amanita-pantherina", 0.5)]
+    updated = dict(reweight(ranked, "bruising_reaction", "No change", taxonomy))
+    assert updated["amanita-pantherina"] > updated["amanita-rubescens"]
+
+
+def test_broadleaf_woodland_separates_the_two_orellanine_webcaps(taxonomy):
+    """C. orellanus is with oak and beech; C. rubellus is with conifers.
+
+    Both cause the same delayed kidney failure, so this does not make either
+    safe -- it decides which deadly species is in front of you.
+    """
+    ranked = [("cortinarius-rubellus", 0.5), ("cortinarius-orellanus", 0.5)]
+    updated = dict(reweight(ranked, "habitat", "Oak", taxonomy))
+    assert updated["cortinarius-orellanus"] > updated["cortinarius-rubellus"]
+
+    conifer = dict(reweight(ranked, "habitat", "Pine or spruce", taxonomy))
+    assert conifer["cortinarius-rubellus"] > conifer["cortinarius-orellanus"]
+
+
+# --- The two answer options added so a character could be recorded -----------
+
+
+def test_an_apricot_smell_can_now_be_recorded_and_used(taxonomy):
+    """Until this option existed the chanterelle's best character was unsayable.
+
+    Note what it does and does not do. A consistent answer never boosts, so
+    this cannot promote the chanterelle on its own; what it can do is
+    contradict a species whose smell is described as something else.
+    """
+    from app.evidence import likelihood_for as lf
+
+    assert lf(taxonomy[CHANTERELLE], "smell", "Apricot or fruity").verdict == "consistent"
+
+    ranked = [("calocybe-gambosa", 0.5), (CHANTERELLE, 0.5)]
+    updated = dict(reweight(ranked, "smell", "Apricot or fruity", taxonomy))
+    assert updated[CHANTERELLE] > updated["calocybe-gambosa"]
+
+
+def test_green_staining_latex_moves_toward_the_saffron_milkcap(taxonomy):
+    ranked = [("cortinarius-rubellus", 0.5), ("lactarius-deliciosus", 0.5)]
+    updated = dict(reweight(ranked, "bruising_reaction", "Green", taxonomy))
+    assert updated["lactarius-deliciosus"] >= 0.5
+
+
+def test_a_species_that_hospitalises_is_dismissed_more_slowly_than_a_harmless_one(taxonomy):
+    """The middle tier, mirroring the risk matrix's 1 / 100 / 1000."""
+    from app.evidence import DEADLY_INCONSISTENT, INCONSISTENT, SERIOUS_INCONSISTENT
+
+    assert INCONSISTENT < SERIOUS_INCONSISTENT < DEADLY_INCONSISTENT
+
+    serious = likelihood_for(taxonomy["entoloma-sinuatum"], "spore_print_colour", "Black")
+    ordinary = likelihood_for(taxonomy["clitopilus-prunulus"], "spore_print_colour", "Black")
+    assert taxonomy["entoloma-sinuatum"].toxicity is Toxicity.SERIOUS
+    assert serious.likelihood > ordinary.likelihood

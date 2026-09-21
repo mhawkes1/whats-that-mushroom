@@ -36,9 +36,15 @@ being wrong about a death cap costs a life, so dismissing the death cap has
 to clear a higher bar. A user peering at gills in failing light is a noisy
 sensor, and the cost of trusting that sensor is not symmetric.
 
-Concretely, one contradicting observation quarters an ordinary candidate and
-only roughly halves a deadly one, so ruling out a death cap takes several
-independent observations rather than one.
+Concretely, one contradicting observation quarters an ordinary candidate,
+takes 40% off one that hospitalises, and only roughly halves a deadly one --
+so ruling out a death cap takes several independent observations rather than
+one. The three tiers mirror the risk matrix, which prices the same three
+mistakes at 1, 100 and 1000.
+
+The probability floor below applies to DEADLY only. It exists to enforce
+CLAUDE.md rule 3, which is about death specifically; a SERIOUS candidate gets
+the gentler likelihood but no floor.
 
 Finally, nothing here may push a deadly species below the threshold at which
 the safety layer stops warning about it. `CLAUDE.md` rule 3 -- never round
@@ -66,6 +72,13 @@ INCONSISTENT = 0.25
 # dismissing a lethal candidate should take several independent observations,
 # not one glance in bad light.
 DEADLY_INCONSISTENT = 0.55
+
+# And for one that hospitalises rather than kills. Sits between the two
+# because the risk matrix puts it between the two: misreading a SERIOUS
+# species as harmless costs 100, a DEADLY one 1000, an ordinary error 1.
+# Entoloma sinuatum and Rubroboletus satanas are here, and both are leading
+# causes of poisoning rather than curiosities.
+SERIOUS_INCONSISTENT = 0.40
 
 # A species that declares no states for this character. Not a mismatch --
 # an absence of description on our side, which is not evidence about the
@@ -125,9 +138,12 @@ def likelihood_for(species: Species, character_key: str, answer: str) -> Evidenc
     if any(state.strip().casefold() == normalised for state in states):
         return Evidence(species.key, CONSISTENT, "consistent")
 
-    inconsistent = (
-        DEADLY_INCONSISTENT if species.toxicity is Toxicity.DEADLY else INCONSISTENT
-    )
+    if species.toxicity is Toxicity.DEADLY:
+        inconsistent = DEADLY_INCONSISTENT
+    elif species.toxicity is Toxicity.SERIOUS:
+        inconsistent = SERIOUS_INCONSISTENT
+    else:
+        inconsistent = INCONSISTENT
     return Evidence(species.key, inconsistent, "inconsistent")
 
 

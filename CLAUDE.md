@@ -37,7 +37,7 @@ Everything works **except the model**. There is no trained classifier; the API
 serves a stub backend with deterministic fake predictions. Every other layer
 is real and tested.
 
-165 tests pass. `/health` honestly reports `model_loaded: false`,
+175 tests pass. `/health` honestly reports `model_loaded: false`,
 `calibrated: false`, `taxonomy_reviewed: false`.
 
 The training pipeline has been rehearsed end to end on synthetic data
@@ -53,7 +53,7 @@ characters come from standard references but are unverified.
 
 | Path | What it holds |
 | --- | --- |
-| `data/taxonomy.seed.json` | 57 UK species, lookalike graph, toxicity, diagnostic characters |
+| `data/taxonomy.seed.json` | 60 UK species, lookalike graph, toxicity, diagnostic characters, character states |
 | `ml/fungi_ml/taxonomy.py` | Species model and the asymmetric risk matrix |
 | `ml/fungi_ml/losses.py` | Risk-weighted objective |
 | `ml/fungi_ml/calibrate.py` | Temperature scaling, threshold fitting |
@@ -86,12 +86,11 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   bug; there is a regression test.
 - **Splits are on `observation_id`, never on image.** If accuracy looks too
   good, check this before believing it.
-- **`character_states` covers the 30 species in lethal pairs (8 deadly + 22
-  safe lookalikes) and is UNREVIEWED.** Derived from the taxonomy's own
-  `notes`, not from a mycologist; every entry needs field-character review
-  before release. The other 27 species are undescribed, which the matcher
-  treats as *no evidence*. `/health` reports `character_states_described`;
-  `python scripts/character_states.py status` prints the same.
+- **`character_states` is complete for all 60 species and UNREVIEWED
+  throughout.** Derived from the taxonomy's own `notes`, not from a
+  mycologist. Complete is not reviewed: `reviewed_by` is still null and
+  `/health` still reports `taxonomy_reviewed: false`. A forager's eye over
+  `docs/character-states-worksheet.csv` is the highest-value review left.
 - **Both halves of a lethal pair must be described, or evidence only works
   one way.** With just the deadly half described, nothing could contradict the
   safe lookalike, so answers could move mass *away* from a lethal candidate
@@ -105,8 +104,14 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   colours. For the *safe half* of a pair a contradiction pushes the safe
   species down, moving mass back toward the deadly one, so lists are **tight**
   — the cost of error there is a false alarm, not a missed poisoning. Where
-  the notes make no positive claim, or no option fits (the chanterelle's
-  apricot smell, the milkcap's green staining), the entry is omitted.
+  the notes make no positive claim, the entry is omitted.
+- **Contradiction has three tiers, mirroring the risk matrix's 1 / 100 / 1000.**
+  `INCONSISTENT` 0.25, `SERIOUS_INCONSISTENT` 0.40, `DEADLY_INCONSISTENT` 0.55.
+  The probability floor applies to DEADLY only, because rule 3 is about death.
+- **A consistent answer never boosts.** Evidence eliminates; it cannot
+  manufacture confidence the classifier did not supply. So an answer matching
+  a species moves nothing on its own — it only bites by contradicting rivals.
+  Tests that expect a matching answer to promote a species are wrong.
 - **Some answer options are non-observations, not states.** `volva`'s "I cut
   it off" and `cortina`'s "Can't tell" are in `uninformative_options` and get
   a likelihood of 1.0. Without that, the commonest field mistake — cutting the
