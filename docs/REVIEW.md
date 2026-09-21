@@ -234,6 +234,33 @@ the nearest class it knows, which may be something harmless.
 13. Any other UK species the reviewer considers a common cause of poisoning
     that is missing.
 
+### Characters that are described too thinly to be asked about
+
+Filling the companion ebook from the taxonomy measured this, because a book
+row that comes back blank is a character the taxonomy never describes. Across
+79 species:
+
+| Character | Species describing it |
+| --- | --- |
+| `habitat` (surroundings, trees) | 11 |
+| `season` (time of year) | 5 |
+| `smell` | 12 |
+| `growth_form` | 12 |
+
+`character_states` was compiled from each entry's own `notes`, and the notes
+were written to separate a species from its lookalikes rather than to
+describe it. The consequence is not cosmetic: a user answering *Surroundings:
+beech* moves almost nothing, because for 68 species the answer is neither
+consistent nor contradictory — it is undescribed, which the evidence layer
+correctly treats as no evidence at all.
+
+14. **Are `habitat` and `season` worth describing for every species, or worth
+    dropping as questions?** Either is defensible. What is not defensible is
+    asking a question that cannot move an answer. A forager filling these two
+    columns for all 79 species would make two of the cheapest observations a
+    user can make — where they are standing, and what month it is — actually
+    count.
+
 ## What a reviewer is being asked to confirm
 
 For each species, per the worksheet columns:

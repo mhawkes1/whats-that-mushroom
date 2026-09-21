@@ -294,6 +294,17 @@ community verification.
   correcting exposure and colour cast against the white half of the card. It
   refuses far more often than it answers, which is the point.
 
+- **The companion ebook, filled from the taxonomy**
+  (`scripts/build_ebook.py`). The book and the app make the same claims about
+  the same species; generating one from the other is what stops two copies
+  drifting. It fills 114 field rows, 75 key points and all 26 field notes into
+  a *new* file, never overwriting a slot the author has written, marking every
+  value it writes and banner-ing the page — a printed guide carries no
+  `taxonomy_reviewed: false` the way `/health` does. It prints no taste
+  (rule 5 cannot be enforced on paper), and it reports every row it left
+  blank, which turned out to be the useful output: see the thin-character
+  table in `docs/REVIEW.md`.
+
 ## Explicitly not doing
 
 - **Competing with iNaturalist on community or breadth.** They have won that.

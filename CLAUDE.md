@@ -65,6 +65,7 @@ characters come from standard references but are unverified.
 | `server/app/spore_print.py` | Reads a photographed spore print against a colour chart |
 | `server/app/characters.py` | How to ask a non-expert for evidence |
 | `app/` | Expo React Native client |
+| `scripts/build_ebook.py` | Fills the companion ebook's field slots from the taxonomy |
 
 ## Commands
 
@@ -77,6 +78,9 @@ cd server && uvicorn app.main:app --reload
 
 # Mobile client
 cd app && npm install && EXPO_PUBLIC_API_URL=http://<lan-ip>:8000 npx expo start
+
+# Companion ebook -- fill its field data from the taxonomy
+python scripts/build_ebook.py --ebook <book>.html --out draft.html
 ```
 
 Training needs a GPU and is documented in `docs/ROADMAP.md`.
@@ -183,6 +187,25 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   the person decides.
 - **`notes` is rendered verbatim to users.** Rationale, policy and review
   flags go in `internal_note`, which is never surfaced.
+- **The ebook's field data is generated, never hand-copied.** The book and
+  the app make the same claims about the same species, and two hand-kept
+  copies drift. `scripts/build_ebook.py` fills the empty slots from
+  `data/taxonomy.seed.json` and writes a *new* file: it never overwrites a
+  slot that already has content, so the author's words survive a re-run, and
+  it marks everything it writes plus a page banner, because a printed guide
+  carries no `taxonomy_reviewed: false` the way `/health` does.
+- **The book prints no taste.** `OMITTED_CHARACTERS` in the generator. The app
+  can ask for a taste because the interrogation engine checks first that no
+  deadly candidate holds mass (rule 5); a page cannot make that check, so
+  "Taste: mild" under a bolete is an unconditional instruction to eat. The
+  author's own `notes` may still mention one — that is their prose, rendered
+  verbatim here exactly as the app renders it.
+- **Most of the book's rows come back empty, and that is the taxonomy talking.**
+  114 of 338 field rows fill. `character_states` holds only what separates a
+  species from its lookalikes — it was built as a classifier tiebreaker, not
+  as a field guide — so `habitat`, `season` and `smell` are thin. The run
+  prints the per-row tally of what it left blank; that list is the review
+  queue, not a bug. Filling it means the worksheet and a mycologist, not code.
 - **Expect 50–70% species top-1** on a first training run, with genus accuracy
   notably higher. 95% means a leak.
 
