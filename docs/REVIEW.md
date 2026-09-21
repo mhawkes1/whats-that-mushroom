@@ -1,6 +1,6 @@
 # Taxonomy review
 
-The seed taxonomy in `data/taxonomy.seed.json` covers 62 species and has
+The seed taxonomy in `data/taxonomy.seed.json` covers 63 species and has
 **not** been verified by a qualified mycologist. It was compiled from standard
 references. Until it is signed off, `reviewed_by` stays `null` and `/health`
 reports `taxonomy_reviewed: false`.
@@ -10,7 +10,7 @@ Two working documents accompany this note, both in this folder:
 - **`fungi-taxonomy-review-pack.docx`** — a printable Word document with the
   species split into priority tiers, blank columns to mark up by hand, the
   specific queries below, and a sign-off page. Best for handing to a reviewer.
-- **`taxonomy-review-worksheet.csv`** — the same 62 species as a spreadsheet,
+- **`taxonomy-review-worksheet.csv`** — the same 63 species as a spreadsheet,
   one row each, for anyone who would rather type than annotate.
 
 Both are generated from `data/taxonomy.seed.json`, so regenerate them if the
@@ -18,7 +18,7 @@ taxonomy changes rather than editing them as the source of truth.
 
 ## Priority tiers
 
-### Tier 1 — Critical (16 species)
+### Tier 1 — Critical (17 species)
 
 Species that can kill or hospitalise. An error here is the most direct route
 to harming a user.
@@ -29,6 +29,7 @@ to harming a user.
 | *Amanita virosa* — Destroying Angel | DEADLY | 8 |
 | *Lepiota brunneoincarnata* — Deadly Dapperling | DEADLY | 5 |
 | *Clitocybe rivulosa* — Fool's Funnel | DEADLY | 4 |
+| *Cortinarius orellanus* — Fool's Webcap | DEADLY | 4 |
 | *Cortinarius rubellus* — Deadly Webcap | DEADLY | 4 |
 | *Galerina marginata* — Funeral Bell | DEADLY | 4 |
 | *Lepiota subincarnata* — Fatal Dapperling | DEADLY | 3 |
@@ -124,8 +125,11 @@ the nearest class it knows, which may be something harmless.
 11. ~~*Amanita pantherina*~~ — **added** as SERIOUS, linked to *A. rubescens*
     as its principal confusion. Please confirm the severity and the
     separating characters, especially the reliance on flesh not reddening.
-12. **`Cortinarius orellanus`** — still missing. The other
-    orellanine-containing webcap; only *C. rubellus* is currently included.
+12. ~~*Cortinarius orellanus*~~ — **added** as DEADLY. Both
+    orellanine-containing webcaps are now carried. Please confirm the
+    separating characters, in particular the reliance on broadleaf versus
+    conifer habitat, which the entry deliberately does not treat as
+    decisive.
 13. Any other UK species the reviewer considers a common cause of poisoning
     that is missing.
 
@@ -168,4 +172,4 @@ publication.
 - **University mycology departments** — frequently receptive to public-good
   projects
 - **The Association of Foragers** — professional teaching foragers
-- A **paid consultation**. Reviewing 62 species is a bounded piece of work.
+- A **paid consultation**. Reviewing 63 species is a bounded piece of work.

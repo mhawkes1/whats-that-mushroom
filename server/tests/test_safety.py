@@ -291,3 +291,35 @@ def test_new_species_carry_toxicity_labels(layer):
     ranked = [("lepiota-brunneoincarnata", 0.6), ("marasmius-oreades", 0.4)]
     by_key = {c.species_key: c.toxicity for c in layer.assess(ranked).candidates}
     assert by_key["lepiota-brunneoincarnata"] == "DEADLY"
+
+
+def test_orellanus_chanterelle_confusion_is_refused(layer):
+    """Both orellanine webcaps are orange-brown and grow where people hunt
+    chanterelles. Orellanine destroys the kidneys two to three weeks later,
+    by which point the victim no longer connects the illness to the meal."""
+    ranked = [
+        ("cantharellus-cibarius", 0.56),
+        ("cortinarius-orellanus", 0.27),
+        ("hygrophoropsis-aurantiaca", 0.12),
+        ("cortinarius-rubellus", 0.05),
+    ]
+    result = layer.assess(ranked)
+    assert result.verdict is Verdict.DANGEROUS_GROUP
+    assert result.deadly_in_play
+    assert "Cantharellus" not in result.headline, (
+        "must not headline the chanterelle when a webcap is in play"
+    )
+    # The decisive check is what is under the cap: true gills, or the blunt
+    # forking ridges of a chanterelle.
+    assert "gill_type" in result.requested_evidence
+
+
+def test_both_orellanine_webcaps_together_still_warn(layer):
+    ranked = [
+        ("cortinarius-orellanus", 0.52),
+        ("cortinarius-rubellus", 0.44),
+        ("cortinarius-violaceus", 0.04),
+    ]
+    result = layer.assess(ranked)
+    assert result.deadly_in_play
+    assert result.candidates[0].toxicity == "DEADLY"

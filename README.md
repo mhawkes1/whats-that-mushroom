@@ -67,7 +67,7 @@ candidate space more than incremental backbone capacity does.
 
 ```
 whats-that-mushroom/
-├── data/taxonomy.seed.json    62 UK species, lookalike graph, risk data
+├── data/taxonomy.seed.json    63 UK species, lookalike graph, risk data
 ├── scripts/qa_taxonomy.py     consistency QA over the taxonomy
 ├── ml/                        dataset pipeline, training, calibration, export
 │   ├── fungi_ml/

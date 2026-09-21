@@ -93,6 +93,7 @@
       "lookalikes": [
         "armillaria-mellea",
         "cantharellus-cibarius",
+        "cortinarius-orellanus",
         "lactarius-deliciosus"
       ],
       "diagnostic_characters": [
@@ -468,6 +469,7 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
+        "cortinarius-orellanus",
         "cortinarius-rubellus",
         "galerina-marginata",
         "hypholoma-fasciculare",
@@ -493,6 +495,7 @@
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
+        "cortinarius-orellanus",
         "cortinarius-rubellus",
         "hygrophoropsis-aurantiaca",
         "omphalotus-olearius"
@@ -934,6 +937,7 @@
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
+        "cortinarius-orellanus",
         "cortinarius-rubellus",
         "lactarius-torminosus",
         "paxillus-involutus"
@@ -1087,6 +1091,7 @@
       "toxicity": "NONE_RECORDED",
       "gbif_key": null,
       "lookalikes": [
+        "cortinarius-orellanus",
         "lepista-nuda"
       ],
       "diagnostic_characters": [
@@ -1321,6 +1326,32 @@
         "cap_surface"
       ],
       "notes": "Brown cap carrying pure white, evenly scattered wart-like patches, white gills, a smooth ungrooved ring, and a distinct collar-like rim at the top of the basal bulb. The flesh does not redden when cut or bruised, which is the decisive separation from The Blusher. Contains ibotenic acid and muscimol at higher concentrations than the Fly Agaric; poisoning is severe and hospitalisation common."
+    },
+    {
+      "key": "cortinarius-orellanus",
+      "scientific_name": "Cortinarius orellanus",
+      "genus": "Cortinarius",
+      "common_names": [
+        "Fool's Webcap"
+      ],
+      "toxicity": "DEADLY",
+      "gbif_key": null,
+      "lookalikes": [
+        "armillaria-mellea",
+        "cantharellus-cibarius",
+        "cortinarius-rubellus",
+        "cortinarius-violaceus",
+        "lactarius-deliciosus"
+      ],
+      "diagnostic_characters": [
+        "spore_print_colour",
+        "cortina",
+        "gill_type",
+        "habitat",
+        "cap_colour"
+      ],
+      "notes": "Contains orellanine, the same toxin as the Deadly Webcap. Kidney failure is delayed by two to three weeks, so victims rarely connect the illness to the meal and may be diagnosed long after treatment would have helped. Tawny to foxy orange-brown cap with a dry fibrous surface, rusty brown spore print, and a cobwebby cortina leaving a rust-coloured zone on the stem. True gills, not the blunt forking ridges of a chanterelle. Broadleaf woodland, especially oak and beech.",
+      "internal_note": "Habitat is the practical separation from C. rubellus, which is associated with conifers and Sphagnum, but habitat alone must never be treated as decisive. Both species carry orellanine and neither should be resolved to species from a photograph."
     }
   ],
   "$policy": "The `toxicity` field records HARM FROM EATING and drives warnings only. It is never rendered as a recommendation. There is deliberately no 'edible' value -- but nor is there an 'inedible' one, because asserting that a choice edible is inedible is a false claim and destroys trust in the warnings that matter. The lowest value, NONE_RECORDED, means no toxicity is recorded and says nothing about edibility either way. UNASSESSED means not yet checked and is treated as TOXIC by the safety layer. The `notes` field is shown to users verbatim and must describe only what is observable; rationale and review flags belong in `internal_note`, which is never surfaced."

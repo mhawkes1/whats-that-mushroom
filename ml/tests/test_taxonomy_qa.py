@@ -173,3 +173,21 @@ def test_amanita_pantherina_is_present_and_linked_to_the_blusher(taxonomy):
     assert sp.toxicity is Toxicity.SERIOUS
     assert "amanita-rubescens" in sp.lookalikes
     assert "amanita-pantherina" in taxonomy["amanita-rubescens"].lookalikes
+
+
+def test_both_orellanine_webcaps_are_present(taxonomy):
+    """Cortinarius orellanus and C. rubellus both contain orellanine, and
+    carrying only one leaves the other to be forced into a neighbouring
+    class the model does know."""
+    for key in ("cortinarius-orellanus", "cortinarius-rubellus"):
+        sp = taxonomy.get(key)
+        assert sp is not None, f"{key} is missing from the label space"
+        assert sp.toxicity is Toxicity.DEADLY
+
+
+def test_webcaps_are_reachable_from_the_chanterelle(taxonomy):
+    """A user hunting chanterelles must be shown the webcaps."""
+    lookalikes = taxonomy["cantharellus-cibarius"].lookalikes
+    assert any(k.startswith("cortinarius-") for k in lookalikes), (
+        "the chanterelle page omits the orellanine webcaps"
+    )
