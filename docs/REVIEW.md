@@ -92,11 +92,57 @@ list is not evidence against it. Please rule on this.
 
 ### Outstanding: the spore colour legend
 
-The list's numeric colour column (01–12) has been stored verbatim as
-`spore_colour_code` but is **not** mapped onto the `spore_print_colour`
-character, because the legend was not supplied. Please provide the mapping of
-each number to a colour and it will be wired through; until then it is inert
-reference data.
+The list's numeric colour column (01–12) is stored verbatim as
+`spore_colour_code` and is **not** mapped onto the `spore_print_colour`
+character. It stays inert until the source document's own key is supplied.
+
+A partial legend was offered in review (01 white, 02 cream, 03 brown,
+04 light pink, 05 pink, 06 light brown, 07 green) together with a doubt that
+it was right. Testing it against the species carrying each code shows the
+doubt was justified, on two counts:
+
+- **04 cannot be "light pink".** It contains only *Lactarius*, and no
+  *Lactarius* produces a pink spore print; the genus runs cream to pale ochre
+  to buff. *L. deliciosus* is creamy-buff. Some references describe a
+  "pinkish-buff" or salmon tinge in the genus, which is the likely origin of
+  the reading, but the colour is **buff / salmon-buff**.
+- **03 cannot be plain "brown".** It contains *Russula aurea*, *claroflava*
+  and *cuprea*, and *Russula* never produces a brown spore print. Those three
+  are the deepest-ochre end of the classic white–cream–ochre *Russula* series,
+  and the code also covers *Suillus*, *Paxillus* and *Crepidotus*. It is
+  **ochre / yellow-ochre**.
+
+Read that way, and with 05–12 inferred from the genera carrying them, the
+column is a coherent twelve-step series:
+
+| Code | Reading inferred from the data |
+| ---: | --- |
+| 01 | White |
+| 02 | Cream |
+| 03 | Ochre / yellow-ochre |
+| 04 | Buff / salmon-buff |
+| 05 | Pink |
+| 06 | Pink-brown |
+| 07 | Olive-brown |
+| 08 | Rust-brown |
+| 09 | Clay-brown |
+| 10 | Dark brown |
+| 11 | Purple-brown |
+| 12 | Black |
+
+**This table is inference, not the source's key, and has deliberately not been
+applied.** Please confirm it against the original document before it is wired
+through.
+
+Three entries in the supplied data look inconsistent with any reading of the
+scale, and may be slips in the source:
+
+1. *Leccinum* appears under both 03 and 07 — *aurantiacum*, *versipelle* and
+   *variicolor* as 03, but *scabrum* and *pseudoscabrum* as 07. All *Leccinum*
+   have ochre-brown spore prints.
+2. *Phallus impudicus* is coded 02 (cream); the gleba is olive-black.
+3. *Gomphidius* is coded 10 and 11 while *Chroogomphus*, in the same family,
+   is coded 12. All are blackish-spored.
 
 ## Specific queries for the reviewer
 
