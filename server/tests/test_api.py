@@ -321,3 +321,45 @@ def test_field_notes_never_unlock_a_species_verdict(client):
         assert any("never eat" in w.lower() for w in body["warnings"])
         if body["deadly_in_play"]:
             assert body["verdict"] != "species"
+
+
+def test_health_reports_character_state_coverage(client):
+    """A zero here is the honest signal that field notes cannot yet bite.
+
+    Without it, an operator seeing answers change nothing has no way to tell
+    an empty table from a broken update.
+    """
+    body = client.get("/health").json()
+    assert "character_states_described" in body
+    assert body["character_states_described"] == 0
+
+
+def test_field_notes_are_inert_while_the_state_table_is_empty(client):
+    """Documents today's behaviour so a future fill-in has to update it.
+
+    The same photographs with and without field notes must produce an
+    identical ranking, because no species declares any states yet.
+    """
+    import json
+
+    from app.characters import CHARACTERS
+
+    photo = a_photo((150, 120, 90))
+    notes = {
+        "habitat": CHARACTERS["habitat"].options[0],
+        "gill_colour": CHARACTERS["gill_colour"].options[0],
+    }
+
+    without = client.post(
+        "/identify", files={"image": ("m.jpg", photo, "image/jpeg")}
+    ).json()
+    with_notes = client.post(
+        "/identify",
+        files={"image": ("m.jpg", photo, "image/jpeg")},
+        data={"field_notes": json.dumps(notes)},
+    ).json()
+
+    rank = lambda body: [  # noqa: E731
+        (c["species_key"], round(c["confidence"], 9)) for c in body["candidates"]
+    ]
+    assert rank(without) == rank(with_notes)

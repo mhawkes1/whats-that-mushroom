@@ -30,6 +30,7 @@ from .inference import Classifier, OnnxBackend
 from .interrogation import InterrogationEngine
 from .safety import SafetyLayer
 from .characters import CHARACTERS, field_note_characters
+from .evidence import described_coverage
 from .schemas import (
     AnswerRequest,
     CandidateOut,
@@ -152,6 +153,9 @@ def health() -> HealthOut:
         calibrated=state["calibrated"],
         n_classes=len(state["classifier"].classes),
         taxonomy_reviewed=reviewed,
+        character_states_described=int(
+            described_coverage(state["taxonomy"])["described"]
+        ),
     )
 
 

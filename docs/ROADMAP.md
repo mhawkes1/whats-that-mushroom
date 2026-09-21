@@ -4,7 +4,7 @@
 
 Working: taxonomy and risk model, dataset pipeline, training loop,
 calibration, evaluation and model card generation, safety layer,
-interrogation engine, HTTP API, Expo client. 85 tests pass.
+interrogation engine, HTTP API, Expo client. 148 tests pass.
 
 The chain from raw manifest through to a served ONNX model has now been run
 end to end on synthetic data (`scripts/smoke_e2e.py`), so the stages are known
@@ -100,9 +100,45 @@ Expect species-level top-1 somewhere in the 50-70% range on a first pass with
 this label space, and genus accuracy substantially higher. If the first run
 reports 95%, there is a leak — check the observation-level split first.
 
-### 3. Replace the answer-weighting stub
+### 3. Fill in the character-state table
 
-**This is now the highest-value item, and the capture flow depends on it.**
+**The mechanism is built. What is missing is the data, and the data needs a
+reviewer rather than a programmer.**
+
+`apply_answer` now delegates to `server/app/evidence.py`, which compares an
+answer against each species' declared `character_states` and applies a
+likelihood: consistent leaves a candidate alone, inconsistent pushes it down,
+and *undescribed leaves it alone too* -- because an absence of description on
+our side is not evidence about the mushroom. Contradicting a deadly species
+costs it far less than contradicting a harmless one, and no answer may drive a
+deadly candidate below the threshold at which the safety layer still warns.
+
+With the table empty every likelihood is 1.0, so answers change nothing. That
+is the honest degradation, and it is visible rather than disguised:
+`/health` reports `character_states_described`, and
+`python scripts/character_states.py status` prints coverage.
+
+To fill it in:
+
+```bash
+python scripts/character_states.py emit     # docs/character-states-worksheet.csv
+# ... a reviewer fills REVIEW_states, deadliest species first ...
+python scripts/character_states.py import --dry-run
+python scripts/character_states.py import
+```
+
+190 rows, one per (species, diagnostic character) pair. Import refuses any
+state that is not exactly one of that character's answer options, since such a
+state would store cleanly and never match anything -- a populated table that
+cannot fire is worse than an empty one.
+
+This still wants the field-character review in `docs/REVIEW.md`: it encodes
+claims about species that users act on. But `REVIEW.md` is explicit that
+field-character review is the half an experienced forager can do and that it
+unblocks internal development, as distinct from the toxicity and nomenclature
+review that blocks release.
+
+#### What the old stub did
 
 `InterrogationEngine.apply_answer` currently applies a weak, conservative
 re-weighting because there is no per-species character-state table. It should
@@ -119,10 +155,12 @@ The cause is that `apply_answer` boosts a species only when the answer string
 happens to appear verbatim in that species' free-text `notes`. That is an
 accident of the data rather than a model of anything.
 
-It matters more now than it did. The capture form asks for habitat, substrate,
-growth habit, cap and gill colour, ring, smell and spore print up front, so a
-user can hand over eight observations and watch most of them change nothing.
-The form is honest about being optional, but it should not stay decorative.
+That is why it was removed rather than kept as a fallback. Coincidence
+presented as evidence is worse than no evidence in a system whose whole claim
+is that it reports uncertainty honestly -- and keeping it would have polluted
+the real mechanism with the old noise. The measured effect of answers is
+therefore 22% today and 0% after this change, deliberately, until the table
+lands.
 
 The fix is a `character_states` block per species in the taxonomy:
 

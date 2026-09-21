@@ -94,3 +94,11 @@ class HealthOut(BaseModel):
     calibrated: bool
     n_classes: int
     taxonomy_reviewed: bool
+    character_states_described: int = Field(
+        default=0,
+        description=(
+            "Species with a character-state table. Answers to diagnostic "
+            "questions only re-weight candidates that have one, so a zero "
+            "here means field notes are inert by design, not broken."
+        ),
+    )
