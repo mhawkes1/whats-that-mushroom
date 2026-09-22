@@ -73,6 +73,7 @@ characters come from standard references but are unverified.
 | `scripts/build_ebook.py` | Fills the companion ebook's field slots from the taxonomy |
 | `scripts/demo.py` | Drives the real safety layer, engine and matcher in a terminal |
 | `scripts/frdbi_gap.py` | Label space vs. how often things are actually found |
+| `scripts/species_list.py` | Generates `docs/SPECIES.md`, the label space for a human to read |
 | `data/frdbi-records.csv` | Every FRDBI taxon and its record count, exported 2026-09-22 |
 | `data/frdbi-genera.csv` | Genus → fungus / micro / host / slime-mould, so the ranking can be filtered |
 
