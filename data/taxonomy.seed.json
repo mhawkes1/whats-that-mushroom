@@ -81,6 +81,56 @@
       }
     },
     {
+      "key": "agaricus-sylvaticus",
+      "scientific_name": "Agaricus sylvaticus",
+      "genus": "Agaricus",
+      "common_names": [
+        "Blushing Wood Mushroom"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "agaricus-campestris",
+        "agaricus-arvensis",
+        "agaricus-xanthodermus",
+        "amanita-phalloides",
+        "amanita-virosa"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "cap_colour",
+        "bruising_reaction",
+        "ring",
+        "spore_print_colour",
+        "volva",
+        "habitat"
+      ],
+      "notes": "Fibrous brown-scaled cap in conifer woods, the flesh reddening strongly when cut. Chocolate print, ring, and no volva.",
+      "character_states": {
+        "cap_surface": [
+          "Scaly"
+        ],
+        "cap_colour": [
+          "Brown"
+        ],
+        "bruising_reaction": [
+          "Red or pink"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "spore_print_colour": [
+          "Chocolate or purple-brown"
+        ],
+        "volva": [
+          "Neither"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ]
+      }
+    },
+    {
       "key": "agaricus-xanthodermus",
       "scientific_name": "Agaricus xanthodermus",
       "genus": "Agaricus",
@@ -484,6 +534,54 @@
       }
     },
     {
+      "key": "ampulloclitocybe-clavipes",
+      "scientific_name": "Ampulloclitocybe clavipes",
+      "genus": "Ampulloclitocybe",
+      "common_names": [
+        "Club Foot"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-nebularis",
+        "clitocybe-rivulosa",
+        "infundibulicybe-gibba",
+        "paralepista-flaccida"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "stipe_base",
+        "gill_attachment",
+        "gill_colour",
+        "spore_print_colour",
+        "substrate"
+      ],
+      "notes": "Grey-brown cap over cream decurrent gills, on a stem swollen into a club at the base. Causes a severe reaction with alcohol.",
+      "internal_note": "Older references call it Clitocybe clavipes.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "stipe_base": [
+          "Abruptly bulbous"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "gill_colour": [
+          "White",
+          "Yellow or green"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ]
+      }
+    },
+    {
       "key": "apioperdon-pyriforme",
       "scientific_name": "Apioperdon pyriforme",
       "genus": "Apioperdon",
@@ -564,6 +662,79 @@
       }
     },
     {
+      "key": "ascocoryne-sarcoides",
+      "scientific_name": "Ascocoryne sarcoides",
+      "genus": "Ascocoryne",
+      "common_names": [
+        "Purple Jellydisc"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "chlorociboria-aeruginascens",
+        "bulgaria-inquinans"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "cap_colour",
+        "texture",
+        "growth_form"
+      ],
+      "notes": "Gelatinous purple blobs and discs crowded on dead beech, often merging into a brain-like mass.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "cap_colour": [
+          "Purple"
+        ],
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ]
+      }
+    },
+    {
+      "key": "atheniella-flavoalba",
+      "scientific_name": "Atheniella flavoalba",
+      "genus": "Atheniella",
+      "common_names": [
+        "Ivory Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "size",
+        "spore_print_colour"
+      ],
+      "notes": "Small pale yellow to ivory bonnet in grass and conifer litter.",
+      "character_states": {
+        "cap_colour": [
+          "Yellow",
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Grass or lawn"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
       "key": "auricularia-auricula-judae",
       "scientific_name": "Auricularia auricula-judae",
       "genus": "Auricularia",
@@ -591,6 +762,89 @@
         "growth_form": [
           "As a bracket",
           "In a tight cluster"
+        ]
+      }
+    },
+    {
+      "key": "bjerkandera-adusta",
+      "scientific_name": "Bjerkandera adusta",
+      "genus": "Bjerkandera",
+      "common_names": [
+        "Smoky Bracket"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "trametes-versicolor",
+        "daedaleopsis-confragosa"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "pore_colour",
+        "cap_surface"
+      ],
+      "notes": "Thin grey-brown tiered brackets whose pore surface is smoky grey, almost black at the edge — the feature that names it.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "pore_colour": [
+          "White or cream"
+        ],
+        "cap_surface": [
+          "Velvety"
+        ]
+      }
+    },
+    {
+      "key": "bolbitius-titubans",
+      "scientific_name": "Bolbitius titubans",
+      "genus": "Bolbitius",
+      "common_names": [
+        "Yellow Fieldcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "stropharia-semiglobata",
+        "panaeolus-papilionaceus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_surface",
+        "substrate",
+        "texture",
+        "spore_print_colour"
+      ],
+      "notes": "Egg-yellow slimy cap that flattens, fades to grey and collapses within a day, on dung-enriched grass.",
+      "character_states": {
+        "cap_colour": [
+          "Yellow"
+        ],
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "substrate": [
+          "Grass or lawn",
+          "Dung"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
         ]
       }
     },
@@ -630,6 +884,174 @@
         ],
         "taste": [
           "Mild"
+        ]
+      }
+    },
+    {
+      "key": "bulgaria-inquinans",
+      "scientific_name": "Bulgaria inquinans",
+      "genus": "Bulgaria",
+      "common_names": [
+        "Black Bulgar"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "exidia-glandulosa",
+        "ascocoryne-sarcoides"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "cap_colour",
+        "texture",
+        "growth_form",
+        "habitat"
+      ],
+      "notes": "Rubbery black-topped discs like buttons, crowded on fallen oak bark, brown and felty underneath. Sheds black spore dust over whatever touches it.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "cap_colour": [
+          "Brown"
+        ],
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "habitat": [
+          "Oak"
+        ]
+      }
+    },
+    {
+      "key": "byssomerulius-corium",
+      "scientific_name": "Byssomerulius corium",
+      "genus": "Byssomerulius",
+      "common_names": [
+        "Netted Crust"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "cap_colour"
+      ],
+      "notes": "White papery crust peeling away from fallen branches, the surface wrinkled into a shallow net.",
+      "character_states": {
+        "growth_form": [
+          "Scattered"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "cap_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
+      "key": "calocera-cornea",
+      "scientific_name": "Calocera cornea",
+      "genus": "Calocera",
+      "common_names": [
+        "Small Stagshorn"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "calocera-viscosa",
+        "dacrymyces-stillatus",
+        "calocera-pallidospathulata"
+      ],
+      "diagnostic_characters": [
+        "texture",
+        "substrate",
+        "cap_colour",
+        "size",
+        "growth_form",
+        "hymenium_type"
+      ],
+      "notes": "Tiny unbranched yellow spines scattered in numbers along dead broadleaf wood.",
+      "character_states": {
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "cap_colour": [
+          "Yellow",
+          "Orange"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "growth_form": [
+          "Scattered"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ]
+      }
+    },
+    {
+      "key": "calocera-pallidospathulata",
+      "scientific_name": "Calocera pallidospathulata",
+      "genus": "Calocera",
+      "common_names": [
+        "Pale Stagshorn"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "calocera-cornea",
+        "calocera-viscosa"
+      ],
+      "diagnostic_characters": [
+        "texture",
+        "substrate",
+        "cap_colour",
+        "size",
+        "growth_form",
+        "hymenium_type"
+      ],
+      "notes": "Pale yellow spoon-shaped stagshorn, mostly on conifer wood. A recent arrival in Britain that has spread quickly.",
+      "character_states": {
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "cap_colour": [
+          "Yellow",
+          "White or cream"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "growth_form": [
+          "Scattered"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
         ]
       }
     },
@@ -810,6 +1232,88 @@
       }
     },
     {
+      "key": "chalciporus-piperatus",
+      "scientific_name": "Chalciporus piperatus",
+      "genus": "Chalciporus",
+      "common_names": [
+        "Peppery Bolete"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "boletus-edulis",
+        "neoboletus-luridiformis",
+        "rubroboletus-satanas",
+        "imleria-badia",
+        "tylopilus-felleus"
+      ],
+      "diagnostic_characters": [
+        "pore_colour",
+        "cap_colour",
+        "taste",
+        "flesh_colour",
+        "habitat"
+      ],
+      "notes": "Small cinnamon bolete with rusty-orange pores and bright yellow flesh in the stem base. Fiercely peppery. Usually near fly agaric.",
+      "character_states": {
+        "pore_colour": [
+          "Red or orange"
+        ],
+        "cap_colour": [
+          "Orange",
+          "Brown"
+        ],
+        "taste": [
+          "Burning or peppery"
+        ],
+        "flesh_colour": [
+          "Yellow"
+        ],
+        "habitat": [
+          "Birch",
+          "Pine or spruce"
+        ]
+      }
+    },
+    {
+      "key": "chlorociboria-aeruginascens",
+      "scientific_name": "Chlorociboria aeruginascens",
+      "genus": "Chlorociboria",
+      "common_names": [
+        "Green Elfcup"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "ascocoryne-sarcoides"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "cap_colour",
+        "size",
+        "cap_shape"
+      ],
+      "notes": "The blue-green stain in fallen wood is seen far more often than the tiny turquoise cups that produce it.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "cap_colour": [
+          "Olive or greenish"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "cap_shape": [
+          "Funnel-shaped"
+        ]
+      }
+    },
+    {
       "key": "chlorophyllum-brunneum",
       "scientific_name": "Chlorophyllum brunneum",
       "genus": "Chlorophyllum",
@@ -836,6 +1340,317 @@
         ],
         "stipe_base": [
           "Abruptly bulbous"
+        ]
+      }
+    },
+    {
+      "key": "chlorophyllum-rhacodes",
+      "scientific_name": "Chlorophyllum rhacodes",
+      "genus": "Chlorophyllum",
+      "common_names": [
+        "Shaggy Parasol"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "chlorophyllum-brunneum",
+        "macrolepiota-procera",
+        "amanita-phalloides",
+        "lepiota-brunneoincarnata"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "cap_colour",
+        "bruising_reaction",
+        "ring",
+        "spore_print_colour",
+        "stipe_base",
+        "volva"
+      ],
+      "notes": "Coarsely shaggy cap on a smooth stem, the flesh turning saffron then red-brown when cut. Separating it from Chlorophyllum brunneum needs the stem base, and neither should be taken on a photograph.",
+      "internal_note": "Older references call it Macrolepiota rhacodes.",
+      "character_states": {
+        "cap_surface": [
+          "Scaly"
+        ],
+        "cap_colour": [
+          "White or cream",
+          "Brown"
+        ],
+        "bruising_reaction": [
+          "Red or pink"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "stipe_base": [
+          "Abruptly bulbous"
+        ],
+        "volva": [
+          "Neither"
+        ]
+      }
+    },
+    {
+      "key": "chondrostereum-purpureum",
+      "scientific_name": "Chondrostereum purpureum",
+      "genus": "Chondrostereum",
+      "common_names": [
+        "Silverleaf Fungus"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "stereum-hirsutum",
+        "trichaptum-abietinum"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "cap_colour"
+      ],
+      "notes": "Bright purple smooth underside on small wavy brackets; the fungus that causes silver leaf in plums and cherries.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "cap_colour": [
+          "Purple"
+        ]
+      }
+    },
+    {
+      "key": "clavulina-cinerea",
+      "scientific_name": "Clavulina cinerea",
+      "genus": "Clavulina",
+      "common_names": [
+        "Grey Coral"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clavulina-coralloides",
+        "clavulina-rugosa"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "hymenium_type",
+        "texture",
+        "growth_form",
+        "cap_shape"
+      ],
+      "notes": "Ash-grey branched coral in woodland litter. Much of what is recorded as this is the crested coral overtaken by mould.",
+      "character_states": {
+        "cap_colour": [
+          "Grey"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "cap_shape": [
+          "Irregular"
+        ]
+      }
+    },
+    {
+      "key": "clavulina-coralloides",
+      "scientific_name": "Clavulina coralloides",
+      "genus": "Clavulina",
+      "common_names": [
+        "Crested Coral"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clavulina-cinerea",
+        "clavulina-rugosa",
+        "clavulinopsis-corniculata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "hymenium_type",
+        "texture",
+        "growth_form",
+        "cap_shape"
+      ],
+      "notes": "White coral whose branches end in fine crests and points, in woodland litter. Often greyed by a parasitic mould.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "cap_shape": [
+          "Irregular"
+        ]
+      }
+    },
+    {
+      "key": "clavulina-rugosa",
+      "scientific_name": "Clavulina rugosa",
+      "genus": "Clavulina",
+      "common_names": [
+        "Wrinkled Club"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clavulina-coralloides",
+        "clavulinopsis-helvola"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "hymenium_type",
+        "texture",
+        "growth_form",
+        "cap_shape"
+      ],
+      "notes": "Thick white clubs, wrinkled and grooved lengthwise, barely branched.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ],
+        "growth_form": [
+          "Scattered"
+        ],
+        "cap_shape": [
+          "Cylindrical"
+        ]
+      }
+    },
+    {
+      "key": "clavulinopsis-corniculata",
+      "scientific_name": "Clavulinopsis corniculata",
+      "genus": "Clavulinopsis",
+      "common_names": [
+        "Meadow Coral"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clavulinopsis-helvola",
+        "clavulina-coralloides"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "hymenium_type",
+        "texture",
+        "growth_form",
+        "cap_shape"
+      ],
+      "notes": "Apricot-yellow coral branching into antler tips, in unimproved grassland.",
+      "character_states": {
+        "cap_colour": [
+          "Yellow",
+          "Orange"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "cap_shape": [
+          "Irregular"
+        ]
+      }
+    },
+    {
+      "key": "clavulinopsis-helvola",
+      "scientific_name": "Clavulinopsis helvola",
+      "genus": "Clavulinopsis",
+      "common_names": [
+        "Yellow Club"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clavulinopsis-corniculata",
+        "calocera-viscosa",
+        "leotia-lubrica"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "hymenium_type",
+        "texture",
+        "growth_form",
+        "cap_shape"
+      ],
+      "notes": "Unbranched bright yellow spindles in tufts in short grass, brittle rather than rubbery — which is what separates a club from a stagshorn.",
+      "character_states": {
+        "cap_colour": [
+          "Yellow",
+          "Orange"
+        ],
+        "substrate": [
+          "Grass or lawn",
+          "Soil or leaf litter"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ],
+        "growth_form": [
+          "In a tight cluster",
+          "Scattered"
+        ],
+        "cap_shape": [
+          "Cylindrical"
         ]
       }
     },
@@ -868,6 +1683,53 @@
         "habitat": [
           "No trees nearby",
           "Mixed broadleaf"
+        ]
+      }
+    },
+    {
+      "key": "clitocybe-fragrans",
+      "scientific_name": "Clitocybe fragrans",
+      "genus": "Clitocybe",
+      "common_names": [
+        "Fragrant Funnel"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "clitocybe-dealbata",
+        "infundibulicybe-gibba"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_shape",
+        "gill_attachment",
+        "smell",
+        "spore_print_colour",
+        "substrate"
+      ],
+      "notes": "Small pale funnel smelling strongly of aniseed. It is a small white Clitocybe, and the muscarine species are small white Clitocybes; the smell is the only easy separation and smell is not a safe basis.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream",
+          "Brown"
+        ],
+        "cap_shape": [
+          "Funnel-shaped",
+          "Flat"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "smell": [
+          "Aniseed or almond"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Grass or lawn"
         ]
       }
     },
@@ -993,6 +1855,185 @@
       }
     },
     {
+      "key": "collybiopsis-confluens",
+      "scientific_name": "Collybiopsis confluens",
+      "genus": "Collybiopsis",
+      "common_names": [
+        "Clustered Toughshank"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "collybiopsis-peronata",
+        "gymnopus-dryophilus",
+        "marasmius-oreades"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "growth_form",
+        "spore_print_colour",
+        "stipe_surface",
+        "stipe_texture"
+      ],
+      "notes": "Crowded tufts in leaf litter, the caps fading to buff and the thin stems finely downy and fused at the base.",
+      "internal_note": "Older references call it Gymnopus confluens.",
+      "character_states": {
+        "cap_colour": [
+          "Brown",
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "stipe_surface": [
+          "Fibrous"
+        ],
+        "stipe_texture": [
+          "Tough and pliable, springs back"
+        ]
+      }
+    },
+    {
+      "key": "collybiopsis-peronata",
+      "scientific_name": "Collybiopsis peronata",
+      "genus": "Collybiopsis",
+      "common_names": [
+        "Wood Woollyfoot"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "gymnopus-dryophilus",
+        "collybiopsis-confluens",
+        "marasmius-oreades"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "stipe_surface",
+        "spore_print_colour",
+        "taste",
+        "stipe_texture"
+      ],
+      "notes": "Tan cap on a stem thickly woolly at the base, binding leaf litter together. Peppery.",
+      "internal_note": "Older references call it Gymnopus peronatus.",
+      "character_states": {
+        "cap_colour": [
+          "Brown",
+          "Yellow"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "stipe_surface": [
+          "Scaly or shaggy"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "taste": [
+          "Burning or peppery"
+        ],
+        "stipe_texture": [
+          "Tough and pliable, springs back"
+        ]
+      }
+    },
+    {
+      "key": "collybiopsis-ramealis",
+      "scientific_name": "Collybiopsis ramealis",
+      "genus": "Collybiopsis",
+      "common_names": [
+        "Twig Parachute"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "marasmius-rotula",
+        "gymnopus-dryophilus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "size",
+        "spore_print_colour",
+        "growth_form"
+      ],
+      "notes": "Tiny wrinkled white caps on fallen twigs, especially bramble.",
+      "internal_note": "Older references call it Gymnopus ramealis.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream",
+          "Brown"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "growth_form": [
+          "Scattered"
+        ]
+      }
+    },
+    {
+      "key": "coprinellus-disseminatus",
+      "scientific_name": "Coprinellus disseminatus",
+      "genus": "Coprinellus",
+      "common_names": [
+        "Fairy Inkcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "coprinellus-micaceus",
+        "coprinopsis-lagopus",
+        "parasola-plicatilis",
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "growth_form",
+        "size",
+        "spore_print_colour",
+        "texture"
+      ],
+      "notes": "Hundreds of tiny pleated buff caps swarming over a stump at once, greying and collapsing within a day.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream",
+          "Grey"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "spore_print_colour": [
+          "Black"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ]
+      }
+    },
+    {
       "key": "coprinellus-micaceus",
       "scientific_name": "Coprinellus micaceus",
       "genus": "Coprinellus",
@@ -1066,6 +2107,52 @@
           "Domed",
           "Conical",
           "Cylindrical"
+        ]
+      }
+    },
+    {
+      "key": "coprinopsis-lagopus",
+      "scientific_name": "Coprinopsis lagopus",
+      "genus": "Coprinopsis",
+      "common_names": [
+        "Hare'sfoot Inkcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "coprinopsis-atramentaria",
+        "coprinellus-micaceus",
+        "coprinus-comatus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_surface",
+        "substrate",
+        "spore_print_colour",
+        "deliquescence",
+        "texture"
+      ],
+      "notes": "Silvery-furry cylinder opening into a ragged grey parasol and gone by afternoon, on woodchip and litter.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "White or cream"
+        ],
+        "cap_surface": [
+          "Fibrous"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Dead wood or a stump"
+        ],
+        "spore_print_colour": [
+          "Black"
+        ],
+        "deliquescence": [
+          "Yes"
+        ],
+        "texture": [
+          "Soft and fragile"
         ]
       }
     },
@@ -1244,6 +2331,45 @@
       }
     },
     {
+      "key": "crepidotus-cesatii",
+      "scientific_name": "Crepidotus cesatii",
+      "genus": "Crepidotus",
+      "common_names": [
+        "Roundspored Oysterling"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "crepidotus-variabilis",
+        "crepidotus-mollis"
+      ],
+      "diagnostic_characters": [
+        "stipe_presence",
+        "cap_colour",
+        "substrate",
+        "size",
+        "cap_surface"
+      ],
+      "notes": "As the variable oysterling and separable from it only under a microscope; recorded distinctly, photographed identically.",
+      "character_states": {
+        "stipe_presence": [
+          "No stem"
+        ],
+        "cap_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "cap_surface": [
+          "Velvety"
+        ]
+      }
+    },
+    {
       "key": "crepidotus-mollis",
       "scientific_name": "Crepidotus mollis",
       "genus": "Crepidotus",
@@ -1273,6 +2399,46 @@
         "texture": [
           "Soft and fragile",
           "Gelatinous and rubbery"
+        ]
+      }
+    },
+    {
+      "key": "crepidotus-variabilis",
+      "scientific_name": "Crepidotus variabilis",
+      "genus": "Crepidotus",
+      "common_names": [
+        "Variable Oysterling"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "crepidotus-mollis",
+        "crepidotus-cesatii",
+        "panellus-stipticus"
+      ],
+      "diagnostic_characters": [
+        "stipe_presence",
+        "cap_colour",
+        "substrate",
+        "size",
+        "spore_print_colour"
+      ],
+      "notes": "Tiny white kidney-shaped brackets on the underside of fallen twigs, the gills turning pinkish-brown.",
+      "character_states": {
+        "stipe_presence": [
+          "No stem"
+        ],
+        "cap_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
         ]
       }
     },
@@ -1356,6 +2522,54 @@
         ],
         "substrate": [
           "Grass or lawn"
+        ]
+      }
+    },
+    {
+      "key": "cystoderma-amianthinum",
+      "scientific_name": "Cystoderma amianthinum",
+      "genus": "Cystoderma",
+      "common_names": [
+        "Earthy Powdercap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "lepiota-cristata",
+        "lepiota-brunneoincarnata",
+        "macrolepiota-procera"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "cap_colour",
+        "ring",
+        "spore_print_colour",
+        "substrate",
+        "smell"
+      ],
+      "notes": "Small ochre cap covered in a granular mealy powder, with a ragged ring zone and an earthy smell. Mossy ground.",
+      "internal_note": "Points at the small Lepiota species: a granular scaly cap with a ring is exactly the impression the deadly small dapperlings give.",
+      "character_states": {
+        "cap_surface": [
+          "Scaly"
+        ],
+        "cap_colour": [
+          "Yellow",
+          "Orange"
+        ],
+        "ring": [
+          "Faint zone only",
+          "Firm skirt-like ring"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Moss"
+        ],
+        "smell": [
+          "Raw potato or earthy"
         ]
       }
     },
@@ -1476,6 +2690,92 @@
       }
     },
     {
+      "key": "datronia-mollis",
+      "scientific_name": "Datronia mollis",
+      "genus": "Datronia",
+      "common_names": [
+        "Common Mazegill"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "daedaleopsis-confragosa",
+        "bjerkandera-adusta"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "pore_colour",
+        "cap_colour"
+      ],
+      "notes": "Dark brown crust with a narrow bracket edge, the pore surface stretched into a coarse maze.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "pore_colour": [
+          "White or cream"
+        ],
+        "cap_colour": [
+          "Brown"
+        ]
+      }
+    },
+    {
+      "key": "entoloma-conferendum",
+      "scientific_name": "Entoloma conferendum",
+      "genus": "Entoloma",
+      "common_names": [
+        "Star Pinkgill"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "entoloma-sinuatum",
+        "pluteus-cervinus",
+        "clitopilus-prunulus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "spore_print_colour",
+        "substrate",
+        "cap_shape",
+        "gill_colour"
+      ],
+      "notes": "Silky brown conical cap in grassland with gills turning clear pink. The genus holds Entoloma sinuatum, and a pink print in grass is worth taking seriously.",
+      "character_states": {
+        "cap_colour": [
+          "Brown",
+          "Grey"
+        ],
+        "spore_print_colour": [
+          "Pink"
+        ],
+        "substrate": [
+          "Grass or lawn",
+          "Soil or leaf litter"
+        ],
+        "cap_shape": [
+          "Conical"
+        ],
+        "gill_colour": [
+          "Pink",
+          "White"
+        ]
+      }
+    },
+    {
       "key": "entoloma-sinuatum",
       "scientific_name": "Entoloma sinuatum",
       "genus": "Entoloma",
@@ -1510,6 +2810,133 @@
       }
     },
     {
+      "key": "exidia-glandulosa",
+      "scientific_name": "Exidia glandulosa",
+      "genus": "Exidia",
+      "common_names": [
+        "Witches' Butter"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "exidia-nucleata",
+        "exidia-thuretiana",
+        "auricularia-auricula-judae"
+      ],
+      "diagnostic_characters": [
+        "texture",
+        "substrate",
+        "cap_colour",
+        "hymenium_type",
+        "growth_form",
+        "habitat"
+      ],
+      "notes": "Black gelatinous lobes with a warted surface, swelling along dead oak branches after rain and shrivelling to a thin crust in dry weather.",
+      "character_states": {
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "cap_colour": [
+          "Grey"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "habitat": [
+          "Oak"
+        ]
+      }
+    },
+    {
+      "key": "exidia-nucleata",
+      "scientific_name": "Exidia nucleata",
+      "genus": "Exidia",
+      "common_names": [
+        "Crystal Brain"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "exidia-thuretiana",
+        "exidia-glandulosa",
+        "tremella-mesenterica"
+      ],
+      "diagnostic_characters": [
+        "texture",
+        "substrate",
+        "cap_colour",
+        "hymenium_type",
+        "growth_form"
+      ],
+      "notes": "Translucent colourless jelly lumps on fallen broadleaf wood, each holding opaque white grains visible against the light.",
+      "character_states": {
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "cap_colour": [
+          "White or cream"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "growth_form": [
+          "Scattered"
+        ]
+      }
+    },
+    {
+      "key": "exidia-thuretiana",
+      "scientific_name": "Exidia thuretiana",
+      "genus": "Exidia",
+      "common_names": [
+        "White Brain"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "exidia-nucleata",
+        "tremella-mesenterica"
+      ],
+      "diagnostic_characters": [
+        "texture",
+        "substrate",
+        "cap_colour",
+        "hymenium_type",
+        "growth_form",
+        "habitat"
+      ],
+      "notes": "White to translucent folded jelly cushions on dead attached beech branches.",
+      "character_states": {
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "cap_colour": [
+          "White or cream"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "growth_form": [
+          "Scattered"
+        ],
+        "habitat": [
+          "Beech"
+        ]
+      }
+    },
+    {
       "key": "fistulina-hepatica",
       "scientific_name": "Fistulina hepatica",
       "genus": "Fistulina",
@@ -1536,6 +2963,56 @@
         "growth_form": [
           "As a bracket",
           "Singly"
+        ]
+      }
+    },
+    {
+      "key": "flammulina-velutipes",
+      "scientific_name": "Flammulina velutipes",
+      "genus": "Flammulina",
+      "common_names": [
+        "Velvet Shank"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata",
+        "kuehneromyces-mutabilis",
+        "hypholoma-fasciculare",
+        "armillaria-mellea"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "cap_colour",
+        "stipe_surface",
+        "substrate",
+        "growth_form",
+        "spore_print_colour",
+        "season"
+      ],
+      "notes": "Tawny slimy caps in tufts on elm and other broadleaf stumps in the depth of winter, on a stem that turns black and velvety from the base. Galerina marginata fruits in the same weather on the same wood; the white spore print is the check.",
+      "character_states": {
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "cap_colour": [
+          "Orange",
+          "Brown"
+        ],
+        "stipe_surface": [
+          "Fibrous"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "season": [
+          "Winter"
         ]
       }
     },
@@ -1616,6 +3093,48 @@
       }
     },
     {
+      "key": "fuscoporia-ferrea",
+      "scientific_name": "Fuscoporia ferrea",
+      "genus": "Fuscoporia",
+      "common_names": [
+        "Cinnamon Porecrust"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "schizopora-paradoxa"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "pore_colour",
+        "cap_colour"
+      ],
+      "notes": "Rust-brown flat porecrust with very fine pores, spread over dead broadleaf branches.",
+      "character_states": {
+        "growth_form": [
+          "Scattered"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "pore_colour": [
+          "Yellow"
+        ],
+        "cap_colour": [
+          "Brown"
+        ]
+      }
+    },
+    {
       "key": "galerina-marginata",
       "scientific_name": "Galerina marginata",
       "genus": "Galerina",
@@ -1652,6 +3171,181 @@
         "stipe_surface": [
           "Fibrous",
           "Smooth"
+        ]
+      }
+    },
+    {
+      "key": "ganoderma-adspersum",
+      "scientific_name": "Ganoderma adspersum",
+      "genus": "Ganoderma",
+      "common_names": [
+        "Southern Bracket"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "ganoderma-applanatum",
+        "fomes-fomentarius"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "pore_colour",
+        "bruising_reaction"
+      ],
+      "notes": "Massive hard perennial bracket at the base of living broadleaf trees, the white pore surface bruising brown at a touch and shedding cocoa-brown spore dust over everything beneath it.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "A living tree"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "pore_colour": [
+          "White or cream"
+        ],
+        "bruising_reaction": [
+          "Brown"
+        ]
+      }
+    },
+    {
+      "key": "ganoderma-applanatum",
+      "scientific_name": "Ganoderma applanatum",
+      "genus": "Ganoderma",
+      "common_names": [
+        "Artist's Bracket"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "ganoderma-adspersum",
+        "fomes-fomentarius"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "pore_colour",
+        "bruising_reaction"
+      ],
+      "notes": "As the southern bracket but thinner-fleshed, with a crust you can draw on by bruising it. Separating the two reliably needs a section.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "A living tree"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "pore_colour": [
+          "White or cream"
+        ],
+        "bruising_reaction": [
+          "Brown"
+        ]
+      }
+    },
+    {
+      "key": "gliophorus-irrigatus",
+      "scientific_name": "Gliophorus irrigatus",
+      "genus": "Gliophorus",
+      "common_names": [
+        "Slimy Waxcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "clitocybe-dealbata",
+        "gliophorus-psittacinus",
+        "gliophorus-laetus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "substrate",
+        "spore_print_colour",
+        "cap_surface"
+      ],
+      "notes": "Dull grey-brown waxcap under a thick layer of slime, with white gills.",
+      "character_states": {
+        "cap_colour": [
+          "Grey"
+        ],
+        "gill_texture": [
+          "Flexible and greasy"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "cap_surface": [
+          "Slimy or greasy"
+        ]
+      }
+    },
+    {
+      "key": "gliophorus-laetus",
+      "scientific_name": "Gliophorus laetus",
+      "genus": "Gliophorus",
+      "common_names": [
+        "Heath Waxcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "clitocybe-dealbata",
+        "gliophorus-psittacinus",
+        "gliophorus-irrigatus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "substrate",
+        "spore_print_colour",
+        "cap_surface",
+        "gill_attachment"
+      ],
+      "notes": "Very slimy pinkish-orange waxcap of acid grassland and heath, the gills decurrent with a gelatinous edge.",
+      "character_states": {
+        "cap_colour": [
+          "Orange",
+          "Purple"
+        ],
+        "gill_texture": [
+          "Flexible and greasy"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
         ]
       }
     },
@@ -1744,6 +3438,49 @@
       }
     },
     {
+      "key": "gymnopus-androsaceus",
+      "scientific_name": "Gymnopus androsaceus",
+      "genus": "Gymnopus",
+      "common_names": [
+        "Horsehair Parachute"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "marasmius-rotula",
+        "collybiopsis-ramealis"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "size",
+        "substrate",
+        "spore_print_colour",
+        "stipe_texture",
+        "habitat"
+      ],
+      "notes": "Minute brown parachutes on black horsehair stems, binding conifer needles and dead leaves with black runners.",
+      "character_states": {
+        "cap_colour": [
+          "Brown"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "stipe_texture": [
+          "Tough and pliable, springs back"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ]
+      }
+    },
+    {
       "key": "gymnopus-dryophilus",
       "scientific_name": "Gymnopus dryophilus",
       "genus": "Gymnopus",
@@ -1787,6 +3524,53 @@
       }
     },
     {
+      "key": "gymnopus-fusipes",
+      "scientific_name": "Gymnopus fusipes",
+      "genus": "Gymnopus",
+      "common_names": [
+        "Spindleshank"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "gymnopus-dryophilus",
+        "armillaria-mellea",
+        "collybiopsis-confluens"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "stipe_base",
+        "growth_form",
+        "spore_print_colour",
+        "substrate",
+        "habitat"
+      ],
+      "notes": "Tough tufts at the foot of oak, on grooved spindle-shaped stems twisted together and rooting. Gills spot rusty.",
+      "character_states": {
+        "cap_colour": [
+          "Brown",
+          "Red"
+        ],
+        "stipe_base": [
+          "Tapering",
+          "Rooting deeply"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "A living tree"
+        ],
+        "habitat": [
+          "Oak"
+        ]
+      }
+    },
+    {
       "key": "gyromitra-esculenta",
       "scientific_name": "Gyromitra esculenta",
       "genus": "Gyromitra",
@@ -1819,6 +3603,143 @@
       }
     },
     {
+      "key": "hebeloma-crustuliniforme",
+      "scientific_name": "Hebeloma crustuliniforme",
+      "genus": "Hebeloma",
+      "common_names": [
+        "Poison Pie"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "agaricus-campestris",
+        "entoloma-sinuatum",
+        "inocybe-geophylla"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_surface",
+        "smell",
+        "spore_print_colour",
+        "substrate",
+        "gill_colour"
+      ],
+      "notes": "Pallid clay cap, greasy when damp, smelling strongly of radish, with gills that weep droplets in wet weather. A plain mushroom in exactly the places beginners look.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream",
+          "Brown"
+        ],
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "smell": [
+          "Radish"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Grass or lawn"
+        ],
+        "gill_colour": [
+          "White",
+          "Brown"
+        ]
+      }
+    },
+    {
+      "key": "helvella-crispa",
+      "scientific_name": "Helvella crispa",
+      "genus": "Helvella",
+      "common_names": [
+        "White Saddle"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "gyromitra-esculenta",
+        "morchella-esculenta",
+        "verpa-bohemica"
+      ],
+      "diagnostic_characters": [
+        "cap_shape",
+        "cap_colour",
+        "cap_surface",
+        "substrate",
+        "stipe_surface",
+        "interior_structure"
+      ],
+      "notes": "Ivory saddle-shaped cap folded over a deeply ribbed and pocketed hollow stem, on woodland paths and verges.",
+      "internal_note": "TOXIC: contains hydrazine compounds of the same family as Gyromitra. Graded conservatively; please confirm.",
+      "character_states": {
+        "cap_shape": [
+          "Irregular"
+        ],
+        "cap_colour": [
+          "White or cream"
+        ],
+        "cap_surface": [
+          "Brain-like or folded"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "stipe_surface": [
+          "Fibrous"
+        ],
+        "interior_structure": [
+          "Completely hollow"
+        ]
+      }
+    },
+    {
+      "key": "heterobasidion-annosum",
+      "scientific_name": "Heterobasidion annosum",
+      "genus": "Heterobasidion",
+      "common_names": [
+        "Root Rot"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "fomes-fomentarius",
+        "ganoderma-applanatum"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "pore_colour",
+        "habitat"
+      ],
+      "notes": "Lumpy brown bracket with a white rim and white pores, low down on conifer stumps and roots.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "A living tree"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "pore_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ]
+      }
+    },
+    {
       "key": "hydnum-repandum",
       "scientific_name": "Hydnum repandum",
       "genus": "Hydnum",
@@ -1836,6 +3757,130 @@
       "character_states": {
         "hymenium_type": [
           "Spines"
+        ]
+      }
+    },
+    {
+      "key": "hygrocybe-ceracea",
+      "scientific_name": "Hygrocybe ceracea",
+      "genus": "Hygrocybe",
+      "common_names": [
+        "Butter Waxcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "clitocybe-dealbata",
+        "hygrocybe-chlorophana",
+        "hygrocybe-insipida"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "substrate",
+        "spore_print_colour",
+        "gill_attachment"
+      ],
+      "notes": "Small waxy yellow cap with gills running a little down a dry stem.",
+      "character_states": {
+        "cap_colour": [
+          "Yellow",
+          "Orange"
+        ],
+        "gill_texture": [
+          "Flexible and greasy"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
+        ]
+      }
+    },
+    {
+      "key": "hygrocybe-chlorophana",
+      "scientific_name": "Hygrocybe chlorophana",
+      "genus": "Hygrocybe",
+      "common_names": [
+        "Golden Waxcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "clitocybe-dealbata",
+        "hygrocybe-ceracea",
+        "hygrocybe-conica"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "substrate",
+        "spore_print_colour",
+        "cap_surface"
+      ],
+      "notes": "Bright lemon-yellow slimy cap and a slimy yellow stem, in unimproved grassland. Does not blacken.",
+      "character_states": {
+        "cap_colour": [
+          "Yellow"
+        ],
+        "gill_texture": [
+          "Flexible and greasy"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "cap_surface": [
+          "Slimy or greasy"
+        ]
+      }
+    },
+    {
+      "key": "hygrocybe-coccinea",
+      "scientific_name": "Hygrocybe coccinea",
+      "genus": "Hygrocybe",
+      "common_names": [
+        "Scarlet Waxcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "clitocybe-dealbata",
+        "hygrocybe-punicea",
+        "hygrocybe-conica"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "substrate",
+        "spore_print_colour",
+        "gill_attachment"
+      ],
+      "notes": "Blood-scarlet cap and stem, the gills scarlet with a yellow edge. Does not blacken with age.",
+      "character_states": {
+        "cap_colour": [
+          "Red"
+        ],
+        "gill_texture": [
+          "Flexible and greasy"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "gill_attachment": [
+          "Squarely attached"
         ]
       }
     },
@@ -1882,6 +3927,176 @@
       }
     },
     {
+      "key": "hygrocybe-insipida",
+      "scientific_name": "Hygrocybe insipida",
+      "genus": "Hygrocybe",
+      "common_names": [
+        "Spangle Waxcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "clitocybe-dealbata",
+        "hygrocybe-ceracea",
+        "hygrocybe-reidii"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "substrate",
+        "spore_print_colour",
+        "size"
+      ],
+      "notes": "Tiny orange-red waxcap with a greasy stem yellow at the top and orange below.",
+      "character_states": {
+        "cap_colour": [
+          "Orange",
+          "Red"
+        ],
+        "gill_texture": [
+          "Flexible and greasy"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "size": [
+          "Under 2 cm"
+        ]
+      }
+    },
+    {
+      "key": "hygrocybe-punicea",
+      "scientific_name": "Hygrocybe punicea",
+      "genus": "Hygrocybe",
+      "common_names": [
+        "Crimson Waxcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "clitocybe-dealbata",
+        "hygrocybe-coccinea",
+        "hygrocybe-conica"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "substrate",
+        "spore_print_colour",
+        "size",
+        "stipe_surface"
+      ],
+      "notes": "The largest scarlet waxcap, with a fibrous streaked stem white at the base. An indicator of old undisturbed grassland.",
+      "character_states": {
+        "cap_colour": [
+          "Red"
+        ],
+        "gill_texture": [
+          "Flexible and greasy"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "size": [
+          "5-10 cm"
+        ],
+        "stipe_surface": [
+          "Fibrous"
+        ]
+      }
+    },
+    {
+      "key": "hygrocybe-quieta",
+      "scientific_name": "Hygrocybe quieta",
+      "genus": "Hygrocybe",
+      "common_names": [
+        "Oily Waxcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "clitocybe-dealbata",
+        "hygrocybe-reidii",
+        "cuphophyllus-pratensis"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "substrate",
+        "spore_print_colour",
+        "smell"
+      ],
+      "notes": "Dull orange waxcap with a distinct oily smell, sometimes likened to bedbugs or to Lactarius quietus.",
+      "character_states": {
+        "cap_colour": [
+          "Orange"
+        ],
+        "gill_texture": [
+          "Flexible and greasy"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "smell": [
+          "Ink or chemicals"
+        ]
+      }
+    },
+    {
+      "key": "hygrocybe-reidii",
+      "scientific_name": "Hygrocybe reidii",
+      "genus": "Hygrocybe",
+      "common_names": [
+        "Honey Waxcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "clitocybe-dealbata",
+        "hygrocybe-quieta",
+        "hygrocybe-insipida"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "substrate",
+        "spore_print_colour",
+        "smell"
+      ],
+      "notes": "Orange-red waxcap smelling of honey, strongest as it dries.",
+      "character_states": {
+        "cap_colour": [
+          "Orange",
+          "Red"
+        ],
+        "gill_texture": [
+          "Flexible and greasy"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "smell": [
+          "Aniseed or almond"
+        ]
+      }
+    },
+    {
       "key": "hygrophoropsis-aurantiaca",
       "scientific_name": "Hygrophoropsis aurantiaca",
       "genus": "Hygrophoropsis",
@@ -1907,6 +4122,95 @@
         "flesh_colour": [
           "Orange",
           "Yellow"
+        ]
+      }
+    },
+    {
+      "key": "hymenochaete-rubiginosa",
+      "scientific_name": "Hymenochaete rubiginosa",
+      "genus": "Hymenochaete",
+      "common_names": [
+        "Oak Curtain Crust"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "stereum-hirsutum",
+        "stereum-gausapatum"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "cap_colour",
+        "habitat"
+      ],
+      "notes": "Rigid dark rust-brown brackets curling off oak stumps, the underside smooth and velvety.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "cap_colour": [
+          "Brown"
+        ],
+        "habitat": [
+          "Oak"
+        ]
+      }
+    },
+    {
+      "key": "hymenopellis-radicata",
+      "scientific_name": "Hymenopellis radicata",
+      "genus": "Hymenopellis",
+      "common_names": [
+        "Rooting Shank"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "megacollybia-platyphylla",
+        "mucidula-mucida",
+        "armillaria-mellea"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "cap_colour",
+        "stipe_base",
+        "spore_print_colour",
+        "substrate",
+        "gill_spacing"
+      ],
+      "notes": "Slimy wrinkled cap on a long stem with a deep tapering root down to buried wood. The root is what names it and what identifies it.",
+      "internal_note": "Older references call it Xerula radicata.",
+      "character_states": {
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "cap_colour": [
+          "Brown",
+          "Grey"
+        ],
+        "stipe_base": [
+          "Rooting deeply"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "gill_spacing": [
+          "Well spaced"
         ]
       }
     },
@@ -1945,6 +4249,90 @@
         ],
         "substrate": [
           "Dead wood or a stump"
+        ]
+      }
+    },
+    {
+      "key": "hypoxylon-fragiforme",
+      "scientific_name": "Hypoxylon fragiforme",
+      "genus": "Hypoxylon",
+      "common_names": [
+        "Beech Woodwart"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "hypoxylon-fuscum",
+        "daldinia-concentrica"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "texture",
+        "cap_colour",
+        "growth_form",
+        "habitat"
+      ],
+      "notes": "Salmon-pink hemispherical cushions crowding dead beech branches, darkening to brick and then black.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "cap_colour": [
+          "Red",
+          "Brown"
+        ],
+        "growth_form": [
+          "Scattered"
+        ],
+        "habitat": [
+          "Beech"
+        ]
+      }
+    },
+    {
+      "key": "hypoxylon-fuscum",
+      "scientific_name": "Hypoxylon fuscum",
+      "genus": "Hypoxylon",
+      "common_names": [
+        "Hazel Woodwart"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "hypoxylon-fragiforme",
+        "jackrogersella-multiformis"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "texture",
+        "cap_colour",
+        "growth_form"
+      ],
+      "notes": "Small hard purple-brown cushions scattered over dead hazel and alder branches.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "cap_colour": [
+          "Brown",
+          "Purple"
+        ],
+        "growth_form": [
+          "Scattered"
         ]
       }
     },
@@ -1992,6 +4380,100 @@
         "stipe_surface": [
           "Fibrous",
           "Smooth"
+        ]
+      }
+    },
+    {
+      "key": "infundibulicybe-geotropa",
+      "scientific_name": "Infundibulicybe geotropa",
+      "genus": "Infundibulicybe",
+      "common_names": [
+        "Trooping Funnel"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-nebularis",
+        "infundibulicybe-gibba",
+        "clitocybe-rivulosa",
+        "paralepista-flaccida"
+      ],
+      "diagnostic_characters": [
+        "cap_shape",
+        "cap_colour",
+        "gill_attachment",
+        "spore_print_colour",
+        "growth_form",
+        "size"
+      ],
+      "notes": "Large buff funnel with a small central boss, in long arcs and rings on woodland edges.",
+      "internal_note": "Older references call it Clitocybe geotropa.",
+      "character_states": {
+        "cap_shape": [
+          "Funnel-shaped"
+        ],
+        "cap_colour": [
+          "White or cream",
+          "Brown"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "growth_form": [
+          "In a ring"
+        ],
+        "size": [
+          "10-20 cm"
+        ]
+      }
+    },
+    {
+      "key": "infundibulicybe-gibba",
+      "scientific_name": "Infundibulicybe gibba",
+      "genus": "Infundibulicybe",
+      "common_names": [
+        "Common Funnel"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-rivulosa",
+        "clitocybe-dealbata",
+        "paralepista-flaccida",
+        "clitocybe-fragrans"
+      ],
+      "diagnostic_characters": [
+        "cap_shape",
+        "cap_colour",
+        "gill_attachment",
+        "spore_print_colour",
+        "substrate",
+        "gill_spacing"
+      ],
+      "notes": "Pale tan funnel with crowded white gills running down a slender stem, in leaf litter.",
+      "internal_note": "Older references call it Clitocybe gibba.",
+      "character_states": {
+        "cap_shape": [
+          "Funnel-shaped"
+        ],
+        "cap_colour": [
+          "Orange",
+          "Brown"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "gill_spacing": [
+          "Crowded"
         ]
       }
     },
@@ -2077,6 +4559,143 @@
           "White",
           "Brown",
           "Grey"
+        ]
+      }
+    },
+    {
+      "key": "inocybe-lilacina",
+      "scientific_name": "Inocybe lilacina",
+      "genus": "Inocybe",
+      "common_names": [
+        "Lilac Fibrecap"
+      ],
+      "toxicity": "SERIOUS",
+      "gbif_key": null,
+      "lookalikes": [
+        "inocybe-geophylla",
+        "inocybe-erubescens",
+        "laccaria-amethystina",
+        "mycena-pura",
+        "clitocybe-rivulosa"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_shape",
+        "cap_surface",
+        "spore_print_colour",
+        "smell",
+        "gill_colour"
+      ],
+      "notes": "The lilac form of the white fibrecap: same silky pointed cap, same earthy smell, same muscarine. Mistaken for the amethyst deceiver, which prints white where this prints brown.",
+      "internal_note": "Long treated as Inocybe geophylla var. lilacina. SERIOUS for the same reason, with the same generous state lists.",
+      "character_states": {
+        "cap_colour": [
+          "Purple",
+          "White or cream"
+        ],
+        "cap_shape": [
+          "Conical",
+          "Domed"
+        ],
+        "cap_surface": [
+          "Fibrous",
+          "Smooth and dry"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
+        ],
+        "smell": [
+          "Raw potato or earthy"
+        ],
+        "gill_colour": [
+          "White",
+          "Brown",
+          "Grey"
+        ]
+      }
+    },
+    {
+      "key": "jackrogersella-multiformis",
+      "scientific_name": "Jackrogersella multiformis",
+      "genus": "Jackrogersella",
+      "common_names": [
+        "Birch Woodwart"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "hypoxylon-fragiforme",
+        "daldinia-concentrica"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "texture",
+        "cap_colour",
+        "growth_form",
+        "habitat"
+      ],
+      "notes": "Crusty pinkish-brown cushions merging into sheets along dead birch branches, black and pimpled with age.",
+      "internal_note": "Older references call it Annulohypoxylon multiforme.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "cap_colour": [
+          "Brown",
+          "Grey"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "habitat": [
+          "Birch"
+        ]
+      }
+    },
+    {
+      "key": "kretzschmaria-deusta",
+      "scientific_name": "Kretzschmaria deusta",
+      "genus": "Kretzschmaria",
+      "common_names": [
+        "Brittle Cinder"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "xylaria-polymorpha",
+        "daldinia-concentrica"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "texture",
+        "cap_colour",
+        "growth_form"
+      ],
+      "notes": "Flat grey-white crust at first, then a brittle black sheet that looks like burnt paint at the base of beech. A serious structural rot.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "A living tree"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "cap_colour": [
+          "Grey"
+        ],
+        "growth_form": [
+          "Scattered"
         ]
       }
     },
@@ -2200,6 +4819,101 @@
       }
     },
     {
+      "key": "lacrymaria-lacrymabunda",
+      "scientific_name": "Lacrymaria lacrymabunda",
+      "genus": "Lacrymaria",
+      "common_names": [
+        "Weeping Widow"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "psathyrella-candolleana",
+        "panaeolina-foenisecii",
+        "agaricus-campestris"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "cap_colour",
+        "gill_colour",
+        "spore_print_colour",
+        "substrate",
+        "ring"
+      ],
+      "notes": "Shaggy tawny cap with very dark mottled gills that weep dark droplets, leaving a black-speckled ring zone on the stem. Paths and verges.",
+      "character_states": {
+        "cap_surface": [
+          "Fibrous"
+        ],
+        "cap_colour": [
+          "Brown",
+          "Yellow"
+        ],
+        "gill_colour": [
+          "Chocolate or black"
+        ],
+        "spore_print_colour": [
+          "Black"
+        ],
+        "substrate": [
+          "Grass or lawn",
+          "Soil or leaf litter"
+        ],
+        "ring": [
+          "Faint zone only"
+        ]
+      }
+    },
+    {
+      "key": "lactarius-blennius",
+      "scientific_name": "Lactarius blennius",
+      "genus": "Lactarius",
+      "common_names": [
+        "Beech Milkcap"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "lactarius-torminosus",
+        "lactarius-deliciosus",
+        "lactarius-quietus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "latex_colour",
+        "gill_texture",
+        "spore_print_colour",
+        "habitat",
+        "cap_surface",
+        "taste"
+      ],
+      "notes": "Slimy grey-green cap with faint darker spots in concentric rings, always with beech. Acrid white milk drying grey.",
+      "character_states": {
+        "cap_colour": [
+          "Olive or greenish",
+          "Grey"
+        ],
+        "latex_colour": [
+          "White"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Beech"
+        ],
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "taste": [
+          "Burning or peppery"
+        ]
+      }
+    },
+    {
       "key": "lactarius-deliciosus",
       "scientific_name": "Lactarius deliciosus",
       "genus": "Lactarius",
@@ -2228,6 +4942,100 @@
         "cap_surface": [
           "Smooth and dry",
           "Slimy or greasy"
+        ]
+      }
+    },
+    {
+      "key": "lactarius-glyciosmus",
+      "scientific_name": "Lactarius glyciosmus",
+      "genus": "Lactarius",
+      "common_names": [
+        "Coconut Milkcap"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "lactarius-torminosus",
+        "lactarius-deliciosus",
+        "lactarius-quietus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "latex_colour",
+        "gill_texture",
+        "spore_print_colour",
+        "habitat",
+        "smell"
+      ],
+      "notes": "Small greyish-lilac milkcap smelling strongly of desiccated coconut, with birch.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "latex_colour": [
+          "White"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Birch"
+        ],
+        "smell": [
+          "Apricot or fruity"
+        ]
+      }
+    },
+    {
+      "key": "lactarius-pyrogalus",
+      "scientific_name": "Lactarius pyrogalus",
+      "genus": "Lactarius",
+      "common_names": [
+        "Fiery Milkcap"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "lactarius-torminosus",
+        "lactarius-deliciosus",
+        "lactarius-quietus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "latex_colour",
+        "gill_texture",
+        "spore_print_colour",
+        "habitat",
+        "taste",
+        "gill_spacing"
+      ],
+      "notes": "Grey-buff cap with well-spaced ochre gills, under hazel. Ferociously acrid milk.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "latex_colour": [
+          "White"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Mixed broadleaf"
+        ],
+        "taste": [
+          "Burning or peppery"
+        ],
+        "gill_spacing": [
+          "Well spaced"
         ]
       }
     },
@@ -2270,6 +5078,100 @@
         "gill_attachment": [
           "Running down the stem",
           "Squarely attached"
+        ]
+      }
+    },
+    {
+      "key": "lactarius-rufus",
+      "scientific_name": "Lactarius rufus",
+      "genus": "Lactarius",
+      "common_names": [
+        "Rufous Milkcap"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "lactarius-torminosus",
+        "lactarius-deliciosus",
+        "lactarius-quietus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "latex_colour",
+        "gill_texture",
+        "spore_print_colour",
+        "habitat",
+        "taste",
+        "cap_shape"
+      ],
+      "notes": "Brick-red funnel with a small central point, under conifers. The acrid taste builds slowly and then burns.",
+      "character_states": {
+        "cap_colour": [
+          "Red",
+          "Brown"
+        ],
+        "latex_colour": [
+          "White"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ],
+        "taste": [
+          "Burning or peppery"
+        ],
+        "cap_shape": [
+          "Funnel-shaped"
+        ]
+      }
+    },
+    {
+      "key": "lactarius-subdulcis",
+      "scientific_name": "Lactarius subdulcis",
+      "genus": "Lactarius",
+      "common_names": [
+        "Mild Milkcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "lactarius-torminosus",
+        "lactarius-deliciosus",
+        "lactarius-quietus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "latex_colour",
+        "gill_texture",
+        "spore_print_colour",
+        "habitat",
+        "taste"
+      ],
+      "notes": "Red-brown milkcap of beech woods with copious white milk and a mild taste that turns slightly bitter.",
+      "character_states": {
+        "cap_colour": [
+          "Brown",
+          "Red"
+        ],
+        "latex_colour": [
+          "White"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Beech"
+        ],
+        "taste": [
+          "Mild"
         ]
       }
     },
@@ -2342,6 +5244,51 @@
       }
     },
     {
+      "key": "lactarius-turpis",
+      "scientific_name": "Lactarius turpis",
+      "genus": "Lactarius",
+      "common_names": [
+        "Ugly Milkcap"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "lactarius-torminosus",
+        "lactarius-deliciosus",
+        "lactarius-quietus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "latex_colour",
+        "gill_texture",
+        "spore_print_colour",
+        "habitat",
+        "taste"
+      ],
+      "notes": "Dark olive-brown, almost black cap with a woolly inrolled edge, with birch. White milk, very acrid.",
+      "character_states": {
+        "cap_colour": [
+          "Olive or greenish",
+          "Brown"
+        ],
+        "latex_colour": [
+          "White"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Birch"
+        ],
+        "taste": [
+          "Burning or peppery"
+        ]
+      }
+    },
+    {
       "key": "laetiporus-sulphureus",
       "scientific_name": "Laetiporus sulphureus",
       "genus": "Laetiporus",
@@ -2400,6 +5347,45 @@
         ],
         "habitat": [
           "Birch"
+        ]
+      }
+    },
+    {
+      "key": "leotia-lubrica",
+      "scientific_name": "Leotia lubrica",
+      "genus": "Leotia",
+      "common_names": [
+        "Jellybaby"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "clavulinopsis-helvola"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "cap_colour",
+        "texture",
+        "cap_shape"
+      ],
+      "notes": "Slimy olive-and-ochre club with a rolled, irregular head, in damp litter.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "cap_colour": [
+          "Olive or greenish",
+          "Yellow"
+        ],
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "cap_shape": [
+          "Irregular"
         ]
       }
     },
@@ -2574,6 +5560,96 @@
       }
     },
     {
+      "key": "lycoperdon-excipuliforme",
+      "scientific_name": "Lycoperdon excipuliforme",
+      "genus": "Lycoperdon",
+      "common_names": [
+        "Pestle Puffball"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "lycoperdon-perlatum",
+        "lycoperdon-nigrescens",
+        "calvatia-gigantea",
+        "scleroderma-citrinum",
+        "amanita-virosa"
+      ],
+      "diagnostic_characters": [
+        "interior_structure",
+        "cap_shape",
+        "cap_colour",
+        "substrate",
+        "hymenium_type",
+        "size"
+      ],
+      "notes": "Tall pestle-shaped puffball on a long stalk that persists through the winter as a hollow cup.",
+      "character_states": {
+        "interior_structure": [
+          "Solid and pure white",
+          "Chambered or cottony"
+        ],
+        "cap_shape": [
+          "Cylindrical"
+        ],
+        "cap_colour": [
+          "White or cream",
+          "Brown"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "size": [
+          "10-20 cm"
+        ]
+      }
+    },
+    {
+      "key": "lycoperdon-nigrescens",
+      "scientific_name": "Lycoperdon nigrescens",
+      "genus": "Lycoperdon",
+      "common_names": [
+        "Dusky Puffball"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "lycoperdon-perlatum",
+        "scleroderma-citrinum",
+        "amanita-virosa",
+        "lycoperdon-excipuliforme"
+      ],
+      "diagnostic_characters": [
+        "interior_structure",
+        "cap_surface",
+        "cap_colour",
+        "substrate",
+        "hymenium_type"
+      ],
+      "notes": "Dark brown puffball covered in blackish spines that leave a net of scars when they fall. Heath and conifer litter.",
+      "character_states": {
+        "interior_structure": [
+          "Solid and pure white",
+          "Chambered or cottony"
+        ],
+        "cap_surface": [
+          "Scaly"
+        ],
+        "cap_colour": [
+          "Brown"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ]
+      }
+    },
+    {
       "key": "lycoperdon-perlatum",
       "scientific_name": "Lycoperdon perlatum",
       "genus": "Lycoperdon",
@@ -2672,6 +5748,147 @@
       }
     },
     {
+      "key": "marasmius-rotula",
+      "scientific_name": "Marasmius rotula",
+      "genus": "Marasmius",
+      "common_names": [
+        "Collared Parachute"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "collybiopsis-ramealis",
+        "marasmius-oreades"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "size",
+        "gill_attachment",
+        "spore_print_colour",
+        "stipe_texture"
+      ],
+      "notes": "White pleated parachute on a black wiry stem, the gills attached to a collar that stands free of the stem. On twigs and rootlets.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "Soil or leaf litter"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "gill_attachment": [
+          "Free, not touching the stem"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "stipe_texture": [
+          "Tough and pliable, springs back"
+        ]
+      }
+    },
+    {
+      "key": "megacollybia-platyphylla",
+      "scientific_name": "Megacollybia platyphylla",
+      "genus": "Megacollybia",
+      "common_names": [
+        "Whitelaced Shank"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "hymenopellis-radicata",
+        "mucidula-mucida",
+        "pluteus-cervinus",
+        "armillaria-mellea"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_spacing",
+        "spore_print_colour",
+        "substrate",
+        "stipe_base",
+        "size"
+      ],
+      "notes": "Broad streaky grey cap with very wide white gills, attached to buried wood by thick white cords.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "gill_spacing": [
+          "Well spaced"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "stipe_base": [
+          "Rooting deeply"
+        ],
+        "size": [
+          "10-20 cm"
+        ]
+      }
+    },
+    {
+      "key": "meripilus-giganteus",
+      "scientific_name": "Meripilus giganteus",
+      "genus": "Meripilus",
+      "common_names": [
+        "Giant Polypore"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "laetiporus-sulphureus",
+        "ganoderma-adspersum"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "pore_colour",
+        "bruising_reaction",
+        "size",
+        "habitat"
+      ],
+      "notes": "Huge rosette of overlapping fan-shaped fronds at the foot of beech, the whole thing blackening where bruised.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Firm and fleshy"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "pore_colour": [
+          "White or cream"
+        ],
+        "bruising_reaction": [
+          "Brown"
+        ],
+        "size": [
+          "Over 20 cm"
+        ],
+        "habitat": [
+          "Beech"
+        ]
+      }
+    },
+    {
       "key": "morchella-esculenta",
       "scientific_name": "Morchella esculenta",
       "genus": "Morchella",
@@ -2699,6 +5916,163 @@
         ],
         "season": [
           "Spring"
+        ]
+      }
+    },
+    {
+      "key": "mucidula-mucida",
+      "scientific_name": "Mucidula mucida",
+      "genus": "Mucidula",
+      "common_names": [
+        "Porcelain Fungus"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "hymenopellis-radicata",
+        "megacollybia-platyphylla",
+        "pleurotus-ostreatus"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "cap_colour",
+        "substrate",
+        "ring",
+        "spore_print_colour",
+        "habitat"
+      ],
+      "notes": "Translucent white caps under a thick layer of slime, high on dead beech branches, with a ring on the stem.",
+      "internal_note": "Older references call it Oudemansiella mucida.",
+      "character_states": {
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "cap_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "A living tree"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Beech"
+        ]
+      }
+    },
+    {
+      "key": "mycena-arcangeliana",
+      "scientific_name": "Mycena arcangeliana",
+      "genus": "Mycena",
+      "common_names": [
+        "Angel's Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "spore_print_colour",
+        "smell"
+      ],
+      "notes": "Olive-grey to yellowish bonnet on dead broadleaf wood, smelling strongly of iodine as it dries.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Yellow"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "smell": [
+          "Ink or chemicals"
+        ]
+      }
+    },
+    {
+      "key": "mycena-epipterygia",
+      "scientific_name": "Mycena epipterygia",
+      "genus": "Mycena",
+      "common_names": [
+        "Yellowleg Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_surface",
+        "substrate",
+        "spore_print_colour"
+      ],
+      "notes": "Greasy grey cap on a yellow, sticky stem; the whole cap skin peels away as an elastic film.",
+      "character_states": {
+        "cap_colour": [
+          "Yellow",
+          "Grey"
+        ],
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Dead wood or a stump"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
+      "key": "mycena-filopes",
+      "scientific_name": "Mycena filopes",
+      "genus": "Mycena",
+      "common_names": [
+        "Iodine Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "spore_print_colour",
+        "smell",
+        "size"
+      ],
+      "notes": "Slender grey bonnet on a thread-like stem, smelling of iodine when drying.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Dead wood or a stump"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "smell": [
+          "Ink or chemicals"
+        ],
+        "size": [
+          "Under 2 cm"
         ]
       }
     },
@@ -2749,6 +6123,201 @@
       }
     },
     {
+      "key": "mycena-galopus",
+      "scientific_name": "Mycena galopus",
+      "genus": "Mycena",
+      "common_names": [
+        "Milking Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "latex_colour",
+        "cap_colour",
+        "spore_print_colour",
+        "substrate",
+        "size"
+      ],
+      "notes": "Small grey bonnet whose stem bleeds white milk when snapped. Leaf litter.",
+      "character_states": {
+        "latex_colour": [
+          "White"
+        ],
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Dead wood or a stump"
+        ],
+        "size": [
+          "Under 2 cm"
+        ]
+      }
+    },
+    {
+      "key": "mycena-haematopus",
+      "scientific_name": "Mycena haematopus",
+      "genus": "Mycena",
+      "common_names": [
+        "Burgundydrop Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "latex_colour",
+        "cap_colour",
+        "substrate",
+        "growth_form",
+        "spore_print_colour"
+      ],
+      "notes": "Wine-red bonnet in small tufts on dead wood, bleeding dark red-brown juice from the stem when broken.",
+      "character_states": {
+        "latex_colour": [
+          "Orange or carrot"
+        ],
+        "cap_colour": [
+          "Red",
+          "Purple"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
+      "key": "mycena-inclinata",
+      "scientific_name": "Mycena inclinata",
+      "genus": "Mycena",
+      "common_names": [
+        "Clustered Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "growth_form",
+        "substrate",
+        "spore_print_colour",
+        "habitat",
+        "smell"
+      ],
+      "notes": "Dense tufts on oak stumps, the stem yellowing then rusting from the base, with a mealy or faintly chemical smell. The white spore print is what separates the whole clustered-bonnet habit from the deadly Galerina.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Oak"
+        ],
+        "smell": [
+          "Ink or chemicals"
+        ]
+      }
+    },
+    {
+      "key": "mycena-leptocephala",
+      "scientific_name": "Mycena leptocephala",
+      "genus": "Mycena",
+      "common_names": [
+        "Nitrous Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "spore_print_colour",
+        "smell",
+        "size"
+      ],
+      "notes": "Grey bonnet with a strong smell of bleach or ammonia, in litter and moss.",
+      "character_states": {
+        "cap_colour": [
+          "Grey"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "smell": [
+          "Ink or chemicals"
+        ],
+        "size": [
+          "Under 2 cm"
+        ]
+      }
+    },
+    {
+      "key": "mycena-polygramma",
+      "scientific_name": "Mycena polygramma",
+      "genus": "Mycena",
+      "common_names": [
+        "Grooved Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "stipe_surface",
+        "substrate",
+        "spore_print_colour"
+      ],
+      "notes": "Grey bell-shaped cap on a rigid, silvery stem finely grooved along its length, rooting into buried wood.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "stipe_surface": [
+          "Fibrous"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "Soil or leaf litter"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
       "key": "mycena-pura",
       "scientific_name": "Mycena pura",
       "genus": "Mycena",
@@ -2790,6 +6359,163 @@
       }
     },
     {
+      "key": "mycena-rosea",
+      "scientific_name": "Mycena rosea",
+      "genus": "Mycena",
+      "common_names": [
+        "Rosy Bonnet"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "mycena-pura",
+        "laccaria-amethystina",
+        "lepista-nuda"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "smell",
+        "spore_print_colour",
+        "substrate",
+        "habitat"
+      ],
+      "notes": "Rose-pink cap, radish smell, in beech litter. Contains muscarine, as does Mycena pura, which it was long treated as a form of.",
+      "character_states": {
+        "cap_colour": [
+          "Purple",
+          "Red"
+        ],
+        "smell": [
+          "Radish"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "habitat": [
+          "Beech",
+          "Mixed broadleaf"
+        ]
+      }
+    },
+    {
+      "key": "mycena-sanguinolenta",
+      "scientific_name": "Mycena sanguinolenta",
+      "genus": "Mycena",
+      "common_names": [
+        "Bleeding Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "latex_colour",
+        "cap_colour",
+        "substrate",
+        "size",
+        "spore_print_colour"
+      ],
+      "notes": "Tiny red-brown bonnet in litter and moss, bleeding dark red from the stem and edged red along the gills.",
+      "character_states": {
+        "latex_colour": [
+          "Orange or carrot"
+        ],
+        "cap_colour": [
+          "Red",
+          "Brown"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
+      "key": "mycena-tenerrima",
+      "scientific_name": "Mycena tenerrima",
+      "genus": "Mycena",
+      "common_names": [
+        "Frosty Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_surface",
+        "substrate",
+        "size",
+        "spore_print_colour"
+      ],
+      "notes": "Minute white bonnet frosted all over with tiny hairs, on fallen twigs.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream"
+        ],
+        "cap_surface": [
+          "Velvety"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
+      "key": "mycena-vitilis",
+      "scientific_name": "Mycena vitilis",
+      "genus": "Mycena",
+      "common_names": [
+        "Snapping Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "spore_print_colour",
+        "substrate",
+        "stipe_texture",
+        "size"
+      ],
+      "notes": "Small grey-brown bonnet on a long wiry stem that snaps with an audible click, rooting into buried twigs.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Dead wood or a stump"
+        ],
+        "stipe_texture": [
+          "Tough and pliable, springs back"
+        ],
+        "size": [
+          "Under 2 cm"
+        ]
+      }
+    },
+    {
       "key": "neoboletus-luridiformis",
       "scientific_name": "Neoboletus luridiformis",
       "genus": "Neoboletus",
@@ -2823,6 +6549,51 @@
         ],
         "flesh_colour": [
           "Yellow"
+        ]
+      }
+    },
+    {
+      "key": "neoboletus-praestigiator",
+      "scientific_name": "Neoboletus praestigiator",
+      "genus": "Neoboletus",
+      "common_names": [
+        "Deceiving Bolete"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "boletus-edulis",
+        "neoboletus-luridiformis",
+        "rubroboletus-satanas",
+        "imleria-badia",
+        "tylopilus-felleus",
+        "xerocomellus-chrysenteron"
+      ],
+      "diagnostic_characters": [
+        "pore_colour",
+        "bruising_reaction",
+        "cap_colour",
+        "flesh_colour",
+        "stipe_surface"
+      ],
+      "notes": "Red-pored bolete blueing instantly where cut, the stem covered in red dots rather than a net. Any bolete with red pores is excluded by the safety layer.",
+      "internal_note": "Long treated as a form of Neoboletus luridiformis.",
+      "character_states": {
+        "pore_colour": [
+          "Red or orange"
+        ],
+        "bruising_reaction": [
+          "Blue"
+        ],
+        "cap_colour": [
+          "Brown",
+          "Olive or greenish"
+        ],
+        "flesh_colour": [
+          "Yellow"
+        ],
+        "stipe_surface": [
+          "Fibrous"
         ]
       }
     },
@@ -2900,6 +6671,275 @@
       }
     },
     {
+      "key": "panaeolina-foenisecii",
+      "scientific_name": "Panaeolina foenisecii",
+      "genus": "Panaeolina",
+      "common_names": [
+        "Brown Mottlegill"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "panaeolus-papilionaceus",
+        "panaeolus-acuminatus",
+        "psilocybe-semilanceata",
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "spore_print_colour",
+        "gill_colour",
+        "size"
+      ],
+      "notes": "The commonest lawn mushroom in Britain, drying out from dark brown to buff in bands. Mottled dark gills.",
+      "internal_note": "TOXIC as a conservative grading for a small brown lawn mushroom that is routinely picked by children and is easily confused with several others.",
+      "character_states": {
+        "cap_colour": [
+          "Brown"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "Chocolate or purple-brown"
+        ],
+        "gill_colour": [
+          "Brown",
+          "Chocolate or black"
+        ],
+        "size": [
+          "2-5 cm"
+        ]
+      }
+    },
+    {
+      "key": "panaeolus-acuminatus",
+      "scientific_name": "Panaeolus acuminatus",
+      "genus": "Panaeolus",
+      "common_names": [
+        "Dewdrop Mottlegill"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "panaeolina-foenisecii",
+        "panaeolus-papilionaceus",
+        "psilocybe-semilanceata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "spore_print_colour",
+        "gill_colour",
+        "cap_shape"
+      ],
+      "notes": "Slim conical dark brown cap on a long stem, in manured grass.",
+      "character_states": {
+        "cap_colour": [
+          "Brown"
+        ],
+        "substrate": [
+          "Dung",
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "Black"
+        ],
+        "gill_colour": [
+          "Chocolate or black"
+        ],
+        "cap_shape": [
+          "Conical"
+        ]
+      }
+    },
+    {
+      "key": "panaeolus-papilionaceus",
+      "scientific_name": "Panaeolus papilionaceus",
+      "genus": "Panaeolus",
+      "common_names": [
+        "Petticoat Mottlegill"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "panaeolina-foenisecii",
+        "panaeolus-acuminatus",
+        "stropharia-semiglobata",
+        "psilocybe-semilanceata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "spore_print_colour",
+        "gill_colour",
+        "cap_margin"
+      ],
+      "notes": "Grey bell cap hung with white veil fragments round the rim, on dung and rich pasture. Black mottled gills.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "substrate": [
+          "Dung",
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "Black"
+        ],
+        "gill_colour": [
+          "Chocolate or black"
+        ],
+        "cap_margin": [
+          "Shaggy or woolly"
+        ]
+      }
+    },
+    {
+      "key": "panellus-stipticus",
+      "scientific_name": "Panellus stipticus",
+      "genus": "Panellus",
+      "common_names": [
+        "Bitter Oysterling"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "crepidotus-mollis",
+        "pleurotus-ostreatus",
+        "omphalotus-illudens"
+      ],
+      "diagnostic_characters": [
+        "stipe_presence",
+        "substrate",
+        "growth_form",
+        "cap_colour",
+        "hymenium_type",
+        "taste",
+        "habitat"
+      ],
+      "notes": "Small tan kidney-shaped brackets in tiers on oak stumps, with crowded gills and a fiercely astringent taste. Faintly luminous in the dark.",
+      "character_states": {
+        "stipe_presence": [
+          "Stem at the side"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "cap_colour": [
+          "Brown",
+          "White or cream"
+        ],
+        "hymenium_type": [
+          "Gills"
+        ],
+        "taste": [
+          "Bitter"
+        ],
+        "habitat": [
+          "Oak"
+        ]
+      }
+    },
+    {
+      "key": "paralepista-flaccida",
+      "scientific_name": "Paralepista flaccida",
+      "genus": "Paralepista",
+      "common_names": [
+        "Tawny Funnel"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-nebularis",
+        "infundibulicybe-gibba",
+        "clitocybe-rivulosa",
+        "hygrophoropsis-aurantiaca"
+      ],
+      "diagnostic_characters": [
+        "cap_shape",
+        "cap_colour",
+        "gill_attachment",
+        "spore_print_colour",
+        "substrate",
+        "growth_form"
+      ],
+      "notes": "Tawny-orange funnel with crowded gills running well down the stem, in troops and rings in conifer and broadleaf litter.",
+      "internal_note": "Older references call it Lepista flaccida.",
+      "character_states": {
+        "cap_shape": [
+          "Funnel-shaped"
+        ],
+        "cap_colour": [
+          "Orange",
+          "Brown"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "growth_form": [
+          "In a ring",
+          "In a tight cluster"
+        ]
+      }
+    },
+    {
+      "key": "parasola-plicatilis",
+      "scientific_name": "Parasola plicatilis",
+      "genus": "Parasola",
+      "common_names": [
+        "Pleated Inkcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "coprinellus-disseminatus",
+        "coprinopsis-lagopus",
+        "panaeolina-foenisecii"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "size",
+        "spore_print_colour",
+        "cap_surface",
+        "texture"
+      ],
+      "notes": "A pleated grey parasol the size of a fingernail that opens at dawn on lawns and has collapsed by midday.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "spore_print_colour": [
+          "Black"
+        ],
+        "cap_surface": [
+          "Smooth and dry"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ]
+      }
+    },
+    {
       "key": "paxillus-involutus",
       "scientific_name": "Paxillus involutus",
       "genus": "Paxillus",
@@ -2933,6 +6973,47 @@
         "spore_print_colour": [
           "Rust or cinnamon brown",
           "Chocolate or purple-brown"
+        ]
+      }
+    },
+    {
+      "key": "peniophora-quercina",
+      "scientific_name": "Peniophora quercina",
+      "genus": "Peniophora",
+      "common_names": [
+        "Oak Curtain Crust"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "cap_colour",
+        "habitat"
+      ],
+      "notes": "Lilac-grey waxy crust on fallen oak twigs, curling away from the bark at the edges when dry.",
+      "character_states": {
+        "growth_form": [
+          "Scattered"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "cap_colour": [
+          "Purple",
+          "Grey"
+        ],
+        "habitat": [
+          "Oak"
         ]
       }
     },
@@ -2972,6 +7053,121 @@
         "cap_surface": [
           "Slimy or greasy",
           "Pitted or honeycombed"
+        ]
+      }
+    },
+    {
+      "key": "phlebia-radiata",
+      "scientific_name": "Phlebia radiata",
+      "genus": "Phlebia",
+      "common_names": [
+        "Wrinkled Crust"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "cap_colour"
+      ],
+      "notes": "Orange to violet-pink waxy crust on dead broadleaf wood, radially wrinkled with a paler fringed edge.",
+      "character_states": {
+        "growth_form": [
+          "Scattered"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "cap_colour": [
+          "Orange",
+          "Purple"
+        ]
+      }
+    },
+    {
+      "key": "phlebia-tremellosa",
+      "scientific_name": "Phlebia tremellosa",
+      "genus": "Phlebia",
+      "common_names": [
+        "Jelly Rot"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "phlebia-radiata"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "cap_colour"
+      ],
+      "notes": "Soft gelatinous white-to-orange sheets with a folded, veined underside, peeling back into small brackets.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "cap_colour": [
+          "White or cream",
+          "Orange"
+        ]
+      }
+    },
+    {
+      "key": "phloeomana-speirea",
+      "scientific_name": "Phloeomana speirea",
+      "genus": "Phloeomana",
+      "common_names": [
+        "Bark Bonnet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "size",
+        "spore_print_colour",
+        "gill_attachment"
+      ],
+      "notes": "Tiny whitish bonnet on fallen twigs and bark, the gills running a little down the stem.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream",
+          "Grey"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
         ]
       }
     },
@@ -3127,6 +7323,383 @@
       }
     },
     {
+      "key": "pluteus-salicinus",
+      "scientific_name": "Pluteus salicinus",
+      "genus": "Pluteus",
+      "common_names": [
+        "Willow Shield"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "pluteus-cervinus",
+        "entoloma-sinuatum",
+        "amanita-phalloides"
+      ],
+      "diagnostic_characters": [
+        "gill_attachment",
+        "gill_colour",
+        "spore_print_colour",
+        "substrate",
+        "cap_colour",
+        "volva",
+        "bruising_reaction"
+      ],
+      "notes": "Grey-green shield on wet willow and alder wood, the stem base bruising blue-green. Free pink gills and a pink print, as the deer shield has.",
+      "character_states": {
+        "gill_attachment": [
+          "Free, not touching the stem"
+        ],
+        "gill_colour": [
+          "White",
+          "Pink"
+        ],
+        "spore_print_colour": [
+          "Pink"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "cap_colour": [
+          "Grey",
+          "Olive or greenish"
+        ],
+        "volva": [
+          "Neither"
+        ],
+        "bruising_reaction": [
+          "Blue"
+        ]
+      }
+    },
+    {
+      "key": "polyporus-leptocephalus",
+      "scientific_name": "Polyporus leptocephalus",
+      "genus": "Polyporus",
+      "common_names": [
+        "Blackfoot Polypore"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "cerioporus-squamosus",
+        "trametes-versicolor"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "pore_colour",
+        "cap_colour",
+        "stipe_presence"
+      ],
+      "notes": "Smooth tan cap on a short stem that is jet black at the base, on fallen broadleaf branches.",
+      "internal_note": "Older references call it Polyporus varius.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "pore_colour": [
+          "White or cream"
+        ],
+        "cap_colour": [
+          "Brown",
+          "Yellow"
+        ],
+        "stipe_presence": [
+          "Off-centre stem",
+          "Stem at the side"
+        ]
+      }
+    },
+    {
+      "key": "postia-caesia",
+      "scientific_name": "Postia caesia",
+      "genus": "Postia",
+      "common_names": [
+        "Conifer Blueing Bracket"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "trametes-versicolor"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "pore_colour",
+        "bruising_reaction",
+        "habitat"
+      ],
+      "notes": "Small soft white bracket on conifer wood that stains blue-grey where handled or with age.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "pore_colour": [
+          "White or cream"
+        ],
+        "bruising_reaction": [
+          "Blue"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ]
+      }
+    },
+    {
+      "key": "psathyrella-candolleana",
+      "scientific_name": "Psathyrella candolleana",
+      "genus": "Psathyrella",
+      "common_names": [
+        "Pale Brittlestem"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata",
+        "psathyrella-piluliformis",
+        "hypholoma-fasciculare",
+        "coprinellus-micaceus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "growth_form",
+        "texture",
+        "spore_print_colour",
+        "cap_margin"
+      ],
+      "notes": "Pale honey cap fading to near white, fringed with veil scraps, in clusters over buried wood on verges and lawns. Very fragile.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream",
+          "Brown"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "Soil or leaf litter"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ],
+        "spore_print_colour": [
+          "Chocolate or purple-brown"
+        ],
+        "cap_margin": [
+          "Shaggy or woolly"
+        ]
+      }
+    },
+    {
+      "key": "psathyrella-corrugis",
+      "scientific_name": "Psathyrella corrugis",
+      "genus": "Psathyrella",
+      "common_names": [
+        "Red Edge Brittlestem"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "psathyrella-candolleana",
+        "psathyrella-piluliformis",
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "spore_print_colour",
+        "texture",
+        "gill_colour"
+      ],
+      "notes": "Very fragile tall-stemmed brittlestem, the gills edged pink-red, in litter and among nettles.",
+      "character_states": {
+        "cap_colour": [
+          "Brown",
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "Chocolate or purple-brown"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ],
+        "gill_colour": [
+          "Pink",
+          "Chocolate or black"
+        ]
+      }
+    },
+    {
+      "key": "psathyrella-piluliformis",
+      "scientific_name": "Psathyrella piluliformis",
+      "genus": "Psathyrella",
+      "common_names": [
+        "Common Stump Brittlestem"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata",
+        "psathyrella-candolleana",
+        "hypholoma-fasciculare",
+        "kuehneromyces-mutabilis"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "growth_form",
+        "texture",
+        "spore_print_colour"
+      ],
+      "notes": "Dense tufts of date-brown caps drying to buff, on broadleaf stumps. Shares its stump with the funeral bell; the dark purple-brown print and the absence of a ring are the separation.",
+      "character_states": {
+        "cap_colour": [
+          "Brown"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ],
+        "spore_print_colour": [
+          "Chocolate or purple-brown"
+        ]
+      }
+    },
+    {
+      "key": "pseudosperma-rimosum",
+      "scientific_name": "Pseudosperma rimosum",
+      "genus": "Pseudosperma",
+      "common_names": [
+        "Split Fibrecap"
+      ],
+      "toxicity": "SERIOUS",
+      "gbif_key": null,
+      "lookalikes": [
+        "inocybe-erubescens",
+        "inocybe-geophylla",
+        "inocybe-lilacina",
+        "hebeloma-crustuliniforme",
+        "agaricus-campestris",
+        "marasmius-oreades"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_surface",
+        "cap_shape",
+        "spore_print_colour",
+        "smell",
+        "gill_colour"
+      ],
+      "notes": "Straw to tan conical cap splitting radially from the rim inwards, with a brown spore print and an earthy smell. One of the more dangerous muscarine fibrecaps, and it fruits on woodland paths and verges where people look.",
+      "internal_note": "Long known as Inocybe rimosa, and reference books still use that name. SERIOUS for the same reason as the rest of the muscarine fibrecaps; state lists are generous accordingly.",
+      "character_states": {
+        "cap_colour": [
+          "Yellow",
+          "Brown",
+          "White or cream"
+        ],
+        "cap_surface": [
+          "Fibrous"
+        ],
+        "cap_shape": [
+          "Conical",
+          "Domed"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
+        ],
+        "smell": [
+          "Raw potato or earthy"
+        ],
+        "gill_colour": [
+          "White",
+          "Brown",
+          "Grey"
+        ]
+      }
+    },
+    {
+      "key": "psilocybe-semilanceata",
+      "scientific_name": "Psilocybe semilanceata",
+      "genus": "Psilocybe",
+      "common_names": [
+        "Liberty Cap"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "panaeolina-foenisecii",
+        "panaeolus-acuminatus",
+        "galerina-marginata",
+        "marasmius-oreades"
+      ],
+      "diagnostic_characters": [
+        "cap_shape",
+        "cap_colour",
+        "cap_surface",
+        "substrate",
+        "spore_print_colour",
+        "bruising_reaction"
+      ],
+      "notes": "Sharply conical cap with a distinct nipple and a separable gelatinous skin, in unimproved grassland. Bruises blue-green at the stem base.",
+      "internal_note": "Possession and picking are controlled in the UK. It is here because it is common and because the small brown mushrooms it is confused with include Galerina marginata.",
+      "character_states": {
+        "cap_shape": [
+          "Conical"
+        ],
+        "cap_colour": [
+          "Brown",
+          "White or cream"
+        ],
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "Chocolate or purple-brown"
+        ],
+        "bruising_reaction": [
+          "Blue"
+        ]
+      }
+    },
+    {
       "key": "rhodocollybia-butyracea",
       "scientific_name": "Rhodocollybia butyracea",
       "genus": "Rhodocollybia",
@@ -3166,6 +7739,88 @@
         ],
         "substrate": [
           "Soil or leaf litter"
+        ]
+      }
+    },
+    {
+      "key": "rhodocollybia-maculata",
+      "scientific_name": "Rhodocollybia maculata",
+      "genus": "Rhodocollybia",
+      "common_names": [
+        "Spotted Toughshank"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "rhodocollybia-butyracea",
+        "gymnopus-dryophilus",
+        "clitocybe-nebularis"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "bruising_reaction",
+        "spore_print_colour",
+        "substrate",
+        "gill_spacing",
+        "taste"
+      ],
+      "notes": "White cap and stem freckling all over with rust-red spots, crowded gills, bitter. Conifer litter and heath.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream"
+        ],
+        "bruising_reaction": [
+          "Brown",
+          "Red or pink"
+        ],
+        "spore_print_colour": [
+          "Pink"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "gill_spacing": [
+          "Crowded"
+        ],
+        "taste": [
+          "Bitter"
+        ]
+      }
+    },
+    {
+      "key": "rickenella-fibula",
+      "scientific_name": "Rickenella fibula",
+      "genus": "Rickenella",
+      "common_names": [
+        "Orange Mosscap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "size",
+        "gill_attachment",
+        "spore_print_colour"
+      ],
+      "notes": "Pinhead orange cap on a thread stem, always among moss, with gills running far down the stem.",
+      "character_states": {
+        "cap_colour": [
+          "Orange",
+          "Yellow"
+        ],
+        "substrate": [
+          "Moss"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "spore_print_colour": [
+          "White or cream"
         ]
       }
     },
@@ -3238,6 +7893,48 @@
       }
     },
     {
+      "key": "russula-betularum",
+      "scientific_name": "Russula betularum",
+      "genus": "Russula",
+      "common_names": [
+        "Birch Brittlegill"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "russula-cyanoxantha",
+        "russula-emetica",
+        "russula-nobilis",
+        "russula-ochroleuca"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "spore_print_colour",
+        "habitat",
+        "taste"
+      ],
+      "notes": "Very pale pink-white fragile brittlegill of wet birch ground; the cap skin peels almost to the centre. Hot.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream",
+          "Purple"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Birch"
+        ],
+        "taste": [
+          "Burning or peppery"
+        ]
+      }
+    },
+    {
       "key": "russula-cyanoxantha",
       "scientific_name": "Russula cyanoxantha",
       "genus": "Russula",
@@ -3300,6 +7997,94 @@
         ],
         "cap_cuticle": [
           "Peels easily, most of the way"
+        ]
+      }
+    },
+    {
+      "key": "russula-fellea",
+      "scientific_name": "Russula fellea",
+      "genus": "Russula",
+      "common_names": [
+        "Geranium Brittlegill"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "russula-cyanoxantha",
+        "russula-emetica",
+        "russula-nobilis",
+        "russula-ochroleuca"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "spore_print_colour",
+        "habitat",
+        "smell",
+        "taste"
+      ],
+      "notes": "Uniformly honey-straw cap, gills and stem, smelling of stewed apple or geranium. Beech. Very hot.",
+      "character_states": {
+        "cap_colour": [
+          "Yellow",
+          "Brown"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Beech"
+        ],
+        "smell": [
+          "Apricot or fruity"
+        ],
+        "taste": [
+          "Burning or peppery"
+        ]
+      }
+    },
+    {
+      "key": "russula-fragilis",
+      "scientific_name": "Russula fragilis",
+      "genus": "Russula",
+      "common_names": [
+        "Fragile Brittlegill"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "russula-cyanoxantha",
+        "russula-emetica",
+        "russula-nobilis",
+        "russula-ochroleuca"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "spore_print_colour",
+        "taste",
+        "substrate"
+      ],
+      "notes": "Small, very brittle purple-and-olive mottled cap with a finely toothed gill edge. Hot.",
+      "character_states": {
+        "cap_colour": [
+          "Purple",
+          "Red"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "taste": [
+          "Burning or peppery"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
         ]
       }
     },
@@ -3412,6 +8197,49 @@
       }
     },
     {
+      "key": "russula-vesca",
+      "scientific_name": "Russula vesca",
+      "genus": "Russula",
+      "common_names": [
+        "The Flirt"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "russula-cyanoxantha",
+        "russula-emetica",
+        "russula-nobilis",
+        "russula-ochroleuca"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "spore_print_colour",
+        "taste",
+        "habitat"
+      ],
+      "notes": "Dull wine-buff cap whose skin falls short of the rim, leaving a pale band of gills showing at the edge. Mild.",
+      "character_states": {
+        "cap_colour": [
+          "Red",
+          "Brown"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "taste": [
+          "Mild"
+        ],
+        "habitat": [
+          "Oak",
+          "Beech"
+        ]
+      }
+    },
+    {
       "key": "sarcoscypha-austriaca",
       "scientific_name": "Sarcoscypha austriaca",
       "genus": "Sarcoscypha",
@@ -3449,6 +8277,42 @@
       }
     },
     {
+      "key": "schizopora-paradoxa",
+      "scientific_name": "Schizopora paradoxa",
+      "genus": "Schizopora",
+      "common_names": [
+        "Split Porecrust"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "pore_colour"
+      ],
+      "notes": "White to cream crust spread flat over the underside of dead branches, the pores torn into irregular teeth and slots.",
+      "character_states": {
+        "growth_form": [
+          "Scattered"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "pore_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
       "key": "scleroderma-citrinum",
       "scientific_name": "Scleroderma citrinum",
       "genus": "Scleroderma",
@@ -3477,6 +8341,94 @@
       }
     },
     {
+      "key": "scleroderma-verrucosum",
+      "scientific_name": "Scleroderma verrucosum",
+      "genus": "Scleroderma",
+      "common_names": [
+        "Scaly Earthball"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "scleroderma-citrinum",
+        "lycoperdon-perlatum",
+        "amanita-virosa",
+        "calvatia-gigantea"
+      ],
+      "diagnostic_characters": [
+        "interior_structure",
+        "cap_surface",
+        "cap_colour",
+        "substrate",
+        "hymenium_type",
+        "stipe_base"
+      ],
+      "notes": "Brown scurfy earthball on a distinct stalk, the inside solid purple-black from early on. Thin-skinned for an earthball, which makes the cut the check that matters: a puffball is pure white inside.",
+      "character_states": {
+        "interior_structure": [
+          "Solid and dark"
+        ],
+        "cap_surface": [
+          "Scaly"
+        ],
+        "cap_colour": [
+          "Brown"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "stipe_base": [
+          "Rooting deeply"
+        ]
+      }
+    },
+    {
+      "key": "scutellinia-scutellata",
+      "scientific_name": "Scutellinia scutellata",
+      "genus": "Scutellinia",
+      "common_names": [
+        "Common Eyelash"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "sarcoscypha-austriaca"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "cap_colour",
+        "size",
+        "cap_shape",
+        "cap_margin"
+      ],
+      "notes": "Tiny scarlet discs on wet rotten wood, rimmed with stiff black hairs like eyelashes.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "cap_colour": [
+          "Red",
+          "Orange"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "cap_shape": [
+          "Flat"
+        ],
+        "cap_margin": [
+          "Shaggy or woolly"
+        ]
+      }
+    },
+    {
       "key": "sparassis-crispa",
       "scientific_name": "Sparassis crispa",
       "genus": "Sparassis",
@@ -3499,6 +8451,49 @@
         "substrate": [
           "A living tree",
           "Dead wood or a stump"
+        ]
+      }
+    },
+    {
+      "key": "stereum-gausapatum",
+      "scientific_name": "Stereum gausapatum",
+      "genus": "Stereum",
+      "common_names": [
+        "Bleeding Oak Crust"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "stereum-rugosum",
+        "stereum-hirsutum"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "bruising_reaction",
+        "habitat"
+      ],
+      "notes": "Bleeds red like S. rugosum but forms wavy bracket edges and is on oak.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "bruising_reaction": [
+          "Red or pink"
+        ],
+        "habitat": [
+          "Oak"
         ]
       }
     },
@@ -3542,6 +8537,139 @@
       }
     },
     {
+      "key": "stereum-rugosum",
+      "scientific_name": "Stereum rugosum",
+      "genus": "Stereum",
+      "common_names": [
+        "Bleeding Broadleaf Crust"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "stereum-hirsutum",
+        "trametes-versicolor"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "bruising_reaction",
+        "cap_colour"
+      ],
+      "notes": "Thick pale crust on dead hazel and birch that bleeds red when scratched while fresh.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "bruising_reaction": [
+          "Red or pink"
+        ],
+        "cap_colour": [
+          "White or cream",
+          "Brown"
+        ]
+      }
+    },
+    {
+      "key": "stropharia-semiglobata",
+      "scientific_name": "Stropharia semiglobata",
+      "genus": "Stropharia",
+      "common_names": [
+        "Dung Roundhead"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "panaeolus-papilionaceus",
+        "bolbitius-titubans",
+        "psilocybe-semilanceata"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_surface",
+        "cap_shape",
+        "substrate",
+        "spore_print_colour",
+        "ring"
+      ],
+      "notes": "Half-sphere of pale yellow slime on a long slender stem, straight out of dung. Dark mottled gills.",
+      "character_states": {
+        "cap_colour": [
+          "Yellow"
+        ],
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "cap_shape": [
+          "Domed"
+        ],
+        "substrate": [
+          "Dung",
+          "Grass or lawn"
+        ],
+        "spore_print_colour": [
+          "Chocolate or purple-brown"
+        ],
+        "ring": [
+          "Faint zone only"
+        ]
+      }
+    },
+    {
+      "key": "suillus-bovinus",
+      "scientific_name": "Suillus bovinus",
+      "genus": "Suillus",
+      "common_names": [
+        "Bovine Bolete"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "suillus-luteus",
+        "suillus-granulatus",
+        "suillus-grevillei",
+        "boletus-edulis",
+        "neoboletus-luridiformis"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "cap_colour",
+        "pore_colour",
+        "ring",
+        "habitat"
+      ],
+      "notes": "Dull buff-pink greasy cap with wide compound olive pores and no ring, under pine.",
+      "character_states": {
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "cap_colour": [
+          "Orange",
+          "Brown"
+        ],
+        "pore_colour": [
+          "Olive",
+          "Yellow"
+        ],
+        "ring": [
+          "No ring"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ]
+      }
+    },
+    {
       "key": "suillus-granulatus",
       "scientific_name": "Suillus granulatus",
       "genus": "Suillus",
@@ -3573,6 +8701,49 @@
       }
     },
     {
+      "key": "suillus-grevillei",
+      "scientific_name": "Suillus grevillei",
+      "genus": "Suillus",
+      "common_names": [
+        "Larch Bolete"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "suillus-luteus",
+        "suillus-granulatus",
+        "suillus-bovinus",
+        "boletus-edulis",
+        "neoboletus-luridiformis"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "cap_colour",
+        "pore_colour",
+        "ring",
+        "habitat"
+      ],
+      "notes": "Glossy golden slimy cap with yellow pores and a ring on the stem, always under larch.",
+      "character_states": {
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "cap_colour": [
+          "Yellow",
+          "Orange"
+        ],
+        "pore_colour": [
+          "Yellow"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ]
+      }
+    },
+    {
       "key": "suillus-luteus",
       "scientific_name": "Suillus luteus",
       "genus": "Suillus",
@@ -3600,6 +8771,50 @@
         "pore_colour": [
           "Yellow",
           "White or cream"
+        ]
+      }
+    },
+    {
+      "key": "trametes-gibbosa",
+      "scientific_name": "Trametes gibbosa",
+      "genus": "Trametes",
+      "common_names": [
+        "Lumpy Bracket"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "trametes-versicolor",
+        "daedaleopsis-confragosa"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "pore_colour",
+        "cap_colour"
+      ],
+      "notes": "Thick white bracket, often greened by algae, with pores stretched into radial slots. Beech stumps.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "pore_colour": [
+          "White or cream"
+        ],
+        "cap_colour": [
+          "White or cream",
+          "Grey"
         ]
       }
     },
@@ -3687,6 +8902,54 @@
       }
     },
     {
+      "key": "trichaptum-abietinum",
+      "scientific_name": "Trichaptum abietinum",
+      "genus": "Trichaptum",
+      "common_names": [
+        "Purplepore Bracket"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "trametes-versicolor",
+        "bjerkandera-adusta"
+      ],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "pore_colour",
+        "cap_colour",
+        "habitat"
+      ],
+      "notes": "Small thin brackets in ranks along fallen conifer logs, violet on the pore surface while fresh.",
+      "character_states": {
+        "growth_form": [
+          "As a bracket"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Pores"
+        ],
+        "pore_colour": [
+          "White or cream"
+        ],
+        "cap_colour": [
+          "Purple",
+          "Grey"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ]
+      }
+    },
+    {
       "key": "tricholoma-equestre",
       "scientific_name": "Tricholoma equestre",
       "genus": "Tricholoma",
@@ -3719,6 +8982,52 @@
         ],
         "habitat": [
           "Pine or spruce"
+        ]
+      }
+    },
+    {
+      "key": "tricholoma-fulvum",
+      "scientific_name": "Tricholoma fulvum",
+      "genus": "Tricholoma",
+      "common_names": [
+        "Birch Knight"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "tricholoma-equestre",
+        "tricholoma-pardinum",
+        "hebeloma-crustuliniforme"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_surface",
+        "gill_colour",
+        "spore_print_colour",
+        "habitat",
+        "flesh_colour"
+      ],
+      "notes": "Slimy red-brown streaked cap with yellow gills that spot rusty, and yellow flesh in the stem. Always with birch.",
+      "character_states": {
+        "cap_colour": [
+          "Brown",
+          "Orange"
+        ],
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "gill_colour": [
+          "Yellow or green",
+          "White"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Birch"
+        ],
+        "flesh_colour": [
+          "Yellow"
         ]
       }
     },
@@ -3761,6 +9070,93 @@
         "habitat": [
           "Beech",
           "Mixed broadleaf"
+        ]
+      }
+    },
+    {
+      "key": "tricholomopsis-rutilans",
+      "scientific_name": "Tricholomopsis rutilans",
+      "genus": "Tricholomopsis",
+      "common_names": [
+        "Plums and Custard"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "tricholoma-equestre",
+        "gymnopilus-penetrans",
+        "armillaria-mellea"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "cap_colour",
+        "gill_colour",
+        "substrate",
+        "spore_print_colour",
+        "habitat"
+      ],
+      "notes": "Yellow cap densely covered in purple-red woolly scales, with bright yellow gills, on conifer stumps.",
+      "character_states": {
+        "cap_surface": [
+          "Scaly"
+        ],
+        "cap_colour": [
+          "Purple",
+          "Red"
+        ],
+        "gill_colour": [
+          "Yellow or green"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ]
+      }
+    },
+    {
+      "key": "tubaria-furfuracea",
+      "scientific_name": "Tubaria furfuracea",
+      "genus": "Tubaria",
+      "common_names": [
+        "Scurfy Twiglet"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata",
+        "kuehneromyces-mutabilis",
+        "psathyrella-candolleana"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "spore_print_colour",
+        "cap_margin",
+        "gill_attachment"
+      ],
+      "notes": "Small tan cap fringed with white veil scurf, on woodchip and buried twigs through the winter. Rust-brown print, as the funeral bell has.",
+      "character_states": {
+        "cap_colour": [
+          "Brown",
+          "Orange"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "Soil or leaf litter"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
+        ],
+        "cap_margin": [
+          "Shaggy or woolly"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
         ]
       }
     },
@@ -3865,6 +9261,46 @@
       }
     },
     {
+      "key": "vuilleminia-comedens",
+      "scientific_name": "Vuilleminia comedens",
+      "genus": "Vuilleminia",
+      "common_names": [
+        "Waxy Crust"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "cap_colour",
+        "habitat"
+      ],
+      "notes": "Waxy greyish crust that develops under the bark of dead attached oak branches and rolls it back as it grows.",
+      "character_states": {
+        "growth_form": [
+          "Scattered"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "cap_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Oak"
+        ]
+      }
+    },
+    {
       "key": "xerocomellus-chrysenteron",
       "scientific_name": "Xerocomellus chrysenteron",
       "genus": "Xerocomellus",
@@ -3908,6 +9344,90 @@
       }
     },
     {
+      "key": "xerocomus-subtomentosus",
+      "scientific_name": "Xerocomus subtomentosus",
+      "genus": "Xerocomus",
+      "common_names": [
+        "Suede Bolete"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "boletus-edulis",
+        "neoboletus-luridiformis",
+        "rubroboletus-satanas",
+        "imleria-badia",
+        "tylopilus-felleus",
+        "xerocomellus-chrysenteron"
+      ],
+      "diagnostic_characters": [
+        "cap_surface",
+        "cap_colour",
+        "pore_colour",
+        "bruising_reaction",
+        "stipe_surface"
+      ],
+      "notes": "Dry suede-textured olive-brown cap with wide bright yellow pores and a ribbed stem.",
+      "character_states": {
+        "cap_surface": [
+          "Velvety"
+        ],
+        "cap_colour": [
+          "Brown",
+          "Olive or greenish"
+        ],
+        "pore_colour": [
+          "Yellow"
+        ],
+        "bruising_reaction": [
+          "Blue",
+          "No change"
+        ],
+        "stipe_surface": [
+          "Netted or with a raised mesh",
+          "Fibrous"
+        ]
+      }
+    },
+    {
+      "key": "xylaria-carpophila",
+      "scientific_name": "Xylaria carpophila",
+      "genus": "Xylaria",
+      "common_names": [
+        "Beechmast Candlesnuff"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "xylaria-hypoxylon"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "texture",
+        "size",
+        "habitat"
+      ],
+      "notes": "Thread-thin black-and-white candlesnuff growing only from buried beech mast husks.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "habitat": [
+          "Beech"
+        ]
+      }
+    },
+    {
       "key": "xylaria-hypoxylon",
       "scientific_name": "Xylaria hypoxylon",
       "genus": "Xylaria",
@@ -3943,6 +9463,89 @@
         ],
         "stipe_presence": [
           "Central stem"
+        ]
+      }
+    },
+    {
+      "key": "xylaria-polymorpha",
+      "scientific_name": "Xylaria polymorpha",
+      "genus": "Xylaria",
+      "common_names": [
+        "Dead Man's Fingers"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "xylaria-hypoxylon",
+        "kretzschmaria-deusta"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "texture",
+        "cap_colour",
+        "growth_form",
+        "cap_shape"
+      ],
+      "notes": "Swollen black club-shaped fingers in small groups from buried wood and stumps, white inside.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "cap_colour": [
+          "Grey"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "cap_shape": [
+          "Cylindrical"
+        ]
+      }
+    },
+    {
+      "key": "xylodon-sambuci",
+      "scientific_name": "Xylodon sambuci",
+      "genus": "Xylodon",
+      "common_names": [
+        "Elder Whitewash"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [],
+      "diagnostic_characters": [
+        "growth_form",
+        "substrate",
+        "texture",
+        "hymenium_type",
+        "cap_colour",
+        "habitat"
+      ],
+      "notes": "Chalk-white flat crust painted over living elder bark, cracking as it dries. Unmistakable on its host and hard to place off it.",
+      "character_states": {
+        "growth_form": [
+          "Scattered"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "cap_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Mixed broadleaf"
         ]
       }
     }

@@ -19,7 +19,7 @@ Betula pendula,18916
 Stereum hirsutum,17481
 Xylaria hypoxylon,16684
 Picea,15677
-Laccaria laccata,15266
+Laccaria laccata,15296
 Fomitopsis betulina,13844
 Gymnospermae,13170
 Russula ochroleuca,12460
@@ -36,6 +36,7 @@ Coprinellus micaceus,9872
 Rhytisma acerinum,9640
 Rhodocollybia butyracea,9499
 Cuphophyllus virgineus,9437
+Armillaria mellea,9109
 Lycoperdon perlatum,8930
 Sambucus nigra,8898
 Daldinia concentrica,8826
@@ -49,14 +50,13 @@ Picea abies,8148
 Nectria cinnabarina,8013
 Clitocybe nebularis,7857
 Bjerkandera adusta,7718
-Dacrymyces stillatus,7622
+Dacrymyces stillatus,7627
 Pteridium aquilinum,7340
 Phallus impudicus,7296
 Cuphophyllus pratensis,7271
 Xerocomellus chrysenteron,7238
 Hygrocybe conica,7093
 Mycena pura,7060
-Armillaria mellea,6858
 Lactarius quietus,6765
 Gliophorus psittacinus,6746
 Laccaria amethystina,6729
@@ -72,7 +72,7 @@ Russula cyanoxantha,6328
 Fraxinus,6254
 Ilex aquifolium,6235
 Phragmidium violaceum,6230
-Tubaria furfuracea,6089
+Tubaria furfuracea,6092
 Calocera viscosa,6068
 Bryophyta,6063
 Schizopora paradoxa,6018
@@ -107,13 +107,13 @@ Tricholomopsis rutilans,4888
 Alnus,4855
 Flammulina velutipes,4847
 Bolbitius titubans,4801
+Crepidotus variabilis,4782
 Lactarius blennius,4778
 Castanea sativa,4763
 Erysiphe alphitoides,4761
 Polyporus squamosus,4755
 Heterobasidion annosum,4707
 Coprinus comatus,4699
-Crepidotus variabilis,4682
 Cystoderma amianthinum,4649
 Psathyrella candolleana,4566
 Diatrype stigma,4565
@@ -149,10 +149,10 @@ Mucidula mucida,3943
 Diatrype disciformis,3930
 Clavulinopsis helvola,3928
 Ficaria verna,3912
-Hebeloma crustuliniforme s. lat.,3890
+Hebeloma crustuliniforme,3890
 Chondrostereum purpureum,3877
 Clavulina coralloides,3860
-Ascocoryne sarcoides,3807
+Ascocoryne sarcoides,3819
 Mycena filopes,3762
 Heracleum sphondylium,3734
 Acer,3696
@@ -205,11 +205,11 @@ Fuligo septica,3005
 Megacollybia platyphylla,2976
 Xerocomus subtomentosus,2975
 Meripilus giganteus,2966
+Ganoderma applanatum,2947
 Bryopsida,2943
 Agaricus campestris,2941
 Phlebia radiata,2933
 Peniophora quercina,2912
-Ganoderma applanatum,2908
 Russula vesca,2904
 Inocybe lilacina,2883
 Hygrocybe quieta,2868
@@ -220,13 +220,13 @@ Pholiota squarrosa,2825
 Neoboletus praestigiator,2812
 Panaeolina foenisecii,2806
 Hypomyces chrysospermus,2796
-Coleosporium tussilaginis s. lat.,2785
+Coleosporium tussilaginis,2791
 Hygrocybe punicea,2764
 Hygrocybe reidii,2764
 Mycena tenerrima,2763
 Populus,2757
 Salix caprea,2751
-Exidia nucleata,2731
+Exidia nucleata,2736
 Gymnopus androsaceus,2704
 Helvella crispa,2684
 Exidia thuretiana,2678
@@ -238,6 +238,8 @@ Carpinus betulus,2610
 Crepidotus cesatii,2610
 Lactarius torminosus,2606
 Bulgaria inquinans,2605
+Hedera helix,2601
+Lycogala epidendrum,2595
 Aesculus hippocastanum,2592
 Chalciporus piperatus,2578
 Phlebia tremellosa,2577
@@ -248,14 +250,14 @@ Clavulina cinerea,2501
 Fuscoporia ferrea,2465
 Pluteus salicinus,2462
 Gliophorus laetus,2457
+Pseudosperma rimosum,2456
 Calocybe gambosa,2451
 Postia caesia,2445
 Mycena rosea,2440
-Lycogala epidendrum,2436
 Agaricus sylvaticus,2429
+Amanita excelsa,2425
 Panellus stipticus,2412
 Leotia lubrica,2409
-Amanita excelsa,2404
 Ramularia rubella,2394
 Acer campestre,2385
 Oryctolagus cuniculus,2374
@@ -269,13 +271,12 @@ Gliophorus irrigatus,2327
 Infundibulicybe geotropa,2323
 Lycoperdon excipuliforme,2322
 Panaeolus acuminatus,2320
+Scutellinia scutellata,2319
 Cirsium arvense,2315
 Suillus bovinus,2291
 Filipendula ulmaria,2279
-Scutellinia scutellata,2275
 Lactarius pyrogalus,2269
 Vuilleminia comedens,2260
-Armillaria mellea s. lat.,2251
 Rumex obtusifolius,2250
 Corylus,2227
 Datronia mollis,2225
@@ -343,7 +344,6 @@ Agaricus sylvicola,1818
 Puccinia coronata,1810
 Cuphophyllus russocoriaceus,1806
 Melampsoridium betulinum,1798
-Hedera helix sens. lat.,1793
 Lactifluus vellereus,1789
 Larix decidua,1782
 Inonotus hispidus,1780
@@ -361,7 +361,6 @@ Lactarius deliciosus,1749
 Lactarius pubescens,1738
 Baeospora myosura,1728
 Helvella lacunosa,1719
-Pseudosperma rimosum,1716
 Stropharia aeruginosa,1708
 Lyophyllum decastes,1689
 Thelephora terrestris,1685
@@ -404,11 +403,12 @@ Agaricus xanthodermus,1513
 Orbilia xanthostigma,1497
 Phacidium lauri,1476
 Clavulinopsis fusiformis,1472
-Galerina hypnorum,1471
+Galerina hypnorum,1472
 Suillus variegatus,1471
 Clavulinopsis luteoalba,1467
 Plantago major,1464
 Entyloma ficariae,1460
+Hebeloma sacchariolens,1460
 Entoloma sericellum,1453
 Puccinia violae,1451
 Lichenomphalia ericetorum,1445
@@ -417,7 +417,6 @@ Xanthoria parietina,1443
 Pleurotus cornucopiae,1442
 Lactarius deterrimus,1440
 Ulex,1433
-Hebeloma sacchariolens,1425
 Polydesmia pruinosa,1419
 Cortinarius anomalus,1408
 Gymnopus erythropus,1408
@@ -493,7 +492,7 @@ Lactarius aurantiacus,1154
 Rumex,1153
 Russula puellaris,1148
 Macrotyphula fistulosa,1145
-Puccinia urticata s. lat.,1145
+Puccinia urticata,1145
 Russula caerulea,1142
 Melanoleuca melaleuca,1140
 Polyporus tuberaster,1139
@@ -516,6 +515,7 @@ Russula heterophylla,1089
 Lycoperdon utriforme,1088
 Puccinia lapsanae,1088
 Erysiphe aquilegiae,1086
+Puccinia caricina,1082
 Tubifera ferruginosa,1082
 Laurus nobilis,1078
 Clitocybe phyllophila,1074
@@ -592,7 +592,6 @@ Calyptella capula,924
 Melanomma pulvis-pyrius,922
 Phragmidium bulbosum,921
 Trichia decipiens,920
-Puccinia caricina,918
 Agaricus augustus,911
 Britzelmayria multipedata,911
 Psathyrella microrhiza,904
@@ -654,7 +653,6 @@ Taphrina alni,820
 Clavulinopsis laeticolor,817
 Melampsora euphorbiae,813
 Marasmius wynneae,809
-Hedera helix,808
 Agrocybe pediades,807
 Ovis aries,807
 Molinia caerulea,806
@@ -684,25 +682,26 @@ Adoxa moschatellina,764
 Leccinum aurantiacum,764
 Cudoniella clavus,763
 Morchella esculenta,762
+Albugo candida,760
 Geoglossum cookeanum,757
 Podosphaera epilobii,757
+Centaurea nigra,756
 Trichia botrytis,756
 Crepidotus applanatus,755
 Trametes ochracea,755
 Hemimycena lactea,754
 Podosphaera clandestina,753
+Golovinomyces cynoglossi,752
 Singerocybe phaeophthalma,752
 Basidioradulum radula,751
 Entoloma clandestinum,749
 Russula adusta,747
-Golovinomyces cynoglossi s. lat.,744
 Plantago lanceolata,744
 Primula vulgaris,744
 Torula herbarum,744
 Diatrype bullata,743
 Trichoderma viride,742
 Typhula erythropus,741
-Pseudosperma rimosum s. lat.,740
 Hygrocybe splendidissima,739
 Milesina scolopendrii,739
 Mycena amicta,736
@@ -711,27 +710,26 @@ Puccinia behenis,732
 Arcyria cinerea,731
 Morchella semilibera,731
 Typhula quisquiliaris,729
+Phyllactinia guttata,726
 Cirsium,725
 Hapalopilus nidulans,724
 Hypomyces aurantius,724
 Crepidotus luteolus,722
 Mycena cinerella,721
-Phyllactinia guttata s. lat.,721
 Puccinia calcitrapae,720
 Hygrocybe intermedia,719
 Galerina pumila,718
+Epichloe typhina,716
 Bellis perennis,714
 Erysiphe circaeae,714
+Blumeria graminis,713
 Cirsium vulgare,713
 Peziza micropus,713
 Mitrula paludosa,712
 Mollisia fusca,711
-Centaurea nigra sens. lat.,710
 Suillus granulatus,708
-Blumeria graminis s. lat.,707
 Cortinarius bolaris,707
 Erysiphe polygoni,707
-Epichloe typhina,705
 Pluteus phlebophorus,705
 Psathyrella artemisiae,705
 Russula grisea,704
@@ -744,13 +742,13 @@ Entoloma chalybeum,699
 Russula chloroides,699
 Craterium minutum,698
 Geranium robertianum,698
-Albugo candida s. lat.,694
 Leucoagaricus leucothites,694
 Caloboletus radicans,693
 Hypholoma elongatum,692
-Plasmopara crustosa s. lat.,691
+Plasmopara crustosa,691
 "Conocybe albipes non Fr., 1863",689
 Lycoperdon lividum,689
+Melampsora epitea,689
 Ascomycota,688
 Pluteus umbrosus,688
 Asterophora parasitica,687
@@ -763,10 +761,9 @@ Puccinia acetosae,680
 Neonectria coccinea,679
 Galerina clavata,678
 Cortinarius hinnuleus,676
-Melampsora epitea,673
 Arcyria incarnata,672
 Mycosphaerella punctiformis,672
-Hyphoderma setigerum,666
+Hyphoderma setigerum,669
 Pholiota alnicola,666
 Inocybe lacera,664
 Pluteus nanus,663
@@ -877,8 +874,10 @@ Radulomyces molaris,567
 Exidia recisa,566
 Mollisia ligni,566
 Pholiota aurivella,566
+Glutinoglossum glutinosum,565
 Resinicium bicolor,564
 Tricholoma stiparophyllum,562
+Bremia lactucae,561
 Cupressus,561
 Hymenoscyphus calyculus,559
 Steccherinum ochraceum,559
@@ -887,7 +886,6 @@ Lentinellus cochleatus,558
 Populus canescens,558
 Agaricus impudicus,557
 Milesina dieteliana,557
-Bremia lactucae s. lat.,556
 Polygonum aviculare sensu Stace,556
 Postia ptychogaster,556
 Urocystis anemones,556
@@ -897,7 +895,6 @@ Lamium album,554
 Venturia rumicis,554
 Puccinia punctata,553
 Tilia cordata x platyphyllos = T. x europaea,553
-Glutinoglossum glutinosum s. lat.,552
 Bulbillomyces farinosus,551
 Phalaris arundinacea,551
 Scopuloides rimosa,548
@@ -924,7 +921,7 @@ Tricholoma imbricatum,530
 Hymenoscyphus splendens,529
 Russula pseudointegra,528
 Uromyces rumicis,528
-Hyaloperonospora parasitica s. lat.,527
+Hyaloperonospora parasitica,527
 Puccinia cnici,527
 Hebeloma leucosarx,526
 Inocybe glabripes,526
@@ -959,6 +956,7 @@ Euonymus europaeus,507
 Bertia moriformis,504
 Hygrophorus discoxanthus,504
 Agaricus moelleri,503
+Puccinia graminis,502
 Uromyces geranii,502
 Blechnum spicant,501
 Ganoderma resinaceum,500
@@ -993,6 +991,7 @@ Collybia phyllophila,474
 Russula versicolor,474
 Gloniopsis praelonga,473
 Lachnella villosa,473
+Pustula obtusata,473
 Galerina graminea,472
 Glyceria maxima,472
 Cornus sanguinea,471
@@ -1016,8 +1015,8 @@ Leratiomyces ceres,461
 Russula graveolens,461
 Aspropaxillus giganteus,460
 Tricholoma virgatum,460
+Lepraria incana,458
 Laccaria tortilis,457
-Lepraria incana s. lat.,457
 Verpa conica,457
 Colpoma quercinum,456
 Ramularia urticae,456
@@ -1059,11 +1058,12 @@ Sonchus arvensis,431
 Erysiphe urticae,430
 Microglossum olivaceum,430
 Parmelia sulcata,430
-Lecanora chlarotera s. lat.,429
+Lecanora chlarotera,429
 Cuphophyllus colemannianus,428
 Exobasidium vaccinii,428
 Hymenoscyphus repandus,428
 Russula aquosa,428
+Malus sylvestris,427
 Septoria aegopodii,427
 Cortinarius armillatus,426
 Euphorbia peplus,426
@@ -1072,7 +1072,6 @@ Physarum leucophaeum,426
 Capsella bursa-pastoris,425
 Cercospora mercurialis,425
 Heteroradulum deglubens,424
-Pustula obtusata s. str.,424
 Acrospermum compressum,422
 Galerina mniophila,422
 Quercus cerris,421
@@ -1089,6 +1088,7 @@ Crinipellis scabella,414
 Lactarius circellatus,414
 Peziza varia,414
 Puccinia cnici-oleracei,413
+Polypodium vulgare,412
 Marasmius cohaerens,411
 Tapinella panuoides,410
 Gyroporus castaneus,409
@@ -1113,7 +1113,6 @@ Ramularia ari,402
 Physisporinus vitreus,401
 Puccinia primulae,401
 Cortinarius lepidopus,399
-Malus sylvestris,399
 Tricholoma sejunctum,399
 Trichopeziza mollissima,399
 Teucrium scorodonia,398
@@ -1132,8 +1131,8 @@ Deconica coprophila,391
 Pinus contorta,391
 Trochila craterium,391
 Diplocarpon rosae,390
+Psathyrella prona,390
 Cyathicula coronata,388
-Psathyrella prona,388
 Jacobaea vulgaris,387
 Ganoderma lucidum,385
 Prunus domestica,385
@@ -1147,6 +1146,7 @@ Lepiota boudieri,382
 Plantae,382
 Stropholoma aurantiacum,382
 Apiaceae,381
+Arctium minus,381
 Gymnosporangium cornutum,381
 Hyaloperonospora niessliana,381
 "Lachnum brevipilosum non Lachnum brevipilum (Höhn.) Nannf., 1932",381
@@ -1163,7 +1163,6 @@ Pilobolus crystallinus,374
 Mollisia,373
 Oenanthe crocata,373
 Mycena flavescens,372
-Arctium minus,371
 Helianthemum,371
 Mycosphaerella tassiana,371
 Dendrothele acerina,370
@@ -1173,7 +1172,6 @@ Clavaria argillacea,369
 Mycena,369
 Puccinia brachypodii,369
 Vaccinium vitis-idaea,369
-Puccinia graminis,368
 Asterophora lycoperdoides,367
 Inocybe mixtilis,367
 Agrocybe rivulosa,366
@@ -1200,6 +1198,7 @@ Agaricus comtulus,356
 Myriosclerotinia curreyana,356
 Bactridium flavum,355
 Geastrum striatum,355
+Hydnellum concrescens,355
 Lactarius quieticolor,355
 Petasites hybridus,355
 Amanita echinocephala,354
@@ -1208,7 +1207,6 @@ Prunus padus,354
 Thelephora penicillata,354
 Tulosesus impatiens,354
 Botryobasidium conspersum,353
-Hydnellum concrescens,353
 Hygrophorus cossus,353
 Melanoleuca grammopodia,352
 Phragmidium sanguisorbae,352
@@ -1243,6 +1241,7 @@ Golovinomyces artemisiae,339
 Inocybe praetervisa,339
 Juniperus communis,339
 Phragmidium tuberculatum,338
+Ramariopsis kunzei,338
 Boletus pinophilus,337
 Sphagnurus paluster,337
 Tranzschelia discolor,337
@@ -1266,22 +1265,21 @@ Poronia punctata,331
 Anthracobia macrocystis,330
 Myrrhis odorata,330
 Amanita submembranacea,329
+Diaporthe eres,329
 Geranium pratense,329
 Panaeolus cinctulus,329
-Ramariopsis kunzei,329
 Stemphylium herbarum,329
 Trachyspora intrusa,329
 Butyriboletus appendiculatus,328
-Diaporthe eres,328
 Ramularia lapsanae,328
 Antrodia xantha,326
+Athelia arachnoidea,326
 Conocybe subovalis,326
 Trichoderma gelatinosum,326
 Elaphomyces muricatus,325
 Suillellus queletii,325
 Rhytisma salicinum,324
 Spathularia flavida,323
-Athelia arachnoidea,322
 Sorbus,322
 Umbilicus rupestris,322
 Agaricus bisporus,321
@@ -1303,6 +1301,7 @@ Junghuhnia nitida,315
 Physarum viride,315
 Lepiota magnispora,314
 Salix alba,314
+Typhula setipes,314
 Stemonitis axifera,313
 Cortinarius mucifluoides,312
 Mycena abramsii,312
@@ -1323,12 +1322,12 @@ Golovinomyces fischeri,308
 Hyphoderma argillaceum,308
 Inosperma bongardii,308
 Calcarisporium arbuscula,307
+Rosellinia mammiformis,307
 Stellaria media,307
 Cortinarius integerrimus,306
 Cortinarius rubellus,306
 Lactarius azonites,306
 Pluteus leoninus,305
-Rosellinia mammiformis,305
 Russula luteotacta,305
 Tulostoma brumale,305
 Coprinopsis cinerea,304
@@ -1360,8 +1359,9 @@ Ericaceae,297
 Gomphidius maculatus,297
 Suillus flavidus,297
 Odontites vernus,296
-Parmelia saxatilis s. lat.,296
+Parmelia saxatilis,296
 Peziza cerea,296
+Dipsacus fullonum,295
 Hymenoscyphus imberbis,295
 Melampsoridium hiratsukanum,295
 Trichia scabra,295
@@ -1376,7 +1376,6 @@ Ramularia inaequalis,293
 Brunnipila fuscescens,292
 Pinus radiata,292
 Tragopogon pratensis,292
-Typhula setipes,292
 Erysiphe berberidis,291
 Jackrogersella cohaerens,291
 Capreolus capreolus,290
@@ -1416,7 +1415,7 @@ Bolbitius reticulatus,279
 Resupinatus trichotis,279
 Trochila laurocerasi,279
 Lepiota felina,278
-Peronospora viciae s. lat.,278
+Peronospora viciae,278
 Sarcodon squamosus,278
 Clavaria flavipes,277
 Conocybe pubescens,277
@@ -1508,10 +1507,10 @@ Helianthemum nummularium,252
 Plasmopara densa,252
 Carex flacca,251
 Cortinarius violaceus,251
-Dipsacus fullonum,251
-Entoloma corvinum s. lat.,251
+Entoloma corvinum,251
 Inonotus cuticularis,251
 Lyophyllum anthracophilum,251
+Plasmopara nivea,251
 Puccinia recondita,251
 Typha latifolia,251
 Daleomyces petersii,250
@@ -1519,6 +1518,7 @@ Eutypella scoparia,250
 Leucocybe candicans,250
 Paxillus rubicundulus,250
 Collybia tuberosa,249
+Entoloma bloxamii,249
 Flammulaster carpophilus,249
 Lyophyllum atratum,249
 Melampsora laricis-epitea,249
@@ -1538,7 +1538,6 @@ Russula turci,246
 Adelphella babingtonii,245
 Cortinarius limonius,245
 Cortinarius raphanoides,245
-Entoloma bloxamii s. lat.,245
 Entoloma politum,245
 Larix kaempferi,245
 Neohygrocybe ovina,245
@@ -1549,7 +1548,7 @@ Eutypa flavovirens,244
 Phaeomarasmius erinaceus,244
 Salix aurita,244
 Inosperma erubescens,243
-Microbotryum violaceum s. lat.,243
+Microbotryum violaceum,243
 Phellodon tomentosus,243
 Cribraria aurantiaca,241
 Erysiphe lonicerae,241
@@ -1579,7 +1578,6 @@ Thekopsora agrimoniae,234
 Macrolepiota excoriata,233
 Marasmius torquescens,233
 Ovis,233
-Polypodium vulgare sens. lat.,233
 Rhinanthus minor,233
 Symphytum,233
 Triticum aestivum,233
@@ -1616,7 +1614,6 @@ Lanzia luteovirescens,226
 Geranium molle,225
 Lachnum diminutum,225
 Lactarius trivialis,225
-Plasmopara nivea s. lat.,225
 Thanatephorus cucumeris,225
 Dennisiella babingtonii,224
 Didymium melanospermum,224
@@ -1636,7 +1633,7 @@ Melanoleuca brevipes,221
 Pucciniastrum guttatum,221
 Avenella flexuosa,220
 Chamaemyces fracidus,220
-Ganoderma australe s. str.,220
+Ganoderma australe,220
 Hydropus floccipes,220
 Lophiostoma aquaticum,220
 Phlebiopsis ravenelii,220
@@ -1681,7 +1678,7 @@ Coccomyces dentatus,212
 Rhamnus cathartica,212
 Ribes rubrum,212
 Rubroboletus satanas,212
-Uromyces pisi-sativi s. lat.,212
+Uromyces pisi-sativi,212
 Botryosphaeria dothidea,211
 Cortinarius saturninus,211
 Helminthosphaeria clavariarum,211
@@ -1704,7 +1701,7 @@ Sanguisorba officinalis,208
 Tubulicrinis subulatus,208
 Antrodia serialis,207
 Candelariella vitellina,207
-Coprinus micaceus s. lat.,207
+Coprinus micaceus,207
 Diptera,207
 Inocybe whitei,207
 Mycena vulgaris,206
@@ -1764,6 +1761,7 @@ Paradiacheopsis solitaria,195
 Pholiota adiposa,195
 Verrucaria nigrescens,195
 Dendrospora erecta,194
+Golovinomyces biocellatus,194
 Lachnum controversum,194
 Sporormiella intermedia,194
 Urocystis ranunculi,194
@@ -1846,9 +1844,8 @@ Coprinellus xanthothrix,179
 Mycosphaerella hedericola,179
 Mycosphaerella isariphora,179
 Orbilia sarraziniana,179
-Peronospora farinosa s. lat.,179
+Peronospora farinosa,179
 Pluteus pouzarianus,179
-Polypodium vulgare,179
 Botryobasidium vagum,178
 Craterellus lutescens,178
 Crepidotus versutus,178
@@ -1920,8 +1917,9 @@ Agrostis,168
 Eriopezia caesia,168
 Inocybe pusio,168
 Leccinum melaneum,168
-Peronospora trifoliorum s. lat.,168
+Peronospora trifoliorum,168
 Psathyrella tephrophylla,168
+Pyrus communis,168
 Tulosesus hiascens,168
 Dendrospora tenella,167
 Jackrogersella minutella,167
@@ -1945,11 +1943,12 @@ Ceriporia purpurea,164
 Cortinarius puniceus,164
 Helminthotheca echioides,164
 Inocybe phaeoleuca,164
-Puccinia caricina s. lat.,164
+Phlebia livida,164
 Puccinia galii-verni,164
 Ramularia interstitialis,164
 Ramularia simplex,164
 Russula alutacea,164
+Trichopezizella nidulus,164
 Tulasnella eichleriana,164
 Lophodermium arundinaceum,163
 Mycena rosella,163
@@ -1964,11 +1963,9 @@ Ypsilina graminea,162
 Botrytis globosa,161
 Cerastium fontanum,161
 Entoloma undatum,161
-Golovinomyces biocellatus s. lat.,161
 Hymenoscyphus vitellinus,161
 Laxitextum bicolor,161
 Neottiella rutilans,161
-Trichopezizella nidulus,161
 Berlesiella nigerrima,160
 Diaporthe arctii,160
 Gymnopus fuscopurpureus,160
@@ -1977,7 +1974,6 @@ Calycellina flaveola,159
 Coprinopsis stercorea,159
 Dacryobolus karstenii,159
 Lecanora polytropa,159
-Lycogala epidendrum s. lat.,159
 Mycena citrinomarginata,159
 Pholiotina rugosa,159
 Viola odorata,159
@@ -1989,7 +1985,6 @@ Lyophyllum loricatum,158
 Melampsora laricis-populina,158
 Peniophora polygonia,158
 Peziza ammophila,158
-Phlebia livida,158
 Ramularia carneola,158
 Rhizomarasmius undatus,158
 Solanum lycopersicum,158
@@ -2004,8 +1999,10 @@ Pappia fissilis,157
 Pteridophyta,157
 Ramularia rhabdospora,157
 Battarrea phalloides,156
+Calystegia sepium,156
 Cupressaceae,156
 Fungi,156
+Plasmopara pusilla,156
 Podosphaera spiraeae,156
 Scutellinia crinita,156
 Silene uniflora,156
@@ -2025,7 +2022,6 @@ Entoloma caesiocinctum,154
 Inocybe obscuroides,154
 Monilinia fructigena,154
 Mycena chlorantha,154
-Plasmopara pusilla s. lat.,154
 Podospora conica,154
 Echinostelium minutum,153
 Litschauerella clematidis,153
@@ -2053,11 +2049,12 @@ Badhamia panicea,150
 Carex paniculata,150
 Comatricha pulchella,150
 Dactylis,150
+Podosphaera tridactyla,150
 Agrocybe arvalis,149
 Coprinellus heptemerus,149
 Discostroma tostum,149
 Golovinomyces montagnei,149
-Graphis scripta s. lat.,149
+Graphis scripta,149
 Hygrocybe calciphila,149
 Lepra amara,149
 Leucogyrophana mollusca,149
@@ -2085,7 +2082,6 @@ Granulobasidium vellereum,147
 Lecidella stigmatea,147
 Pholiotina velata,147
 Podosphaera dipsacacearum,147
-Podosphaera tridactyla s. lat.,147
 Protoparmeliopsis muralis,147
 Pyrenopeziza carduorum,147
 Scleroderma cepa,147
@@ -2208,7 +2204,6 @@ Hypholoma radicosum,134
 Lidophia graminis,134
 Melanelixia subaurifera,134
 Orbilia luteorubella,134
-Puccinia graminis s. lat.,134
 Puccinia urticae-acutiformis,134
 Tranzscheliella hypodytes,134
 Brassica oleracea,133
@@ -2277,7 +2272,7 @@ Lecanora sulphurea,126
 Pezicula rubi,126
 Rumex sanguineus,126
 Arachnopeziza aurata,125
-Athallia holocarpa s. lat.,125
+Athallia holocarpa,125
 Camaropella lutea,125
 Chaetomium elatum,125
 Fusarium sambucinum,125
@@ -2326,6 +2321,7 @@ Tuberculina sbrozzii,122
 Conocybe pulchella,121
 Cortinarius subbalaustinus,121
 Dissingia leucomelaena,121
+Entoloma longistriatum,121
 Geastrum pectinatum,121
 Hypochaeris radicata,121
 Lactarius acris,121
@@ -2346,6 +2342,7 @@ Agaricus osecanus,119
 Alloexidiopsis calcea,119
 Cerastium glomeratum,119
 Circinaria calcarea,119
+Colletotrichum dematium,119
 Erysiphe euonymi,119
 Exophiala calicioides,119
 Hymenochaete cinnamomea,119
@@ -2373,7 +2370,6 @@ Phanerochaete laevis,118
 Aleurodiscus wakefieldiae,117
 Badhamia foliicola,117
 Codinaea fertilis,117
-Colletotrichum dematium,117
 Coprinellus truncorum,117
 Erysiphe azaleae,117
 Impatiens glandulifera,117
@@ -2449,7 +2445,6 @@ Xenotypa aterrima,112
 Agaricus porphyrocephalus,111
 Aquilegia vulgaris,111
 Brefeldia maxima,111
-Calystegia sepium,111
 Cirsium heterophyllum,111
 Coprinopsis jonesii,111
 Corynespora smithii,111
@@ -2538,6 +2533,7 @@ Clypeosphaeria mamillana,104
 Erysiphe prunastri,104
 Gnomonia gnomon,104
 Hordeum,104
+Peronospora arborescens,104
 Pseudocercospora depazeoides,104
 Ramularia caduca,104
 Sydowiella fenestrans,104
@@ -2564,7 +2560,6 @@ Urocystis eranthidis,102
 Agaricus phaeolepidotus,101
 Chaetosphaeria innumera,101
 Morchella vulgaris,101
-Peronospora arborescens s. lat.,101
 Peziza sepiatra,101
 Pterula gracilis,101
 Ramsbottomia asperior,101
@@ -2578,7 +2573,6 @@ Alnicola alnetorum,100
 Arrhenia griseopallida,100
 Canis lupus,100
 Craterium aureum,100
-Crepidotus variabilis s. lat.,100
 Desmazierella acicola,100
 Entoloma mougeotii,100
 Galerina sideroides,100
@@ -2586,6 +2580,7 @@ Geranium sylvaticum,100
 Inocybe,100
 Lachnum corticale,100
 Metatrichia vesparia,100
+Mycena alcalina,100
 Periconia hispidula,100
 Phaeoclavulina decurrens,100
 Phaeosphaeria herpotrichoides,100
@@ -2651,7 +2646,6 @@ Microstroma album,96
 Petasites pyrenaicus,96
 Phlebiella tulasnelloidea,96
 Poa humilis,96
-Pyrus communis sens. lat.,96
 Russula aurea,96
 Stemonitis herbatica,96
 Typhula uncialis,96
@@ -2662,7 +2656,7 @@ Clitocybe agrestis,95
 Entoloma lividoalbum,95
 Euphrasia,95
 Exidia repanda,95
-Flavoplaca citrina s. lat.,95
+Flavoplaca citrina,95
 Hebeloma pumilum,95
 Mnium hornum,95
 Phallus hadriani,95
@@ -2695,7 +2689,7 @@ Cyathicula subhyalina,93
 Erysiphe grossulariae,93
 Farysia thuemenii,93
 Hygrophorus nemoreus,93
-Lecidea fuscoatra s. lat.,93
+Lecidea fuscoatra,93
 Lepra albescens,93
 Lophodermium conigenum,93
 Perichaena chrysosperma,93
@@ -2723,7 +2717,6 @@ Athelopsis lembospora,91
 Carex nigra,91
 Cladonia macilenta,91
 Cortinarius stillatitius,91
-Entoloma longistriatum s. lat.,91
 Galerina nana,91
 Helvella levis,91
 Hydnellum aurantiacum,91
@@ -2894,6 +2887,7 @@ Limacella glioderma,83
 Melanconis alni,83
 Mentha arvensis,83
 Pellidiscus pallidus,83
+Punctelia subrudecta,83
 Septoria scabiosicola,83
 Symphytocarpus flaccidus,83
 Taphridium umbelliferarum,83
@@ -2918,7 +2912,6 @@ Pseudaleuria fibrillosa,82
 Pseudovalsa lanciformis,82
 Puccinia heraclei,82
 Puccinia paludosa,82
-Punctelia subrudecta s. lat.,82
 Schoenoplectus lacustris,82
 Scorzoneroides autumnalis,82
 Xeromphalina campanella,82
@@ -3097,6 +3090,7 @@ Peronospora destructor,74
 Pholiotina vestita,74
 Phyllactinia betulae,74
 Polyscytalum fecundissimum,74
+Puccinia porri,74
 Taphrina potentillae,74
 Tricholoma stans,74
 Tubaria confragosa,74
@@ -3146,8 +3140,6 @@ Melampsora allii-fragilis,72
 Melanoleuca strictipes,72
 Melanoleuca verrucipes,72
 Microbotryum tragopogonis-pratensis,72
-Puccinia porri,72
-Pyrus communis,72
 Ranunculus bulbosus,72
 Stemonitopsis hyperopta,72
 Stephanonectria keithii,72
@@ -3221,12 +3213,14 @@ Magnolia,69
 Peronospora tomentosa,69
 Phaeostalagmus tenuissimus,69
 Piptocephalis freseniana,69
+Pseudevernia furfuracea,69
 Amanita inopinata,68
 Ascobolus stictoideus,68
 Chalara pteridina,68
 Crustomyces subabruptus,68
 Dama dama,68
 Entoloma nitidum,68
+Entoloma rhombisporum,68
 Entoloma sordidulum,68
 Erysiphe syringae,68
 Inocybe posterula,68
@@ -3271,7 +3265,6 @@ Rhynchosporium agropyri,67
 Thalictrum flavum,67
 Tubaria romagnesiana,67
 Vibrissea truncorum,67
-Albugo candida s. str.,66
 Amanita nivalis,66
 Arbutus unedo,66
 Arthonia atra,66
@@ -3357,7 +3350,7 @@ Alchemilla vulgaris,63
 Andromeda polifolia,63
 Atriplex portulacoides,63
 Bilimbia sabuletorum,63
-Cladonia chlorophaea s. lat.,63
+Cladonia chlorophaea,63
 Cortinarius balteatocumatilis,63
 Daleomyces phillipsii,63
 Entyloma eburneum,63
@@ -3412,6 +3405,7 @@ Conocybe macrocephala,61
 Entoloma incarnatofuscescens,61
 Fuscidea lightfootii,61
 Hydnellum scabrosum,61
+Hypotrachyna revoluta,61
 Lasiobolus cuniculi,61
 Lecanora symmicta,61
 Melanogaster broomeanus,61
@@ -3435,7 +3429,7 @@ Tylospora fibrillosa,61
 Uromyces limonii,61
 Amanita battarrae,60
 Arachnopeziza eriobasis,60
-Bagliettoa parmigera s. lat.,60
+Bagliettoa parmigera,60
 Camarosporium oreades,60
 Camposporium pellucidum,60
 Cantharellus ferruginascens,60
@@ -3476,6 +3470,7 @@ Erysiphe howeana,59
 Galium mollugo,59
 Hyalopeziza ciliata,59
 Hypoxylon,59
+Inocybe lanuginosa,59
 Inocybe xanthomelas,59
 Juncus articulatus,59
 Lepus europaeus,59
@@ -3505,9 +3500,8 @@ Coprinopsis echinospora,58
 Entoloma aprile,58
 Entyloma bellidis,58
 Inocybe duriuscula,58
-Lecania erysibe s. lat.,58
+Lecania erysibe,58
 Lepraria vouauxii,58
-Mycena alcalina s. lat.,58
 Peronospora antirrhini,58
 Plantago maritima,58
 Podosphaera ferruginea,58
@@ -3622,7 +3616,6 @@ Cortinarius multiformis,54
 Cortinarius olivaceofuscus,54
 Dianthus barbatus,54
 Diplocarpa bloxamii,54
-Entoloma rhombisporum,54
 Eutypella acericola,54
 Eutypella stellulata,54
 Gloeohypochnicium analogum,54
@@ -3679,6 +3672,7 @@ Puccinia convolvuli,53
 Tricholoma populinum,53
 Trifolium,53
 Typha,53
+Typhula spathulata,53
 Xylodon rimosissimus,53
 Acrogenospora sphaerocephala,52
 Agaricus altipes,52
@@ -3717,7 +3711,6 @@ Russula fuscorubroides,52
 Stellaria alsine,52
 Stropharia albonitens,52
 Tomentella italica,52
-Typhula spathulata,52
 Achillea ptarmica,51
 Aleurobotrys botryosus,51
 Allium cepa,51
@@ -3786,6 +3779,7 @@ Fayodia bisphaerigera,50
 Funaria hygrometrica,50
 Galerina ampullaceocystis,50
 Ganoderma carnosum,50
+Glyceria fluitans,50
 Gymnopus inodorus,50
 Hypoderma commune,50
 Leproplaca chrysodeta,50
@@ -3835,7 +3829,6 @@ Pleospora rubelloides,49
 Pseudohelotium alaunae,49
 Pseudombrophila theioleuca,49
 Pseudopeziza calthae,49
-Pustula obtusata s. lat.,49
 Ramaria gracilis,49
 Russula melzeri,49
 Russula raoultii,49
@@ -3854,7 +3847,7 @@ Erysiphe alliariicola,48
 Erysiphe platani,48
 Euphorbia lathyris,48
 Hydnotrya tulasnei,48
-Hyphodontia sambuci s. lat.,48
+Hyphodontia sambuci,48
 Hypochnella violacea,48
 Hypoxylon cercidicola,48
 Lactarius sphagneti,48
@@ -3881,6 +3874,7 @@ Thelotrema lepadinum,48
 Triangularia setosa,48
 Trichia favoginea,48
 Tricholoma sulphurescens,48
+Trichophorum cespitosum,48
 Uromyces appendiculatus,48
 Viola palustris,48
 Wilsonomyces carpophilus,48
@@ -3898,7 +3892,6 @@ Entoloma fernandae,47
 Eutypella leprosa,47
 Fuligo rufa,47
 Fusarium lateritium,47
-Glyceria fluitans,47
 Hygrocybe phaeococcinea,47
 Hygrophoropsis fuscosquamula,47
 Hygrophorus lindtneri,47
@@ -3921,14 +3914,12 @@ Ramularia kriegeriana,47
 Rhizocarpon richardii,47
 Tomentella stuposa,47
 Trechispora minima,47
-Trichophorum cespitosum sens. lat.,47
 Variospora aurantia,47
 Veronica officinalis,47
 Alnicola amarescens,46
 Aphanomyces cochlioides,46
 Athelia bombacina,46
 Catillaria lenticularis,46
-Centaurea nigra,46
 Coprinopsis ammophilae,46
 Coprinopsis erythrocephala,46
 Cortinarius pilatii,46
@@ -3977,7 +3968,6 @@ Atopospora betulina,45
 Badhamia lilacina,45
 Basidiodendron cinereum,45
 Beltrania querna,45
-Calystegia sepium sens. lat.,45
 Cephalotrichum microsporum,45
 Cercosporella lindaviana,45
 Ceriophora palustris,45
@@ -4021,7 +4011,6 @@ Crepidotus subverrucisporus,44
 Cribraria piriformis,44
 Cucurbitaria berberidis,44
 Dendryphiella infuscans,44
-Dipsacus fullonum sens. lat.,44
 Entoloma sodale,44
 Euphrasia nemorosa,44
 Geoglossum glabrum,44
@@ -4036,13 +4025,11 @@ Peronospora lotorum,44
 Plantago media,44
 Plenodomus libanotidis,44
 Pluteus,44
-Pseudevernia furfuracea s. lat.,44
 Pyrenopeziza atrata,44
 Reseda luteola,44
 Ripartites metrodii,44
 Rosaceae,44
 Russula torulosa,44
-Scutellinia scutellata s. lat.,44
 Stagonospora subseriata,44
 Taphrina carpini,44
 Thelebolus stercoreus,44
@@ -4080,6 +4067,7 @@ Parmeliopsis ambigua,43
 Peronospora cristata,43
 Peronospora symphyti,43
 Poa annua,43
+Poa pratensis,43
 Porpidia crustulata,43
 Prosthecium platanoidis,43
 Pseudomicrostroma juglandis,43
@@ -4125,7 +4113,6 @@ Laburnum,42
 Licea microscopica,42
 Melampsora allii-populina,42
 Microthyrium cytisi,42
-Mycena alcalina,42
 Omphalina,42
 Ononis repens,42
 Phaeohelotium geogenum,42
@@ -4263,7 +4250,6 @@ Echinoderma hystrix,39
 Enterographa crassa,39
 Erythricium laetum,39
 Eutypella sorbi,39
-Ganoderma applanatum s. lat.,39
 Hygrocybe substrangulata,39
 Licea clarkii,39
 Lophiostoma compressum,39
@@ -4421,6 +4407,7 @@ Calycina marina,36
 Ceraceomyces tessulatus,36
 Chrysomyxa rhododendri,36
 Cladonia polydactyla,36
+Cladonia squamosa,36
 Clitocybe obsoleta,36
 Cortinarius cyanites,36
 Crepis paludosa,36
@@ -4437,7 +4424,6 @@ Hainesia rubi,36
 Hebeloma vaccinum,36
 Hyphoderma litschaueri,36
 Hypholoma epixanthum,36
-Hypotrachyna revoluta s. str.,36
 Inocybe tenebrosa,36
 Juncorrhiza casparyana,36
 Junghuhnia lacera,36
@@ -4451,6 +4437,7 @@ Naetrocymbe punctiformis,36
 Orbilia,36
 Osmunda regalis,36
 Paradiacheopsis cribrata,36
+Peltigera canina,36
 Peronospora,36
 Peziza granulosa,36
 Piloderma bicolor,36
@@ -4483,7 +4470,6 @@ Calycellina leucella,35
 Carex demissa,35
 Catenularia cupulifera,35
 Cedrus deodara,35
-Cladonia squamosa,35
 Conocybe plicatella,35
 Coprinopsis trispora,35
 Cortinarius glaucopus,35
@@ -4498,7 +4484,6 @@ Fusarium avenaceum,35
 Fuscoporia contigua,35
 Gymnopus alpinus,35
 Hapalosphaeria deformans,35
-Hebeloma sacchariolens s. lat.,35
 Helicogloea,35
 Helvella solitaria,35
 Hohenbuehelia auriscalpium,35
@@ -4516,14 +4501,12 @@ Octospora leucoloma,35
 Olla costata,35
 Omphalina mutila,35
 Oxalis,35
-Peltigera canina,35
 Phalaris,35
 Phellinus laevigatus,35
 Phragmoporthe conformis,35
 Pinus mugo,35
 Plantago coronopus,35
 Plicaria carbonaria,35
-Poa pratensis,35
 Podosphaera amelanchieris,35
 Postia ceriflua,35
 Puccinia fergussonii,35
@@ -4555,6 +4538,7 @@ Asteroma impressum,34
 Botryosphaeria quercuum,34
 Capitotricha rubi,34
 Catalpa bignonioides,34
+Cladonia arbuscula,34
 Clitocybe amarescens,34
 Collaria arcyrionema,34
 Comarum palustre,34
@@ -4598,6 +4582,7 @@ Peronospora valerianellae,34
 Peronospora violae,34
 Pezizella albosanguinea,34
 Pezizella punctoidea,34
+Phleum pratense,34
 Physarum contextum,34
 Pluteus diettrichii,34
 Podosphaera erodii,34
@@ -4647,7 +4632,6 @@ Escallonia,33
 Exidiopsis grisea,33
 Exobasidium rostrupii,33
 Filicupula suboperculata,33
-Golovinomyces biocellatus s. str.,33
 Hemimycena cephalotricha,33
 Hendersonia culmiseda,33
 Hohenbuehelia fluxilis,33
@@ -4665,7 +4649,6 @@ Patellariopsis clavispora,33
 Peronospora radii,33
 Pezizella nigrocorticata,33
 Phaeogalera stagnina,33
-Phleum pratense,33
 Podosphaera balsaminae,33
 Psilachnum acutum,33
 Ramariopsis crocea,33
@@ -4718,7 +4701,7 @@ Phaeotremella frondosa,32
 Phomopsis,32
 Pinus pinaster,32
 Plasmopara chaerophylli,32
-Polycauliona candelaria s. lat.,32
+Polycauliona candelaria,32
 Psathyrella hirta,32
 Puccinia extensicola,32
 Puccinia luzulae,32
@@ -4730,10 +4713,10 @@ Septoria epilobii,32
 Septoria tormentillae,32
 Stenocladiella neglecta,32
 Symphyotrichum novi-belgii,32
-Synchytrium aureum s. lat.,32
+Synchytrium aureum,32
 Taeniolina centaurii,32
 Thelonectria pinea,32
-Trapelia involuta s. str.,32
+Trapelia involuta,32
 Triscelophorus acuminatus,32
 Verbascum,32
 Zalerion maritima,32
@@ -4808,7 +4791,7 @@ Bupleurum tenuissimum,30
 Chaerophyllum temulum,30
 Circinaria caesiocinerea,30
 Cistella caricis,30
-Cladonia coccifera s. lat.,30
+Cladonia coccifera,30
 Cladonia ramulosa,30
 Coleosporium melampyri,30
 Coleroa circinans,30
@@ -4819,7 +4802,6 @@ Cortinarius casimirii,30
 Cucumis sativus,30
 Cytospora salicis,30
 Diaporthe inaequalis,30
-Entoloma longistriatum,30
 Fontanospora,30
 Fuscoporia torulosa,30
 Galerina viscidula,30
@@ -4830,9 +4812,7 @@ Hydnum ellipsosporum,30
 Hygrophorus olivaceoalbus,30
 Hymenoscyphus immutabilis,30
 Hyphoderma occidentale,30
-Inocybe lanuginosa s. lat.,30
 Isothea rhytismoides,30
-Laccaria laccata s. lat.,30
 Lachnum imbecille,30
 Lachnum papyraceum,30
 Lactarius stephensii,30
@@ -4891,7 +4871,6 @@ Ceriporiopsis aneirina,29
 Chalara,29
 Chalara bulbosa,29
 Cicuta virosa,29
-Cladonia arbuscula s. lat.,29
 Conocybe brachypodii,29
 Coprinopsis pachyderma,29
 Cortinarius incisus,29
@@ -4911,7 +4890,6 @@ Hebeloma velatum,29
 Hypnum,29
 Hysterostegiella dumeti,29
 Inocybe erinaceomorpha,29
-Inocybe lanuginosa,29
 Inocybe pelargonium,29
 Inocybe virgatula,29
 Leptostroma juncacearum,29
@@ -4996,7 +4974,6 @@ Leucoagaricus barssii,28
 Leveillula verbasci,28
 Limacella delicata,28
 Lysimachia vulgaris,28
-Malus sylvestris sens. lat.,28
 Melampsora euonymi-caprearum,28
 Micarea denigrata,28
 Mucor racemosus nom. illegit.,28
@@ -5029,7 +5006,7 @@ Silene vulgaris,28
 Sistotrema,28
 Sphaerulina gei,28
 Splanchnonema pupula,28
-Sticta fuliginosa s. lat.,28
+Sticta fuliginosa,28
 Stigmidium ascophylli,28
 Suaeda maritima,28
 Tilletia caries,28
@@ -5171,7 +5148,6 @@ Paragalactinia succosella,26
 Paramyrothecium roridum,26
 Peltigera rufescens,26
 Pholiota lubrica,26
-Plasmopara nivea s. str.,26
 Plectosphaerella alismatis,26
 Pleospora penicillus,26
 Pyrenula macrospora,26
@@ -5195,7 +5171,7 @@ Agaricales,25
 Amanita coryli,25
 Amphiporthe hranicensis,25
 Arabidopsis thaliana,25
-Atrichum undulatum s.str.,25
+Atrichum undulatum,25
 Badhamia nitens,25
 Beltraniella pirozynskii,25
 Camaropella microspora,25
@@ -5232,7 +5208,6 @@ Haasiella venustissima,25
 Hippophae,25
 Hydrangea,25
 Hymenogaster vulgaris,25
-Hypotrachyna revoluta s. lat.,25
 Immotthia atrograna,25
 Jaapia ochroleuca,25
 Lamproderma echinulatum,25
@@ -5257,7 +5232,6 @@ Phellinus populicola,25
 Physarum galbeum,25
 Prunus domestica x spinosa = P. x fruticans,25
 Prunus dulcis,25
-Pseudevernia furfuracea,25
 Pseudoperonospora cubensis,25
 Pseudopithomyces chartarum,25
 Pseudovalsaria foedans,25
@@ -5270,7 +5244,7 @@ Russula amoenoides,25
 Russula zvarae,25
 Schizothecium hispidulum,25
 Septoria lysimachiae,25
-Sistotrema brinkmanii s. lat.,25
+Sistotrema brinkmanii,25
 Sistotrema muscicola,25
 Sphaerulina hyperici,25
 Spirosphaera floriformis,25
@@ -5409,7 +5383,7 @@ Ceratosebacina longispora,23
 Cercospora chenopodii,23
 Cervus,23
 Circaea alpina x lutetiana = C. x intermedia,23
-Clavaria zollingeri s. lat.,23
+Clavaria zollingeri,23
 Clitopilus passeckerianus,23
 Cortinarius cisticola,23
 Cortinarius spilomeus,23
@@ -5586,13 +5560,11 @@ Tragopogon porrifolius,22
 Trimmatostroma scutellare,22
 Tubulicrinis regificus,22
 Tulasnella bourdotii,22
-Typhula setipes s. lat.,22
 Usnea hirta,22
 Ustilago bullata,22
 Valerianella carinata,22
 Xanthocarpia crenulatella,22
 Allium,21
-Amanita excelsa s. lat.,21
 Anisomeridium biforme,21
 Anthracoidea arenariae,21
 Arthonia calcarea,21
@@ -5628,6 +5600,7 @@ Endogone lactiflua,21
 Entoloma caccabus,21
 Entoloma caeruleopolitum,21
 Eriophorum,21
+Erophila verna,21
 Erysiphe vanbruntiana,21
 Exidiopsis galzinii,21
 Flagelloscypha,21
@@ -5818,6 +5791,7 @@ Trichoderma piluliferum,20
 Trichopeziza discolor,20
 Tubaria,20
 Typhula incarnata,20
+Typhula pusilla,20
 Urceolella hirta,20
 Vibrissea laxa,20
 Willkommlangea reticulata,20
@@ -5857,7 +5831,6 @@ Diplomitoporus flavescens,19
 "Endophragmiella ellisii non Endophragmiella biseptata (Peck) S. Hughes, 1978",19
 Entoloma inutile,19
 Equisetum fluviatile,19
-Erophila verna,19
 Erysiphe friesii,19
 Erysiphe guarinonii,19
 Gerronema albidum,19
@@ -5972,7 +5945,7 @@ Cladonia digitata,18
 Cladonia humilis,18
 Clasterosporium caricinum,18
 Coprinellus,18
-Coprinus lagopus s. lat.,18
+Coprinus lagopus,18
 Cortinarius ammophiloides,18
 Cortinarius bovinus,18
 Cortinarius durus,18
@@ -6000,7 +5973,7 @@ Gymnopus terginus,18
 Helicodendron triglitziense,18
 Helminthosporium tiliae,18
 Hemileucoglossum elongatum,18
-Hodophilus hymenocephalus s. lat.,18
+Hodophilus hymenocephalus,18
 Hormiactella asetosa,18
 Hydnotrya cubispora,18
 Hyphodiscus smaragdinus,18
@@ -6188,7 +6161,7 @@ Ozonium aureum,17
 Peltigera lactucifolia,17
 Penicillium glaucum,17
 Peronospora sherardiae,17
-Peronospora sparsa s. lat.,17
+Peronospora sparsa,17
 Pertusaria,17
 Pertusaria flavida,17
 Phaeoseptoria caricicola,17
@@ -6237,7 +6210,6 @@ Trichosphaeria notabilis,17
 Trifolium campestre,17
 Tulosesus subdisseminatus,17
 Tympanis ligustri,17
-Typhula pusilla,17
 Ulmus aggregate,17
 Venturiocistella diversipila,17
 Viola tricolor,17
@@ -6328,7 +6300,6 @@ Lulworthia opaca,16
 Mallocybe fuscomarginata,16
 Malva arborea,16
 Marasmius graminum,16
-Melampsora epitea s. lat.,16
 Melampyrum,16
 Melanoleuca schumacheri,16
 Melastiza contorta,16
@@ -6504,7 +6475,7 @@ Neophoma graminella,15
 Niptera lacustris,15
 Nothofagus obliqua,15
 Nymphaea alba,15
-Ochrolechia turneri s. lat.,15
+Ochrolechia turneri,15
 Opegrapha vermicellifera,15
 Oxalis latifolia,15
 Oxybasis rubra,15
@@ -6580,6 +6551,7 @@ Valerianella locusta,15
 Valsella clypeata,15
 Venturia geranii,15
 Verbascum nigrum,15
+Vicia,15
 Winterella hypodermia,15
 Wojnowicia hirta,15
 Xanthoria,15
@@ -6633,7 +6605,6 @@ Didymosphaeria oblitescens,14
 Dryopteris carthusiana,14
 Elsinoe mattiroloanum,14
 Entoloma fuscotomentosum,14
-Entoloma rhombisporum s. lat.,14
 Entoloma rufocarneum,14
 Entoloma sphagneti,14
 Entomophthora,14
@@ -6791,12 +6762,14 @@ Amelanchier,13
 Anisomeridium polypori,13
 Arachnocrea stipata,13
 Arctostaphylos alpinus,13
+Arrhenia peltigerina,13
 Ascobolus epimyces,13
 Ascobolus hawaiiensis,13
 Ascobolus minutus,13
 Ascochyta philadelphi,13
 Ascochyta vulgaris,13
 Ascozonus leveilleanus,13
+Aster,13
 Botrytis tulipae,13
 Buellia griseovirens,13
 Calycellina myriadea,13
@@ -6848,7 +6821,6 @@ Eucalyptus gunnii,13
 Eutypa ulicis,13
 Frullania dilatata,13
 Gliomastix roseogrisea,13
-Glutinoglossum glutinosum s. str.,13
 Gorgoniceps micrometra,13
 Graphium,13
 Gunnera,13
@@ -6880,9 +6852,10 @@ Leptosporomyces septentrionalis,13
 Licea castanea,13
 Licea testudinacea,13
 Lichenoconium lecanorae,13
+Lysimachia arvensis,13
 Macrophoma fraxini,13
 Mazzantia galii,13
-Micarea prasina s. lat.,13
+Micarea prasina,13
 Microglossum fuscorubens,13
 Microthyrium hederae,13
 Mollisia poaeoides,13
@@ -6961,13 +6934,13 @@ Verrucaria,13
 Achlya colorata,12
 Acorus calamus,12
 Agaricus lateoalbus,12
+Agrostis canina,12
 Agyrium rufum,12
 Aleuria luteonitens,12
 Alopecurus myosuroides,12
 Alternaria brassicae,12
 Anthostoma decipiens,12
 Apiospora hysterina,12
-Arrhenia peltigerina,12
 Arthonia apotheciorum,12
 Arthonia diploiciae,12
 Arthonia vinosa,12
@@ -6977,9 +6950,7 @@ Ascobolus elegans,12
 Ascochyta ari,12
 Ascochyta chenopodii,12
 Ascochyta molleriana,12
-Ascocoryne sarcoides s. lat.,12
 Ascophanus cinerellus,12
-Aster sens. lat.,12
 Astrantia major,12
 Athelopsis galzinii,12
 Balsamia vulgaris,12
@@ -7081,7 +7052,6 @@ Lophomerum rhododendri,12
 Lulworthia medusa,12
 Lupinus polyphyllus,12
 Lyophyllum konradianum,12
-Lysimachia arvensis sens. lat.,12
 Melampsora orchidis-repentis,12
 Melampsora ribesii-viminalis orth. var.,12
 Melanoleuca graminicola,12
@@ -7113,7 +7083,7 @@ Ophiocordyceps entomorrhiza,12
 Orthilia secunda,12
 Parmelina tiliacea,12
 Patellariopsis atrovinosa,12
-Pectenia plumbea s. lat.,12
+Pectenia plumbea,12
 Pelargonium,12
 Penicillium camemberti,12
 Penicillium spinulosum,12
@@ -7191,10 +7161,9 @@ Tricholoma colossus,12
 Tulasnella interrogans,12
 Unguicularia,12
 Uromyces dianthi,12
-Usnea cornuta s. lat.,12
+Usnea cornuta,12
 Valsa intermedia,12
 Verrucaria coerulea,12
-Vicia sens. lat.,12
 Wakefieldia macrospora,12
 Wettsteinina,12
 Xenosperma ludibundum,12
@@ -7202,7 +7171,6 @@ Abies nordmanniana,11
 Achroomyces,11
 Aesculus indica,11
 Agaricomycetes,11
-Agrostis canina,11
 Amaranthus,11
 Amerosporium polynematoides,11
 Anemone,11
@@ -7279,7 +7247,6 @@ Entoloma griseorubellum,11
 Entoloma ochromicaceum,11
 Entoloma placidum,11
 Entomophthora culicis,11
-Epichloe typhina s. lat.,11
 Erigeron canadensis,11
 Erysiphe magnifica,11
 Euphrasia arctica,11
@@ -7472,8 +7439,8 @@ Alternaria solani,10
 Amorphotheca resinae,10
 Anthostomella conorum,10
 Antrodia,10
-Arctium minus sens. lat.,10
 Arctium nemorosum,10
+Arenaria serpyllifolia,10
 Arthrorhaphis citrinella,10
 Ascochyta graminicola,10
 Ascochyta pisi,10
@@ -7601,7 +7568,7 @@ Lathyrus nissolia,10
 Lavandula,10
 Lavatera,10
 Lecanora,10
-Lecidea lactea s. lat.,10
+Lecidea lactea,10
 Lepraria caesioalba,10
 Leptosphaeria rubella,10
 Leptostroma herbarum,10
@@ -7912,7 +7879,7 @@ Leptonia,9
 Leptopeltis nebulosa,9
 Leptosphaeria pelagica,9
 Leptosphaerulina trifolii,9
-Leveillula taurica s. lat.,9
+Leveillula taurica,9
 Linaria purpurea,9
 Lobarina scrobiculata,9
 Lonicera nitida,9
@@ -8005,7 +7972,6 @@ Puccinia kusanoi,9
 Puccinia triseti,9
 Pythiopsis cymosa,9
 Pyxidiophora microspora,9
-Ramariopsis kunzei s. lat.,9
 Ramularia macrospora,9
 Resinicium furfuraceum,9
 Rhizocarpon viridiatrum,9
@@ -8226,7 +8192,6 @@ Genea fragrans,8
 Gibberella,8
 Globisporangium debaryanum,8
 Glyceria notata,8
-Golovinomyces cynoglossi s. str.,8
 Grahamiella dryadis,8
 Gymnomyces xanthosporus,8
 Gymnopilus odini comb. inval.,8
@@ -8348,7 +8313,6 @@ Pinus peuce,8
 Pleospora androsaces,8
 Pleospora vitalbae,8
 Poa glauca,8
-Poa pratensis sens. lat.,8
 Polyscytalum fagicola,8
 Polyscytalum truncatum,8
 Primula farinosa,8
@@ -8418,7 +8382,7 @@ Striaticonidium cinctum,8
 Symphytocarpus confluens,8
 Syzygospora pallida,8
 Talaromyces funiculosus,8
-Tapesia fusca s. lat.,8
+Tapesia fusca,8
 Tapesia toruloides,8
 Taphrina bullata,8
 Tephrocybe murina,8
@@ -8443,6 +8407,7 @@ Tulasnella dissitispora,8
 Tulosesus amphithallus,8
 Typhula capitata,8
 Unguiculariopsis ilicincola,8
+Unguiculariopsis robergei,8
 Urocystis primulicola,8
 Uromyces scutellatus,8
 Usnea glabrescens,8
@@ -8477,7 +8442,6 @@ Antennatula pinophila,7
 Anthostomella scotina,7
 Aquanectria penicillioides,7
 Arachnophora fagicola,7
-Arenaria serpyllifolia,7
 Arthonia epiphyscia,7
 Arthonia varians,7
 Arthroderma quadrifidum,7
@@ -8622,7 +8586,7 @@ Hemimycena gypsella,7
 Herteliana gagei,7
 Hohenbuehelia,7
 Homostegia piggotii,7
-Hyaloperonospora brassicae s. lat.,7
+Hyaloperonospora brassicae,7
 Hydnellum velutinum,7
 Hydnotrya confusa,7
 Hygrocybe subpapillata,7
@@ -8920,8 +8884,7 @@ Badhamia populina,6
 Belonium,6
 Belonopsis,6
 Berberis darwinii,6
-Blastenia ferruginea s. lat.,6
-Blumeria graminis s. str.,6
+Blastenia ferruginea,6
 Botryobasidium intertextum,6
 Botrytis galanthina,6
 Branta canadensis,6
@@ -8965,7 +8928,6 @@ Clitocybe ornamentalis,6
 Clitopaxillus alexandri,6
 Clitopilopsis hirneola,6
 Coccinella septempunctata,6
-Coleosporium tussilaginis s. str.,6
 Colletotrichum malvarum,6
 Collybia multijuga,6
 Comatricha rigidireta,6
@@ -9092,6 +9054,7 @@ Hylastes opacus,6
 Hymenoscyphus rhytidiadelphi,6
 Hyphoderma orphanellum,6
 Hyphodontia griseliniae,6
+Hypnum cupressiforme,6
 Hypohelion scirpinum,6
 Hypomyces strigosus,6
 Hysteropezizella lyngei,6
@@ -9220,7 +9183,6 @@ Phaeographis smithii,6
 Phaeoisaria,6
 Phaeospora rimosicola,6
 Phallus duplicatus,6
-Phlebia livida s. lat.,6
 Phleum,6
 Phloeosporella,6
 Phlyctochytrium aureliae,6
@@ -9365,6 +9327,7 @@ Topospora proboscidea,6
 Torula,6
 Tranzschelia,6
 Tranzschelia thalictri,6
+Trapelia glebulosa,6
 Trapelia obtegens,6
 Trechispora amianthina,6
 Trechispora clancularis,6
@@ -9377,8 +9340,8 @@ Trichophaea pseudogregaria,6
 Trichophaea sublivida,6
 Trichormus catenula,6
 Trichosphaeria pilosa,6
+Tripleurospermum maritimum,6
 Typhula erumpens,6
-Unguiculariopsis robergei,6
 Unguiculella eurotioides,6
 Urocystis floccosa,6
 Usnea,6
@@ -9447,7 +9410,6 @@ Blastenia crenularia,5
 Bloxamia leucophthalma,5
 Boidinia permixta,5
 Bradysia,5
-Bremia lactucae s. str.,5
 Bryobilimbia hypnorum,5
 Bryocentria brongniartii,5
 Buergenerula typhae,5
@@ -9488,7 +9450,6 @@ Cistella crassipila,5
 Cistella perparvula,5
 Cistus,5
 Cladium,5
-Cladonia arbuscula,5
 Cladonia cornuta,5
 Cladosporium orchidis,5
 Clastoderma debaryanum,5
@@ -9544,7 +9505,6 @@ Cytospora corni,5
 Cytospora kunzei,5
 Cytospora platani,5
 Cytospora vaccinii,5
-Dacrymyces stillatus s. lat.,5
 Dacrymyces tortus,5
 Delitschia furfuracea,5
 Dentipellis fragilis,5
@@ -9604,7 +9564,6 @@ Epilobium roseum,5
 Erynia plecopteri,5
 Euphrasia confusa,5
 Eutypa aspera,5
-Exidia nucleata s. lat.,5
 Fayodia anthracobia,5
 Flammulaster speireoides,5
 Fumaria bastardii,5
@@ -9833,7 +9792,6 @@ Phoma saxifragarum,5
 Phomopsis choisyae,5
 Phomopsis malvacearum,5
 Phomopsis polygonorum,5
-Phyllactinia guttata s. str.,5
 Phylloscypha boltonii,5
 Phyllosticta aucubae,5
 Phyllosticta mahoniae,5
@@ -9936,6 +9894,7 @@ Sclerococcum parasiticum,5
 Scopinella caulincola,5
 Scorzonera humilis,5
 Scytinium palmatum,5
+Sedum,5
 Seimatosporium macrospermum,5
 Senecio elegans,5
 Septocylindrium leucum,5
@@ -9994,13 +9953,11 @@ Tipulidae,5
 Tomentella griseoviolacea,5
 Torrentispora dubia,5
 Torula pulveracea,5
-Trapelia glebulosa s. lat.,5
 Trechispora candidissima,5
 Trechispora sphaerospora,5
 Tricholoma guttatum,5
 Tricladium,5
 Trimmatostroma,5
-Tripleurospermum maritimum,5
 Tripospermum,5
 Tropaeolum majus,5
 Tubercularia nigricans,5
@@ -10094,10 +10051,9 @@ Ascochyta trifolii,4
 Ascomycetes,4
 Ascotricha chartarum,4
 Aspergillus versicolor,4
-Aspicilia cinerea s. lat.,4
+Aspicilia cinerea,4
 Asplenium trichomanes,4
 Astrantia,4
-Athelia arachnoidea s. lat.,4
 Athelia teutoburgensis,4
 Aucuba,4
 Aulacomnium palustre,4
@@ -10272,7 +10228,7 @@ Didymella caulicola,4
 Didymella pinodes,4
 Didymium ovoideum,4
 Didymium pertusum,4
-Didymocyrtis epiphyscia s. lat.,4
+Didymocyrtis epiphyscia,4
 Didymodon,4
 Didymopsis helvellae,4
 Dimargaris verticillata,4
@@ -10302,7 +10258,6 @@ Endophragmiella corticola,4
 Endophragmiella fagicola,4
 Enterographa hutchinsiae,4
 Entodesmium niesslianum,4
-Entoloma bloxamii s. str.,4
 Entoloma cocles,4
 Entoloma fridolfingense,4
 Entoloma mutabilipes,4
@@ -10399,7 +10354,6 @@ Hyphoderma obtusiforme,4
 Hyphoderma sibiricum,4
 Hyphodiscus,4
 Hypholoma tuberosum,4
-Hypnum cupressiforme s.str.,4
 Hypocopra brefeldii,4
 Hypocopra merdaria,4
 Hypomyces albidus,4
@@ -10616,6 +10570,7 @@ Peziza paludicola,4
 Peziza subumbrina,4
 Peziza udicola,4
 Pezizella ascopharoides,4
+Pezizella eburnea,4
 Pezizella parasitica,4
 Pezoloma marchantiae,4
 Phacidium vaccinii,4
@@ -10796,7 +10751,6 @@ Scrophularia scorodonia,4
 Scutellinia minor,4
 Scutellinia mirabilis,4
 Scutomollisia pallido-ochracea,4
-Sedum sens. lat.,4
 Selenophoma asterina,4
 Septofusidium elegantulum,4
 Septonema,4
@@ -10965,7 +10919,6 @@ Arabidopsis petraea,3
 Arachniotus confluens,3
 Arbusculina,3
 Arcyria,3
-Arenaria serpyllifolia sens. lat.,3
 Artemisia abrotanum,3
 Arthrinium fuckelii,3
 Arthrorhaphis grisea,3
@@ -11062,7 +11015,7 @@ Cercosporella,3
 Cercosporella brassicae,3
 Cerinthe minor,3
 Ceriosporopsis calyptrata,3
-Cetrelia olivetorum s. lat.,3
+Cetrelia olivetorum,3
 Chaenomeles speciosa,3
 Chaenotheca brunneola,3
 Chaetodermella luna,3
@@ -11322,7 +11275,6 @@ Gliomastix cerealis,3
 Globisporangium pulchrum,3
 Glomus coremioides,3
 Glutinoglossum pseudoglutinosum,3
-Glyceria fluitans sens. lat.,3
 Gnomonia,3
 Gnomonia nervisequa,3
 Gnomonia salina,3
@@ -11383,7 +11335,6 @@ Hymenoscyphus fibrillosus,3
 Hymenoscyphus infarciens,3
 Hymenoscyphus tuba,3
 Hypericum xylosteifolium,3
-Hyphoderma setigerum s. lat.,3
 Hyphodontia granulosa,3
 Hypholoma xanthocephalum,3
 Hyphopolynema ellisiorum,3
@@ -11407,7 +11358,7 @@ Inocybe brunneotomentosa,3
 Inocybe calida,3
 Inocybe castorina,3
 Inocybe fuligineoatra,3
-Inocybe fuscidula s. lat.,3
+Inocybe fuscidula,3
 Inocybe gaiana,3
 Inocybe giacomi,3
 Inocybe ionolepis,3
@@ -11636,7 +11587,6 @@ Perichaena pedata,3
 Periconia laminella,3
 Periconiella,3
 Peronospora agrimoniae,3
-Peronospora arborescens s. str.,3
 Peronospora belbahrii,3
 Peronospora somniferi,3
 Peronosporales,3
@@ -11648,7 +11598,6 @@ Peziza fortoulii,3
 Peziza isabellina,3
 Peziza merdae,3
 Peziza nidulariformis,3
-Pezizella eburnea,3
 Phacidium betulinum,3
 Phacidium falconeri,3
 Phaeocollybia lugubris,3
@@ -11719,7 +11668,6 @@ Poa alpina,3
 Podosphaera alpina,3
 Podosphaera delphinii,3
 Podosphaera pruni-lusitanicae,3
-Podosphaera tridactyla s. str.,3
 Podospora perplexens,3
 Polycoccum marmoratum,3
 Polycoccum squamarioides,3
@@ -11837,7 +11785,7 @@ Saccobolus truncatus,3
 Salicornia dolichostachya,3
 Salix cinerea x purpurea x viminalis = S. x forbyana,3
 Salix euxina,3
-Salix fragilis sens. lat.,3
+Salix fragilis,3
 Salix lanata,3
 Salix matsudana,3
 Salix myrsinites,3
@@ -12017,7 +11965,6 @@ Tricholoma luridum,3
 Tricholoma pardinum,3
 Tricholoma persicinum,3
 Tricholoma viridifucatum,3
-Trichopezizella nidulus s. lat.,3
 Trichopezizella relicina,3
 Trichophaea saccata,3
 Trichosporiella cerebriformis,3
@@ -12027,7 +11974,6 @@ Tropaeolum peregrinum,3
 Troposporella olivacea,3
 Trullula melanochlora,3
 Tryblidiopsis pinastri,3
-Tubaria furfuracea s. lat.,3
 Tubaria praestans,3
 Tubercularia,3
 Tubeufia parvula,3
@@ -12042,7 +11988,6 @@ Tympanis hypopodia,3
 Typhula berthieri,3
 Typhula filiformis,3
 Typhula gracillima,3
-Typhula pusilla s. lat.,3
 Typhula thaxteri,3
 Ulocladium consortiale,3
 Unguiculella,3
@@ -12064,7 +12009,6 @@ Verticillium catenulatum,3
 Verticillium epimyces,3
 Vibrissea decolorans,3
 Vibrissea norvegica,3
-Vicia,3
 Vincetoxicum nigrum,3
 Viola riviniana x lactea,3
 Virgariella atra,3
@@ -12422,7 +12366,6 @@ Coleosporium narcissi nom. inval.,2
 Collema nigrescens,2
 Colletotrichum capsici,2
 Colletotrichum circinans,2
-Colletotrichum dematium s. lat.,2
 Colletotrichum lini,2
 Collybia paupertina,2
 Colpoma,2
@@ -12439,7 +12382,7 @@ Coniothyrium slaptonense,2
 Coniothyrium tamaricis,2
 Conium,2
 Conocephalum,2
-Conocephalum conicum s.str.,2
+Conocephalum conicum,2
 Conocybe crispa,2
 Conocybe enderlei,2
 Conocybe hornana,2
@@ -12680,7 +12623,6 @@ Erica vagans,2
 Erigeron acris,2
 Erigeron floribundus,2
 Erodium,2
-Erophila verna sens. lat.,2
 Erostrotheca multiformis,2
 Eryngium,2
 Erysiphe cotini,2
@@ -12818,7 +12760,6 @@ Hyalopus curtipes,2
 Hyalorbilia fagi,2
 Hyaloscypha carpinacea,2
 Hydnangium,2
-Hydnellum concrescens s. lat.,2
 Hydnellum lepidum,2
 Hydnotrya,2
 Hydnum pallidum,2
@@ -12845,7 +12786,6 @@ Hypericum 'Hidcote',2
 Hyphoderma cristulatum,2
 Hyphodontia spathulata,2
 Hypholoma elaeodes,2
-Hypnum cupressiforme,2
 Hypochaeris,2
 Hypocopra planispora,2
 Hypocopra stercoraria,2
@@ -13353,7 +13293,6 @@ Placidium squamulosum,2
 Plagiochila asplenioides,2
 Plagiomnium undulatum,2
 Plasmopara pimpinellae,2
-Plasmopara pusilla s. str.,2
 Platismatia norvegica,2
 Pleosphaeria lophoziae,2
 Pleospora palustris,2
@@ -13406,7 +13345,6 @@ Protoventuria straussii,2
 Psathyrella casca,2
 Psathyrella gracillima,2
 Psathyrella pervelata,2
-Psathyrella prona s. lat.,2
 Psathyrella pseudocasca,2
 Psathyrella scobinacea,2
 Psathyrella sphaerocystis,2
@@ -13444,7 +13382,6 @@ Puccinia jaceae,2
 Puccinia microsora,2
 Puccinia mixta,2
 Puccinia pazschkei,2
-Puccinia porri s. lat.,2
 Puccinia prostii,2
 Puccinia ruebsaamenii,2
 Puccinia silvatica,2
@@ -13527,7 +13464,6 @@ Rosa canina x sherardii = R. x rothschildii,2
 Rosa tomentosa,2
 Rosa x alba,2
 Rosellinia callosa,2
-Rosellinia mammiformis s. lat.,2
 Rosellinia obliquata,2
 Roselliniopsis gelidaria,2
 Roselliniopsis tartaricola,2
@@ -13787,7 +13723,6 @@ Umbelopsis vinacea,2
 Umbilicaria proboscidea,2
 Unguiculariopsis hamatopilosa,2
 Unguiculariopsis lettaui,2
-Unguiculariopsis robergei s. lat.,2
 Uredo morvernensis,2
 Urocystis,2
 Urocystis alopecuri,2
@@ -13909,7 +13844,6 @@ Agave,1
 Agonimia allobata,1
 Agriotes sputator,1
 Agrocybe ombrophila,1
-Agrostis canina sens. lat.,1
 Agrostis curtisii,1
 Aira caryophyllea,1
 Ajuga,1
@@ -14028,7 +13962,6 @@ Arnaudiella genistae,1
 Arnium cervinum,1
 Arrhenia cyathella,1
 Arrhenia parvivelutina,1
-Arrhenia peltigerina s. lat.,1
 Arthonia arthonioides,1
 Arthonia invadens,1
 Arthonia ligniaria,1
@@ -14100,7 +14033,6 @@ Aspergillus ustus,1
 Asperula cynanchica,1
 Aspicilia laevata,1
 Aspidistra,1
-Aster,1
 Asteroma aceris,1
 Asteroma reticulatum,1
 Asteromella arbuticola,1
@@ -14240,9 +14172,9 @@ Callistephus chinensis,1
 Callistosporium,1
 Calonectria platasca,1
 Caloplaca caesiorufa,1
-Caloplaca citrina s. lat.,1
-Caloplaca herbidella s. lat.,1
-Caloplaca holocarpa s. lat.,1
+Caloplaca citrina,1
+Caloplaca herbidella,1
+Caloplaca holocarpa,1
 Caloplaca littorea,1
 Caloplaca lucifuga,1
 Caloplaca stillicidiorum,1
@@ -14432,7 +14364,6 @@ Cladonia callosa,1
 Cladonia carneola,1
 Cladonia cyathomorpha,1
 Cladonia pleurota,1
-Cladonia squamosa s. lat.,1
 Cladonia stricta,1
 Cladonia umbricola,1
 Cladorrhinum tomentosum,1
@@ -14822,7 +14753,6 @@ Diaporthe baccharidis,1
 Diaporthe buddleiae,1
 Diaporthe conjuncta,1
 Diaporthe cotoneastri,1
-Diaporthe eres s. lat.,1
 Diaporthe garryae,1
 Diaporthe ilicis,1
 Diaporthe ligustri,1
@@ -15117,7 +15047,6 @@ Galeopsis speciosa,1
 Galera campanulata,1
 Galera lateritia,1
 Galerina annulata,1
-Galerina hypnorum s. lat.,1
 Galerina pseudotundrae,1
 Galerina sphagnicola,1
 Galerina stordalii,1
@@ -15298,7 +15227,7 @@ Heteromycophaga,1
 Heteroptera,1
 Hieracium daedalolepioides,1
 Hieracium lasiophyllum,1
-Hieracium rubicundum sens. lat.,1
+Hieracium rubicundum,1
 Hieracium triviale,1
 Hillenburgia nasturtii,1
 Hippuris,1
@@ -15625,7 +15554,6 @@ Lepra monogona,1
 Lepraria alba nom. superfl.,1
 Lepraria alpina,1
 Lepraria crassissima,1
-Lepraria incana s. str.,1
 Lepraria jackii,1
 Leproloma,1
 Lepteutypa,1
@@ -15718,7 +15646,7 @@ Lophodermium punctiforme,1
 Lophodermium sieglingiae,1
 Lophodermium versicolor,1
 Lophotrichus bartlettii,1
-Loxospora elatina s. lat.,1
+Loxospora elatina,1
 Lulworthia,1
 Lulworthia longirostris,1
 Luma apiculata,1
@@ -15739,7 +15667,6 @@ Lyophyllum capniocephalum,1
 Lyophyllum immundum,1
 Lyophyllum paelochroum,1
 Lysimachia,1
-Lysimachia arvensis,1
 Lythrum portula,1
 Macrolepiota olivascens,1
 Macrophoma draconis,1
@@ -16169,7 +16096,6 @@ Pelargonium capitatum,1
 Pelargonium inquinans x zonale = P. x hybridum,1
 Pellionella macrospora,1
 Peltigera britannica,1
-Peltigera canina s. lat.,1
 Penicillium albidum,1
 Penicillium atrovenetum,1
 Penicillium aurantiocandidum,1
@@ -16241,7 +16167,6 @@ Peziza pseudoammophila,1
 Peziza spinosae,1
 Peziza subvesiculosa,1
 Peziza subviolacea,1
-Pezizella eburnea s. lat.,1
 Pezizella hughesii,1
 Pezizella milliaris,1
 Pezizellaster serratus,1
@@ -16291,7 +16216,6 @@ Phlebia chrysocreas,1
 Phlebia lacteola,1
 Phlebia subulata,1
 Phlebiella caricis-pendulae,1
-Phleum pratense sens. lat.,1
 Phlomis fruticosa,1
 Phlox drummondii,1
 Phlyctema,1
@@ -16483,7 +16407,7 @@ Placynthiella hyporhoda,1
 Placynthium subradiatum,1
 Plagiochila asplenioides s.l.,1
 Plagiochila punctata,1
-Plagiochila spinulosa s.str.,1
+Plagiochila spinulosa,1
 Plagiostoma arnstadtiense,1
 Plagiostoma campylostyla,1
 Plagiostoma robergeanum,1
@@ -16550,7 +16474,7 @@ Polyporus michelii,1
 Polyschema,1
 Polyschema clavulatum,1
 Polythrincium,1
-Polytrichum commune s.str.,1
+Polytrichum commune,1
 Polytrichum strictum,1
 Populus candicans 'Aurora',1
 Populus deltoides,1
@@ -16574,7 +16498,7 @@ Postia placenta,1
 Potamophylax latipennis,1
 Potebniamyces pyri,1
 Potentilla recta,1
-Potentilla x mixta sens. lat.,1
+Potentilla x mixta,1
 Preussia,1
 Preussia dubia,1
 Preussia lignicola,1
@@ -16697,7 +16621,6 @@ Pulmonaria 'Mawson's Blue',1
 Pulvinaria floccifera,1
 Pulvinula,1
 Punctelia reddenda,1
-Punctelia subrudecta s. str.,1
 Purpureocillium lilacinum,1
 Pustula,1
 Pycnoporus sanguineus,1
@@ -16989,7 +16912,6 @@ Scytinium intermedium,1
 Scytinium tenuissimum,1
 Sebacina mesomorpha,1
 Secale,1
-Sedum,1
 Sedum acre,1
 Seimatosporium,1
 Seimatosporium foliicola,1
@@ -17273,7 +17195,7 @@ Thelephora intybacea,1
 Thelidium,1
 Thelidium papulare,1
 Thelidium zwackhii,1
-Thelocarpon epibolum s. lat.,1
+Thelocarpon epibolum,1
 Thelocarpon impressellum,1
 Thelotrema subtile,1
 Thermutis velutina,1
@@ -17304,7 +17226,6 @@ Torula abbreviata,1
 Torula lucifuga,1
 Torula sulphurea,1
 Trametes cingulata,1
-Trapelia glebulosa s. str.,1
 Trapeliopsis viridescens,1
 Trapeliopsis wallrothii,1
 Trechinothus smardae,1
@@ -17356,7 +17277,7 @@ Tricholoma fracticum,1
 Tricholoma impolitum,1
 Tricholoma megaphyllum,1
 Tricholoma porphyroleucum,1
-Tricholoma umbonatum s. lat.,1
+Tricholoma umbonatum,1
 Tricholoma vinaceogriseum,1
 Tricholomataceae,1
 Trichonectria hyalocristata,1
@@ -17366,7 +17287,6 @@ Trichophaea bulbocrinita,1
 Trichophaea lecothecioides,1
 Trichophaeopsis,1
 Trichophaeopsis tetraspora,1
-Trichophorum cespitosum,1
 Trichophyton simii,1
 Trichosphaeria caesia,1
 Trichosphaeria superficialis,1
@@ -17385,7 +17305,6 @@ Triglochin palustris,1
 Trigonella foenum-graecum,1
 Trimorphomyces papilionaceus,1
 Trinacrium,1
-Tripleurospermum maritimum sens. lat.,1
 Triscelophorus magnificus,1
 Triticum spelta,1
 Trochila,1
@@ -17415,7 +17334,6 @@ Typhaceae,1
 Typhula caricina,1
 Typhula graminum,1
 Typhula hollandii,1
-Typhula spathulata s. lat.,1
 Tyromyces revolutus,1
 Tyromyces sublacteus,1
 Ulex europaeus x gallii = U. x breoganii,1
@@ -17507,7 +17425,7 @@ Wettsteinina lacustris,1
 Wilcoxina,1
 Xanthoparmelia tinctina,1
 Xanthoria aureola,1
-Xanthoria candelaria s. lat.,1
+Xanthoria candelaria,1
 Xanthoria ucrainica,1
 Xenolophium,1
 Xenomeris alpina,1

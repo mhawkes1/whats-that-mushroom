@@ -352,10 +352,17 @@ but copying the top view into the app's own storage would be better.
   and withholds the one it should have refused over. The batch created 14 new
   lethal pairs.
 
-  Still 36% over the top 200, so there is a second batch to do. The candidates
-  are printed by `python scripts/frdbi_gap.py --top 200`, and past about 250
-  the genus table needs extending first — the report says so rather than
-  quietly undercounting.
+  A second batch of 129 completed the top 200. The label space is 235 species
+  and 126 lethal pairs, from 79 and 53 at the start of the day. Below rank 200
+  coverage falls away sharply, and `--top 300` needs the genus table extended
+  first — the report says so rather than quietly undercounting.
+
+  Two consequences worth carrying forward. The worksheet is now 1,155 rows
+  rather than 289, so the mycological review is a fivefold bigger job and the
+  bulk-written rows deserve less trust than the originals. And 235 classes is
+  a much harder training problem than 79, with several pairs that are not
+  separable from a photograph at all — which is an argument for watching
+  risk-weighted error rather than accuracy, as rule 6 already requires.
 
 ## Explicitly not doing
 

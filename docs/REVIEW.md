@@ -237,14 +237,39 @@ forced into the nearest class it knows, which may be something harmless.
 
 `scripts/frdbi_gap.py` measures the label space against the Fungal Records
 Database of Britain and Ireland — the full export, 17,536 taxa, 2026-09-22.
-**57 of the 100 most-recorded British macrofungi are in it**, after the
-frequency-driven additions below, and 36% of the top 200.
+**All 200 of the most-recorded British macrofungi are now in it.** The label
+space went 79 → 235 in two batches on 2026-09-22, and the worksheet went 289
+rows → 1,155.
+
+That is the review queue, and it grew fivefold. The compiler's own confidence
+did not grow with it: the first 289 rows were derived from notes written for
+species chosen one at a time, and the 866 new ones were written in bulk
+against a ranking. **Treat the new rows as weaker than the old ones.**
 
 That is the expected shape rather than a failure: the label space was
 assembled around danger, not frequency, so it holds eleven species that can
 kill and the ordinary ones each is confused with. But a beginner on a walk
 meets the frequent ones, and sixty-nine of them currently have no class to
 land in.
+
+**A second batch of 129 followed**, completing the top 200. The toxicity
+grading across all of them is explicitly deferred: Martin will check it once a
+mycologist has signed the species off. Until then every value is the
+compiler's conservative reading, and the distribution is 11 DEADLY,
+10 SERIOUS, 59 TOXIC, 155 INEDIBLE.
+
+Three things in that batch are worth a reviewer's attention before the rest:
+
+- ***Helvella crispa* recorded TOXIC.** It contains hydrazines of the same
+  family as *Gyromitra*. Graded conservatively; commonly eaten after cooking.
+- ***Psilocybe semilanceata* is in the label space.** It is common, and the
+  small brown mushrooms it is confused with include *Galerina marginata*.
+  Possession and picking are controlled in the UK.
+- **Several additions are not separable from a photograph.** The two
+  *Crepidotus*, the two *Ganoderma*, most of the resupinate crusts. They are
+  in because they are recorded in their thousands and the model will otherwise
+  force them into something else — but the app should be expected to refuse on
+  them, and that is the right outcome.
 
 **Twenty-seven were added on 2026-09-22**, chosen by record count and by
 whether they land next to something already dangerous. They created 14 new
@@ -274,7 +299,7 @@ UNREVIEWED.
 
 Filling the companion ebook from the taxonomy measured this, because a book
 row that comes back blank is a character the taxonomy never describes. Across
-106 species:
+235 species:
 
 | Character | Species describing it |
 | --- | --- |
@@ -293,7 +318,7 @@ correctly treats as no evidence at all.
 14. **Are `habitat` and `season` worth describing for every species, or worth
     dropping as questions?** Either is defensible. What is not defensible is
     asking a question that cannot move an answer. A forager filling these two
-    columns for all 106 species would make two of the cheapest observations a
+    columns for all 235 species would make two of the cheapest observations a
     user can make — where they are standing, and what month it is — actually
     count.
 
