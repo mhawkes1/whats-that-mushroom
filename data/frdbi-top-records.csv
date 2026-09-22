@@ -1,0 +1,159 @@
+# Most-recorded taxa in the Fungal Records Database of Britain and Ireland.
+#
+# TRANSCRIBED BY EYE from screenshots of frdbi.org.uk/elastic/explore supplied
+# on 2026-09-21. It was not fetched: this environment's network policy blocks
+# frdbi.org.uk, so every figure here was read off an image and may carry a
+# typo. Re-export it from FRDBI before anyone relies on the numbers.
+#
+# `kind` is this project's judgement, not FRDBI's, and is the whole point of
+# the file -- see scripts/frdbi_gap.py:
+#   fungus      a macrofungus somebody would photograph on a walk
+#   micro       a leaf spot, mildew, rust or crust; real, recorded constantly,
+#               and invisible to a flow that asks about caps and gills
+#   not-fungus  a host plant or a higher taxon. FRDBI records associations,
+#               so beech outranks every fungus in the database.
+scientific_name,records,kind
+Fagus sylvatica,123332,not-fungus
+Anthophyta,105894,not-fungus
+Quercus,105310,not-fungus
+Poaceae,100663,not-fungus
+Betula,91714,not-fungus
+Fagus,49272,not-fungus
+Corylus avellana,31741,not-fungus
+Quercus robur,30393,not-fungus
+Fraxinus excelsior,29954,not-fungus
+Pinus sylvestris,29249,not-fungus
+Pinus,28769,not-fungus
+Salix,23945,not-fungus
+Acer pseudoplatanus,22146,not-fungus
+Pinophyta,20834,not-fungus
+Betula pendula,18902,not-fungus
+Trametes versicolor,18894,fungus
+Stereum hirsutum,17391,fungus
+Xylaria hypoxylon,16556,fungus
+Hypholoma fasciculare,16181,fungus
+Picea,15244,not-fungus
+Laccaria laccata,15046,fungus
+Fomitopsis betulina,13660,fungus
+Gymnospermae,13170,not-fungus
+Russula ochroleuca,12336,fungus
+Auricularia auricula-judae,12251,fungus
+Urtica dioica,11964,not-fungus
+Mycena galericulata,11930,fungus
+Paxillus involutus,11442,fungus
+Daedaleopsis confragosa,10911,fungus
+Alnus glutinosa,10508,not-fungus
+Pluteus cervinus,10360,fungus
+Rubus fruticosus,10309,not-fungus
+Coprinellus micaceus,9746,fungus
+Rhytisma acerinum,9515,micro
+Rhodocollybia butyracea,9449,fungus
+Sambucus nigra,8869,not-fungus
+Daldinia concentrica,8821,fungus
+Lycoperdon perlatum,8809,fungus
+Amanita rubescens,8607,fungus
+Cuphophyllus virgineus,8606,fungus
+Gymnopus dryophilus,8345,fungus
+Larix,8345,not-fungus
+Scleroderma citrinum,8318,fungus
+Apioperdon pyriforme,8218,fungus
+Picea abies,8114,not-fungus
+Nectria cinnabarina,7968,micro
+Clitocybe nebularis,7798,fungus
+Bjerkandera adusta,7688,fungus
+Dacrymyces stillatus,7597,fungus
+Pteridium aquilinum,7205,not-fungus
+Xerocomellus chrysenteron,7128,fungus
+Mycena pura,6948,fungus
+Hygrocybe conica,6918,fungus
+Armillaria mellea,6844,fungus
+Lactarius quietus,6714,fungus
+Cuphophyllus pratensis,6698,fungus
+Amanita muscaria,6633,fungus
+Laccaria amethystina,6632,fungus
+Gliophorus psittacinus,6600,fungus
+Ulmus,6562,not-fungus
+Phallus impudicus,6561,fungus
+Stereum rugosum,6525,fungus
+Russula nigricans,6502,fungus
+Collybiopsis peronata,6450,fungus
+Hygrophoropsis aurantiaca,6386,fungus
+Ganoderma adspersum,6381,fungus
+Collybia nuda,6325,fungus
+Russula cyanoxantha,6262,fungus
+Fraxinus,6252,not-fungus
+Phragmidium violaceum,6194,micro
+Ilex aquifolium,6191,not-fungus
+Leccinum scabrum,6138,fungus
+Tubaria furfuracea,6040,fungus
+Schizopora paradoxa,5994,fungus
+Calocera viscosa,5979,fungus
+Betula pubescens,5909,not-fungus
+Bryophyta,5882,not-fungus
+Russula atropurpurea,5725,fungus
+Jackrogersella multiformis,5656,fungus
+Picea sitchensis,5652,not-fungus
+Hypoxylon fuscum,5648,fungus
+Mycena galopus,5594,fungus
+Hypoxylon fragiforme,5570,fungus
+Tremella mesenterica,5561,fungus
+Imleria badia,5551,fungus
+Musci,,not-fungus
+Lactarius tabidus,5369,fungus
+Cantharellus cibarius,5338,fungus
+Crataegus monogyna,5336,not-fungus
+Amanita fulva,5308,fungus
+Inocybe geophylla,5210,fungus
+Hymenopellis radicata,5202,fungus
+Gymnopilus penetrans,5188,fungus
+Hygrocybe chlorophana,5185,fungus
+Quercus petraea,5180,not-fungus
+Boletus edulis,5155,fungus
+Rickenella fibula,5120,fungus
+Mycena vitilis,5034,fungus
+Paralepista flaccida,4925,fungus
+Chlorociboria aeruginascens,4875,fungus
+Alnus,4849,not-fungus
+Collybiopsis confluens,4845,fungus
+Lactarius turpis,4821,fungus
+Hygrocybe coccinea,4801,fungus
+Tricholomopsis rutilans,4780,fungus
+Castanea sativa,4756,not-fungus
+Polyporus squamosus,4737,fungus
+Erysiphe alphitoides,4728,micro
+Crepidotus variabilis,4682,fungus
+Lactarius blennius,4668,fungus
+Coprinus comatus,4667,fungus
+Heterobasidion annosum,4628,fungus
+Diatrype stigma,4545,micro
+Cystoderma amianthinum,4537,fungus
+Psathyrella candolleana,4532,fungus
+Lactarius subdulcis,4498,fungus
+Clitocybe fragrans,4424,fungus
+Xylaria polymorpha,4348,fungus
+Mycena inclinata,4342,fungus
+Clitopilus prunulus,4341,fungus
+Tilia,4320,not-fungus
+Psathyrella piluliformis,4314,fungus
+Rhodocollybia maculata,4296,fungus
+Stropharia semiglobata,4289,fungus
+Calocera cornea,4271,fungus
+Flammulina velutipes,4262,fungus
+Bolbitius titubans,4248,fungus
+Russula nobilis,4201,fungus
+Marasmius rotula,4153,fungus
+Mycena arcangeliana,4152,fungus
+Leptosphaeria acuta,4142,micro
+Parasola plicatilis,4134,fungus
+Collybiopsis ramealis,4104,fungus
+Polyporus leptocephalus,4103,fungus
+Rhopographus filicinus,4083,micro
+Lepiota cristata,4078,fungus
+Chlorophyllum rhacodes,3997,fungus
+# The count column is cut off for the rest of the screenshot. Their order is
+# known (descending, below Chlorophyllum rhacodes at 3997); their figures are
+# not, and are left blank rather than guessed.
+Pleurotus ostreatus,,fungus
+Exidia glandulosa,,fungus
+Marasmius oreades,,fungus
+Coprinopsis atramentaria,,fungus

@@ -221,18 +221,37 @@ question, not an assertion.
 
 ### Possible coverage gaps
 
-These are **not** in the label space and arguably should be. A species the
-model has never seen cannot be flagged as dangerous — it will be forced into
-the nearest class it knows, which may be something harmless.
+A species the model has never seen cannot be flagged as dangerous — it will be
+forced into the nearest class it knows, which may be something harmless.
 
-10. **`Lepiota brunneoincarnata`** and the small brown *Lepiota* species —
-    contain amatoxins, occur in the UK, and are genuinely lethal. Their
-    absence feels like the most significant gap.
-11. **`Amanita pantherina`** — Panther Cap. Present in the UK, seriously toxic.
-12. **`Cortinarius orellanus`** — the other orellanine-containing webcap;
-    only *C. rubellus* is currently included.
+10. ~~**`Lepiota brunneoincarnata`** and the small brown *Lepiota* species.~~
+    **Added**, along with *L. subincarnata*. The classification still needs
+    checking; the gap does not.
+11. ~~**`Amanita pantherina`** — Panther Cap.~~ **Added**, as SERIOUS rather
+    than DEADLY, which is the judgement call flagged above.
+12. ~~**`Cortinarius orellanus`**.~~ **Added**, beside *C. rubellus*.
 13. Any other UK species the reviewer considers a common cause of poisoning
     that is missing.
+
+### Coverage against how often things are actually found
+
+`scripts/frdbi_gap.py` measures the label space against the most-recorded
+taxa in the Fungal Records Database of Britain and Ireland. **29 of the 98
+most-recorded British macrofungi are in it — 30%.**
+
+That is the expected shape rather than a failure: the label space was
+assembled around danger, not frequency, so it holds eleven species that can
+kill and the ordinary ones each is confused with. But a beginner on a walk
+meets the frequent ones, and sixty-nine of them currently have no class to
+land in.
+
+The reviewer's question is not "should these be added" — it is **which
+additions would change what the app refuses**. A common species added without
+the dangerous thing it resembles is worse than no addition at all: it teaches
+a name the model will reach for and withholds the one it should refuse over.
+The script prints, for each candidate, the dangerous species already known in
+its genus and a compiled note on what it is confused with. Both are
+UNREVIEWED.
 
 ### Characters that are described too thinly to be asked about
 

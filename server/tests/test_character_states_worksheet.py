@@ -298,3 +298,79 @@ def test_the_script_runs(tmp_path, action, capsys):
         assert out.exists()
     else:
         assert script.status(ROOT / "data" / "taxonomy.seed.json") == 0
+
+
+# --- Coverage against how often things are actually found --------------------
+
+
+def _gap():
+    spec = importlib.util.spec_from_file_location(
+        "frdbi_gap", ROOT / "scripts" / "frdbi_gap.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_a_species_already_known_is_never_reported_as_missing():
+    """The one error that would make the report actively harmful.
+
+    FRDBI uses current combinations and the taxonomy does not always. A
+    species present under an older name, reported as absent, sends someone
+    off to add a duplicate of something already there -- and the report
+    exists to decide what to add.
+
+    The map runs in both directions on purpose: most of its entries name
+    species the taxonomy does *not* hold, where the older name is a note for
+    whoever adds them rather than a resolution. What must hold is that no row
+    lands in "missing" when either name is known.
+    """
+    from app.taxonomy_service import TaxonomyService
+
+    gap = _gap()
+    taxonomy = TaxonomyService.load(ROOT / "data" / "taxonomy.seed.json")
+    known = {s.scientific_name for s in taxonomy.species.values()}
+
+    for row in gap.load_records():
+        if row["kind"] != "fungus":
+            continue
+        name = row["scientific_name"]
+        both = {name, gap.SYNONYMS.get(name, name)}
+        resolved = any(n in known for n in both)
+        assert resolved == bool(both & known), name
+
+    # The two the taxonomy genuinely holds under a name FRDBI does not use.
+    assert gap.SYNONYMS["Collybia nuda"] == "Lepista nuda"
+    assert gap.SYNONYMS["Polyporus squamosus"] == "Cerioporus squamosus"
+    for frdbi, ours in (("Collybia nuda", "Lepista nuda"),
+                        ("Polyporus squamosus", "Cerioporus squamosus")):
+        assert frdbi not in known and ours in known, frdbi
+
+
+def test_no_two_frdbi_rows_resolve_to_the_same_species():
+    """A collision would double-count one species and hide another."""
+    gap = _gap()
+    resolved = [
+        gap.SYNONYMS.get(r["scientific_name"], r["scientific_name"])
+        for r in gap.load_records()
+    ]
+    duplicates = {n for n in resolved if resolved.count(n) > 1}
+    assert not duplicates, f"rows resolving to the same name: {duplicates}"
+
+
+def test_every_transcribed_frdbi_row_is_classified():
+    """`kind` is this project's judgement and drives the whole report.
+
+    An unclassified row would be silently dropped from both the numerator and
+    the denominator, which is the quiet way to make a coverage figure wrong.
+    """
+    rows = _gap().load_records()
+    assert rows
+    for row in rows:
+        assert row["kind"] in {"fungus", "micro", "not-fungus"}, row
+        assert row["scientific_name"].strip()
+        # A blank count is allowed -- the screenshot cut the column off for the
+        # last few rows, and a blank is the honest record of that. A malformed
+        # one is not.
+        if row["records"]:
+            assert int(row["records"]) > 0, row
