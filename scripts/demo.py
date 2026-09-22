@@ -6,6 +6,15 @@
 No GPU, no dataset, no network. Everything printed here is produced by the
 same code the API serves; nothing is mocked and nothing is a transcript.
 
+## The scenes hand their rankings in
+
+Every ranking below is written into this file, the way the test suite writes
+one. That keeps the demo honest about the stub, and it has a cost worth
+knowing: the label space tripled on 2026-09-22 and this script's output did
+not change by a character, because nothing here asks the taxonomy how big it
+is. Scenes 7 and 8 were added for exactly that reason -- they exercise a pair
+and a refusal that did not exist before the additions.
+
 ## What this can and cannot show
 
 There is no trained classifier. The API's stub backend turns image pixels
@@ -36,6 +45,7 @@ from app.evidence import entropy  # noqa: E402
 from app.incidents import triage  # noqa: E402
 from app.interrogation import InterrogationEngine  # noqa: E402
 from app.ood import OodDetector, free_energy  # noqa: E402
+from app.taxonomy_service import Toxicity  # noqa: E402
 from app.safety import SafetyLayer  # noqa: E402
 from app.taxonomy_service import TaxonomyService  # noqa: E402
 
@@ -94,6 +104,12 @@ def main() -> int:
     taxonomy = TaxonomyService.load(settings.taxonomy_path)
     safety = SafetyLayer(taxonomy, confidence_threshold=0.80)
     engine = InterrogationEngine(taxonomy)
+
+    deadly = [s for s in taxonomy.species.values() if s.toxicity is Toxicity.DEADLY]
+    print(
+        f"\n  {DIM}{len(taxonomy.species)} species  ·  {len(deadly)} that can kill  ·  "
+        f"{len(taxonomy.dangerous_pairs())} lethal pairs{OFF}"
+    )
 
     # ------------------------------------------------------------------
     rule("1. What a user agrees to before the app will do anything")
@@ -174,7 +190,40 @@ def main() -> int:
     )
 
     # ------------------------------------------------------------------
-    rule("7. Something it has never seen")
+    rule("7. A pair that did not exist yesterday")
+    print(
+        f"  {DIM}A stump in January. Velvet shank fruits on broadleaf wood in the "
+        f"cold,\n  and so does the funeral bell -- same stump, same weather, same "
+        f"tawny cap\n  in a tuft. The pair only exists because the velvet shank was "
+        f"added by\n  how often it is recorded.{OFF}\n"
+    )
+    winter = [("flammulina-velutipes", 0.58), ("galerina-marginata", 0.34),
+              ("kuehneromyces-mutabilis", 0.08)]
+    say(safety.assess(winter), taxonomy)
+
+    print(f"\n  {DIM}The user does the print. It comes back white.{OFF}")
+    printed = answer(engine, winter, "spore_print_colour", "White or cream")
+    show_ranking(taxonomy, printed, limit=3)
+    print(f"  {DIM}Still refusing at 74%. Rust brown would have been the "
+          f"funeral bell.{OFF}")
+
+    # ------------------------------------------------------------------
+    rule("8. Two species it will never separate, and says so")
+    crepidotus = [("crepidotus-variabilis", 0.47), ("crepidotus-cesatii", 0.44),
+                  ("crepidotus-mollis", 0.09)]
+    say(safety.assess(crepidotus), taxonomy)
+    print(
+        f"\n  {DIM}These two are separated by spore shape under a microscope and "
+        f"by\n  nothing else. They are in the label space because they are recorded "
+        f"in\n  their thousands, and a species the model has never seen gets forced "
+        f"into\n  the nearest one it knows.\n\n  So the honest outcome is the genus "
+        f"and a refusal, which is what it gives.\n  Adding species by frequency buys "
+        f"coverage and costs precision; this is\n  what paying that is supposed to "
+        f"look like.{OFF}"
+    )
+
+    # ------------------------------------------------------------------
+    rule("9. Something it has never seen")
     import math
 
     known = [2.0, 8.5, 1.5, 0.5]        # a confident, in-distribution logit vector
@@ -197,7 +246,7 @@ def main() -> int:
     )
 
     # ------------------------------------------------------------------
-    rule("8. Reading a spore print off a photograph")
+    rule("10. Reading a spore print off a photograph")
     print(
         f"  {DIM}The one part of this that is finished end to end, because it "
         f"needs no\n  model: real colour science on real pixels. The user "
@@ -242,7 +291,7 @@ def main() -> int:
     )
 
     # ------------------------------------------------------------------
-    rule("9. Telling it that it was wrong")
+    rule("11. Telling it that it was wrong")
     scenarios = [
         (
             "'It said field mushroom. It was a death cap.'",

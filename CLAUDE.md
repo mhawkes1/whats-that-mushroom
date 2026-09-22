@@ -295,6 +295,10 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   cap, gills or spore print for the interrogation engine to ask about. That is
   a reason to watch risk-weighted error rather than accuracy, which is rule 6
   anyway.
+- **`scripts/demo.py` hands its rankings in, so it does not notice the label
+  space changing.** Tripling it from 79 to 235 left the output byte-identical,
+  because no scene asks the taxonomy how big it is. If a change ought to show
+  up there, add a scene that exercises it — scenes 7 and 8 exist for that.
 - **Never add a common species without the dangerous thing it resembles.**
   The label space is a graph. Adding the field mushroom without the death cap
   makes the app *more* dangerous, not less: it teaches a name the model will
