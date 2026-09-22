@@ -53,7 +53,7 @@ characters come from standard references but are unverified.
 
 | Path | What it holds |
 | --- | --- |
-| `data/taxonomy.seed.json` | 79 UK species, lookalike graph, toxicity, diagnostic characters, character states |
+| `data/taxonomy.seed.json` | 106 UK species, lookalike graph, toxicity, diagnostic characters, character states |
 | `ml/fungi_ml/taxonomy.py` | Species model and the asymmetric risk matrix |
 | `ml/fungi_ml/losses.py` | Risk-weighted objective |
 | `ml/fungi_ml/calibrate.py` | Temperature scaling, threshold fitting |
@@ -106,7 +106,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   bug; there is a regression test.
 - **Splits are on `observation_id`, never on image.** If accuracy looks too
   good, check this before believing it.
-- **`character_states` is complete for all 79 species and UNREVIEWED
+- **`character_states` is complete for all 106 species and UNREVIEWED
   throughout.** Derived from the taxonomy's own `notes`, not from a
   mycologist. Complete is not reviewed: `reviewed_by` is still null and
   `/health` still reports `taxonomy_reviewed: false`. A forager's eye over
@@ -156,7 +156,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   there; a test asserts no committed state is one.
 - **Filling the table is a worksheet job, not a code job.** `python
   scripts/character_states.py emit` writes `docs/character-states-worksheet.csv`
-  (289 rows, deadliest first, and it preserves answers already in the sheet);
+  (425 rows, deadliest first, and it preserves answers already in the sheet);
   `import` validates and writes back. A state that is not exactly one of the
   character's answer options is refused, because it would store cleanly and
   never match anything.
@@ -204,7 +204,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   puts the thing the user came to do below the fold); the emergency route is
   pinned to the top corner (the one control that must never need a scroll);
   and the book's "1st Edition · 25 most common species" flag is dropped,
-  because the app's label space is 79 and on that screen the line would be
+  because the app's label space is 106 and on that screen the line would be
   false. The scrim is a real gradient, not stacked translucent views — flat
   bands leave visible edges across the photograph.
 - **The cover's typeface is loaded but never awaited.** `useFonts` reports an
@@ -282,11 +282,12 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   as a field guide — so `habitat`, `season` and `smell` are thin. The run
   prints the per-row tally of what it left blank; that list is the review
   queue, not a bug. Filling it means the worksheet and a mycologist, not code.
-- **The label space covers 30% of what people actually find.** 30 of the 100
-  most-recorded British macrofungi (`python scripts/frdbi_gap.py`, over the
-  full 17,536-taxon FRDBI export). That is the expected shape, not a failure:
-  it was assembled around danger, not frequency. But it is the number to
-  quote when someone asks why a common mushroom is not recognised.
+- **The label space covers 57% of what people actually find**, up from 30%:
+  57 of the 100 most-recorded British macrofungi (`python
+  scripts/frdbi_gap.py`, over the full 17,536-taxon FRDBI export). It still
+  drops to 36% over the top 200, which is the number to quote when someone
+  asks why a common mushroom is not recognised. The skeleton is still the
+  danger graph; frequency is what fills it in.
 - **Never add a common species without the dangerous thing it resembles.**
   The label space is a graph. Adding the field mushroom without the death cap
   makes the app *more* dangerous, not less: it teaches a name the model will

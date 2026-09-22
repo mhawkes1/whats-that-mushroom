@@ -237,13 +237,30 @@ forced into the nearest class it knows, which may be something harmless.
 
 `scripts/frdbi_gap.py` measures the label space against the Fungal Records
 Database of Britain and Ireland — the full export, 17,536 taxa, 2026-09-22.
-**30 of the 100 most-recorded British macrofungi are in it — 30%.**
+**57 of the 100 most-recorded British macrofungi are in it**, after the
+frequency-driven additions below, and 36% of the top 200.
 
 That is the expected shape rather than a failure: the label space was
 assembled around danger, not frequency, so it holds eleven species that can
 kill and the ordinary ones each is confused with. But a beginner on a walk
 meets the frequent ones, and sixty-nine of them currently have no class to
 land in.
+
+**Twenty-seven were added on 2026-09-22**, chosen by record count and by
+whether they land next to something already dangerous. They created 14 new
+lethal pairs, which is the point of the exercise: *Coprinellus micaceus* vs
+*Galerina marginata*, *Cuphophyllus virgineus* vs the white *Clitocybe*
+species, *Amanita fulva* vs *A. phalloides* and *A. virosa*, *Inocybe
+geophylla* against both the *Clitocybes* and *Inocybe erubescens*.
+
+Every one of them needs the same review as the rest, and three carry a
+judgement the compiler is least sure of:
+
+| Species | Recorded as | The call |
+| --- | --- | --- |
+| *Amanita fulva* | TOXIC | Toxic raw; graded by the same policy as *A. rubescens*. |
+| *Inocybe geophylla* | SERIOUS | Muscarine — rarely fatal, usually a hospital matter. Right tier? |
+| *Hygrocybe conica* | TOXIC | A contested record, read conservatively. Please confirm. |
 
 The reviewer's question is not "should these be added" — it is **which
 additions would change what the app refuses**. A common species added without
@@ -257,7 +274,7 @@ UNREVIEWED.
 
 Filling the companion ebook from the taxonomy measured this, because a book
 row that comes back blank is a character the taxonomy never describes. Across
-79 species:
+106 species:
 
 | Character | Species describing it |
 | --- | --- |
@@ -276,7 +293,7 @@ correctly treats as no evidence at all.
 14. **Are `habitat` and `season` worth describing for every species, or worth
     dropping as questions?** Either is defensible. What is not defensible is
     asking a question that cannot move an answer. A forager filling these two
-    columns for all 79 species would make two of the cheapest observations a
+    columns for all 106 species would make two of the cheapest observations a
     user can make — where they are standing, and what month it is — actually
     count.
 

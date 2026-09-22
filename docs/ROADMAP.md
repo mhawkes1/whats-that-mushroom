@@ -344,6 +344,19 @@ but copying the top view into the app's own storage would be better.
   limiting and a retention period. Both are now recorded where they belong
   rather than in this file.
 
+- **Twenty-seven species added by record frequency** (`scripts/frdbi_gap.py`).
+  The label space went 79 → 106 and its coverage of the hundred most-recorded
+  British macrofungi went 30% → 57%. The rule followed throughout: a common
+  species is never added without the dangerous thing it resembles, because
+  adding the first without the second teaches a name the model will reach for
+  and withholds the one it should have refused over. The batch created 14 new
+  lethal pairs.
+
+  Still 36% over the top 200, so there is a second batch to do. The candidates
+  are printed by `python scripts/frdbi_gap.py --top 200`, and past about 250
+  the genus table needs extending first — the report says so rather than
+  quietly undercounting.
+
 ## Explicitly not doing
 
 - **Competing with iNaturalist on community or breadth.** They have won that.
