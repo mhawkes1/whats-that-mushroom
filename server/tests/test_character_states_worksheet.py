@@ -316,14 +316,14 @@ def test_a_species_already_known_is_never_reported_as_missing():
     """The one error that would make the report actively harmful.
 
     FRDBI uses current combinations and the taxonomy does not always. A
-    species present under an older name, reported as absent, sends someone
+    species present under an older name, reported as absent, sends somebody
     off to add a duplicate of something already there -- and the report
     exists to decide what to add.
 
-    The map runs in both directions on purpose: most of its entries name
-    species the taxonomy does *not* hold, where the older name is a note for
-    whoever adds them rather than a resolution. What must hold is that no row
-    lands in "missing" when either name is known.
+    The synonym map runs in both directions on purpose: most of its entries
+    name species the taxonomy does *not* hold, where the older name is a note
+    for whoever adds them. What must hold is that no row lands in "missing"
+    when either name is known.
     """
     from app.taxonomy_service import TaxonomyService
 
@@ -331,46 +331,76 @@ def test_a_species_already_known_is_never_reported_as_missing():
     taxonomy = TaxonomyService.load(ROOT / "data" / "taxonomy.seed.json")
     known = {s.scientific_name for s in taxonomy.species.values()}
 
-    for row in gap.load_records():
-        if row["kind"] != "fungus":
-            continue
-        name = row["scientific_name"]
+    for name, _ in gap.load_records():
         both = {name, gap.SYNONYMS.get(name, name)}
-        resolved = any(n in known for n in both)
-        assert resolved == bool(both & known), name
+        assert bool(both & known) == any(n in known for n in both), name
 
-    # The two the taxonomy genuinely holds under a name FRDBI does not use.
-    assert gap.SYNONYMS["Collybia nuda"] == "Lepista nuda"
-    assert gap.SYNONYMS["Polyporus squamosus"] == "Cerioporus squamosus"
     for frdbi, ours in (("Collybia nuda", "Lepista nuda"),
                         ("Polyporus squamosus", "Cerioporus squamosus")):
+        assert gap.SYNONYMS[frdbi] == ours
         assert frdbi not in known and ours in known, frdbi
 
 
 def test_no_two_frdbi_rows_resolve_to_the_same_species():
     """A collision would double-count one species and hide another."""
     gap = _gap()
-    resolved = [
-        gap.SYNONYMS.get(r["scientific_name"], r["scientific_name"])
-        for r in gap.load_records()
-    ]
+    resolved = [gap.SYNONYMS.get(n, n) for n, _ in gap.load_records()]
     duplicates = {n for n in resolved if resolved.count(n) > 1}
     assert not duplicates, f"rows resolving to the same name: {duplicates}"
 
 
-def test_every_transcribed_frdbi_row_is_classified():
-    """`kind` is this project's judgement and drives the whole report.
+def test_no_unclassified_genus_outranks_the_species_being_reported_on():
+    """The quiet failure this report could have.
 
-    An unclassified row would be silently dropped from both the numerator and
-    the denominator, which is the quiet way to make a coverage figure wrong.
+    Filtering is done at genus, because eighteen thousand species cannot be
+    judged by hand and a genus can be checked by somebody. The cost is that a
+    genus nobody classified counts as nothing -- and if it held a species
+    common enough to belong in the answer, the coverage figure would be wrong
+    and would never say so.
+
+    Cortinarius and Galerina were both unclassified when this table was first
+    written, which is the orellanine webcaps and the funeral bell.
     """
-    rows = _gap().load_records()
-    assert rows
-    for row in rows:
-        assert row["kind"] in {"fungus", "micro", "not-fungus"}, row
-        assert row["scientific_name"].strip()
-        # A blank count is allowed -- the screenshot cut the column off for the
-        # last few rows, and a blank is the honest record of that. A malformed
-        # one is not.
-        if row["records"]:
-            assert int(row["records"]) > 0, row
+    gap = _gap()
+    genera = gap.load_genera()
+    by_kind: dict[str, list[tuple[str, int]]] = {}
+    for name, count in gap.load_records():
+        by_kind.setdefault(genera.get(name.split()[0], "?"), []).append((name, count))
+
+    fungi = by_kind["fungus"]
+    cutoff = fungi[99][1]
+    intruders = [(n, c) for n, c in by_kind.get("?", []) if c >= cutoff]
+    assert not intruders, (
+        f"unclassified taxa out-record the 100th macrofungus ({cutoff:,}): "
+        f"{intruders[:10]}"
+    )
+
+
+def test_the_genus_table_is_well_formed():
+    """`kind` drives every figure the report prints."""
+    gap = _gap()
+    genera = gap.load_genera()
+    assert genera
+    assert set(genera.values()) == {"fungus", "micro", "host", "slime-mould"}
+
+    # Every genus the label space holds must be classified as a fungus,
+    # however rare it is. An unclassified genus counts as nothing, so its
+    # species can never show up as covered -- and the genera this app most
+    # needs to get right are exactly the uncommon ones. Derived from the
+    # taxonomy so that adding a species cannot quietly break it.
+    from app.taxonomy_service import TaxonomyService
+
+    taxonomy = TaxonomyService.load(ROOT / "data" / "taxonomy.seed.json")
+    for species in taxonomy.species.values():
+        assert genera.get(species.genus) == "fungus", (
+            f"{species.genus} is in the label space and is "
+            f"{genera.get(species.genus)!r} in the genus table"
+        )
+
+
+def test_the_records_file_is_sorted_and_positive():
+    gap = _gap()
+    records = gap.load_records()
+    assert len(records) > 10_000
+    assert all(c > 0 for _, c in records)
+    assert records == sorted(records, key=lambda r: (-r[1], r[0]))

@@ -73,7 +73,8 @@ characters come from standard references but are unverified.
 | `scripts/build_ebook.py` | Fills the companion ebook's field slots from the taxonomy |
 | `scripts/demo.py` | Drives the real safety layer, engine and matcher in a terminal |
 | `scripts/frdbi_gap.py` | Label space vs. how often things are actually found |
-| `data/frdbi-top-records.csv` | Most-recorded British taxa, transcribed from screenshots |
+| `data/frdbi-records.csv` | Every FRDBI taxon and its record count, exported 2026-09-22 |
+| `data/frdbi-genera.csv` | Genus → fungus / micro / host / slime-mould, so the ranking can be filtered |
 
 ## Commands
 
@@ -281,11 +282,11 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   as a field guide — so `habitat`, `season` and `smell` are thin. The run
   prints the per-row tally of what it left blank; that list is the review
   queue, not a bug. Filling it means the worksheet and a mycologist, not code.
-- **The label space covers 30% of what people actually find.** 29 of the 98
-  most-recorded British macrofungi (`python scripts/frdbi_gap.py`). That is
-  the expected shape, not a failure: it was assembled around danger, not
-  frequency. But it is the number to quote when someone asks why a common
-  mushroom is not recognised.
+- **The label space covers 30% of what people actually find.** 30 of the 100
+  most-recorded British macrofungi (`python scripts/frdbi_gap.py`, over the
+  full 17,536-taxon FRDBI export). That is the expected shape, not a failure:
+  it was assembled around danger, not frequency. But it is the number to
+  quote when someone asks why a common mushroom is not recognised.
 - **Never add a common species without the dangerous thing it resembles.**
   The label space is a graph. Adding the field mushroom without the death cap
   makes the app *more* dangerous, not less: it teaches a name the model will
@@ -293,9 +294,21 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   prints, for every candidate, the dangerous species already known in its
   genus, precisely so this is hard to forget.
 - **FRDBI ranks host plants above every fungus.** It records associations, so
-  beech leads the whole database at 123,332. A "top 100" taken from it without
-  filtering puts trees, grasses and bracken in a mushroom app. Thirty-six of
-  the transcribed rows are plants and seven are leaf spots or rusts.
+  beech leads the whole database at 124,946 — and cattle, horses and rabbits
+  are in there too, because dung fungi are recorded against what produced the
+  dung. A "top 100" taken without filtering is a list of trees.
+- **Filtering happens at genus, and an unclassified genus counts as nothing.**
+  `data/frdbi-genera.csv`. Eighteen thousand species cannot be judged by hand;
+  a genus can be checked by somebody. The failure mode is silent, so two tests
+  guard it: no unclassified taxon may out-record the hundredth macrofungus,
+  and every genus in the label space must be classified `fungus` however rare
+  it is. Cortinarius and Galerina were both unclassified on the first pass —
+  the orellanine webcaps and the funeral bell.
+- **Slime moulds are neither fungi nor hosts, and are photographed anyway.**
+  Fuligo, Lycogala, Ceratiomyxa. They can never be identified here, so what
+  the app owes them is the out-of-scope answer rather than the nearest
+  mushroom — which makes them a free source of the negatives `ood.py` is
+  otherwise short of.
 - **Expect 50–70% species top-1** on a first training run, with genus accuracy
   notably higher. 95% means a leak.
 

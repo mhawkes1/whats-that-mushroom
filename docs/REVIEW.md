@@ -235,9 +235,9 @@ forced into the nearest class it knows, which may be something harmless.
 
 ### Coverage against how often things are actually found
 
-`scripts/frdbi_gap.py` measures the label space against the most-recorded
-taxa in the Fungal Records Database of Britain and Ireland. **29 of the 98
-most-recorded British macrofungi are in it — 30%.**
+`scripts/frdbi_gap.py` measures the label space against the Fungal Records
+Database of Britain and Ireland — the full export, 17,536 taxa, 2026-09-22.
+**30 of the 100 most-recorded British macrofungi are in it — 30%.**
 
 That is the expected shape rather than a failure: the label space was
 assembled around danger, not frequency, so it holds eleven species that can
