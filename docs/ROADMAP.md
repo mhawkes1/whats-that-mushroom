@@ -87,6 +87,50 @@ having checked the key on gbif.org yourself.
 
 The build refuses to continue if a DEADLY species did not resolve.
 
+### What a real run produced
+
+Measured 2026-09-23, `--target 50 --min-images 20 --min-observations 8`,
+about twelve minutes wall time:
+
+```
+  images       : 12163
+  species      : 244  of 247
+  observations : 5478
+  splits       : train 9784 / val 1177 / test 1202
+  disk         : 2.07 GB  (mean 166 KB per image at max_edge 800)
+  downloads    : 12163 of 12310 succeeded
+```
+
+Zero observations span more than one split, and every class has a train,
+val and test partition — the two invariants that make any later accuracy
+number mean anything, confirmed on real data rather than on the synthetic
+smoke test.
+
+Scaling that: `--target 400` is eight times the quota, but most of the
+label space does not have 400 research-grade records, so expect well under
+8×. Budget 10–16 GB and a few hours rather than the 94k-image ceiling.
+
+Three species did not make it, all for the same reason — they carry
+`image_source: "any"`, and those images live on a long tail of national
+biodiversity portals rather than one CDN:
+
+```
+  58  observation.org        (Netherlands)
+  33  image.laji.fi          (Finland)
+  17  mushroomobserver.org
+  11  s3.hpc.ut.ee           (Estonia)
+  10  live.staticflickr.com
+   7  arter.dk               (Denmark)
+   4  images.ala.org.au      (Australia)
+   3  fm-digital-assets.fieldmuseum.org
+```
+
+Allowlisting those hosts one at a time is a losing game, because every
+further `image_source: "any"` species widens the set. For a restricted
+environment, do the full build with unrestricted egress and narrow
+afterwards. `fetch_images` names the failing hosts and raises an ERROR for
+any species that lost every image, so this is loud rather than silent.
+
 **This is the gate on everything else, and it needs no GPU.** It is bound by
 network and disk. At `--target 400` across 235 species the ceiling is 94k
 images pulled one at a time from GBIF; the realistic figure is well below
