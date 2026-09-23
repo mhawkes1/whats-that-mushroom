@@ -143,6 +143,15 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   mycologist. Complete is not reviewed: `reviewed_by` is still null and
   `/health` still reports `taxonomy_reviewed: false`. A forager's eye over
   `docs/character-states-worksheet.csv` is the highest-value review left.
+- **"Both halves described" applies per *character*, not per species, and a
+  missing character is invisible.** *Entoloma sinuatum* — the SERIOUS anchor
+  of its group — had no `gill_colour` at all, so a gill-colour answer could
+  move mass away from the common pinkgills and had nothing to bite on for
+  the dangerous one. Nothing reported this: `gill_colour` was simply absent
+  from its `diagnostic_characters`, so the worksheet never emitted a row to
+  leave blank. Fixed 2026-09-23; a yellow-gill answer now moves it 30% →
+  45%. Worth auditing the other dangerous species the same way — an absent
+  character looks like nothing rather than like a gap.
 - **Both halves of a lethal pair must be described, or evidence only works
   one way.** With just the deadly half described, nothing could contradict the
   safe lookalike, so answers could move mass *away* from a lethal candidate

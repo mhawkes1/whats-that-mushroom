@@ -3063,6 +3063,7 @@
           "Pink"
         ],
         "gill_colour": [
+          "White",
           "Pink"
         ],
         "smell": [
@@ -3093,12 +3094,18 @@
       ],
       "diagnostic_characters": [
         "spore_print_colour",
+        "gill_colour",
         "gill_attachment",
         "smell"
       ],
       "notes": "A leading cause of mushroom poisoning in Europe. Pink spore print and pink-flushing gills at maturity. Separated from The Miller by gill attachment: sinuate/adnexed here, strongly decurrent in Clitopilus prunulus.",
       "character_states": {
         "spore_print_colour": [
+          "Pink"
+        ],
+        "gill_colour": [
+          "White",
+          "Yellow or green",
           "Pink"
         ],
         "gill_attachment": [
@@ -3108,7 +3115,8 @@
         "smell": [
           "Fresh bread dough"
         ]
-      }
+      },
+      "internal_note": "gill_colour added 2026-09-23. The SERIOUS anchor of its group carried no gill colour at all, so a gill-colour answer could move mass away from the common pinkgills and had nothing to bite on here -- evidence working one way, which is the failure CLAUDE.md warns about for lethal pairs. UNREVIEWED: compiled from standard references for this repository, not from a mycologist."
     },
     {
       "key": "exidia-glandulosa",
