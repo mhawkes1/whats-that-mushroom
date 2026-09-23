@@ -626,3 +626,42 @@ def test_a_species_that_hospitalises_is_dismissed_more_slowly_than_a_harmless_on
     ordinary = likelihood_for(taxonomy["clitopilus-prunulus"], "spore_print_colour", "Black")
     assert taxonomy["entoloma-sinuatum"].toxicity is Toxicity.SERIOUS
     assert serious.likelihood > ordinary.likelihood
+
+
+def test_every_dangerous_lookalike_edge_has_a_separating_character(taxonomy):
+    """The invariant the evidence audit exists to protect.
+
+    An edge between a DEADLY or SERIOUS species and something it is
+    confused with, where no single character is described on *both* sides,
+    cannot be resolved by any answer the user gives. The engine would keep
+    asking and the refusal would never lift.
+
+    `scripts/evidence_audit.py` reports the softer asymmetries too -- a
+    character described on one side only still works in one direction --
+    but those leave a pair resolvable by some other character. This is the
+    one that does not, so it is the one with a test.
+    """
+    from app.taxonomy_service import Toxicity
+
+    dangerous = (Toxicity.DEADLY, Toxicity.SERIOUS)
+    stranded = []
+    for key, species in taxonomy.species.items():
+        if species.toxicity not in dangerous:
+            continue
+        partners = set(species.lookalikes)
+        partners |= {
+            other_key
+            for other_key, other in taxonomy.species.items()
+            if key in other.lookalikes
+        }
+        partners.discard(key)
+        for other_key in sorted(partners):
+            if not taxonomy.separating_characters(key, other_key):
+                stranded.append(f"{species.scientific_name} vs "
+                                f"{taxonomy.species[other_key].scientific_name}")
+
+    assert not stranded, (
+        f"{len(stranded)} dangerous lookalike pairs share no character "
+        f"described on both sides, so no answer can separate them: "
+        f"{stranded[:5]}"
+    )

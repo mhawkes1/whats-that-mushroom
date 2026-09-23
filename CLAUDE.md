@@ -79,6 +79,8 @@ characters come from standard references but are unverified.
 | `scripts/demo.py` | Drives the real safety layer, engine and matcher in a terminal |
 | `scripts/frdbi_gap.py` | Label space vs. how often things are actually found |
 | `scripts/species_list.py` | Generates `docs/SPECIES.md`, the label space for a human to read |
+| `scripts/evidence_audit.py` | Where evidence about a dangerous species works only one way |
+| `docs/evidence-audit.csv` | Its 934 findings, worst first |
 | `docs/frdbi-top-250.csv` | The 250 most-recorded macrofungi, ranked, for review (`frdbi_gap.py --csv`) |
 | `docs/frdbi-top-300.csv` | The same to 300; 219 covered, 81 not |
 | `data/frdbi-records.csv` | Every FRDBI taxon and its record count, exported 2026-09-22 |
@@ -143,15 +145,29 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   mycologist. Complete is not reviewed: `reviewed_by` is still null and
   `/health` still reports `taxonomy_reviewed: false`. A forager's eye over
   `docs/character-states-worksheet.csv` is the highest-value review left.
+- **Describing a species makes it *dismissable*, never easier to confirm.**
+  An undescribed species gets likelihood 1.0, so it already drifts upward
+  whenever a rival is contradicted — "a consistent answer never boosts"
+  cuts both ways. Measured on *Entoloma sinuatum*'s missing `gill_colour`:
+  a confirming "yellow gills" answer took it 30% → 45.3% both before and
+  after it was described, identically. What changed was the *contradicting*
+  answer — "brown gills" left it at 45.3% before and takes it to 24.9%
+  now. I first wrote this up the other way round, as though describing it
+  had unlocked the confirmation; the numbers say otherwise.
 - **"Both halves described" applies per *character*, not per species, and a
-  missing character is invisible.** *Entoloma sinuatum* — the SERIOUS anchor
-  of its group — had no `gill_colour` at all, so a gill-colour answer could
-  move mass away from the common pinkgills and had nothing to bite on for
-  the dangerous one. Nothing reported this: `gill_colour` was simply absent
-  from its `diagnostic_characters`, so the worksheet never emitted a row to
-  leave blank. Fixed 2026-09-23; a yellow-gill answer now moves it 30% →
-  45%. Worth auditing the other dangerous species the same way — an absent
-  character looks like nothing rather than like a gap.
+  missing character is invisible.** `gill_colour` was simply absent from
+  *E. sinuatum*'s `diagnostic_characters`, so the worksheet never emitted a
+  row to leave blank — an absent character looks like nothing rather than
+  like a gap. `python scripts/evidence_audit.py` now finds these; run it
+  after adding a dangerous species.
+- **The audit's headline is that nothing is stranded.** All 201 dangerous
+  lookalike edges share at least one character described on both sides, so
+  the engine can always separate them; a test pins it. The ~900 one-way
+  asymmetries it also reports are a depth backlog, not holes — each is a
+  pair that is already resolvable by some other character. That also puts
+  *E. sinuatum*'s gap in proportion: it was one of 507 of the same shape,
+  not a unique fault. `Clitocybe rivulosa`, `C. dealbata` and
+  `Galerina marginata` head the backlog.
 - **Both halves of a lethal pair must be described, or evidence only works
   one way.** With just the deadly half described, nothing could contradict the
   safe lookalike, so answers could move mass *away* from a lethal candidate
