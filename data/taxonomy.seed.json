@@ -517,7 +517,7 @@
         "spore_print_colour"
       ],
       "notes": "Grey cap with a strongly grooved margin, rising from a white sac at the stem base. It has a volva and no ring, which is the combination that separates it from the death cap and the destroying angel -- both of those carry a ring as well. Toxic raw.",
-      "internal_note": "Added because a beginner taught 'a volva means danger' meets this and is wrong, and a beginner who has not been taught it meets this and reads it as a destroying angel. Common (FRDBI rank 244) in a genus holding three DEADLY or SERIOUS species already in the label space. Widely eaten cooked; classified TOXIC for the same reason as Amanita rubescens and Amanita fulva -- toxic raw, and the margin for error sits inside Amanita. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "internal_note": "image_source widened 2026-09-23. iNaturalist's GBIF export holds ZERO images under this taxon key (2,354 exist across other GBIF datasets), so the species was absent from the first --target 50 build entirely. Same symptom and same remedy as the ivory funnels; extended by analogy with Martin's decision there, not separately approved. Those records are not covered by iNaturalist's research-grade publication policy, and the manifest records dataset_key per image so the difference stays visible. Earlier note: Added because a beginner taught 'a volva means danger' meets this and is wrong, and a beginner who has not been taught it meets this and reads it as a destroying angel. Common (FRDBI rank 244) in a genus holding three DEADLY or SERIOUS species already in the label space. Widely eaten cooked; classified TOXIC for the same reason as Amanita rubescens and Amanita fulva -- toxic raw, and the margin for error sits inside Amanita. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
       "character_states": {
         "volva": [
           "Clear cup or sac"
@@ -534,7 +534,8 @@
         "spore_print_colour": [
           "White or cream"
         ]
-      }
+      },
+      "image_source": "any"
     },
     {
       "key": "amanita-virosa",
@@ -3247,7 +3248,9 @@
         "habitat": [
           "Beech"
         ]
-      }
+      },
+      "image_source": "any",
+      "internal_note": "image_source widened 2026-09-23. iNaturalist's GBIF export holds ZERO images under this taxon key (645 exist across other GBIF datasets), so the species was absent from the first --target 50 build entirely. Same symptom and same remedy as the ivory funnels; extended by analogy with Martin's decision there, not separately approved. Those records are not covered by iNaturalist's research-grade publication policy, and the manifest records dataset_key per image so the difference stays visible."
     },
     {
       "key": "fistulina-hepatica",
@@ -5909,7 +5912,9 @@
         "cortina": [
           "No"
         ]
-      }
+      },
+      "image_source": "any",
+      "internal_note": "image_source widened 2026-09-23. iNaturalist's GBIF export holds ZERO images under this taxon key (6,773 exist across other GBIF datasets), so the species was absent from the first --target 50 build entirely. Same symptom and same remedy as the ivory funnels; extended by analogy with Martin's decision there, not separately approved. Those records are not covered by iNaturalist's research-grade publication policy, and the manifest records dataset_key per image so the difference stays visible."
     },
     {
       "key": "lycoperdon-excipuliforme",
@@ -6887,7 +6892,7 @@
         "flesh_colour"
       ],
       "notes": "Red-orange pores and flesh that turns deep blue within seconds of cutting. Toxic raw. The stem is covered in fine red dots rather than the raised net of the Devil's Bolete.",
-      "internal_note": "Also confused with suillellus luridus, which are outside the label space. Recorded here rather than in `lookalikes` because that graph must only reference species the model can actually name; they are candidates if the label space grows.",
+      "internal_note": "image_source widened 2026-09-23. iNaturalist's GBIF export holds ZERO images under this taxon key (119 exist across other GBIF datasets), so the species was absent from the first --target 50 build entirely. Same symptom and same remedy as the ivory funnels; extended by analogy with Martin's decision there, not separately approved. Those records are not covered by iNaturalist's research-grade publication policy, and the manifest records dataset_key per image so the difference stays visible. Earlier note: Also confused with suillellus luridus, which are outside the label space. Recorded here rather than in `lookalikes` because that graph must only reference species the model can actually name; they are candidates if the label space grows.",
       "character_states": {
         "pore_colour": [
           "Red or orange"
@@ -6902,7 +6907,8 @@
         "flesh_colour": [
           "Yellow"
         ]
-      }
+      },
+      "image_source": "any"
     },
     {
       "key": "neoboletus-praestigiator",

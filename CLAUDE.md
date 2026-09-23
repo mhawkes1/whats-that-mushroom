@@ -173,6 +173,22 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   being honest about what that buys — the split now rests on **recorder
   determination**, not on an accepted taxon, and both pairs are long-standing
   taxonomic arguments. A mycologist should confirm the splits are real.
+- **Six species have ZERO iNaturalist images, and it is not a key problem.**
+  *Lepista nuda* (6,773 images elsewhere), *Amanita vaginata* (2,354),
+  *Exidia thuretiana* (645), *Clitocybe rivulosa* (1,068), *C. dealbata*
+  (233), *Neoboletus luridiformis* (119). All resolve to ACCEPTED
+  species-rank keys; faceting iNaturalist's own records by species under
+  *Lepista*, *Collybia*, *Clitocybe* and *Amanita* finds none of them. The
+  likely reason is that iNaturalist carries these as **species complexes**
+  ("*Amanita vaginata* group"), and a complex has no species-rank record to
+  export. That is worth noticing rather than routing around: these are
+  species the largest fungal photo community in the world declines to
+  identify to species level, which is the same judgement this app's
+  `dangerous_group` verdict makes. All six carry `image_source: "any"`.
+  Check for this symptom whenever a species comes back with no images —
+  `scientificName` on the occurrence API is unreliable (it returns nothing
+  for *Amanita phalloides*, which has 8,617 by key), so diagnose with
+  `taxonKey` and facets.
 - **`image_source: "any"` means images come from arbitrary hosts.** The ivory
   funnels' photographs live on `svampe.databasen.org`,
   `mushroomobserver.org` and `www.artsobservasjoner.no`, none of which a
