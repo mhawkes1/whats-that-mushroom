@@ -87,6 +87,42 @@ This is not squeamishness. Users read a best-case label as permission, and
 the app has no way to verify what the user is actually holding. Enforced by
 test, not convention — see `SAFETY.md`.
 
+> **Superseded 2026-09-23 by "No edibility claim in either direction".** The
+> reasoning above still holds; it was simply incomplete.
+
+---
+
+## No edibility claim in either direction
+
+*Supersedes "No 'edible' value anywhere in the type system", 2026-09-23.*
+
+`INEDIBLE` is itself an edibility claim. It says a species may not be eaten,
+and the app has no more business saying that than saying the opposite — it
+cannot see what the user is holding in either direction. "Not assessed as
+safe" was careful wording around a verdict that should not have been there
+at all, and it was attached to 157 of the 247 species.
+
+The value is now `NO_RECORDED_TOXICITY` and it is **never rendered**. A
+species with no recorded hazard shows a name, a common name and a
+confidence, and nothing else. `DEADLY`, `SERIOUS` and `TOXIC` are still
+shown, because a hazard the app knows about and does not mention is a hazard
+the app is concealing — and that, not the absence of a reassuring label, is
+the thing that would actually hurt somebody.
+
+Three reasons, in order of weight:
+
+1. **It is true to what the app is.** An identification app identifies.
+   iNaturalist names an organism and stops.
+2. **Silence cannot be misread.** "Not assessed as safe" was read by some
+   people as a warning and by others as a shrug. Nothing is read as nothing.
+3. **Liability.** A verdict the app never issued is a verdict nobody can
+   rely on, dispute, or sue over. Martin raised this one and it is the
+   reason the change happened now rather than later.
+
+Enforced by `test_no_user_facing_path_makes_an_inedibility_claim`, which
+also asserts the category still exists and still holds most of the label
+space — so the test cannot pass by the whole thing quietly disappearing.
+
 ---
 
 ## Stub inference backend

@@ -23,17 +23,32 @@ This project takes the opposite position deliberately.
 
 ## The rules
 
-### 1. The app never asserts edibility
+### 1. The app makes no edibility claim, in either direction
 
-There is no "edible" category anywhere in the system. The `toxicity` field
-records the consequence of eating a species and exists solely to drive
-warnings. Its safest value is `INEDIBLE`, which the UI renders as "Not
-assessed as safe".
+There is no "edible" category anywhere in the system, and since 2026-09-23
+there is no "inedible" one either. This is an identification app: it reports
+what a mushroom is and what hazard is on record for it, and it does not
+adjudicate meals.
+
+The `toxicity` field records a **known hazard** and exists solely to drive
+warnings. `DEADLY`, `SERIOUS` and `TOXIC` are shown to users, because a
+hazard somebody is not told about is a hazard the app is concealing.
+`NO_RECORDED_TOXICITY` is **never shown**: the row carries a name and
+nothing else.
+
+The value it replaced was `INEDIBLE`, rendered as "Not assessed as safe".
+That wording was written to avoid sounding like permission, and it still put
+a safety verdict on all 157 species that carried it. Saying nothing is the
+stronger position. Silence cannot be read as an endorsement, cannot be read
+as a warning, and cannot be disputed — which matters for liability as much
+as for honesty.
 
 This is enforced by test, not by convention. `test_no_output_path_ever_asserts_edibility`
 scans every user-facing string produced by the safety layer for affirmative
-edibility claims across a range of scenarios, and
-`test_species_notes_never_recommend_eating` scans the reference data itself.
+edibility claims across a range of scenarios,
+`test_species_notes_never_recommend_eating` scans the reference data itself,
+and `test_no_user_facing_path_makes_an_inedibility_claim` covers the other
+direction.
 
 ### 2. A lethal ambiguity is never resolved from a photograph
 

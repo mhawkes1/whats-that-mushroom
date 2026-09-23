@@ -149,6 +149,7 @@ The result screen inverts the competition's information hierarchy on purpose:
 
 Leading with a species name and a large percentage is precisely the design
 that gets people poisoned, so the candidate list is deliberately **not** the
-headline. There is no green in the palette and no "edible" value in the type
-system; the safest toxicity label renders as "Not assessed as safe", because
-users read a best-case label as permission.
+headline. There is no green in the palette and no edibility claim in the type system
+in either direction: a species with a recorded hazard says so, and one
+without says nothing at all. Users read a best-case label as permission, so
+there is no best-case label.

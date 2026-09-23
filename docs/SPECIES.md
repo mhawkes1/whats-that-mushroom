@@ -12,9 +12,10 @@ It holds all 200 of the most-recorded British macrofungi (`python scripts/frdbi_
 > references and are unverified. `/health` reports
 > `taxonomy_reviewed: false`. See `REVIEW.md`.
 
-> **No entry here says anything is safe to eat.** The app has no such
-> category. *Not assessed as safe* is the best case, and it means exactly
-> what it says.
+> **This is an identification app. It makes no edibility claim.** There
+> is no category meaning edible and none meaning inedible. Where a
+> species carries a recorded hazard the app says so; where it does not,
+> the app says nothing, which is neither an endorsement nor a warning.
 
 ## Can kill — `DEADLY` (11)
 
@@ -127,9 +128,9 @@ Poisoning is reported.
 | ***Verpa bohemica*** | Early Morel, Thimble Morel | *Morchella esculenta*, ***Gyromitra esculenta*** |
 | ***Volvopluteus gloiocephalus*** | Stubble Rosegill | ***Amanita phalloides***, ***Amanita virosa***, *Agaricus arvensis* |
 
-## Not assessed as safe — `INEDIBLE` (157)
+## No recorded toxicity — `NO_RECORDED_TOXICITY` (157)
 
-The risk has not been assessed. This is the safest value in the system, not a recommendation.
+The references used record no toxicity for these. That is a statement about records, not about a meal: the app makes no edibility claim and shows no label at all for this group.
 
 | Species | Also known as | Confused with |
 | --- | --- | --- |

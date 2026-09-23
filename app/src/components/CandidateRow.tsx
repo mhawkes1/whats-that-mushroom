@@ -1,23 +1,25 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { Candidate, TOXICITY_LABEL } from '../lib/api';
+import { Candidate, hazardLabel } from '../lib/api';
 import { theme } from '../lib/theme';
 
 const TOXICITY_COLOUR: Record<string, string> = {
   DEADLY: theme.colour.danger,
   SERIOUS: theme.colour.danger,
   TOXIC: theme.colour.caution,
-  INEDIBLE: theme.colour.textMuted,
   UNKNOWN: theme.colour.textMuted,
 };
 
 /**
  * One candidate species.
  *
- * The toxicity chip is always rendered, including for the leading candidate,
- * and a deadly candidate gets a full-width bar rather than a subtle tint. A
- * user scrolling quickly must not be able to miss it.
+ * A hazard chip is rendered wherever there is a hazard to report, including
+ * on the leading candidate, and a deadly candidate gets a full-width bar
+ * rather than a subtle tint: a user scrolling quickly must not be able to
+ * miss it. Where the app has no hazard to report it says nothing rather
+ * than filling the slot, because this identifies mushrooms and does not
+ * rule on eating them.
  */
 export function CandidateRow({
   candidate,
@@ -28,13 +30,16 @@ export function CandidateRow({
 }) {
   const colour = TOXICITY_COLOUR[candidate.toxicity] ?? theme.colour.textMuted;
   const isDeadly = candidate.toxicity === 'DEADLY';
+  const hazard = hazardLabel(candidate.toxicity);
 
   return (
     <View
       style={[styles.row, isDeadly && styles.deadlyRow]}
-      accessibilityLabel={`${candidate.scientific_name}. ${
-        TOXICITY_LABEL[candidate.toxicity]
-      }`}
+      accessibilityLabel={
+        hazard
+          ? `${candidate.scientific_name}. ${hazard}`
+          : candidate.scientific_name
+      }
     >
       <View style={[styles.stripe, { backgroundColor: colour }]} />
 
@@ -45,9 +50,9 @@ export function CandidateRow({
           <Text style={styles.common}>{candidate.common_names.join(' · ')}</Text>
         ) : null}
 
-        <Text style={[styles.toxicity, { color: colour }]}>
-          {TOXICITY_LABEL[candidate.toxicity]}
-        </Text>
+        {hazard ? (
+          <Text style={[styles.toxicity, { color: colour }]}>{hazard}</Text>
+        ) : null}
       </View>
 
       {showConfidence ? (

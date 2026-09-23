@@ -3,7 +3,7 @@
   "version": "0.1.0-draft",
   "region": "GB",
   "reviewed_by": null,
-  "$policy": "The `toxicity` field records the consequence of EATING a species, and is used only to drive warnings. It is never rendered as a recommendation. No species is ever labelled edible: the highest-safety value is INEDIBLE. The `notes` field is shown to users verbatim and must describe only what is observable. Rationale, policy and review flags belong in `internal_note`, which is never surfaced.",
+  "$policy": "The `toxicity` field records a KNOWN HAZARD and is used only to drive warnings. It is never rendered as a recommendation. This app makes no edibility claim of any kind: there is no value meaning edible and none meaning inedible. `NO_RECORDED_TOXICITY` says the references used recorded no toxicity -- a statement about records, not about a meal -- and it is never shown to a user. The `notes` field is shown to users verbatim and must describe only what is observable. Rationale, policy and review flags belong in `internal_note`, which is never surfaced.",
   "$character_states": "character_states is complete -- every species carries states for the characters it declares as diagnostic -- and is UNREVIEWED throughout. It was derived from each species' own `notes` in this file rather than from a mycologist, to make the answer-weighting mechanism in server/app/evidence.py work end to end. Complete is not reviewed: every entry still needs field-character sign-off, reviewed_by is null and /health reports taxonomy_reviewed: false. How wide a state list should be depends on the species' role, and the difference follows from the risk matrix. For a DEADLY species a contradiction pushes it down, so lists are generous -- omitting a state it can show would turn a true observation into a false dismissal of something lethal. For the safe half of a lethal pair a contradiction pushes the SAFE species down, moving mass back toward the deadly one, so tighter lists are the cautious choice and the cost of error is a false alarm rather than a missed poisoning. Where the notes make no positive claim the entry is omitted, because omitted means 'no evidence' and is always safe. See docs/REVIEW.md and docs/character-states-worksheet.csv.",
   "species": [
     {
@@ -13,7 +13,7 @@
       "common_names": [
         "Horse Mushroom"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "amanita-virosa",
@@ -27,7 +27,7 @@
         "volva"
       ],
       "notes": "Aniseed smell and a pendulous cog-wheel ring. The critical checks are absence of a volva and absence of chrome-yellow staining at the stem base.",
-      "internal_note": "Recorded as INEDIBLE by the same policy as agaricus-campestris.",
+      "internal_note": "Carries no toxicity record, by the same policy as agaricus-campestris.",
       "character_states": {
         "smell": [
           "Aniseed or almond"
@@ -47,7 +47,7 @@
       "common_names": [
         "Field Mushroom"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "amanita-phalloides",
@@ -61,7 +61,7 @@
         "bruising_reaction"
       ],
       "notes": "Gills pink when young, darkening to chocolate-brown. Brown spore print. No volva at the stem base and no chrome-yellow staining when cut.",
-      "internal_note": "Recorded as INEDIBLE rather than edible by deliberate policy: this app never asserts edibility for any species. See docs/SAFETY.md.",
+      "internal_note": "No toxicity recorded. This app asserts neither edibility nor inedibility for any species; the field records hazards only. See docs/SAFETY.md.",
       "character_states": {
         "gill_colour": [
           "Pink",
@@ -87,7 +87,7 @@
       "common_names": [
         "Blushing Wood Mushroom"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "agaricus-campestris",
@@ -169,7 +169,7 @@
       "common_names": [
         "False Deathcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "amanita-phalloides",
@@ -184,7 +184,7 @@
         "spore_print_colour"
       ],
       "notes": "Pale lemon to almost white, with a rounded basal bulb that has a distinct rim rather than a loose sac. Smells strongly of raw potato, which the Death Cap does not. Not itself dangerous, but it is the species most often taken for a Death Cap and the one most often used to argue that a Death Cap is harmless.",
-      "internal_note": "Recorded INEDIBLE rather than harmless per the project convention: the safest value is INEDIBLE, and this sits inside Amanita where the cost of a confident mistake is fatal.",
+      "internal_note": "No toxicity recorded, which is not the same as harmless: this sits inside Amanita, where the cost of a confident mistake is fatal.",
       "character_states": {
         "volva": [
           "Swollen but no cup"
@@ -211,7 +211,7 @@
       "common_names": [
         "Grey Spotted Amanita"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "amanita-pantherina",
@@ -630,7 +630,7 @@
       "common_names": [
         "Stump Puffball"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "lycoperdon-perlatum",
@@ -710,7 +710,7 @@
       "common_names": [
         "Purple Jellydisc"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "chlorociboria-aeruginascens",
@@ -749,7 +749,7 @@
       "common_names": [
         "Ivory Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -784,7 +784,7 @@
         "Jelly Ear",
         "Wood Ear"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -814,7 +814,7 @@
       "common_names": [
         "Smoky Bracket"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "trametes-versicolor",
@@ -857,7 +857,7 @@
       "common_names": [
         "Yellow Fieldcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "stropharia-semiglobata",
@@ -899,7 +899,7 @@
         "Cep",
         "Porcini"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "tylopilus-felleus",
@@ -936,7 +936,7 @@
       "common_names": [
         "Black Bulgar"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "exidia-glandulosa",
@@ -979,7 +979,7 @@
       "common_names": [
         "Netted Crust"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -1015,7 +1015,7 @@
       "common_names": [
         "Small Stagshorn"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "calocera-viscosa",
@@ -1060,7 +1060,7 @@
       "common_names": [
         "Pale Stagshorn"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "calocera-cornea",
@@ -1104,7 +1104,7 @@
       "common_names": [
         "Yellow Stagshorn"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "tremella-mesenterica",
@@ -1145,7 +1145,7 @@
       "common_names": [
         "St George's Mushroom"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "inocybe-erubescens",
@@ -1181,7 +1181,7 @@
       "common_names": [
         "Giant Puffball"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "scleroderma-citrinum"
@@ -1208,7 +1208,7 @@
         "Chanterelle",
         "Girolle"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "hygrophoropsis-aurantiaca",
@@ -1241,7 +1241,7 @@
         "Dryad's Saddle",
         "Pheasant's Back"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -1324,7 +1324,7 @@
       "common_names": [
         "Green Elfcup"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "ascocoryne-sarcoides"
@@ -1443,7 +1443,7 @@
       "common_names": [
         "Silverleaf Fungus"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "stereum-hirsutum",
@@ -1482,7 +1482,7 @@
       "common_names": [
         "Grey Coral"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clavulina-coralloides",
@@ -1525,7 +1525,7 @@
       "common_names": [
         "Crested Coral"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clavulina-cinerea",
@@ -1569,7 +1569,7 @@
       "common_names": [
         "Wrinkled Club"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clavulina-coralloides",
@@ -1612,7 +1612,7 @@
       "common_names": [
         "Meadow Coral"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clavulinopsis-helvola",
@@ -1656,7 +1656,7 @@
       "common_names": [
         "Yellow Club"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clavulinopsis-corniculata",
@@ -1951,7 +1951,7 @@
       "common_names": [
         "The Miller"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "entoloma-sinuatum",
@@ -1987,7 +1987,7 @@
       "common_names": [
         "Clustered Toughshank"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "collybiopsis-peronata",
@@ -2079,7 +2079,7 @@
       "common_names": [
         "Twig Parachute"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "marasmius-rotula",
@@ -2120,7 +2120,7 @@
       "common_names": [
         "Fairy Inkcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "coprinellus-micaceus",
@@ -2166,7 +2166,7 @@
       "common_names": [
         "Glistening Inkcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata",
@@ -2243,7 +2243,7 @@
       "common_names": [
         "Hare'sfoot Inkcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "coprinopsis-atramentaria",
@@ -2290,7 +2290,7 @@
         "Shaggy Inkcap",
         "Lawyer's Wig"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "coprinopsis-atramentaria"
@@ -2320,7 +2320,7 @@
       "common_names": [
         "Variable Webcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "cortinarius-orellanus",
@@ -2445,7 +2445,7 @@
       "common_names": [
         "Violet Webcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "lepista-nuda"
@@ -2477,7 +2477,7 @@
         "Horn of Plenty",
         "Black Trumpet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -2507,7 +2507,7 @@
       "common_names": [
         "Roundspored Oysterling"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "crepidotus-variabilis",
@@ -2546,7 +2546,7 @@
       "common_names": [
         "Peeling Oysterling"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "pleurotus-ostreatus"
@@ -2579,7 +2579,7 @@
       "common_names": [
         "Variable Oysterling"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "crepidotus-mollis",
@@ -2619,7 +2619,7 @@
       "common_names": [
         "Meadow Waxcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
@@ -2660,7 +2660,7 @@
       "common_names": [
         "Snowy Waxcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
@@ -2702,7 +2702,7 @@
       "common_names": [
         "Earthy Powdercap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "lepiota-cristata",
@@ -2750,7 +2750,7 @@
       "common_names": [
         "Common Jellyspot"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "tremella-mesenterica",
@@ -2790,7 +2790,7 @@
       "common_names": [
         "Blushing Bracket"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "trametes-versicolor"
@@ -2831,7 +2831,7 @@
         "King Alfred's Cakes",
         "Cramp Balls"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -2866,7 +2866,7 @@
       "common_names": [
         "Common Mazegill"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "daedaleopsis-confragosa",
@@ -2997,7 +2997,7 @@
       "common_names": [
         "Cream Pinkgill"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "entoloma-sericeum",
@@ -3116,7 +3116,7 @@
       "common_names": [
         "Witches' Butter"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "exidia-nucleata",
@@ -3160,7 +3160,7 @@
       "common_names": [
         "Crystal Brain"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "exidia-thuretiana",
@@ -3200,7 +3200,7 @@
       "common_names": [
         "White Brain"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "exidia-nucleata",
@@ -3243,7 +3243,7 @@
       "common_names": [
         "Beefsteak Fungus"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -3273,7 +3273,7 @@
       "common_names": [
         "Velvet Shank"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata",
@@ -3324,7 +3324,7 @@
         "Hoof Fungus",
         "Tinder Fungus"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "fomitopsis-betulina"
@@ -3362,7 +3362,7 @@
         "Birch Polypore",
         "Razorstrop Fungus"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "fomes-fomentarius"
@@ -3399,7 +3399,7 @@
       "common_names": [
         "Cinnamon Porecrust"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "schizopora-paradoxa"
@@ -3454,7 +3454,7 @@
         "spore_print_colour"
       ],
       "notes": "Tiny, tawny, scattered among moss rather than clustered on wood, and without a ring. The funeral bell is larger, grows in clusters on dead wood and carries a ring.",
-      "internal_note": "Galerina marginata was the genus's only member, so any small tawny Galerina was a funeral bell as far as the label space was concerned. Classified TOXIC rather than INEDIBLE because amatoxin content across this genus is not uniformly established and the cost of under-warning inside Galerina is death. A reviewer should confirm. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "internal_note": "Galerina marginata was the genus's only member, so any small tawny Galerina was a funeral bell as far as the label space was concerned. Classified TOXIC rather than left without a toxicity record because amatoxin content across this genus is not uniformly established and the cost of under-warning inside Galerina is death. A reviewer should confirm. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
       "character_states": {
         "substrate": [
           "Moss"
@@ -3520,7 +3520,7 @@
       "common_names": [
         "Southern Bracket"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "ganoderma-applanatum",
@@ -3564,7 +3564,7 @@
       "common_names": [
         "Artist's Bracket"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "ganoderma-adspersum",
@@ -3608,7 +3608,7 @@
       "common_names": [
         "Slimy Waxcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
@@ -3649,7 +3649,7 @@
       "common_names": [
         "Heath Waxcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
@@ -3695,7 +3695,7 @@
       "common_names": [
         "Parrot Waxcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "cuphophyllus-pratensis",
@@ -3733,7 +3733,7 @@
       "common_names": [
         "Common Rustgill"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata",
@@ -3783,7 +3783,7 @@
       "common_names": [
         "Horsehair Parachute"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "marasmius-rotula",
@@ -3826,7 +3826,7 @@
       "common_names": [
         "Russet Toughshank"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "marasmius-oreades",
@@ -3869,7 +3869,7 @@
       "common_names": [
         "Spindleshank"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "gymnopus-dryophilus",
@@ -4041,7 +4041,7 @@
       "common_names": [
         "Root Rot"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "fomes-fomentarius",
@@ -4086,7 +4086,7 @@
         "Hedgehog Fungus",
         "Wood Hedgehog"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -4106,7 +4106,7 @@
       "common_names": [
         "Butter Waxcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
@@ -4148,7 +4148,7 @@
       "common_names": [
         "Golden Waxcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
@@ -4189,7 +4189,7 @@
       "common_names": [
         "Scarlet Waxcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
@@ -4272,7 +4272,7 @@
       "common_names": [
         "Spangle Waxcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
@@ -4314,7 +4314,7 @@
       "common_names": [
         "Crimson Waxcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
@@ -4359,7 +4359,7 @@
       "common_names": [
         "Oily Waxcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
@@ -4400,7 +4400,7 @@
       "common_names": [
         "Honey Waxcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
@@ -4471,7 +4471,7 @@
       "common_names": [
         "Oak Curtain Crust"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "stereum-hirsutum",
@@ -4514,7 +4514,7 @@
       "common_names": [
         "Rooting Shank"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "megacollybia-platyphylla",
@@ -4598,7 +4598,7 @@
       "common_names": [
         "Beech Woodwart"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "hypoxylon-fuscum",
@@ -4642,7 +4642,7 @@
       "common_names": [
         "Hazel Woodwart"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "hypoxylon-fragiforme",
@@ -4682,7 +4682,7 @@
       "common_names": [
         "Bay Bolete"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "boletus-edulis",
@@ -4960,7 +4960,7 @@
       "common_names": [
         "Birch Woodwart"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "hypoxylon-fragiforme",
@@ -5005,7 +5005,7 @@
       "common_names": [
         "Brittle Cinder"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "xylaria-polymorpha",
@@ -5045,7 +5045,7 @@
       "common_names": [
         "Sheathed Woodtuft"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata",
@@ -5082,7 +5082,7 @@
       "common_names": [
         "Amethyst Deceiver"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "lepista-nuda",
@@ -5120,7 +5120,7 @@
       "common_names": [
         "Deceiver"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "laccaria-amethystina",
@@ -5135,7 +5135,7 @@
         "gill_attachment"
       ],
       "notes": "Tawny to brick-pink and fading as it dries, which is what the common name refers to. Thick, well-spaced, flesh-pink gills and a white spore print. The stem is fibrous and twisted. Its variability is the hazard: it looks like a great many other things, and beginners match a great many other things to it.",
-      "internal_note": "Recorded INEDIBLE by the same policy as the rest. Added for frequency (15,266 FRDBI records) and because it is the commonest false anchor a beginner reaches for.",
+      "internal_note": "No toxicity recorded, by the same policy as the rest. Added for frequency (15,266 FRDBI records) and because it is the commonest false anchor a beginner reaches for.",
       "character_states": {
         "cap_colour": [
           "Orange",
@@ -5164,7 +5164,7 @@
       "common_names": [
         "Weeping Widow"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "psathyrella-candolleana",
@@ -5259,7 +5259,7 @@
       "common_names": [
         "Saffron Milkcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "lactarius-torminosus",
@@ -5385,7 +5385,7 @@
       "common_names": [
         "Oakbug Milkcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "lactarius-torminosus",
@@ -5476,7 +5476,7 @@
       "common_names": [
         "Mild Milkcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "lactarius-torminosus",
@@ -5521,7 +5521,7 @@
       "common_names": [
         "Birch Milkcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "lactarius-quietus",
@@ -5665,7 +5665,7 @@
       "common_names": [
         "Brown Birch Bolete"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "boletus-edulis",
@@ -5905,7 +5905,7 @@
       "common_names": [
         "Pestle Puffball"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "lycoperdon-perlatum",
@@ -5953,7 +5953,7 @@
       "common_names": [
         "Dusky Puffball"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "lycoperdon-perlatum",
@@ -5995,7 +5995,7 @@
       "common_names": [
         "Common Puffball"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "scleroderma-citrinum",
@@ -6022,7 +6022,7 @@
       "common_names": [
         "Parasol Mushroom"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "chlorophyllum-brunneum",
@@ -6057,7 +6057,7 @@
       "common_names": [
         "Fairy Ring Champignon"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
@@ -6093,7 +6093,7 @@
       "common_names": [
         "Collared Parachute"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "collybiopsis-ramealis",
@@ -6183,7 +6183,7 @@
       "common_names": [
         "Giant Polypore"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "laetiporus-sulphureus",
@@ -6234,7 +6234,7 @@
       "common_names": [
         "Morel"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "gyromitra-esculenta",
@@ -6265,7 +6265,7 @@
       "common_names": [
         "Porcelain Fungus"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "hymenopellis-radicata",
@@ -6311,7 +6311,7 @@
       "common_names": [
         "Angel's Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata"
@@ -6346,7 +6346,7 @@
       "common_names": [
         "Yellowleg Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata"
@@ -6382,7 +6382,7 @@
       "common_names": [
         "Iodine Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata"
@@ -6422,7 +6422,7 @@
       "common_names": [
         "Common Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata",
@@ -6468,7 +6468,7 @@
       "common_names": [
         "Milking Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata"
@@ -6508,7 +6508,7 @@
       "common_names": [
         "Burgundydrop Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata"
@@ -6547,7 +6547,7 @@
       "common_names": [
         "Clustered Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata"
@@ -6590,7 +6590,7 @@
       "common_names": [
         "Nitrous Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -6627,7 +6627,7 @@
       "common_names": [
         "Grooved Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata"
@@ -6746,7 +6746,7 @@
       "common_names": [
         "Bleeding Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -6783,7 +6783,7 @@
       "common_names": [
         "Frosty Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata"
@@ -6821,7 +6821,7 @@
       "common_names": [
         "Snapping Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata"
@@ -7240,7 +7240,7 @@
       "common_names": [
         "Pleated Inkcap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "coprinellus-disseminatus",
@@ -7322,7 +7322,7 @@
       "common_names": [
         "Oak Curtain Crust"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -7364,7 +7364,7 @@
         "Stinkhorn",
         "Common Stinkhorn"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "lycoperdon-perlatum"
@@ -7402,7 +7402,7 @@
       "common_names": [
         "Wrinkled Crust"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -7439,7 +7439,7 @@
       "common_names": [
         "Jelly Rot"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "phlebia-radiata"
@@ -7478,7 +7478,7 @@
       "common_names": [
         "Bark Bonnet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata"
@@ -7587,7 +7587,7 @@
       "common_names": [
         "Oyster Mushroom"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "omphalotus-olearius",
@@ -7625,7 +7625,7 @@
       "common_names": [
         "Deer Shield"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "volvopluteus-gloiocephalus",
@@ -7718,7 +7718,7 @@
       "common_names": [
         "Blackfoot Polypore"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "cerioporus-squamosus",
@@ -7768,7 +7768,7 @@
       "common_names": [
         "Conifer Blueing Bracket"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "trametes-versicolor"
@@ -7814,7 +7814,7 @@
       "common_names": [
         "Pale Brittlestem"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata",
@@ -7861,7 +7861,7 @@
       "common_names": [
         "Red Edge Brittlestem"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "psathyrella-candolleana",
@@ -7904,7 +7904,7 @@
       "common_names": [
         "Common Stump Brittlestem"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata",
@@ -8045,7 +8045,7 @@
       "common_names": [
         "Butter Cap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "gymnopus-dryophilus",
@@ -8133,7 +8133,7 @@
       "common_names": [
         "Orange Mosscap"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -8200,7 +8200,7 @@
       "common_names": [
         "Purple Brittlegill"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "russula-cyanoxantha",
@@ -8280,7 +8280,7 @@
       "common_names": [
         "Charcoal Burner"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "amanita-phalloides",
@@ -8434,7 +8434,7 @@
       "common_names": [
         "Blackening Brittlegill"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "russula-cyanoxantha",
@@ -8514,7 +8514,7 @@
       "common_names": [
         "Ochre Brittlegill"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "tricholoma-equestre",
@@ -8542,7 +8542,7 @@
       "common_names": [
         "The Flirt"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "russula-cyanoxantha",
@@ -8585,7 +8585,7 @@
       "common_names": [
         "Scarlet Elfcup"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -8622,7 +8622,7 @@
       "common_names": [
         "Split Porecrust"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -8731,7 +8731,7 @@
       "common_names": [
         "Common Eyelash"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "sarcoscypha-austriaca"
@@ -8774,7 +8774,7 @@
       "common_names": [
         "Wood Cauliflower"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -8800,7 +8800,7 @@
       "common_names": [
         "Bleeding Oak Crust"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "stereum-rugosum",
@@ -8843,7 +8843,7 @@
       "common_names": [
         "Hairy Curtain Crust"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "trametes-versicolor"
@@ -8882,7 +8882,7 @@
       "common_names": [
         "Bleeding Broadleaf Crust"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "stereum-hirsutum",
@@ -8971,7 +8971,7 @@
       "common_names": [
         "Bovine Bolete"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "suillus-luteus",
@@ -9015,7 +9015,7 @@
       "common_names": [
         "Weeping Bolete"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "suillus-luteus"
@@ -9046,7 +9046,7 @@
       "common_names": [
         "Larch Bolete"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "suillus-luteus",
@@ -9089,7 +9089,7 @@
       "common_names": [
         "Slippery Jack"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "suillus-granulatus"
@@ -9120,7 +9120,7 @@
       "common_names": [
         "Lumpy Bracket"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "trametes-versicolor",
@@ -9164,7 +9164,7 @@
       "common_names": [
         "Turkeytail"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -9204,7 +9204,7 @@
       "common_names": [
         "Yellow Brain"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "calocera-viscosa",
@@ -9247,7 +9247,7 @@
       "common_names": [
         "Purplepore Bracket"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "trametes-versicolor",
@@ -9586,7 +9586,7 @@
       "common_names": [
         "Plums and Custard"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "tricholoma-equestre",
@@ -9631,7 +9631,7 @@
       "common_names": [
         "Scurfy Twiglet"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "galerina-marginata",
@@ -9673,7 +9673,7 @@
       "common_names": [
         "Bitter Bolete"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "boletus-edulis"
@@ -9773,7 +9773,7 @@
       "common_names": [
         "Waxy Crust"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [
@@ -9813,7 +9813,7 @@
       "common_names": [
         "Red Cracking Bolete"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "imleria-badia",
@@ -9856,7 +9856,7 @@
       "common_names": [
         "Suede Bolete"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "boletus-edulis",
@@ -9902,7 +9902,7 @@
       "common_names": [
         "Beechmast Candlesnuff"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "xylaria-hypoxylon"
@@ -9940,7 +9940,7 @@
       "common_names": [
         "Candlesnuff Fungus"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "daldinia-concentrica"
@@ -9979,7 +9979,7 @@
       "common_names": [
         "Dead Man's Fingers"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
         "xylaria-hypoxylon",
@@ -10022,7 +10022,7 @@
       "common_names": [
         "Elder Whitewash"
       ],
-      "toxicity": "INEDIBLE",
+      "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [],
       "diagnostic_characters": [

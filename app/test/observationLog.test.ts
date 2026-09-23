@@ -100,7 +100,7 @@ describe('what a history row says', () => {
             scientific_name: 'Agaricus campestris',
             common_names: ['Field Mushroom'],
             confidence: 0.41,
-            toxicity: 'INEDIBLE',
+            toxicity: 'NO_RECORDED_TOXICITY',
             genus: 'Agaricus',
           },
         ],

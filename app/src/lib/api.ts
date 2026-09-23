@@ -15,7 +15,12 @@ export type Verdict =
   | 'dangerous_group'
   | 'out_of_scope';
 
-export type Toxicity = 'DEADLY' | 'SERIOUS' | 'TOXIC' | 'INEDIBLE' | 'UNKNOWN';
+export type Toxicity =
+  | 'DEADLY'
+  | 'SERIOUS'
+  | 'TOXIC'
+  | 'NO_RECORDED_TOXICITY'
+  | 'UNKNOWN';
 
 export interface Candidate {
   species_key: string;
@@ -283,19 +288,32 @@ export async function answerQuestion(
 }
 
 /**
- * Toxicity labels shown to users.
+ * Hazard labels shown to users.
  *
- * There is no "edible" label, and INEDIBLE deliberately reads as an absence
- * of assessment rather than as reassurance. Users read the best-case label as
- * permission, so the best case must not sound like permission.
+ * This app identifies; it does not adjudicate meals. So there is no label
+ * meaning edible and none meaning inedible either -- a species with no
+ * recorded toxicity gets no label at all, and the row shows a name.
+ *
+ * The earlier version labelled that case "Not assessed as safe", which was
+ * written to avoid sounding like permission and still put a safety verdict
+ * on every species in the app. Saying nothing is the stronger position:
+ * silence cannot be read as either an endorsement or a warning, and there
+ * is nothing there to dispute.
+ *
+ * A missing entry is therefore deliberate, not an oversight. `hazardLabel`
+ * is how you read this map; do not index it directly.
  */
-export const TOXICITY_LABEL: Record<Toxicity, string> = {
+const HAZARD_LABEL: Partial<Record<Toxicity, string>> = {
   DEADLY: 'Can kill',
   SERIOUS: 'Causes serious illness',
   TOXIC: 'Causes illness',
-  INEDIBLE: 'Not assessed as safe',
   UNKNOWN: 'Unassessed',
 };
+
+/** The hazard label for a species, or null where the app says nothing. */
+export function hazardLabel(toxicity: Toxicity): string | null {
+  return HAZARD_LABEL[toxicity] ?? null;
+}
 
 export function verdictColour(
   verdict: Verdict,

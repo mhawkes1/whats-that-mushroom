@@ -93,9 +93,9 @@ Two classifications are judgement calls and want a second opinion:
 - ***Pleurocybella porrigens*** recorded **SERIOUS**, not DEADLY. The fatal
   encephalopathy cases are documented but concentrated among people with
   impaired kidney function.
-- ***Amanita citrina*** and ***Amanita excelsa*** recorded **INEDIBLE** under
-  the project convention that INEDIBLE is the safest value, rather than as a
-  positive claim about either.
+- ***Amanita citrina*** and ***Amanita excelsa*** carry **no recorded
+  toxicity**, which is a statement about the references consulted rather
+  than a claim about either species.
 
 Two are carried under a current name where the index uses an older one, so
 both spellings are worth confirming:
@@ -256,7 +256,7 @@ land in.
 grading across all of them is explicitly deferred: Martin will check it once a
 mycologist has signed the species off. Until then every value is the
 compiler's conservative reading, and the distribution is 11 DEADLY,
-10 SERIOUS, 59 TOXIC, 155 INEDIBLE.
+10 SERIOUS, 59 TOXIC, 155 with no recorded toxicity.
 
 Three things in that batch are worth a reviewer's attention before the rest:
 
@@ -329,8 +329,9 @@ For each species, per the worksheet columns:
 - **`REVIEW_name_current`** — is the scientific name current and correctly
   spelled?
 - **`REVIEW_toxicity_agreed`** — is the toxicity classification right? Note
-  that the scale records the consequence of *eating*, and that the safest
-  value is `INEDIBLE` because this app never asserts edibility.
+  that the scale records a *recorded hazard*, not a verdict on eating: the
+  app makes no edibility claim in either direction, and
+  `NO_RECORDED_TOXICITY` is never shown to a user.
 - **`REVIEW_characters_agreed`** — are the listed diagnostic characters the
   ones that actually separate this species in the field?
 - **`REVIEW_lookalikes_agreed`** — is the lookalike list right, and is

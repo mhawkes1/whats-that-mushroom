@@ -158,7 +158,8 @@ def write_review_csv(out_path, wanted, resolve, known, top, intruders) -> None:
     real macrofungi missing from it and believe they had seen the list.
 
     No edibility column, here as anywhere (rule 1). `toxicity` is the
-    taxonomy's own value, and INEDIBLE is the safest it has.
+    taxonomy's own value: a recorded hazard, never a verdict on whether the
+    species may be eaten.
     """
     if intruders:
         raise SystemExit(

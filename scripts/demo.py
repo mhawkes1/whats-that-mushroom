@@ -131,9 +131,11 @@ def main() -> int:
     rule("2. A confident, ordinary answer")
     say(safety.assess([("hydnum-repandum", 0.93), ("cantharellus-cibarius", 0.05)]), taxonomy)
     print(
-        f"\n  {DIM}Note what the best case looks like: 93%, a named species, and "
-        f"still\n  'Not assessed as safe'. There is no edible category to be "
-        f"promoted into.{OFF}"
+        f"\n  {DIM}Note what the best case looks like: 93%, a named species, "
+        f"and no\n  verdict on eating it in either direction. There is no "
+        f"edible category to be\n  promoted into, and since the app makes no "
+        f"edibility claim at all, no\n  'inedible' one to be consigned to "
+        f"either.{OFF}"
     )
 
     # ------------------------------------------------------------------

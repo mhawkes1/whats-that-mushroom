@@ -16,12 +16,19 @@ from pathlib import Path
 
 
 class Toxicity(IntEnum):
-    """Consequence of eating the species, not of misidentifying it."""
+    """Recorded hazard, not a verdict on whether a species may be eaten.
+
+    The app makes no edibility claim, so there is no category meaning
+    "edible" and none meaning "inedible" either -- the value below DEADLY,
+    SERIOUS and TOXIC says only that the references used recorded no
+    toxicity, which is a statement about records rather than about a meal.
+    It is never rendered to a user.
+    """
 
     DEADLY = 4  # Contains amatoxins/orellanine/gyromitrin; can be fatal.
     SERIOUS = 3  # Hospitalisation likely (e.g. rhabdomyolysis, severe GI).
     TOXIC = 2  # Significant illness, rarely life-threatening.
-    INEDIBLE = 1  # Unpalatable or mildly upsetting.
+    NO_RECORDED_TOXICITY = 1  # Nothing recorded in the references used.
     UNKNOWN = 0  # Not assessed. Treated as TOXIC by the safety layer.
 
 

@@ -18,8 +18,13 @@ accuracy or taxonomic breadth. See `docs/POSITIONING.md`.
 These are product requirements, not style preferences. Each is enforced by a
 test; if a change makes a test here fail, the change is wrong.
 
-1. **Never assert edibility.** No "edible", "safe to eat", "choice" in any
-   user-facing path. The safest toxicity value is `INEDIBLE`.
+1. **Never make an edibility claim, in either direction.** No "edible",
+   "safe to eat", "choice" — and equally no "inedible" or "not assessed as
+   safe". This identifies mushrooms; it does not rule on meals. `toxicity`
+   records a *hazard*: `DEADLY`, `SERIOUS` and `TOXIC` are shown, because a
+   hazard the app conceals is worse than one it names, and
+   `NO_RECORDED_TOXICITY` is **never rendered** — that species shows a name
+   and nothing else.
 2. **Never resolve a lethal ambiguity from a photograph.** If top candidates
    straddle a known dangerous pair, return `dangerous_group` and name neither.
 3. **Never round away a small probability of death.** 2% on a deadly species
@@ -369,9 +374,9 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   destroying angel and honey fungus without the funeral bell. Rarity is
   part of why those species poison people.
 - **Nothing that writes a toxicity into a file may use `.value`.**
-  `Toxicity` is an `IntEnum` with DEADLY 4 and INEDIBLE 1, so `.value` in a
-  spreadsheet is an unlabelled 1–4 scale whose dangerous end reads like the
-  good one. `.name` everywhere.
+  `Toxicity` is an `IntEnum` with DEADLY 4 and NO_RECORDED_TOXICITY 1, so
+  `.value` in a spreadsheet is an unlabelled 1–4 scale whose dangerous end
+  reads like the good one. `.name` everywhere.
 - **A report must not reassure past its own warning.** `frdbi_gap.py`
   correctly printed that eight unclassified taxa out-recorded the cutoff and
   then, forty lines later, printed a hardcoded "All below the cutoff, so none
@@ -386,6 +391,16 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   source of OOD negatives. *Lichenomphalia* is the edge case and goes the
   other way — lichenised, but what it puts up is an omphalinoid mushroom with
   a cap and gills.
+- **`INEDIBLE` became `NO_RECORDED_TOXICITY`, and stopped being rendered.**
+  Refusing to say "edible" was only half of rule 1: "Not assessed as safe"
+  was still a safety verdict, attached to 157 of the 247 species, and the
+  app cannot see what the user is holding in either direction. Silence
+  cannot be misread as an endorsement, cannot be misread as a warning, and
+  cannot be disputed — which is the liability argument as well as the honest
+  one. The value still exists because the risk matrix, the dangerous-pair
+  logic and incident grading all need it;
+  `test_no_user_facing_path_makes_an_inedibility_claim` pins both halves,
+  including that the category has not quietly disappeared.
 - **Slime moulds are neither fungi nor hosts, and are photographed anyway.**
   Fuligo, Lycogala, Ceratiomyxa. They can never be identified here, so what
   the app owes them is the out-of-scope answer rather than the nearest

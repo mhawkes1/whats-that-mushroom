@@ -310,7 +310,7 @@ def test_an_unresolved_ordinary_species_is_dropped_not_fatal(tmp_path):
             {
                 "key": "unknown-thing",
                 "scientific_name": "Nonexistus fabricatus",
-                "toxicity": "INEDIBLE",
+                "toxicity": "NO_RECORDED_TOXICITY",
                 "gbif_key": None,
             },
             {
@@ -357,7 +357,7 @@ def test_resolution_is_cached_and_readable(tmp_path):
             {
                 "key": "unknown-thing",
                 "scientific_name": "Nonexistus fabricatus",
-                "toxicity": "INEDIBLE",
+                "toxicity": "NO_RECORDED_TOXICITY",
                 "gbif_key": None,
             },
         ],

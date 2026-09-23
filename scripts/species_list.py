@@ -26,14 +26,19 @@ from app.taxonomy_service import TaxonomyService, Toxicity  # noqa: E402
 OUT = ROOT / "docs" / "SPECIES.md"
 TAXONOMY = ROOT / "data" / "taxonomy.seed.json"
 
-# The user-facing wording, copied from the client's TOXICITY_LABEL. INEDIBLE
-# deliberately reads as an absence of assessment rather than as reassurance.
+# The user-facing wording, copied from the client's HAZARD_LABEL. There is
+# no entry for NO_RECORDED_TOXICITY because the app shows none: a species
+# with no recorded hazard gets a name and nothing else.
 LABEL = {
     "DEADLY": ("Can kill", "Eating this can be fatal."),
     "SERIOUS": ("Causes serious illness", "Hospital treatment is usual."),
     "TOXIC": ("Causes illness", "Poisoning is reported."),
-    "INEDIBLE": ("Not assessed as safe", "The risk has not been assessed. "
-                 "This is the safest value in the system, not a recommendation."),
+    "NO_RECORDED_TOXICITY": (
+        "No recorded toxicity",
+        "The references used record no toxicity for these. That is a "
+        "statement about records, not about a meal: the app makes no "
+        "edibility claim and shows no label at all for this group.",
+    ),
 }
 
 
@@ -59,13 +64,14 @@ def main() -> int:
         "> references and are unverified. `/health` reports",
         "> `taxonomy_reviewed: false`. See `REVIEW.md`.",
         "",
-        "> **No entry here says anything is safe to eat.** The app has no such",
-        "> category. *Not assessed as safe* is the best case, and it means exactly",
-        "> what it says.",
+        "> **This is an identification app. It makes no edibility claim.** There",
+        "> is no category meaning edible and none meaning inedible. Where a",
+        "> species carries a recorded hazard the app says so; where it does not,",
+        "> the app says nothing, which is neither an endorsement nor a warning.",
         "",
     ]
 
-    for tox in (Toxicity.DEADLY, Toxicity.SERIOUS, Toxicity.TOXIC, Toxicity.INEDIBLE):
+    for tox in (Toxicity.DEADLY, Toxicity.SERIOUS, Toxicity.TOXIC, Toxicity.NO_RECORDED_TOXICITY):
         group = sorted(
             (s for s in species if s.toxicity is tox), key=lambda s: s.scientific_name
         )

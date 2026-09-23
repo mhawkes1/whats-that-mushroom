@@ -253,3 +253,61 @@ def test_field_notes_cannot_talk_the_safety_layer_into_naming_a_species():
             f"named a species with a funeral bell still at "
             f"{dict(ranked)[funeral_bell]:.3f}"
         )
+
+
+def test_no_user_facing_path_makes_an_inedibility_claim(layer, taxonomy):
+    """The other direction of rule 1, and the newer half of it.
+
+    Refusing to say "edible" was never the whole of the rule. Saying
+    "inedible", or "not assessed as safe", is still the app ruling on a
+    meal -- and it put a safety verdict on all 157 species that carried the
+    old `INEDIBLE` value. This app identifies; a species with no recorded
+    hazard gets a name and nothing else.
+
+    `Toxicity.NO_RECORDED_TOXICITY` exists for the risk matrix and the
+    warnings, not for display. If it ever reaches a user-facing string,
+    this fails.
+    """
+    import re
+
+    from app.taxonomy_service import Toxicity
+
+    claims = [
+        re.compile(r"\binedible\b"),
+        re.compile(r"\bnot assessed as safe\b"),
+        re.compile(r"\bunpalatable\b"),
+        re.compile(r"\bno_recorded_toxicity\b"),
+    ]
+
+    scenarios = [
+        [("hydnum-repandum", 0.95), ("boletus-edulis", 0.05)],
+        [("agaricus-campestris", 0.88), ("agaricus-arvensis", 0.12)],
+        [("amanita-phalloides", 0.60), ("agaricus-campestris", 0.40)],
+        [("trametes-versicolor", 0.93), ("stereum-hirsutum", 0.07)],
+        [("amanita-vaginata", 0.44), ("amanita-phalloides", 0.33)],
+    ]
+    for ranked in scenarios:
+        result = layer.assess(ranked)
+        texts = [result.headline, result.detail, *result.warnings]
+        texts += [c.scientific_name for c in result.candidates]
+        for text in texts:
+            for pattern in claims:
+                assert not pattern.search(text.lower()), (
+                    f"inedibility claim reached a user: {text!r}"
+                )
+
+    # And the reference prose the app renders verbatim.
+    offenders = [
+        (key, sp.notes)
+        for key, sp in taxonomy.species.items()
+        if any(p.search(sp.notes.lower()) for p in claims)
+    ]
+    assert not offenders, f"notes making an inedibility claim: {offenders[:5]}"
+
+    # The value must still exist and must still be what most species carry,
+    # so this test cannot pass by the category having quietly disappeared.
+    assert Toxicity.NO_RECORDED_TOXICITY
+    assert sum(
+        1 for s in taxonomy.species.values()
+        if s.toxicity is Toxicity.NO_RECORDED_TOXICITY
+    ) > 100
