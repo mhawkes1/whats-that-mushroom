@@ -3,7 +3,7 @@
 Every species this app can name, generated from `data/taxonomy.seed.json`
 by `python scripts/species_list.py`. Do not edit it by hand.
 
-**247 species · 135 lethal lookalike pairs.**
+**245 species · 114 lethal lookalike pairs.**
 
 It holds all 200 of the most-recorded British macrofungi (`python scripts/frdbi_gap.py --top 200`) plus the dangerous species each of those is confused with.
 
@@ -17,7 +17,7 @@ It holds all 200 of the most-recorded British macrofungi (`python scripts/frdbi_
 > species carries a recorded hazard the app says so; where it does not,
 > the app says nothing, which is neither an endorsement nor a warning.
 
-## Can kill — `DEADLY` (11)
+## Can kill — `DEADLY` (10)
 
 Eating this can be fatal.
 
@@ -25,8 +25,7 @@ Eating this can be fatal.
 | --- | --- | --- |
 | ***Amanita phalloides*** | Death Cap | *Agaricus campestris*, *Agaricus arvensis*, *Russula cyanoxantha*, *Macrolepiota procera* (+1) |
 | ***Amanita virosa*** | Destroying Angel | *Agaricus arvensis*, *Agaricus campestris*, *Lycoperdon perlatum*, *Calocybe gambosa* |
-| ***Clitocybe dealbata*** | Ivory Funnel | *Marasmius oreades*, *Calocybe gambosa* |
-| ***Clitocybe rivulosa*** | Fool's Funnel, Ivory Funnel | *Marasmius oreades*, *Calocybe gambosa*, *Clitopilus prunulus* |
+| ***Clitocybe rivulosa*** | Fool's Funnel, Ivory Funnel, Sweating Mushroom | *Marasmius oreades*, *Calocybe gambosa*, *Clitopilus prunulus* |
 | ***Cortinarius orellanus*** | Fool's Webcap | ***Cortinarius rubellus***, *Cantharellus cibarius*, *Lepista nuda* |
 | ***Cortinarius rubellus*** | Deadly Webcap | *Cantharellus cibarius*, *Lactarius deliciosus*, *Armillaria mellea* |
 | ***Galerina marginata*** | Funeral Bell | *Kuehneromyces mutabilis*, *Armillaria mellea*, *Hypholoma fasciculare*, *Pholiota squarrosa* |
@@ -35,7 +34,7 @@ Eating this can be fatal.
 | ***Lepiota brunneoincarnata*** | Deadly Dapperling | *Marasmius oreades*, *Agaricus campestris*, *Macrolepiota procera* |
 | ***Lepiota subincarnata*** | Fatal Dapperling | ***Lepiota brunneoincarnata***, *Lepiota cristata*, *Marasmius oreades*, *Agaricus campestris* |
 
-## Causes serious illness — `SERIOUS` (12)
+## Causes serious illness — `SERIOUS` (11)
 
 Hospital treatment is usual.
 
@@ -44,11 +43,10 @@ Hospital treatment is usual.
 | ***Amanita pantherina*** | Panther Cap | *Amanita rubescens*, *Amanita muscaria* |
 | ***Entoloma rhodopolium*** | Wood Pinkgill | *Entoloma sinuatum*, *Entoloma sericeum*, *Clitopilus prunulus*, *Clitocybe nebularis* |
 | ***Entoloma sinuatum*** | Livid Pinkgill, Livid Entoloma | *Clitopilus prunulus*, *Calocybe gambosa*, *Agaricus arvensis* |
-| ***Inocybe geophylla*** | White Fibrecap | ***Inocybe erubescens***, ***Clitocybe rivulosa***, ***Clitocybe dealbata***, ***Amanita virosa*** (+1) |
-| ***Inocybe lilacina*** | Lilac Fibrecap | *Inocybe geophylla*, ***Inocybe erubescens***, *Laccaria amethystina*, *Mycena pura* (+1) |
+| ***Inocybe geophylla*** | White Fibrecap, Lilac Fibrecap | ***Inocybe erubescens***, ***Clitocybe rivulosa***, ***Amanita virosa***, *Marasmius oreades* (+2) |
 | ***Paxillus involutus*** | Brown Roll-rim | *Lactarius deliciosus*, ***Clitocybe rivulosa*** |
 | ***Pleurocybella porrigens*** | Angel's Wings | *Pleurotus ostreatus*, *Crepidotus mollis* |
-| ***Pseudosperma rimosum*** | Split Fibrecap | ***Inocybe erubescens***, *Inocybe geophylla*, *Inocybe lilacina*, *Hebeloma crustuliniforme* (+2) |
+| ***Pseudosperma rimosum*** | Split Fibrecap | ***Inocybe erubescens***, *Inocybe geophylla*, *Hebeloma crustuliniforme*, *Agaricus campestris* (+1) |
 | ***Rubroboletus satanas*** | Devil's Bolete | *Boletus edulis* |
 | ***Tricholoma equestre*** | Yellow Knight, Man on Horseback | ***Amanita phalloides***, *Russula ochroleuca* |
 | ***Tricholoma pardinum*** | Leopard Knight | *Tricholoma equestre*, *Calocybe gambosa*, *Clitocybe nebularis* |
@@ -71,10 +69,10 @@ Poisoning is reported.
 | ***Chalciporus piperatus*** | Peppery Bolete | *Boletus edulis*, *Neoboletus luridiformis*, *Rubroboletus satanas*, *Imleria badia* (+1) |
 | ***Chlorophyllum brunneum*** | Shaggy Parasol | *Macrolepiota procera* |
 | ***Chlorophyllum rhacodes*** | Shaggy Parasol | *Chlorophyllum brunneum*, *Macrolepiota procera*, ***Amanita phalloides***, ***Lepiota brunneoincarnata*** |
-| ***Clitocybe fragrans*** | Fragrant Funnel | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Infundibulicybe gibba* |
-| ***Clitocybe metachroa*** | Twotone Funnel | ***Clitocybe dealbata***, ***Clitocybe rivulosa***, *Clitocybe fragrans*, *Clitocybe nebularis* |
-| ***Clitocybe nebularis*** | Clouded Funnel, Clouded Agaric | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Entoloma sinuatum*, *Lepista nuda* |
-| ***Clitocybe vibecina*** | Mealy Funnel | ***Clitocybe dealbata***, ***Clitocybe rivulosa***, *Clitocybe fragrans*, *Clitocybe metachroa* |
+| ***Clitocybe fragrans*** | Fragrant Funnel | ***Clitocybe rivulosa***, *Infundibulicybe gibba* |
+| ***Clitocybe metachroa*** | Twotone Funnel | ***Clitocybe rivulosa***, *Clitocybe fragrans*, *Clitocybe nebularis* |
+| ***Clitocybe nebularis*** | Clouded Funnel, Clouded Agaric | ***Clitocybe rivulosa***, *Entoloma sinuatum*, *Lepista nuda* |
+| ***Clitocybe vibecina*** | Mealy Funnel | ***Clitocybe rivulosa***, *Clitocybe fragrans*, *Clitocybe metachroa* |
 | ***Collybiopsis peronata*** | Wood Woollyfoot | *Gymnopus dryophilus*, *Collybiopsis confluens*, *Marasmius oreades* |
 | ***Coprinopsis atramentaria*** | Common Inkcap | *Coprinus comatus* |
 | ***Entoloma conferendum*** | Star Pinkgill | *Entoloma sinuatum*, *Pluteus cervinus*, *Clitopilus prunulus* |
@@ -86,7 +84,7 @@ Poisoning is reported.
 | ***Hygrophoropsis aurantiaca*** | False Chanterelle | *Cantharellus cibarius*, *Omphalotus olearius* |
 | ***Hypholoma fasciculare*** | Sulphur Tuft | *Kuehneromyces mutabilis*, *Armillaria mellea*, ***Galerina marginata*** |
 | ***Infundibulicybe geotropa*** | Trooping Funnel | *Clitocybe nebularis*, *Infundibulicybe gibba*, ***Clitocybe rivulosa***, *Paralepista flaccida* |
-| ***Infundibulicybe gibba*** | Common Funnel | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Paralepista flaccida*, *Clitocybe fragrans* |
+| ***Infundibulicybe gibba*** | Common Funnel | ***Clitocybe rivulosa***, *Paralepista flaccida*, *Clitocybe fragrans* |
 | ***Lactarius blennius*** | Beech Milkcap | *Lactarius torminosus*, *Lactarius deliciosus*, *Lactarius quietus* |
 | ***Lactarius glyciosmus*** | Coconut Milkcap | *Lactarius torminosus*, *Lactarius deliciosus*, *Lactarius quietus* |
 | ***Lactarius pyrogalus*** | Fiery Milkcap | *Lactarius torminosus*, *Lactarius deliciosus*, *Lactarius quietus* |
@@ -175,8 +173,8 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Crepidotus cesatii*** | Roundspored Oysterling | *Crepidotus variabilis*, *Crepidotus mollis* |
 | ***Crepidotus mollis*** | Peeling Oysterling | *Pleurotus ostreatus* |
 | ***Crepidotus variabilis*** | Variable Oysterling | *Crepidotus mollis*, *Crepidotus cesatii*, *Panellus stipticus* |
-| ***Cuphophyllus pratensis*** | Meadow Waxcap | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Cuphophyllus virgineus* |
-| ***Cuphophyllus virgineus*** | Snowy Waxcap | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Marasmius oreades*, ***Amanita virosa*** |
+| ***Cuphophyllus pratensis*** | Meadow Waxcap | ***Clitocybe rivulosa***, *Cuphophyllus virgineus* |
+| ***Cuphophyllus virgineus*** | Snowy Waxcap | ***Clitocybe rivulosa***, *Marasmius oreades*, ***Amanita virosa*** |
 | ***Cystoderma amianthinum*** | Earthy Powdercap | *Lepiota cristata*, ***Lepiota brunneoincarnata***, *Macrolepiota procera* |
 | ***Dacrymyces stillatus*** | Common Jellyspot | *Tremella mesenterica*, *Calocera viscosa* |
 | ***Daedaleopsis confragosa*** | Blushing Bracket | *Trametes versicolor* |
@@ -193,8 +191,8 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Fuscoporia ferrea*** | Cinnamon Porecrust | *Schizopora paradoxa* |
 | ***Ganoderma adspersum*** | Southern Bracket | *Ganoderma applanatum*, *Fomes fomentarius* |
 | ***Ganoderma applanatum*** | Artist's Bracket | *Ganoderma adspersum*, *Fomes fomentarius* |
-| ***Gliophorus irrigatus*** | Slimy Waxcap | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Gliophorus psittacinus*, *Gliophorus laetus* |
-| ***Gliophorus laetus*** | Heath Waxcap | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Gliophorus psittacinus*, *Gliophorus irrigatus* |
+| ***Gliophorus irrigatus*** | Slimy Waxcap | ***Clitocybe rivulosa***, *Gliophorus psittacinus*, *Gliophorus laetus* |
+| ***Gliophorus laetus*** | Heath Waxcap | ***Clitocybe rivulosa***, *Gliophorus psittacinus*, *Gliophorus irrigatus* |
 | ***Gliophorus psittacinus*** | Parrot Waxcap | *Cuphophyllus pratensis*, *Hygrocybe conica* |
 | ***Gymnopilus penetrans*** | Common Rustgill | ***Galerina marginata***, *Kuehneromyces mutabilis*, *Hypholoma fasciculare*, *Armillaria mellea* |
 | ***Gymnopus androsaceus*** | Horsehair Parachute | *Marasmius rotula*, *Collybiopsis ramealis* |
@@ -202,13 +200,13 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Gymnopus fusipes*** | Spindleshank | *Gymnopus dryophilus*, *Armillaria mellea*, *Collybiopsis confluens* |
 | ***Heterobasidion annosum*** | Root Rot | *Fomes fomentarius*, *Ganoderma applanatum* |
 | ***Hydnum repandum*** | Hedgehog Fungus, Wood Hedgehog | — |
-| ***Hygrocybe ceracea*** | Butter Waxcap | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Hygrocybe chlorophana*, *Hygrocybe insipida* |
-| ***Hygrocybe chlorophana*** | Golden Waxcap | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Hygrocybe ceracea*, *Hygrocybe conica* |
-| ***Hygrocybe coccinea*** | Scarlet Waxcap | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Hygrocybe punicea*, *Hygrocybe conica* |
-| ***Hygrocybe insipida*** | Spangle Waxcap | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Hygrocybe ceracea*, *Hygrocybe reidii* |
-| ***Hygrocybe punicea*** | Crimson Waxcap | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Hygrocybe coccinea*, *Hygrocybe conica* |
-| ***Hygrocybe quieta*** | Oily Waxcap | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Hygrocybe reidii*, *Cuphophyllus pratensis* |
-| ***Hygrocybe reidii*** | Honey Waxcap | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Hygrocybe quieta*, *Hygrocybe insipida* |
+| ***Hygrocybe ceracea*** | Butter Waxcap | ***Clitocybe rivulosa***, *Hygrocybe chlorophana*, *Hygrocybe insipida* |
+| ***Hygrocybe chlorophana*** | Golden Waxcap | ***Clitocybe rivulosa***, *Hygrocybe ceracea*, *Hygrocybe conica* |
+| ***Hygrocybe coccinea*** | Scarlet Waxcap | ***Clitocybe rivulosa***, *Hygrocybe punicea*, *Hygrocybe conica* |
+| ***Hygrocybe insipida*** | Spangle Waxcap | ***Clitocybe rivulosa***, *Hygrocybe ceracea*, *Hygrocybe reidii* |
+| ***Hygrocybe punicea*** | Crimson Waxcap | ***Clitocybe rivulosa***, *Hygrocybe coccinea*, *Hygrocybe conica* |
+| ***Hygrocybe quieta*** | Oily Waxcap | ***Clitocybe rivulosa***, *Hygrocybe reidii*, *Cuphophyllus pratensis* |
+| ***Hygrocybe reidii*** | Honey Waxcap | ***Clitocybe rivulosa***, *Hygrocybe quieta*, *Hygrocybe insipida* |
 | ***Hymenochaete rubiginosa*** | Oak Curtain Crust | *Stereum hirsutum*, *Stereum gausapatum* |
 | ***Hymenopellis radicata*** | Rooting Shank | *Megacollybia platyphylla*, *Mucidula mucida*, *Armillaria mellea* |
 | ***Hypoxylon fragiforme*** | Beech Woodwart | *Hypoxylon fuscum*, *Daldinia concentrica* |
@@ -229,7 +227,7 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Lycoperdon nigrescens*** | Dusky Puffball | *Lycoperdon perlatum*, *Scleroderma citrinum*, ***Amanita virosa***, *Lycoperdon excipuliforme* |
 | ***Lycoperdon perlatum*** | Common Puffball | *Scleroderma citrinum*, ***Amanita virosa*** |
 | ***Macrolepiota procera*** | Parasol Mushroom | *Chlorophyllum brunneum*, ***Amanita phalloides*** |
-| ***Marasmius oreades*** | Fairy Ring Champignon | ***Clitocybe rivulosa***, ***Clitocybe dealbata*** |
+| ***Marasmius oreades*** | Fairy Ring Champignon | ***Clitocybe rivulosa*** |
 | ***Marasmius rotula*** | Collared Parachute | *Collybiopsis ramealis*, *Marasmius oreades* |
 | ***Meripilus giganteus*** | Giant Polypore | *Laetiporus sulphureus*, *Ganoderma adspersum* |
 | ***Morchella esculenta*** | Morel | ***Gyromitra esculenta***, *Verpa bohemica* |

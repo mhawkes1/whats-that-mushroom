@@ -1698,40 +1698,6 @@
       }
     },
     {
-      "key": "clitocybe-dealbata",
-      "scientific_name": "Clitocybe dealbata",
-      "genus": "Clitocybe",
-      "common_names": [
-        "Ivory Funnel"
-      ],
-      "toxicity": "DEADLY",
-      "gbif_key": 2531056,
-      "lookalikes": [
-        "marasmius-oreades",
-        "calocybe-gambosa"
-      ],
-      "diagnostic_characters": [
-        "gill_attachment",
-        "gill_spacing",
-        "habitat"
-      ],
-      "notes": "Taxonomically entangled with Clitocybe rivulosa and treated as equivalently dangerous. Crowded decurrent gills in short grassland.",
-      "character_states": {
-        "gill_attachment": [
-          "Running down the stem"
-        ],
-        "gill_spacing": [
-          "Crowded"
-        ],
-        "habitat": [
-          "No trees nearby",
-          "Mixed broadleaf"
-        ]
-      },
-      "image_source": "any",
-      "internal_note": "gbif_key pinned and image_source widened, 2026-09-23, Martin's decision to keep the ivory funnels as separate species. GBIF's backbone treats this as a SYNONYM of Clitocybe rivulosa, so following acceptedUsageKey would collide the two onto one label. 2531056 is this name's own usage, carrying the records whose recorder determined them as dealbata. NOT the same evidential standard as an accepted taxon: the split rests on recorder determination, and the two are a long-standing taxonomic argument. A mycologist should confirm the split is real. image_source 'any' because iNaturalist holds ZERO images for either ivory funnel; 233 exist across other GBIF datasets, mostly Norwegian survey projects."
-    },
-    {
       "key": "clitocybe-fragrans",
       "scientific_name": "Clitocybe fragrans",
       "genus": "Clitocybe",
@@ -1742,7 +1708,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "infundibulicybe-gibba"
       ],
       "diagnostic_characters": [
@@ -1788,7 +1753,6 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
-        "clitocybe-dealbata",
         "clitocybe-rivulosa",
         "clitocybe-fragrans",
         "clitocybe-nebularis"
@@ -1830,7 +1794,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "entoloma-sinuatum",
         "lepista-nuda"
       ],
@@ -1871,7 +1834,8 @@
       "genus": "Clitocybe",
       "common_names": [
         "Fool's Funnel",
-        "Ivory Funnel"
+        "Ivory Funnel",
+        "Sweating Mushroom"
       ],
       "toxicity": "DEADLY",
       "gbif_key": null,
@@ -1884,9 +1848,10 @@
         "gill_attachment",
         "spore_print_colour",
         "habitat",
-        "cap_surface"
+        "cap_surface",
+        "gill_spacing"
       ],
-      "notes": "High muscarine content; fatalities are rare but recorded. Decurrent gills running down the stem, versus the free-to-adnexed gills of Marasmius oreades. Shares the same short grassland and lawn habitat, and often the same fairy rings.",
+      "notes": "Small, white to ivory, in grass and on lawns, often in rings or arcs. Gills run down the stem and are crowded. Contains muscarine. What older books split as Clitocybe dealbata and C. rivulosa is treated here as one species: most authorities now regard them as the same fungus.",
       "character_states": {
         "gill_attachment": [
           "Running down the stem"
@@ -1900,10 +1865,13 @@
         ],
         "cap_surface": [
           "Smooth and dry"
+        ],
+        "gill_spacing": [
+          "Crowded"
         ]
       },
       "image_source": "any",
-      "internal_note": "image_source widened 2026-09-23. iNaturalist holds zero images for this species -- its observers do not identify to it -- while GBIF as a whole has 11,661 occurrences and 1,068 with images. Those come from survey and herbarium datasets rather than iNaturalist, so the research-grade publication policy does not cover them; the manifest records dataset_key per image so the difference stays visible."
+      "internal_note": "Merged 2026-09-23 on Martin's determination that most experts treat C. dealbata and C. rivulosa as one species. GBIF's backbone agrees -- dealbata is a SYNONYM of rivulosa -- and following the accepted usage had collided the two onto one taxon key, which is what surfaced the question. The earlier decision to keep them separate is reversed. Character states are the UNION of both entries, which is right for a DEADLY species: omitting a state it can show would falsely dismiss something lethal. image_source stays 'any': iNaturalist holds no images under either name."
     },
     {
       "key": "clitocybe-vibecina",
@@ -1915,7 +1883,6 @@
       "toxicity": "TOXIC",
       "gbif_key": null,
       "lookalikes": [
-        "clitocybe-dealbata",
         "clitocybe-rivulosa",
         "clitocybe-fragrans",
         "clitocybe-metachroa"
@@ -2628,7 +2595,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "cuphophyllus-virgineus"
       ],
       "diagnostic_characters": [
@@ -2669,7 +2635,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "marasmius-oreades",
         "amanita-virosa"
       ],
@@ -3628,7 +3593,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "gliophorus-psittacinus",
         "gliophorus-laetus"
       ],
@@ -3669,7 +3633,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "gliophorus-psittacinus",
         "gliophorus-irrigatus"
       ],
@@ -4126,7 +4089,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "hygrocybe-chlorophana",
         "hygrocybe-insipida"
       ],
@@ -4168,7 +4130,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "hygrocybe-ceracea",
         "hygrocybe-conica"
       ],
@@ -4209,7 +4170,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "hygrocybe-punicea",
         "hygrocybe-conica"
       ],
@@ -4292,7 +4252,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "hygrocybe-ceracea",
         "hygrocybe-reidii"
       ],
@@ -4334,7 +4293,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "hygrocybe-coccinea",
         "hygrocybe-conica"
       ],
@@ -4379,7 +4337,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "hygrocybe-reidii",
         "cuphophyllus-pratensis"
       ],
@@ -4420,7 +4377,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "hygrocybe-quieta",
         "hygrocybe-insipida"
       ],
@@ -4796,7 +4752,6 @@
       "gbif_key": null,
       "lookalikes": [
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "paralepista-flaccida",
         "clitocybe-fragrans"
       ],
@@ -4870,16 +4825,18 @@
       "scientific_name": "Inocybe geophylla",
       "genus": "Inocybe",
       "common_names": [
-        "White Fibrecap"
+        "White Fibrecap",
+        "Lilac Fibrecap"
       ],
       "toxicity": "SERIOUS",
       "gbif_key": null,
       "lookalikes": [
         "inocybe-erubescens",
         "clitocybe-rivulosa",
-        "clitocybe-dealbata",
         "amanita-virosa",
-        "marasmius-oreades"
+        "marasmius-oreades",
+        "laccaria-amethystina",
+        "mycena-pura"
       ],
       "diagnostic_characters": [
         "cap_colour",
@@ -4889,64 +4846,13 @@
         "smell",
         "gill_colour"
       ],
-      "notes": "Small, silky-white, sharply conical cap with a distinct central point, and a strong earthy smell. The gills age to dull clay-brown and the spore print is brown. Contains muscarine.",
-      "internal_note": "SERIOUS rather than TOXIC: muscarine poisoning is rarely fatal but is a hospital matter. Lists are generous because a contradiction pushes it down, and this is not a species to dismiss lightly.",
+      "notes": "Small, silky-fibrous, conical then domed, with a rust-brown spore print and a strong earthy or raw-potato smell. Contains muscarine. Colour ranges from white through cream to distinctly lilac; the lilac form is the one older books call Inocybe lilacina, and it is treated here as part of the same complex.",
+      "internal_note": "Merged 2026-09-23 on Martin's determination that I. lilacina now sits within the I. geophylla complex. GBIF's backbone agrees -- lilacina is a SYNONYM of geophylla -- and following the accepted usage had collided the two, which is what surfaced the question. The earlier decision to keep them separate is reversed. cap_colour is the UNION and therefore now includes Purple: a user holding the lilac form must not contradict a SERIOUS species into oblivion.",
       "character_states": {
         "cap_colour": [
           "White or cream",
-          "Yellow"
-        ],
-        "cap_shape": [
-          "Conical",
-          "Domed"
-        ],
-        "cap_surface": [
-          "Fibrous",
-          "Smooth and dry"
-        ],
-        "spore_print_colour": [
-          "Rust or cinnamon brown"
-        ],
-        "smell": [
-          "Raw potato or earthy"
-        ],
-        "gill_colour": [
-          "White",
-          "Brown",
-          "Grey"
-        ]
-      }
-    },
-    {
-      "key": "inocybe-lilacina",
-      "scientific_name": "Inocybe lilacina",
-      "genus": "Inocybe",
-      "common_names": [
-        "Lilac Fibrecap"
-      ],
-      "toxicity": "SERIOUS",
-      "gbif_key": 3331644,
-      "lookalikes": [
-        "inocybe-geophylla",
-        "inocybe-erubescens",
-        "laccaria-amethystina",
-        "mycena-pura",
-        "clitocybe-rivulosa"
-      ],
-      "diagnostic_characters": [
-        "cap_colour",
-        "cap_shape",
-        "cap_surface",
-        "spore_print_colour",
-        "smell",
-        "gill_colour"
-      ],
-      "notes": "The lilac form of the white fibrecap: same silky pointed cap, same earthy smell, same muscarine. Mistaken for the amethyst deceiver, which prints white where this prints brown.",
-      "internal_note": "gbif_key pinned 2026-09-23, Martin's decision to keep this separate from Inocybe geophylla. GBIF treats it as a SYNONYM of geophylla, so following acceptedUsageKey would collide the two. 3331644 is this name's own usage and carries 361 iNaturalist images, so no source change is needed. The split rests on recorder determination; a mycologist should confirm it.",
-      "character_states": {
-        "cap_colour": [
-          "Purple",
-          "White or cream"
+          "Yellow",
+          "Purple"
         ],
         "cap_shape": [
           "Conical",
@@ -6078,8 +5984,7 @@
       "toxicity": "NO_RECORDED_TOXICITY",
       "gbif_key": null,
       "lookalikes": [
-        "clitocybe-rivulosa",
-        "clitocybe-dealbata"
+        "clitocybe-rivulosa"
       ],
       "diagnostic_characters": [
         "gill_attachment",
@@ -7969,7 +7874,6 @@
       "lookalikes": [
         "inocybe-erubescens",
         "inocybe-geophylla",
-        "inocybe-lilacina",
         "hebeloma-crustuliniforme",
         "agaricus-campestris",
         "marasmius-oreades"

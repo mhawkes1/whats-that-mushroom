@@ -506,18 +506,6 @@
       "reason": "exact match"
     },
     {
-      "scientific_name": "Clitocybe dealbata",
-      "usage_key": 2531056,
-      "matched_name": "Clitocybe dealbata",
-      "rank": "SPECIES",
-      "match_type": "DECLARED",
-      "confidence": null,
-      "status": null,
-      "synonym": false,
-      "accepted": true,
-      "reason": "gbif_key set in the taxonomy"
-    },
-    {
       "scientific_name": "Clitocybe fragrans",
       "usage_key": 2531088,
       "matched_name": "Clitocybe fragrans",
@@ -1440,18 +1428,6 @@
       "synonym": false,
       "accepted": true,
       "reason": "exact match"
-    },
-    {
-      "scientific_name": "Inocybe lilacina",
-      "usage_key": 3331644,
-      "matched_name": "Inocybe lilacina",
-      "rank": "SPECIES",
-      "match_type": "DECLARED",
-      "confidence": null,
-      "status": null,
-      "synonym": false,
-      "accepted": true,
-      "reason": "gbif_key set in the taxonomy"
     },
     {
       "scientific_name": "Jackrogersella multiformis",

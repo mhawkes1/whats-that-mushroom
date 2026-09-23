@@ -505,11 +505,13 @@ HAND_SET_KEYS = {
     # /species/match falls back to the Fungi KINGDOM -- four authorships,
     # three DOUBTFUL.
     "Helvella crispa": 2554614,
-    # Pinned to their own usage rather than following acceptedUsageKey,
-    # because following it would collide two label-space species onto one
-    # taxon. Martin's decision, 2026-09-23: keep them separate.
-    "Clitocybe dealbata": 2531056,   # GBIF: synonym of C. rivulosa
-    "Inocybe lilacina": 3331644,     # GBIF: synonym of I. geophylla
+    # Clitocybe dealbata and Inocybe lilacina were pinned here for a few
+    # hours on 2026-09-23, to keep them separate from the taxa GBIF treats
+    # them as synonyms of. Martin then established that most authorities
+    # merge C. dealbata into C. rivulosa, and that I. lilacina now sits
+    # within the I. geophylla complex, so both were merged away instead and
+    # their pins went with them. The CollidingTaxonKeys guard was what
+    # raised the question in the first place.
 }
 
 
