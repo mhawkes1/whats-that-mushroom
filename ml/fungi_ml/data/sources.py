@@ -51,6 +51,10 @@ USER_AGENT = "whats-that-mushroom/0.1 (dataset builder; +https://github.com/mhaw
 # project exists to distrust.
 RESEARCH_GRADE = "Research Grade"
 
+# How hard to try for one page of occurrences before giving up on it.
+PAGE_RETRIES = 4
+PAGE_BACKOFF_SECONDS = 2.0
+
 
 def _session() -> requests.Session:
     session = requests.Session()
@@ -308,9 +312,28 @@ def _occurrence_page(
         params["datasetKey"] = dataset_key
     if country:
         params["country"] = country
-    resp = session.get(f"{GBIF_API}/occurrence/search", params=params, timeout=60)
-    resp.raise_for_status()
-    return resp.json()
+
+    # Retry before giving up. A single reset used to end the paging loop for
+    # that species, keeping whatever had been collected -- and at offset 0
+    # that is nothing. Observed live: Agaricus arvensis, the horse mushroom
+    # and a death cap lookalike, lost its entire quota to one
+    # ConnectionResetError while the run carried on.
+    last: Exception | None = None
+    for attempt in range(PAGE_RETRIES):
+        try:
+            resp = session.get(f"{GBIF_API}/occurrence/search", params=params, timeout=60)
+            resp.raise_for_status()
+            return resp.json()
+        except requests.RequestException as exc:
+            last = exc
+            if attempt < PAGE_RETRIES - 1:
+                delay = PAGE_BACKOFF_SECONDS * (2 ** attempt)
+                log.warning(
+                    "GBIF page failed (attempt %d/%d), retrying in %.1fs: %s",
+                    attempt + 1, PAGE_RETRIES, delay, exc,
+                )
+                time.sleep(delay)
+    raise last  # type: ignore[misc]
 
 
 def build_manifest(
@@ -331,6 +354,7 @@ def build_manifest(
     session = _session()
 
     rows: list[dict] = []
+    truncated: dict[str, int] = {}
     for quota in quotas:
         collected = 0
         offset = 0
@@ -342,7 +366,11 @@ def build_manifest(
                     quota.dataset_key,
                 )
             except requests.RequestException as exc:
-                log.error("GBIF page failed for %s at offset %d: %s", quota.key, offset, exc)
+                log.error(
+                    "GBIF paging gave up for %s at offset %d after %d attempts: %s",
+                    quota.key, offset, PAGE_RETRIES, exc,
+                )
+                truncated[quota.key] = collected
                 break
 
             results = page.get("results", [])
@@ -404,6 +432,18 @@ def build_manifest(
     frame = pd.DataFrame(rows)
     if frame.empty:
         raise RuntimeError("Manifest is empty -- check taxon keys and network access.")
+
+    if truncated:
+        log.error(
+            "%d species were cut short by GBIF errors and did NOT reach their "
+            "quota: %s",
+            len(truncated),
+            ", ".join(f"{k} ({n})" for k, n in sorted(truncated.items())),
+        )
+        log.error(
+            "    Re-run to fill them: the manifest is rebuilt from scratch, "
+            "and already-downloaded images are skipped."
+        )
 
     frame = frame.drop_duplicates(subset=["image_url"])
     out_path = Path(out_path)

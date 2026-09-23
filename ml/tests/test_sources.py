@@ -559,3 +559,78 @@ def test_a_species_losing_every_image_is_reported_loudly(tmp_path, caplog):
     assert any(r.levelno >= logging.ERROR for r in caplog.records), (
         "a species losing every image is an error, not a warning"
     )
+
+
+def test_a_transient_page_failure_is_retried(monkeypatch):
+    """One reset must not cost a species its whole quota.
+
+    Observed live: Agaricus arvensis -- the horse mushroom, and a death cap
+    lookalike -- hit a ConnectionResetError at offset 0. The paging loop
+    caught it, broke, kept the nothing it had collected, and the run
+    carried on to the next species.
+    """
+    import fungi_ml.data.sources as sources
+
+    monkeypatch.setattr(sources.time, "sleep", lambda _: None)
+    calls = {"n": 0}
+
+    class Flaky:
+        def get(self, url, params=None, timeout=None):
+            calls["n"] += 1
+            if calls["n"] < 3:
+                raise requests.ConnectionError("Connection reset by peer")
+            return StubResponse({"results": [], "endOfRecords": True})
+
+    page = sources._occurrence_page(Flaky(), 1, 0, 300, None)
+    assert page["endOfRecords"] is True
+    assert calls["n"] == 3, "should have retried twice before succeeding"
+
+
+def test_paging_gives_up_after_the_retry_budget(monkeypatch):
+    import fungi_ml.data.sources as sources
+
+    monkeypatch.setattr(sources.time, "sleep", lambda _: None)
+    calls = {"n": 0}
+
+    class Dead:
+        def get(self, *a, **k):
+            calls["n"] += 1
+            raise requests.ConnectionError("down")
+
+    with pytest.raises(requests.RequestException):
+        sources._occurrence_page(Dead(), 1, 0, 300, None)
+    assert calls["n"] == sources.PAGE_RETRIES
+
+
+def test_a_species_cut_short_by_gbif_is_reported(tmp_path, monkeypatch, caplog):
+    """A truncated species looks identical to a rare one in the manifest."""
+    import logging
+
+    import fungi_ml.data.sources as sources
+
+    monkeypatch.setattr(sources.time, "sleep", lambda _: None)
+
+    class HalfDead:
+        """Serves one good page for the first species, then dies."""
+
+        def __init__(self):
+            self.served = 0
+
+        def get(self, url, params=None, timeout=None):
+            if params.get("taxonKey") == 1 and self.served == 0:
+                self.served += 1
+                return StubResponse(
+                    {"results": [occurrence(1, n_images=2)], "endOfRecords": True}
+                )
+            raise requests.ConnectionError("down")
+
+    monkeypatch.setattr(sources, "_session", HalfDead)
+    quotas = [
+        SpeciesQuota(key="fine", scientific_name="A b", gbif_key=1, target=50),
+        SpeciesQuota(key="cut-short", scientific_name="C d", gbif_key=2, target=50),
+    ]
+    with caplog.at_level(logging.ERROR):
+        sources.build_manifest(quotas, tmp_path / "m.parquet", sleep_between_pages=0.0)
+
+    assert "cut-short" in caplog.text
+    assert "did NOT reach their quota" in caplog.text
