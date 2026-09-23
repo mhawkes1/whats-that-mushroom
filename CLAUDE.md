@@ -124,6 +124,46 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   function of the payload, refuses any rank but SPECIES, refuses FUZZY
   (fungal binomials differ by a letter or two across different species) and
   is tested offline.
+- **The live API broke three things the offline tests could not.** Found on
+  the first real run, 2026-09-23. (1) Every licence string carries a
+  `/legalcode` suffix — 300 of 300 sampled — which the positional parser read
+  as `version="legalcode"` and rejected, so the fetcher would have refused
+  every image and raised "Manifest is empty — check taxon keys and network
+  access", pointing at the network. (2) `identificationVerificationStatus` is
+  absent from GBIF's iNaturalist export entirely, so the research-grade filter
+  would have discarded the whole dataset while looking like quality control;
+  it now rejects only an explicitly lower grade, and the research-grade
+  property comes from iNaturalist's publication policy, which this code
+  cannot verify. (3) *Helvella crispa* has four competing authorships, three
+  DOUBTFUL, so `/species/match` falls back to `usageKey: 5` — the **Fungi
+  kingdom** — at confidence 99. The rank check caught it; a confidence check
+  never would have. Synthetic fixtures were wrong in exactly these ways.
+- **A synonym key returns no occurrences, not fewer.** GBIF indexes
+  occurrences against the accepted usage, so `judge_match` follows
+  `acceptedUsageKey`. *Inocybe erubescens* (DEADLY) matched EXACT at
+  confidence 100 to a key with **0** occurrences; its accepted usage
+  *Inosperma erubescens* has 82. `UnresolvedDeadlySpecies` does not fire —
+  the name resolved perfectly — so the species would have fallen below
+  `--min-images` and left the label space in silence.
+- **Following synonyms can merge two of our species onto one key.**
+  `CollidingTaxonKeys`. GBIF treats *Clitocybe dealbata* as a synonym of
+  *C. rivulosa*, and *Inocybe lilacina* as a synonym of *I. geophylla*, while
+  this taxonomy carries all four separately — two of them DEADLY. Downloaded
+  together, every image is filed under both labels: silent label noise the
+  risk-weighted objective cannot see. The build refuses. It is a taxonomy
+  question, not a download one.
+- **Never pass `--country GB`.** It is the intuitive choice for a British app
+  and it wrecks the dataset. Measured: zero images for *Clitocybe rivulosa*,
+  *Cortinarius orellanus* and *Tricholoma pardinum*, one for *Entoloma
+  sinuatum*, against 38–171 globally; *Amanita phalloides* 309 vs 8,617; 52
+  species below `--min-images 40`. A death cap photographed in France is the
+  same fungus, and the geographic prior comes from the metadata branch.
+- **`datasetKey` restricted to iNaturalist costs both ivory funnels.**
+  *Clitocybe rivulosa* has 11,661 GBIF occurrences and 1,068 with images, and
+  **zero** in the iNaturalist dataset — iNat observers do not identify to that
+  species. Widening beyond iNaturalist means losing the research-grade
+  publication policy that the quality argument rests on, so it is a trade,
+  not a fix. Unresolved.
 - **Resolution is a reviewable artefact, not a step.** `--resolve-only`
   writes `data/gbif-keys.json` with every match and every refusal's reason.
   Run it before the download: it takes a minute, and it is the point where a

@@ -4006,7 +4006,7 @@
         "White Saddle"
       ],
       "toxicity": "TOXIC",
-      "gbif_key": null,
+      "gbif_key": 2554614,
       "lookalikes": [
         "gyromitra-esculenta",
         "morchella-esculenta",
@@ -4021,7 +4021,7 @@
         "interior_structure"
       ],
       "notes": "Ivory saddle-shaped cap folded over a deeply ribbed and pocketed hollow stem, on woodland paths and verges.",
-      "internal_note": "TOXIC: contains hydrazine compounds of the same family as Gyromitra. Graded conservatively; please confirm.",
+      "internal_note": "gbif_key set by hand 2026-09-23. GBIF's /species/match refuses this name: four competing authorships exist (Scop., Sowerby, Bull., (Scop.) Fr.), three of them DOUBTFUL, so the match falls back to matchType HIGHERRANK with usageKey 5 -- the Fungi KINGDOM -- at confidence 99. 2554614 is the ACCEPTED species in the backbone (nubKey == key, Helvellaceae), with 1,417 research-grade GB occurrences carrying images.",
       "character_states": {
         "cap_shape": [
           "Irregular"

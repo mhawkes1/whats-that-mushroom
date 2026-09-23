@@ -20,6 +20,7 @@ import hashlib
 import io
 import json
 import logging
+import re
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -158,13 +159,41 @@ def judge_match(scientific_name: str, payload: dict) -> TaxonMatch:
     if confidence is not None and confidence < MIN_MATCH_CONFIDENCE:
         return refuse(f"confidence {confidence} is below {MIN_MATCH_CONFIDENCE}")
 
-    reason = "exact match"
-    if common["synonym"]:
-        # Legitimate and common -- the backbone moves species between genera
-        # faster than field guides do. Worth recording, because the manifest
-        # will carry our name and the images will have been filed under GBIF's.
-        reason = f"exact match to {matched}, which GBIF treats as the accepted name"
-    return TaxonMatch(**{**common, "usage_key": int(key), "accepted": True, "reason": reason})
+    # Follow a synonym to the accepted taxon. Occurrences are indexed against
+    # the accepted usage, so a synonym key does not return fewer records -- it
+    # commonly returns NONE. Inocybe erubescens, a DEADLY species, resolved
+    # EXACT at confidence 100 to a key with 0 occurrences; its accepted usage
+    # (Inosperma erubescens) has 82. Nothing downstream would have reported
+    # that: the species would simply have fallen below --min-images and left
+    # the label space, and `UnresolvedDeadlySpecies` does not fire because the
+    # name resolved perfectly well.
+    accepted_key = payload.get("acceptedUsageKey")
+    status = payload.get("status") or ""
+    is_synonym = bool(payload.get("synonym")) or "SYNONYM" in status.upper()
+
+    if is_synonym and accepted_key:
+        return TaxonMatch(
+            **{
+                **common,
+                "usage_key": int(accepted_key),
+                "synonym": True,
+                "accepted": True,
+                "reason": (
+                    f"{scientific_name} is a {status or 'synonym'} in the GBIF "
+                    f"backbone; following acceptedUsageKey {accepted_key} "
+                    f"({payload.get('genus', '?')}), because occurrences are "
+                    "indexed against the accepted usage"
+                ),
+            }
+        )
+    if is_synonym:
+        return refuse(
+            f"{status or 'a synonym'} in the backbone with no acceptedUsageKey "
+            "to follow; occurrences are indexed against the accepted usage"
+        )
+
+    return TaxonMatch(**{**common, "usage_key": int(key), "accepted": True,
+                         "reason": "exact match"})
 
 
 def resolve_species(scientific_name: str, session: requests.Session) -> TaxonMatch:
@@ -186,38 +215,68 @@ def resolve_species(scientific_name: str, session: requests.Session) -> TaxonMat
     return match
 
 
+# Creative Commons URLs, parsed structurally rather than by position. The
+# live API appends `/legalcode` to every one of them
+# ("http://creativecommons.org/licenses/by-nc/4.0/legalcode"), which the
+# previous positional parser read as version="legalcode", code="4.0" and
+# rejected. Measured against 300 real records: 100% carried the suffix, so
+# the fetcher would have refused every image and raised "Manifest is empty
+# -- check taxon keys and network access", pointing at the network.
+_CC_LICENCE = re.compile(
+    r"creativecommons\.org/licenses/(?P<code>[a-z-]+)/(?P<version>\d+\.\d+)",
+    re.IGNORECASE,
+)
+_CC_ZERO = re.compile(
+    r"creativecommons\.org/publicdomain/zero/(?P<version>\d+\.\d+)",
+    re.IGNORECASE,
+)
+
+
 def _licence_accepted(raw: str | None) -> bool:
     """Normalise a GBIF licence value and test it against the allow-list.
 
-    GBIF returns either an enum ("CC_BY_4_0") or a Creative Commons URL
-    ("http://creativecommons.org/licenses/by-nc/4.0/") depending on which
-    route served the record. An absent licence is rejected: we cannot
-    redistribute a model derived from images whose terms are unknown.
+    GBIF returns either an enum ("CC_BY_4_0") or a Creative Commons URL,
+    depending on which route served the record, and the URL may carry a
+    trailing `/legalcode` or `/deed.*`. An absent licence is rejected: we
+    cannot redistribute a model derived from images whose terms are
+    unknown.
     """
     if not raw:
         return False
     if raw in ACCEPTED_LICENCES:
         return True
-    if "creativecommons.org" not in raw:
-        return False
-    parts = [p for p in raw.rstrip("/").split("/") if p]
-    if len(parts) < 2:
-        return False
-    version, code = parts[-1], parts[-2]
-    if code == "zero":
-        code, version = "cc0", "1.0"
-    normalised = f"{'CC0' if code == 'cc0' else 'CC_' + code.upper().replace('-', '_')}_{version.replace('.', '_')}"
-    return normalised in ACCEPTED_LICENCES
+    if zero := _CC_ZERO.search(raw):
+        return f"CC0_{zero['version'].replace('.', '_')}" in ACCEPTED_LICENCES
+    if match := _CC_LICENCE.search(raw):
+        code = match["code"].upper().replace("-", "_")
+        return f"CC_{code}_{match['version'].replace('.', '_')}" in ACCEPTED_LICENCES
+    return False
+
+
+# Verification statuses that positively disqualify a record. GBIF's
+# iNaturalist export does NOT carry `identificationVerificationStatus` at
+# all -- absent on 300 of 300 real records sampled -- so this rejects only
+# a record that explicitly declares a lower grade, and in practice rejects
+# nothing.
+#
+# That is deliberate and it is not a safeguard. The research-grade property
+# comes from iNaturalist's own publication policy, which is that only
+# research-grade observations are pushed to GBIF; it does not come from
+# this code, and this code cannot verify it. An earlier version required
+# the field to equal "Research Grade", which would have discarded every
+# record while looking like quality control.
+REJECTED_VERIFICATION = frozenset({"needs id", "casual", "unverified", "unconfirmed"})
 
 
 def _research_grade(occ: dict) -> bool:
-    """Keep only observations a second identifier has agreed with.
+    """Reject a record that explicitly declares a sub-research grade.
 
-    GBIF's iNaturalist dataset is *mostly* research-grade, which is why the
-    old docstring could claim this filter without anyone noticing it was
-    absent. Mostly is not a filter.
+    Absence is not rejection -- see `REJECTED_VERIFICATION`.
     """
-    return occ.get("identificationVerificationStatus") == RESEARCH_GRADE
+    status = occ.get("identificationVerificationStatus")
+    if status is None:
+        return True
+    return str(status).strip().lower() not in REJECTED_VERIFICATION
 
 
 def _occurrence_page(
@@ -406,6 +465,23 @@ def fetch_images(
     return ok
 
 
+class CollidingTaxonKeys(RuntimeError):
+    """Raised when two label-space species resolve to the same GBIF taxon.
+
+    Following synonyms to their accepted usage can merge two of our species
+    onto one key -- GBIF treats Clitocybe dealbata as a synonym of
+    C. rivulosa, and Inocybe lilacina as a synonym of I. geophylla, while
+    this taxonomy carries each pair as two species. Downloading both under
+    one key files every image under both labels, which is silent label
+    noise of exactly the kind the risk-weighted objective cannot see.
+
+    It is a taxonomy question, not a download question: either the two are
+    one species and the label space should say so, or GBIF cannot supply
+    training data that distinguishes them and one of them needs another
+    source. The build stops so a human decides.
+    """
+
+
 class UnresolvedDeadlySpecies(RuntimeError):
     """Raised when a species that can kill could not be resolved to a taxon key.
 
@@ -518,6 +594,22 @@ def load_quotas(
         log.warning("Dropped %d species GBIF would not confirm:", len(refused))
         for match in refused:
             log.warning("  %-40s %s", match.scientific_name, match.reason)
+
+    by_key: dict[int, list[SpeciesQuota]] = {}
+    for quota in quotas:
+        by_key.setdefault(quota.gbif_key, []).append(quota)
+    collisions = {k: v for k, v in by_key.items() if len(v) > 1}
+    if collisions:
+        detail = "; ".join(
+            f"{k} <- " + ", ".join(q.scientific_name for q in v)
+            for k, v in collisions.items()
+        )
+        raise CollidingTaxonKeys(
+            f"{len(collisions)} GBIF taxa are claimed by more than one species "
+            f"in the label space: {detail}. Every image would be filed under "
+            "both labels. Decide whether they are one species here, or source "
+            "one of them elsewhere."
+        )
 
     lethal = [m for m in refused if toxicity.get(m.scientific_name) == "DEADLY"]
     if lethal and not allow_unresolved_deadly:

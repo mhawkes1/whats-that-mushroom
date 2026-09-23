@@ -32,7 +32,15 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--taxonomy", default=str(ROOT / "data" / "taxonomy.seed.json"))
     ap.add_argument("--target", type=int, default=400, help="Images per species.")
-    ap.add_argument("--country", default=None, help="ISO code, e.g. GB. Omit for global.")
+    ap.add_argument(
+        "--country",
+        default=None,
+        help="ISO code, e.g. GB. Default is global, and should stay that way: "
+        "measured on the real API, --country GB returns ZERO images for four "
+        "DEADLY or SERIOUS species and one for Entoloma sinuatum, against "
+        "38-171 globally. A British app still needs a model that has seen the "
+        "species.",
+    )
     ap.add_argument("--raw-dir", default=str(ROOT / "data" / "raw"))
     ap.add_argument("--image-dir", default=str(ROOT / "data" / "images"))
     ap.add_argument("--out-dir", default=str(ROOT / "data" / "processed"))

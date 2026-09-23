@@ -59,9 +59,24 @@ pip install -r ml/requirements.txt
 # First, and separately: resolve the taxon keys and read the refusals.
 python scripts/build_dataset.py --resolve-only
 
-# Then the download.
-python scripts/build_dataset.py --target 400 --country GB
+# Then the download. Global, NOT --country GB -- see below.
+python scripts/build_dataset.py --target 400
 ```
+
+**Do not pass `--country GB`.** It is intuitive for a British app and it
+wrecks the dataset. Measured against the live API on 2026-09-23:
+
+| | GB | global |
+| --- | --- | --- |
+| *Clitocybe rivulosa* (DEADLY) | 0 | 0 |
+| *Cortinarius orellanus* (DEADLY) | 0 | 38 |
+| *Tricholoma pardinum* (SERIOUS) | 0 | 147 |
+| *Entoloma sinuatum* (SERIOUS) | 1 | 171 |
+| *Amanita phalloides* (DEADLY) | 309 | 8,617 |
+
+Fifty-two species fall below `--min-images 40` on GB alone. A death cap
+photographed in France is the same fungus; the geographic prior the model
+needs comes from the metadata branch, not from throwing the images away.
 
 Do the resolve step on its own and look at `data/gbif-keys.json` before
 starting the download. It is the point at which a name silently becomes the

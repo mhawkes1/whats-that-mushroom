@@ -21,6 +21,7 @@ import requests
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from fungi_ml.data.sources import (  # noqa: E402
+    CollidingTaxonKeys,
     MIN_MATCH_CONFIDENCE,
     RESEARCH_GRADE,
     UnresolvedDeadlySpecies,
@@ -131,15 +132,64 @@ def test_an_exact_species_match_is_accepted():
     assert verdict.usage_key == 2536892
 
 
-def test_a_synonym_is_accepted_and_the_rename_is_recorded():
-    """The backbone moves species between genera faster than field guides do."""
+def test_a_synonym_follows_its_accepted_key():
+    """A synonym key does not return fewer occurrences -- often it returns none.
+
+    Real case: Inocybe erubescens, DEADLY, matched EXACT at confidence 100
+    to usageKey 2527939, which has 0 occurrences. Its acceptedUsageKey
+    10776858 (Inosperma erubescens) has 82. Taking the match at face value
+    would have dropped a deadly species out of the label space silently,
+    because the name resolved perfectly and nothing downstream counts
+    images per species until it is too late.
+    """
     verdict = judge_match(
-        "Lepista nuda",
-        match_payload(canonicalName="Clitocybe nuda", synonym=True, usageKey=1234),
+        "Inocybe erubescens",
+        match_payload(
+            usageKey=2527939, acceptedUsageKey=10776858, status="SYNONYM",
+            canonicalName="Inocybe erubescens", genus="Inosperma",
+        ),
     )
     assert verdict.accepted
-    assert verdict.usage_key == 1234
-    assert "Clitocybe nuda" in verdict.reason
+    assert verdict.usage_key == 10776858, "must follow to the accepted usage"
+    assert verdict.synonym
+    assert "10776858" in verdict.reason
+
+
+def test_a_synonym_with_nowhere_to_follow_is_refused():
+    verdict = judge_match(
+        "Something obsoletum", match_payload(status="SYNONYM", acceptedUsageKey=None)
+    )
+    assert not verdict.accepted
+    assert verdict.usage_key is None
+
+
+def test_two_species_may_not_claim_the_same_taxon(tmp_path):
+    """Following synonyms can merge two of our species onto one key.
+
+    GBIF treats Clitocybe dealbata as a synonym of C. rivulosa, and this
+    taxonomy carries both as DEADLY species. Downloaded together they would
+    file every image under both labels -- silent label noise the
+    risk-weighted objective cannot see.
+    """
+    path = seed_taxonomy(
+        tmp_path,
+        [
+            {"key": "clitocybe-dealbata", "scientific_name": "Clitocybe dealbata",
+             "toxicity": "DEADLY", "gbif_key": None},
+            {"key": "clitocybe-rivulosa", "scientific_name": "Clitocybe rivulosa",
+             "toxicity": "DEADLY", "gbif_key": None},
+        ],
+    )
+    session = StubSession({
+        "Clitocybe dealbata": match_payload(
+            usageKey=2531056, acceptedUsageKey=2531052, status="SYNONYM",
+            canonicalName="Clitocybe dealbata"),
+        "Clitocybe rivulosa": match_payload(
+            usageKey=2531052, canonicalName="Clitocybe rivulosa"),
+    })
+    with pytest.raises(CollidingTaxonKeys) as exc:
+        load_quotas(path, 100, session=session)
+    assert "2531052" in str(exc.value)
 
 
 def test_a_refused_match_still_reports_what_gbif_said():
@@ -170,6 +220,16 @@ def test_a_network_failure_is_a_refusal_not_an_exception():
         "CC_BY_4_0",
         "http://creativecommons.org/licenses/by/4.0/",
         "http://creativecommons.org/publicdomain/zero/1.0/",
+        # The forms the live API actually returns. Every one of 300 real
+        # records sampled carried the /legalcode suffix, which the original
+        # positional parser read as version="legalcode" and rejected -- so
+        # the fetcher would have refused every image in the dataset and
+        # blamed the network. These three are not hypothetical variants;
+        # they are the whole population.
+        "http://creativecommons.org/licenses/by-nc/4.0/legalcode",
+        "http://creativecommons.org/licenses/by/4.0/legalcode",
+        "http://creativecommons.org/publicdomain/zero/1.0/legalcode",
+        "https://creativecommons.org/licenses/by/4.0/deed.en",
     ],
 )
 def test_open_licences_are_accepted(raw):
@@ -184,6 +244,8 @@ def test_open_licences_are_accepted(raw):
         "UNSPECIFIED",
         "http://creativecommons.org/licenses/by-nd/4.0/",
         "http://creativecommons.org/licenses/by-nc-nd/4.0/",
+        "http://creativecommons.org/licenses/by-nd/4.0/legalcode",
+        "http://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
         "All rights reserved",
     ],
 )
@@ -195,10 +257,23 @@ def test_closed_or_unstated_licences_are_refused(raw):
 # --- research grade ----------------------------------------------------------
 
 
-def test_only_research_grade_observations_are_kept():
-    assert _research_grade({"identificationVerificationStatus": RESEARCH_GRADE})
+def test_a_record_with_no_verification_field_is_kept():
+    """The live API omits the field entirely, on 300 of 300 records sampled.
+
+    An earlier version of this required it to equal "Research Grade", which
+    would have discarded the whole dataset while looking like quality
+    control. Absence is not rejection: the research-grade property comes
+    from iNaturalist's publication policy, not from anything this code can
+    check.
+    """
+    assert _research_grade({})
+    assert _research_grade({"identificationVerificationStatus": None})
+
+
+def test_an_explicitly_lower_grade_is_rejected():
     assert not _research_grade({"identificationVerificationStatus": "Needs ID"})
-    assert not _research_grade({})
+    assert not _research_grade({"identificationVerificationStatus": "casual"})
+    assert _research_grade({"identificationVerificationStatus": RESEARCH_GRADE})
 
 
 # --- the manifest ------------------------------------------------------------
@@ -207,8 +282,9 @@ def test_only_research_grade_observations_are_kept():
 def occurrence(key: int, n_images: int = 1, **overrides) -> dict:
     occ = {
         "key": key,
-        "license": "CC_BY_4_0",
-        "identificationVerificationStatus": RESEARCH_GRADE,
+        # Shaped like the live API: licence URL with /legalcode, and no
+        # identificationVerificationStatus field at all.
+        "license": "http://creativecommons.org/licenses/by-nc/4.0/legalcode",
         "decimalLatitude": 52.7,
         "decimalLongitude": -2.75,
         "month": 10,
@@ -241,7 +317,7 @@ def test_manifest_drops_unlicensed_and_unverified_records(tmp_path, monkeypatch)
         pages=[{
             "results": [
                 occurrence(1),
-                occurrence(2, license="http://creativecommons.org/licenses/by-nd/4.0/"),
+                occurrence(2, license="http://creativecommons.org/licenses/by-nd/4.0/legalcode"),
                 occurrence(3, identificationVerificationStatus="Needs ID"),
             ],
             "endOfRecords": True,
@@ -379,12 +455,23 @@ def test_resolution_is_cached_and_readable(tmp_path):
     assert {m.scientific_name for m in matches if m.accepted} == {"Amanita phalloides"}
 
 
-def test_every_deadly_species_in_the_real_taxonomy_is_still_unresolved(tmp_path):
-    """Guards the claim that no GBIF key has been set by hand yet.
+# Keys set by hand, with the reason. A hand-set key skips GBIF's matcher
+# entirely, so each one is a claim somebody has to stand behind.
+HAND_SET_KEYS = {
+    "Helvella crispa": 2554614,  # /species/match falls back to the Fungi KINGDOM
+}
 
-    If this fails, keys have been added -- which is progress, not a fault.
-    Update the test to pin the reviewed ones instead of deleting it.
+
+def test_hand_set_gbif_keys_are_the_expected_ones(tmp_path):
+    """A hand-set key bypasses every check in `judge_match`.
+
+    So the set of them is pinned here rather than left to drift. Adding one
+    means adding it above with the reason it could not be resolved.
     """
     raw = json.loads((ROOT / "data" / "taxonomy.seed.json").read_text(encoding="utf-8"))
-    declared = [s["scientific_name"] for s in raw["species"] if s.get("gbif_key") is not None]
-    assert declared == []
+    declared = {
+        s["scientific_name"]: s["gbif_key"]
+        for s in raw["species"]
+        if s.get("gbif_key") is not None
+    }
+    assert declared == HAND_SET_KEYS
