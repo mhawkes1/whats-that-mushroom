@@ -48,6 +48,7 @@ from app.ood import OodDetector, free_energy  # noqa: E402
 from app.taxonomy_service import Toxicity  # noqa: E402
 from app.safety import SafetyLayer  # noqa: E402
 from app.taxonomy_service import TaxonomyService  # noqa: E402
+from app.translate import default_translator  # noqa: E402
 
 BOLD, DIM, RED, AMBER, GREEN, OFF = (
     "\033[1m", "\033[2m", "\033[31m", "\033[33m", "\033[32m", "\033[0m",
@@ -190,7 +191,75 @@ def main() -> int:
     )
 
     # ------------------------------------------------------------------
-    rule("7. A pair that did not exist yesterday")
+    rule("7. A sentence, instead of eight questions")
+    sentence = ("small brown mushroom, tuft on a rotten stump, "
+                "ring on the stem, no smell")
+    translator = default_translator()
+    translated = translator.translate(sentence)
+
+    print(f'  {BOLD}"{sentence}"{OFF}\n')
+    print(f"  {DIM}translated by: {translated.backend}{OFF}")
+    for key, value in translated.field_notes.items():
+        label = CHARACTERS[key].label if key in CHARACTERS else key
+        print(f"    {label:<26} {GREEN}{value}{OFF}")
+    if translated.not_understood:
+        print(f"    {DIM}could not place: "
+              f"{', '.join(repr(p) for p in translated.not_understood)}{OFF}")
+
+    # Those notes are ordinary field notes, so they go through the ordinary
+    # engine. Nothing about the answer is special because a translator
+    # produced it.
+    described = [("galerina-marginata", 0.34), ("kuehneromyces-mutabilis", 0.33),
+                 ("flammulina-velutipes", 0.33)]
+    for key, value in translated.field_notes.items():
+        described = answer(engine, described, key, value)
+    print()
+    show_ranking(taxonomy, described, limit=3)
+    print(
+        f"  {DIM}Nothing moved, and nothing should have. Every one of those "
+        f"answers is\n  either consistent with all three or undescribed for "
+        f"all three -- they are\n  three tufted brown mushrooms on a stump. A "
+        f"consistent answer never\n  boosts; the sentence has described the "
+        f"ambiguity, not resolved it.{OFF}"
+    )
+    say(safety.assess(described), taxonomy)
+
+    print(f"\n  {BOLD}\"...and the spore print was white\"{OFF}")
+    more = translator.translate("and the spore print was white")
+    for key, value in more.field_notes.items():
+        label = CHARACTERS[key].label if key in CHARACTERS else key
+        print(f"    {label:<26} {GREEN}{value}{OFF}")
+        described = answer(engine, described, key, value)
+    print()
+    show_ranking(taxonomy, described, limit=3)
+    say(safety.assess(described), taxonomy)
+    top = described[0][1]
+    print(
+        f"  {DIM}That one bites, because it contradicts. Both brown-spored "
+        f"species are\n  pushed down -- the funeral bell by less than the "
+        f"woodtuft, because the\n  deadly tier's floor holds it up. Still a "
+        f"refusal at {top:.0%}.{OFF}"
+    )
+
+    print(
+        f"\n  {DIM}The schema it answers in has no field for a species. Not a "
+        f"discouraged\n  one -- there is nowhere to put the string. Asked to "
+        f'identify something\n  outright it returns nothing at all:{OFF}'
+    )
+    refused = translator.translate("I think it is a death cap")
+    print(f"    {DIM}\"I think it is a death cap\"  ->  "
+          f"{refused.field_notes or '{}'}{OFF}")
+    print(
+        f"\n  {DIM}Every enum in that schema is read from the character "
+        f"catalogue at call\n  time, so a state that is not an option cannot "
+        f"be produced -- the same\n  guarantee the worksheet importer enforces "
+        f"by refusing the row, moved one\n  step earlier. It is validated again "
+        f"here anyway: `strict` is a promise\n  from the API, and this is a "
+        f"safety path.{OFF}"
+    )
+
+    # ------------------------------------------------------------------
+    rule("8. A pair that did not exist yesterday")
     print(
         f"  {DIM}A stump in January. Velvet shank fruits on broadleaf wood in the "
         f"cold,\n  and so does the funeral bell -- same stump, same weather, same "
@@ -208,7 +277,7 @@ def main() -> int:
           f"funeral bell.{OFF}")
 
     # ------------------------------------------------------------------
-    rule("8. Two species it will never separate, and says so")
+    rule("9. Two species it will never separate, and says so")
     crepidotus = [("crepidotus-variabilis", 0.47), ("crepidotus-cesatii", 0.44),
                   ("crepidotus-mollis", 0.09)]
     say(safety.assess(crepidotus), taxonomy)
@@ -223,7 +292,7 @@ def main() -> int:
     )
 
     # ------------------------------------------------------------------
-    rule("9. Something it has never seen")
+    rule("10. Something it has never seen")
     import math
 
     known = [2.0, 8.5, 1.5, 0.5]        # a confident, in-distribution logit vector
@@ -246,7 +315,7 @@ def main() -> int:
     )
 
     # ------------------------------------------------------------------
-    rule("10. Reading a spore print off a photograph")
+    rule("11. Reading a spore print off a photograph")
     print(
         f"  {DIM}The one part of this that is finished end to end, because it "
         f"needs no\n  model: real colour science on real pixels. The user "
@@ -291,7 +360,7 @@ def main() -> int:
     )
 
     # ------------------------------------------------------------------
-    rule("11. Telling it that it was wrong")
+    rule("12. Telling it that it was wrong")
     scenarios = [
         (
             "'It said field mushroom. It was a death cap.'",
