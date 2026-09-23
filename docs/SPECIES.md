@@ -3,7 +3,7 @@
 Every species this app can name, generated from `data/taxonomy.seed.json`
 by `python scripts/species_list.py`. Do not edit it by hand.
 
-**235 species · 126 lethal lookalike pairs.**
+**247 species · 135 lethal lookalike pairs.**
 
 It holds all 200 of the most-recorded British macrofungi (`python scripts/frdbi_gap.py --top 200`) plus the dangerous species each of those is confused with.
 
@@ -51,7 +51,7 @@ Hospital treatment is usual.
 | ***Tricholoma equestre*** | Yellow Knight, Man on Horseback | ***Amanita phalloides***, *Russula ochroleuca* |
 | ***Tricholoma pardinum*** | Leopard Knight | *Tricholoma equestre*, *Calocybe gambosa*, *Clitocybe nebularis* |
 
-## Causes illness — `TOXIC` (59)
+## Causes illness — `TOXIC` (69)
 
 Poisoning is reported.
 
@@ -62,16 +62,22 @@ Poisoning is reported.
 | ***Amanita gemmata*** | Jewelled Amanita | *Amanita pantherina*, *Amanita muscaria*, *Amanita citrina* |
 | ***Amanita muscaria*** | Fly Agaric | *Amanita rubescens*, *Russula emetica* |
 | ***Amanita rubescens*** | The Blusher | *Amanita muscaria*, ***Amanita phalloides*** |
+| ***Amanita vaginata*** | Grisette | ***Amanita phalloides***, ***Amanita virosa***, *Amanita fulva*, *Volvopluteus gloiocephalus* |
 | ***Ampulloclitocybe clavipes*** | Club Foot | *Clitocybe nebularis*, ***Clitocybe rivulosa***, *Infundibulicybe gibba*, *Paralepista flaccida* |
 | ***Armillaria mellea*** | Honey Fungus | ***Galerina marginata***, *Hypholoma fasciculare*, *Kuehneromyces mutabilis* |
 | ***Chalciporus piperatus*** | Peppery Bolete | *Boletus edulis*, *Neoboletus luridiformis*, *Rubroboletus satanas*, *Imleria badia* (+1) |
 | ***Chlorophyllum brunneum*** | Shaggy Parasol | *Macrolepiota procera* |
 | ***Chlorophyllum rhacodes*** | Shaggy Parasol | *Chlorophyllum brunneum*, *Macrolepiota procera*, ***Amanita phalloides***, ***Lepiota brunneoincarnata*** |
 | ***Clitocybe fragrans*** | Fragrant Funnel | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Infundibulicybe gibba* |
+| ***Clitocybe metachroa*** | Twotone Funnel | ***Clitocybe dealbata***, ***Clitocybe rivulosa***, *Clitocybe fragrans*, *Clitocybe nebularis* |
 | ***Clitocybe nebularis*** | Clouded Funnel, Clouded Agaric | ***Clitocybe rivulosa***, ***Clitocybe dealbata***, *Entoloma sinuatum*, *Lepista nuda* |
+| ***Clitocybe vibecina*** | Mealy Funnel | ***Clitocybe dealbata***, ***Clitocybe rivulosa***, *Clitocybe fragrans*, *Clitocybe metachroa* |
 | ***Collybiopsis peronata*** | Wood Woollyfoot | *Gymnopus dryophilus*, *Collybiopsis confluens*, *Marasmius oreades* |
 | ***Coprinopsis atramentaria*** | Common Inkcap | *Coprinus comatus* |
 | ***Entoloma conferendum*** | Star Pinkgill | *Entoloma sinuatum*, *Pluteus cervinus*, *Clitopilus prunulus* |
+| ***Entoloma rhodopolium*** | Wood Pinkgill | *Entoloma sinuatum*, *Entoloma sericeum*, *Clitopilus prunulus*, *Clitocybe nebularis* |
+| ***Entoloma sericeum*** | Silky Pinkgill | *Entoloma sinuatum*, *Entoloma conferendum*, *Marasmius oreades*, *Clitopilus prunulus* |
+| ***Galerina hypnorum*** | Moss Bell | ***Galerina marginata*** |
 | ***Hebeloma crustuliniforme*** | Poison Pie | ***Clitocybe rivulosa***, *Agaricus campestris*, *Entoloma sinuatum*, *Inocybe geophylla* |
 | ***Helvella crispa*** | White Saddle | ***Gyromitra esculenta***, *Morchella esculenta*, *Verpa bohemica* |
 | ***Hygrocybe conica*** | Blackening Waxcap | *Gliophorus psittacinus*, *Cuphophyllus pratensis* |
@@ -114,10 +120,14 @@ Poisoning is reported.
 | ***Scleroderma verrucosum*** | Scaly Earthball | *Scleroderma citrinum*, *Lycoperdon perlatum*, ***Amanita virosa***, *Calvatia gigantea* |
 | ***Stropharia semiglobata*** | Dung Roundhead | *Panaeolus papilionaceus*, *Bolbitius titubans*, *Psilocybe semilanceata* |
 | ***Tricholoma fulvum*** | Birch Knight | *Tricholoma equestre*, *Tricholoma pardinum*, *Hebeloma crustuliniforme* |
+| ***Tricholoma saponaceum*** | Soapy Knight | *Tricholoma terreum*, *Tricholoma pardinum*, *Tricholoma sulphureum*, *Tricholoma equestre* |
+| ***Tricholoma sulphureum*** | Sulphur Knight | *Tricholoma equestre*, *Tricholoma saponaceum*, *Tricholoma pardinum* |
+| ***Tricholoma terreum*** | Grey Knight | *Tricholoma pardinum*, *Tricholoma saponaceum*, *Tricholoma equestre* |
+| ***Tricholoma ustale*** | Burnt Knight | *Tricholoma fulvum*, *Tricholoma equestre*, *Tricholoma pardinum* |
 | ***Verpa bohemica*** | Early Morel, Thimble Morel | *Morchella esculenta*, ***Gyromitra esculenta*** |
 | ***Volvopluteus gloiocephalus*** | Stubble Rosegill | ***Amanita phalloides***, ***Amanita virosa***, *Agaricus arvensis* |
 
-## Not assessed as safe — `INEDIBLE` (155)
+## Not assessed as safe — `INEDIBLE` (157)
 
 The risk has not been assessed. This is the safest value in the system, not a recommendation.
 
@@ -158,6 +168,7 @@ The risk has not been assessed. This is the safest value in the system, not a re
 | ***Coprinellus micaceus*** | Glistening Inkcap | ***Galerina marginata***, *Kuehneromyces mutabilis*, *Coprinopsis atramentaria*, *Coprinus comatus* (+1) |
 | ***Coprinopsis lagopus*** | Hare'sfoot Inkcap | *Coprinopsis atramentaria*, *Coprinellus micaceus*, *Coprinus comatus* |
 | ***Coprinus comatus*** | Shaggy Inkcap, Lawyer's Wig | *Coprinopsis atramentaria* |
+| ***Cortinarius anomalus*** | Variable Webcap | ***Cortinarius orellanus***, ***Cortinarius rubellus***, *Cortinarius violaceus*, *Lepista nuda* |
 | ***Cortinarius violaceus*** | Violet Webcap | *Lepista nuda* |
 | ***Craterellus cornucopioides*** | Horn of Plenty, Black Trumpet | — |
 | ***Crepidotus cesatii*** | Roundspored Oysterling | *Crepidotus variabilis*, *Crepidotus mollis* |
@@ -170,6 +181,7 @@ The risk has not been assessed. This is the safest value in the system, not a re
 | ***Daedaleopsis confragosa*** | Blushing Bracket | *Trametes versicolor* |
 | ***Daldinia concentrica*** | King Alfred's Cakes, Cramp Balls | — |
 | ***Datronia mollis*** | Common Mazegill | *Daedaleopsis confragosa*, *Bjerkandera adusta* |
+| ***Entoloma sericellum*** | Cream Pinkgill | *Entoloma sericeum*, *Entoloma sinuatum*, *Clitopilus prunulus* |
 | ***Exidia glandulosa*** | Witches' Butter | *Exidia nucleata*, *Exidia thuretiana*, *Auricularia auricula-judae* |
 | ***Exidia nucleata*** | Crystal Brain | *Exidia thuretiana*, *Exidia glandulosa*, *Tremella mesenterica* |
 | ***Exidia thuretiana*** | White Brain | *Exidia nucleata*, *Tremella mesenterica* |

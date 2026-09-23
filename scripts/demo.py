@@ -12,8 +12,9 @@ Every ranking below is written into this file, the way the test suite writes
 one. That keeps the demo honest about the stub, and it has a cost worth
 knowing: the label space tripled on 2026-09-22 and this script's output did
 not change by a character, because nothing here asks the taxonomy how big it
-is. Scenes 7 and 8 were added for exactly that reason -- they exercise a pair
-and a refusal that did not exist before the additions.
+is. Scenes 7, 8 and 9 were added for exactly that reason -- they exercise a
+pair, a broken beginner's rule and a refusal, none of which existed before
+the additions.
 
 ## What this can and cannot show
 
@@ -208,7 +209,45 @@ def main() -> int:
           f"funeral bell.{OFF}")
 
     # ------------------------------------------------------------------
-    rule("8. Two species it will never separate, and says so")
+    rule("8. When the rule a beginner was taught is the wrong rule")
+    print(
+        f"  {DIM}'A bag at the base means danger' is the first thing anyone "
+        f"learns about\n  Amanita, and the grisette breaks it: a clear white "
+        f"sac, no ring, and\n  common. Someone taught the rule mistrusts "
+        f"something harmless; someone who\n  was never taught it has a "
+        f"destroying angel in their basket.{OFF}\n"
+    )
+    grey = [("amanita-vaginata", 0.44), ("amanita-phalloides", 0.33),
+            ("amanita-virosa", 0.18), ("amanita-fulva", 0.05)]
+    say(safety.assess(grey), taxonomy)
+
+    asked = engine.next_questions(grey, limit=1)[0]
+    print(f"\n  {DIM}It asks: {asked.character.prompt}{OFF}")
+    print(
+        f"  {DIM}Not the volva -- all three have one, so the question a "
+        f"beginner would\n  reach for first is the one that separates "
+        f"nothing.{OFF}"
+    )
+
+    dug = answer(engine, grey, "volva", "Clear cup or sac")
+    print(f"\n  {DIM}Answer the volva anyway:{OFF}")
+    show_ranking(taxonomy, dug, limit=3)
+    print(f"  {DIM}Nothing moved, to three decimal places.{OFF}")
+
+    ringed = answer(engine, dug, "ring", "No ring")
+    print(f"\n  {DIM}Answer the ring instead:{OFF}")
+    show_ranking(taxonomy, ringed, limit=3)
+    assessed = safety.assess(ringed)
+    say(assessed, taxonomy)
+    top = ringed[0][1]
+    print(
+        f"\n  {DIM}The grisette leads at {top:.0%} and it still will not name "
+        f"it, because\n  a species that can kill holds "
+        f"{ringed[1][1]:.0%}. Rule 3 is not a threshold\n  on the leader.{OFF}"
+    )
+
+    # ------------------------------------------------------------------
+    rule("9. Two species it will never separate, and says so")
     crepidotus = [("crepidotus-variabilis", 0.47), ("crepidotus-cesatii", 0.44),
                   ("crepidotus-mollis", 0.09)]
     say(safety.assess(crepidotus), taxonomy)
@@ -223,7 +262,7 @@ def main() -> int:
     )
 
     # ------------------------------------------------------------------
-    rule("9. Something it has never seen")
+    rule("10. Something it has never seen")
     import math
 
     known = [2.0, 8.5, 1.5, 0.5]        # a confident, in-distribution logit vector
@@ -246,7 +285,7 @@ def main() -> int:
     )
 
     # ------------------------------------------------------------------
-    rule("10. Reading a spore print off a photograph")
+    rule("11. Reading a spore print off a photograph")
     print(
         f"  {DIM}The one part of this that is finished end to end, because it "
         f"needs no\n  model: real colour science on real pixels. The user "
@@ -291,7 +330,7 @@ def main() -> int:
     )
 
     # ------------------------------------------------------------------
-    rule("11. Telling it that it was wrong")
+    rule("12. Telling it that it was wrong")
     scenarios = [
         (
             "'It said field mushroom. It was a death cap.'",

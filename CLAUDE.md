@@ -53,7 +53,7 @@ characters come from standard references but are unverified.
 
 | Path | What it holds |
 | --- | --- |
-| `data/taxonomy.seed.json` | 235 UK species, lookalike graph, toxicity, diagnostic characters, character states |
+| `data/taxonomy.seed.json` | 247 UK species, lookalike graph, toxicity, diagnostic characters, character states |
 | `ml/fungi_ml/taxonomy.py` | Species model and the asymmetric risk matrix |
 | `ml/fungi_ml/losses.py` | Risk-weighted objective |
 | `ml/fungi_ml/calibrate.py` | Temperature scaling, threshold fitting |
@@ -75,9 +75,9 @@ characters come from standard references but are unverified.
 | `scripts/frdbi_gap.py` | Label space vs. how often things are actually found |
 | `scripts/species_list.py` | Generates `docs/SPECIES.md`, the label space for a human to read |
 | `docs/frdbi-top-250.csv` | The 250 most-recorded macrofungi, ranked, for review (`frdbi_gap.py --csv`) |
-| `docs/frdbi-top-300.csv` | The same to 300; 207 covered, 93 not |
+| `docs/frdbi-top-300.csv` | The same to 300; 219 covered, 81 not |
 | `data/frdbi-records.csv` | Every FRDBI taxon and its record count, exported 2026-09-22 |
-| `data/frdbi-genera.csv` | Genus → fungus / micro / host / slime-mould, so the ranking can be filtered |
+| `data/frdbi-genera.csv` | Genus → fungus / micro / host / slime-mould / lichen, so the ranking can be filtered |
 
 ## Commands
 
@@ -133,7 +133,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   records; their validation score says almost nothing.
 - **Splits are on `observation_id`, never on image.** If accuracy looks too
   good, check this before believing it.
-- **`character_states` is complete for all 235 species and UNREVIEWED
+- **`character_states` is complete for all 247 species and UNREVIEWED
   throughout.** Derived from the taxonomy's own `notes`, not from a
   mycologist. Complete is not reviewed: `reviewed_by` is still null and
   `/health` still reports `taxonomy_reviewed: false`. A forager's eye over
@@ -183,7 +183,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   there; a test asserts no committed state is one.
 - **Filling the table is a worksheet job, not a code job.** `python
   scripts/character_states.py emit` writes `docs/character-states-worksheet.csv`
-  (1,155 rows, deadliest first, and it preserves answers already in the sheet);
+  (1,215 rows, deadliest first, and it preserves answers already in the sheet);
   `import` validates and writes back. A state that is not exactly one of the
   character's answer options is refused, because it would store cleanly and
   never match anything.
@@ -231,7 +231,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   puts the thing the user came to do below the fold); the emergency route is
   pinned to the top corner (the one control that must never need a scroll);
   and the book's "1st Edition · 25 most common species" flag is dropped,
-  because the app's label space is 235 and on that screen the line would be
+  because the app's label space is 247 and on that screen the line would be
   false. The scrim is a real gradient, not stacked translucent views — flat
   bands leave visible edges across the photograph.
 - **The cover's typeface is loaded but never awaited.** `useFonts` reports an
@@ -309,13 +309,25 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   as a field guide — so `habitat`, `season` and `smell` are thin. The run
   prints the per-row tally of what it left blank; that list is the review
   queue, not a bug. Filling it means the worksheet and a mycologist, not code.
-- **The label space now holds all 200 of the most-recorded British
-  macrofungi** (`python scripts/frdbi_gap.py --top 200`, over the full FRDBI
-  export). 235 species, 126 lethal pairs. Below rank 200 it falls away
-  sharply, and `--top 300` needs the genus table extended first — the report
-  says so rather than quietly undercounting. The skeleton is still the danger
+- **The label space holds all 200 of the most-recorded British macrofungi,
+  plus the twelve from the top 300 whose genus already held something
+  dangerous.** 247 species, 135 lethal pairs. `frdbi_gap.py --top 300` now
+  runs; the genus table was extended for it. The skeleton is still the danger
   graph; frequency filled it in.
-- **235 species is a much bigger training problem than 79.** The 50–70% top-1
+- **The grisette is why the twelve were added.** *Amanita vaginata* has a
+  clear white volva and no ring, so "a bag at the base means danger" — the
+  first rule anyone learns about *Amanita* — is wrong about it, and the
+  label space had no name for it at all. Demo scene 8: the engine asks about
+  the ring, not the volva (all three candidates have a volva, so it
+  separates nothing), "No ring" moves it 44% → 57%, and the verdict stays
+  `dangerous_group` because a deadly candidate still holds 23.6%. Rule 3 is
+  not a threshold on the leader.
+- **All twelve were added as the non-deadly half, so their state lists are
+  tight.** They exist to give the mass somewhere accurate to go inside a
+  genus whose dangerous members were already there and, in several cases,
+  were the genus's *only* members: every small tawny *Galerina* was a funeral
+  bell, every common webcap was an orellanine one.
+- **247 species is a much bigger training problem than 79.** The 50–70% top-1
   expectation below was set for a label space a third of this size and is now
   optimistic. Many of the additions are separable only under a microscope
   (the two Crepidotus, the two Ganoderma) or are resupinate crusts with no
@@ -350,8 +362,8 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   throughout. A guard shallower than the working depth reports on somewhere
   nobody is standing.
 - **The top 250 says what to add; the danger graph says what cannot be
-  dropped.** 204 of the label space's 235 are in FRDBI's top 250; the other
-  31 are too rarely recorded to reach it, and **10 of the 11 DEADLY species
+  dropped.** 209 of the label space's 247 are in FRDBI's top 250; the other
+  38 are too rarely recorded to reach it, and **10 of the 11 DEADLY species
   are among them** — only the death cap makes the ranking, at 226. A label
   space trimmed to the top 250 would hold the field mushroom without the
   destroying angel and honey fungus without the funeral bell. Rarity is

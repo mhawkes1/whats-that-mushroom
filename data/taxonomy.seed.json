@@ -495,6 +495,48 @@
       }
     },
     {
+      "key": "amanita-vaginata",
+      "scientific_name": "Amanita vaginata",
+      "genus": "Amanita",
+      "common_names": [
+        "Grisette"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "amanita-phalloides",
+        "amanita-virosa",
+        "amanita-fulva",
+        "volvopluteus-gloiocephalus"
+      ],
+      "diagnostic_characters": [
+        "volva",
+        "ring",
+        "cap_colour",
+        "cap_margin",
+        "spore_print_colour"
+      ],
+      "notes": "Grey cap with a strongly grooved margin, rising from a white sac at the stem base. It has a volva and no ring, which is the combination that separates it from the death cap and the destroying angel -- both of those carry a ring as well. Toxic raw.",
+      "internal_note": "Added because a beginner taught 'a volva means danger' meets this and is wrong, and a beginner who has not been taught it meets this and reads it as a destroying angel. Common (FRDBI rank 244) in a genus holding three DEADLY or SERIOUS species already in the label space. Widely eaten cooked; classified TOXIC for the same reason as Amanita rubescens and Amanita fulva -- toxic raw, and the margin for error sits inside Amanita. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "character_states": {
+        "volva": [
+          "Clear cup or sac"
+        ],
+        "ring": [
+          "No ring"
+        ],
+        "cap_colour": [
+          "Grey"
+        ],
+        "cap_margin": [
+          "Straight"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
       "key": "amanita-virosa",
       "scientific_name": "Amanita virosa",
       "genus": "Amanita",
@@ -1734,6 +1776,46 @@
       }
     },
     {
+      "key": "clitocybe-metachroa",
+      "scientific_name": "Clitocybe metachroa",
+      "genus": "Clitocybe",
+      "common_names": [
+        "Twotone Funnel"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-dealbata",
+        "clitocybe-rivulosa",
+        "clitocybe-fragrans",
+        "clitocybe-nebularis"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_shape",
+        "gill_attachment",
+        "substrate",
+        "smell"
+      ],
+      "notes": "Grey-brown, drying two-toned from the centre outwards, in leaf litter under broadleaves. The deadly ivory funnels are white and grow in grass.",
+      "internal_note": "Usually listed as inedible or suspect rather than poisonous. Classified TOXIC because it sits in the group that contains the muscarine species already in the label space, and because the cheaper error here is a false warning. A reviewer may downgrade. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "cap_shape": [
+          "Funnel-shaped"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ]
+      }
+    },
+    {
       "key": "clitocybe-nebularis",
       "scientific_name": "Clitocybe nebularis",
       "genus": "Clitocybe",
@@ -1815,6 +1897,50 @@
         ],
         "cap_surface": [
           "Smooth and dry"
+        ]
+      }
+    },
+    {
+      "key": "clitocybe-vibecina",
+      "scientific_name": "Clitocybe vibecina",
+      "genus": "Clitocybe",
+      "common_names": [
+        "Mealy Funnel"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "clitocybe-dealbata",
+        "clitocybe-rivulosa",
+        "clitocybe-fragrans",
+        "clitocybe-metachroa"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "smell",
+        "cap_shape",
+        "gill_attachment",
+        "substrate"
+      ],
+      "notes": "Small, grey-brown, funnel-shaped, with a strong smell of raw meal. In leaf litter and moss under broadleaves and conifers.",
+      "internal_note": "Same reasoning as Clitocybe metachroa: suspect rather than documented, classified TOXIC because of the company it keeps. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "smell": [
+          "Raw potato or earthy"
+        ],
+        "cap_shape": [
+          "Funnel-shaped"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Moss"
         ]
       }
     },
@@ -2184,6 +2310,50 @@
         ],
         "deliquescence": [
           "Yes"
+        ]
+      }
+    },
+    {
+      "key": "cortinarius-anomalus",
+      "scientific_name": "Cortinarius anomalus",
+      "genus": "Cortinarius",
+      "common_names": [
+        "Variable Webcap"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "cortinarius-orellanus",
+        "cortinarius-rubellus",
+        "cortinarius-violaceus",
+        "lepista-nuda"
+      ],
+      "diagnostic_characters": [
+        "cortina",
+        "spore_print_colour",
+        "cap_colour",
+        "gill_colour",
+        "habitat"
+      ],
+      "notes": "A cobwebby veil across the young gills and a rust-brown spore print place it in Cortinarius. Greyish to lilac-brown, with ochre bands on the stem.",
+      "internal_note": "The label space held only the two orellanine webcaps and Cortinarius violaceus, so every common webcap a user photographed had nowhere accurate for its mass to go. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "character_states": {
+        "cortina": [
+          "Yes, cobwebby"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
+        ],
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ],
+        "gill_colour": [
+          "Brown"
+        ],
+        "habitat": [
+          "Birch",
+          "Mixed broadleaf"
         ]
       }
     },
@@ -2776,6 +2946,136 @@
       }
     },
     {
+      "key": "entoloma-rhodopolium",
+      "scientific_name": "Entoloma rhodopolium",
+      "genus": "Entoloma",
+      "common_names": [
+        "Wood Pinkgill"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "entoloma-sinuatum",
+        "entoloma-sericeum",
+        "clitopilus-prunulus",
+        "clitocybe-nebularis"
+      ],
+      "diagnostic_characters": [
+        "spore_print_colour",
+        "gill_colour",
+        "smell",
+        "habitat",
+        "cap_colour"
+      ],
+      "notes": "Greyish-brown, in damp broadleaf woodland, with a smell of raw meal. Pink spore print. Slimmer and more fragile than the livid pinkgill.",
+      "internal_note": "A significant cause of poisoning where it is eaten. Classified TOXIC; a reviewer should consider whether SERIOUS is warranted, as it is for Entoloma sinuatum. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "character_states": {
+        "spore_print_colour": [
+          "Pink"
+        ],
+        "gill_colour": [
+          "Pink"
+        ],
+        "smell": [
+          "Raw potato or earthy"
+        ],
+        "habitat": [
+          "Beech",
+          "Oak",
+          "Mixed broadleaf"
+        ],
+        "cap_colour": [
+          "Grey",
+          "Brown"
+        ]
+      }
+    },
+    {
+      "key": "entoloma-sericellum",
+      "scientific_name": "Entoloma sericellum",
+      "genus": "Entoloma",
+      "common_names": [
+        "Cream Pinkgill"
+      ],
+      "toxicity": "INEDIBLE",
+      "gbif_key": null,
+      "lookalikes": [
+        "entoloma-sericeum",
+        "entoloma-sinuatum",
+        "clitopilus-prunulus"
+      ],
+      "diagnostic_characters": [
+        "spore_print_colour",
+        "gill_colour",
+        "cap_colour",
+        "substrate",
+        "size"
+      ],
+      "notes": "Small and white to cream, in damp grassland, the gills flushing pink with age. A white mushroom whose pink spore print is the thing that places it.",
+      "internal_note": "Small white grassland mushroom, which is the shape of several things that matter. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "character_states": {
+        "spore_print_colour": [
+          "Pink"
+        ],
+        "gill_colour": [
+          "White",
+          "Pink"
+        ],
+        "cap_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "size": [
+          "Under 2 cm",
+          "2-5 cm"
+        ]
+      }
+    },
+    {
+      "key": "entoloma-sericeum",
+      "scientific_name": "Entoloma sericeum",
+      "genus": "Entoloma",
+      "common_names": [
+        "Silky Pinkgill"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "entoloma-sinuatum",
+        "entoloma-conferendum",
+        "marasmius-oreades",
+        "clitopilus-prunulus"
+      ],
+      "diagnostic_characters": [
+        "spore_print_colour",
+        "gill_colour",
+        "smell",
+        "substrate",
+        "cap_colour"
+      ],
+      "notes": "Dark brown, silky when dry, in short grass, smelling strongly of raw meal or radish. Gills turn pink as the spores mature.",
+      "internal_note": "Common in exactly the lawns and churchyards where people pick fairy ring champignons. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "character_states": {
+        "spore_print_colour": [
+          "Pink"
+        ],
+        "gill_colour": [
+          "Pink"
+        ],
+        "smell": [
+          "Raw potato or earthy"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "cap_colour": [
+          "Brown"
+        ]
+      }
+    },
+    {
       "key": "entoloma-sinuatum",
       "scientific_name": "Entoloma sinuatum",
       "genus": "Entoloma",
@@ -3131,6 +3431,45 @@
         ],
         "cap_colour": [
           "Brown"
+        ]
+      }
+    },
+    {
+      "key": "galerina-hypnorum",
+      "scientific_name": "Galerina hypnorum",
+      "genus": "Galerina",
+      "common_names": [
+        "Moss Bell"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "galerina-marginata"
+      ],
+      "diagnostic_characters": [
+        "substrate",
+        "size",
+        "ring",
+        "growth_form",
+        "spore_print_colour"
+      ],
+      "notes": "Tiny, tawny, scattered among moss rather than clustered on wood, and without a ring. The funeral bell is larger, grows in clusters on dead wood and carries a ring.",
+      "internal_note": "Galerina marginata was the genus's only member, so any small tawny Galerina was a funeral bell as far as the label space was concerned. Classified TOXIC rather than INEDIBLE because amatoxin content across this genus is not uniformly established and the cost of under-warning inside Galerina is death. A reviewer should confirm. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "character_states": {
+        "substrate": [
+          "Moss"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "ring": [
+          "No ring"
+        ],
+        "growth_form": [
+          "Scattered"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
         ]
       }
     },
@@ -9070,6 +9409,173 @@
         "habitat": [
           "Beech",
           "Mixed broadleaf"
+        ]
+      }
+    },
+    {
+      "key": "tricholoma-saponaceum",
+      "scientific_name": "Tricholoma saponaceum",
+      "genus": "Tricholoma",
+      "common_names": [
+        "Soapy Knight"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "tricholoma-terreum",
+        "tricholoma-pardinum",
+        "tricholoma-sulphureum",
+        "tricholoma-equestre"
+      ],
+      "diagnostic_characters": [
+        "smell",
+        "bruising_reaction",
+        "cap_colour",
+        "gill_spacing",
+        "habitat"
+      ],
+      "notes": "Smells of household soap, and the flesh in the stem base turns pink or reddish when cut. Colour is unreliable -- grey, olive, brownish or nearly white on different collections.",
+      "internal_note": "Carried partly because its variability is the point: a user matching on colour alone will match it to almost anything, including the tiger knight. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "character_states": {
+        "smell": [
+          "Ink or chemicals"
+        ],
+        "bruising_reaction": [
+          "Red or pink"
+        ],
+        "gill_spacing": [
+          "Well spaced"
+        ],
+        "habitat": [
+          "Mixed broadleaf",
+          "Pine or spruce"
+        ]
+      }
+    },
+    {
+      "key": "tricholoma-sulphureum",
+      "scientific_name": "Tricholoma sulphureum",
+      "genus": "Tricholoma",
+      "common_names": [
+        "Sulphur Knight"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "tricholoma-equestre",
+        "tricholoma-saponaceum",
+        "tricholoma-pardinum"
+      ],
+      "diagnostic_characters": [
+        "smell",
+        "cap_colour",
+        "gill_colour",
+        "gill_attachment",
+        "habitat"
+      ],
+      "notes": "Sulphur-yellow throughout and smelling strongly of coal gas or tar, which no other yellow knight does. Under broadleaves.",
+      "internal_note": "The smell is the whole identification and is unmistakable in the field; it is also the reason this is worth carrying, because the yellow Tricholoma a user is afraid of is T. equestre. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "character_states": {
+        "smell": [
+          "Ink or chemicals"
+        ],
+        "cap_colour": [
+          "Yellow"
+        ],
+        "gill_colour": [
+          "Yellow or green"
+        ],
+        "gill_attachment": [
+          "Notched just before the stem"
+        ],
+        "habitat": [
+          "Oak",
+          "Beech",
+          "Mixed broadleaf"
+        ]
+      }
+    },
+    {
+      "key": "tricholoma-terreum",
+      "scientific_name": "Tricholoma terreum",
+      "genus": "Tricholoma",
+      "common_names": [
+        "Grey Knight"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "tricholoma-pardinum",
+        "tricholoma-saponaceum",
+        "tricholoma-equestre"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_surface",
+        "gill_colour",
+        "habitat",
+        "size"
+      ],
+      "notes": "Grey, dry and felted or finely fibrous, under pine. Smaller and more slender than the tiger knight, whose cap is spotted with distinct dark scales on a paler ground.",
+      "internal_note": "REVIEW QUESTION, raised deliberately: T. terreum has been implicated in rhabdomyolysis in the same literature that made T. equestre SERIOUS. Classified TOXIC here rather than SERIOUS because the evidence is thinner, but a reviewer should decide, and SERIOUS is the safer error. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "character_states": {
+        "cap_colour": [
+          "Grey"
+        ],
+        "cap_surface": [
+          "Fibrous"
+        ],
+        "gill_colour": [
+          "White",
+          "Grey"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ],
+        "size": [
+          "2-5 cm",
+          "5-10 cm"
+        ]
+      }
+    },
+    {
+      "key": "tricholoma-ustale",
+      "scientific_name": "Tricholoma ustale",
+      "genus": "Tricholoma",
+      "common_names": [
+        "Burnt Knight"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "tricholoma-fulvum",
+        "tricholoma-equestre",
+        "tricholoma-pardinum"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_surface",
+        "gill_colour",
+        "bruising_reaction",
+        "habitat"
+      ],
+      "notes": "Chestnut to date-brown, slimy when damp, under beech. The gills and flesh stain reddish-brown where bruised.",
+      "internal_note": "Contains ustalic acid. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "character_states": {
+        "cap_colour": [
+          "Brown"
+        ],
+        "cap_surface": [
+          "Slimy or greasy"
+        ],
+        "gill_colour": [
+          "White"
+        ],
+        "bruising_reaction": [
+          "Brown"
+        ],
+        "habitat": [
+          "Beech"
         ]
       }
     },
