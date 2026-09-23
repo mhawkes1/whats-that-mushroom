@@ -32,6 +32,19 @@ judgement somebody can check and eighteen thousand species is not. A taxon
 whose genus is unclassified is reported rather than silently dropped -- a
 missing genus would quietly shrink both halves of the coverage figure.
 
+## Lichens are a third thing that is neither
+
+`Xanthoria parietina` is recorded 1,443 times and is on every churchyard wall
+in Britain. It is a fungus, and it has no cap, no gills and no spore print --
+a flow built around those has nothing to ask it. Calling it a macrofungus
+would put it in a list of species to add; calling it a leaf spot would be
+false. It gets its own kind, for the same reason slime moulds do, and it
+belongs in the same pile of out-of-scope negatives.
+
+`Lichenomphalia` is the awkward edge and goes the other way: it is a
+lichenised basidiomycete, but what it puts up is an omphalinoid mushroom with
+a cap and gills, which the interrogation engine can ask about.
+
 ## Slime moulds are neither, and matter anyway
 
 `Lycogala`, `Reticularia` and `Stemonitis` are not fungi. They are recorded in
@@ -202,7 +215,8 @@ def main() -> int:
     records = load_records()
 
     kinds: dict[str, list[tuple[str, int]]] = {
-        "fungus": [], "slime-mould": [], "micro": [], "host": [], "?": [],
+        "fungus": [], "slime-mould": [], "lichen": [], "micro": [],
+        "host": [], "?": [],
     }
     for name, count in records:
         kinds[genera.get(name.split()[0], "?")].append((name, count))
@@ -224,6 +238,7 @@ def main() -> int:
     print(f"  hosts (plants, animals)       : {len(kinds['host']):,}")
     print(f"  leaf spots, mildews, rusts    : {len(kinds['micro']):,}")
     print(f"  slime moulds                  : {len(kinds['slime-mould']):,}")
+    print(f"  lichens                       : {len(kinds['lichen']):,}")
     print(f"  genus not yet classified      : {len(kinds['?']):,}")
     print()
 
@@ -277,7 +292,7 @@ def main() -> int:
     print("WHAT THE RANKING WOULD HAVE CONTAINED WITHOUT FILTERING")
     print("─" * 76)
     for label, key in (("hosts", "host"), ("leaf spots and rusts", "micro"),
-                       ("slime moulds", "slime-mould")):
+                       ("slime moulds", "slime-mould"), ("lichens", "lichen")):
         rows = kinds[key][:4]
         if not rows:
             continue

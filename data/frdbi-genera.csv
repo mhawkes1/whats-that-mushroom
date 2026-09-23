@@ -9,6 +9,8 @@
 #
 #   fungus       a macrofungus somebody would photograph on a walk
 #   slime-mould  not a fungus at all, and photographed anyway -- see the script
+#   lichen       a lichen -- a fungus with no cap, gills or spore print, so
+#                the flow has nothing to ask it; an out-of-scope negative
 #   micro        leaf spot, mildew, rust, or a cup a few millimetres across
 #   host         plant, animal or higher taxon; FRDBI records associations
 #
@@ -21,13 +23,18 @@
 # UNREVIEWED, like everything else compiled here.
 genus,kind
 # --- hosts -------------------------------------------------------------------
+Aegopodium,host
 Arum,host
 Carex,host
 Chamaenerion,host
+Dactylis,host
 Epilobium,host
 Hedera,host
+Hyacinthoides,host
 Juncus,host
+Lapsana,host
 Mercurialis,host
+Phragmites,host
 Plantago,host
 Pseudotsuga,host
 Rhododendron,host
@@ -89,6 +96,7 @@ Calloria,micro
 Chaetosphaerella,micro
 Cheilymenia,micro
 Cudoniella,micro
+Dasyscyphella,micro
 Entyloma,micro
 Eutypa,micro
 Golovinomyces,micro
@@ -98,9 +106,12 @@ Melampsora,micro
 Melampsoridium,micro
 Milesina,micro
 Mycosphaerella,micro
+Neoerysiphe,micro
 Orbilia,micro
 Peronospora,micro
+Phacidium,micro
 Podosphaera,micro
+Polydesmia,micro
 Puccinia,micro
 Pyrenopeziza,micro
 Taphrina,micro
@@ -130,25 +141,36 @@ Arcyria,slime-mould
 Ceratiomyxa,slime-mould
 Didymium,slime-mould
 Fuligo,slime-mould
+Mucilago,slime-mould
 Physarum,slime-mould
 Trichia,slime-mould
 Lycogala,slime-mould
 Reticularia,slime-mould
 Stemonitis,slime-mould
+# --- lichens ----------------------------------------------------------------
+Xanthoria,lichen
 # --- macrofungi --------------------------------------------------------------
 Baeospora,fungus
 Biscogniauxia,fungus
 Calvatia,fungus
 Cerioporus,fungus
+Cordyceps,fungus
 Craterellus,fungus
+Cylindrobasidium,fungus
+Dermoloma,fungus
 Gyromitra,fungus
+Lentinus,fungus
 Lepista,fungus
+Lichenomphalia,fungus
 Morchella,fungus
 Mutinus,fungus
+Neobulgaria,fungus
 Omphalotus,fungus
 Phaeotremella,fungus
 Pleurocybella,fungus
+Pseudoclitocybe,fungus
 Rubroboletus,fungus
+Rugosomyces,fungus
 Sparassis,fungus
 Tylopilus,fungus
 Verpa,fungus

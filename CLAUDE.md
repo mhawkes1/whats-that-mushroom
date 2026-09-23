@@ -75,6 +75,7 @@ characters come from standard references but are unverified.
 | `scripts/frdbi_gap.py` | Label space vs. how often things are actually found |
 | `scripts/species_list.py` | Generates `docs/SPECIES.md`, the label space for a human to read |
 | `docs/frdbi-top-250.csv` | The 250 most-recorded macrofungi, ranked, for review (`frdbi_gap.py --csv`) |
+| `docs/frdbi-top-300.csv` | The same to 300; 207 covered, 93 not |
 | `data/frdbi-records.csv` | Every FRDBI taxon and its record count, exported 2026-09-22 |
 | `data/frdbi-genera.csv` | Genus → fungus / micro / host / slime-mould, so the ranking can be filtered |
 
@@ -365,6 +366,14 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   of them belongs in the top N". The `--csv` output now refuses to write at
   all while intruders exist: a spreadsheet outlives the terminal warning it
   came with.
+- **Lichens are a fourth kind, added at `--top 300`.** *Xanthoria parietina*
+  is recorded 1,443 times and is on every churchyard wall in Britain. It is a
+  fungus with no cap, no gills and no spore print, so calling it a macrofungus
+  would put it in a list of species to add, and calling it a leaf spot would
+  be false. Same argument as slime moulds, same out-of-scope answer, same free
+  source of OOD negatives. *Lichenomphalia* is the edge case and goes the
+  other way — lichenised, but what it puts up is an omphalinoid mushroom with
+  a cap and gills.
 - **Slime moulds are neither fungi nor hosts, and are photographed anyway.**
   Fuligo, Lycogala, Ceratiomyxa. They can never be identified here, so what
   the app owes them is the out-of-scope answer rather than the nearest

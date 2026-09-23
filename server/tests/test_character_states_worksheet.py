@@ -352,7 +352,7 @@ def test_no_two_frdbi_rows_resolve_to_the_same_species():
 # How deep the ranking is trusted. Raise this with the label space, never
 # above it: every genus above the cutoff must be classified for the coverage
 # figure at that depth to mean anything.
-GUARDED_DEPTH = 250
+GUARDED_DEPTH = 300
 
 
 def test_no_unclassified_genus_outranks_the_species_being_reported_on():
@@ -394,7 +394,9 @@ def test_the_genus_table_is_well_formed():
     gap = _gap()
     genera = gap.load_genera()
     assert genera
-    assert set(genera.values()) == {"fungus", "micro", "host", "slime-mould"}
+    assert set(genera.values()) <= {
+        "fungus", "micro", "host", "slime-mould", "lichen",
+    }
 
     # Every genus the label space holds must be classified as a fungus,
     # however rare it is. An unclassified genus counts as nothing, so its
