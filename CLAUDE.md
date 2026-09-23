@@ -64,7 +64,6 @@ characters come from standard references but are unverified.
 | `server/app/ood.py` | Free-energy check for "that isn't something I know" |
 | `server/app/spore_print.py` | Reads a photographed spore print against a colour chart |
 | `server/app/characters.py` | How to ask a non-expert for evidence |
-| `server/app/translate.py` | Free text → field notes. A translator, never an identifier |
 | `app/` | Expo React Native client |
 | `app/src/lib/observationLog.ts` | Local history; what a stored verdict may say later |
 | `app/src/components/CoverHeader.tsx` | The book's cover as the app's front page |
@@ -98,9 +97,6 @@ python scripts/build_ebook.py --ebook <book>.html --out draft.html
 python scripts/demo.py
 ```
 
-`/describe` calls Claude when `ANTHROPIC_API_KEY` is set and falls back to a
-keyword matcher when it is not. The tests and the demo run on the fallback.
-
 Training needs a GPU and is documented in `docs/ROADMAP.md`.
 
 ## Gotchas
@@ -109,6 +105,30 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   one can silently duplicate entries. Convert with
   `np.asarray(..., dtype=object)` first. This caused a real observation-leak
   bug; there is a regression test.
+- **A GBIF match above species rank must never become a taxon key.** GBIF's
+  occurrence search is inclusive of descendants, so a genus-rank `usageKey`
+  does not fetch nothing — it fetches *the whole genus* under one species
+  label. `resolve_gbif_key` used to log a warning and return the key anyway,
+  which would have filed every death cap in Britain as a blusher, with
+  healthy-looking counts the whole way down and nothing downstream able to
+  detect it: the images really are mushrooms. `judge_match` is now a pure
+  function of the payload, refuses any rank but SPECIES, refuses FUZZY
+  (fungal binomials differ by a letter or two across different species) and
+  is tested offline.
+- **Resolution is a reviewable artefact, not a step.** `--resolve-only`
+  writes `data/gbif-keys.json` with every match and every refusal's reason.
+  Run it before the download: it takes a minute, and it is the point where a
+  name silently becomes the wrong fungus. A refusal is fixed by setting
+  `gbif_key` on the species by hand, having checked the key.
+- **An unresolved DEADLY species stops the build.** `UnresolvedDeadlySpecies`.
+  Dropping it is not a smaller dataset, it is a hole in the safety layer — a
+  species the model cannot name is one the app cannot warn about, and every
+  lookalike edge pointing at it goes slack.
+- **The quota is counted in images; the split is counted in observations.**
+  So `max_images_per_observation` (default 4) is what stops a species
+  reaching a 400-image target off twenty fruiting bodies. `--min-observations`
+  reports species that clear `--min-images` on photographs of the same few
+  records; their validation score says almost nothing.
 - **Splits are on `observation_id`, never on image.** If accuracy looks too
   good, check this before believing it.
 - **`character_states` is complete for all 235 species and UNREVIEWED
@@ -266,29 +286,6 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   graded by looking those up server-side. With names in place of keys every
   candidate is unrecognisable, and a disputed warning grades as a warning that
   never happened — the opposite classification.
-- **`/describe` translates; it does not identify.** `translate.py` maps a
-  sentence onto character-and-option pairs, which go through the ordinary
-  `/identify` and the ordinary safety layer. The response schema has **no
-  field in which a species could be named** — not a discouraged one, there is
-  nowhere to put the string. "I think it is a death cap" returns `{}`, and a
-  test pins it.
-- **Every enum in that schema is `CHARACTERS[key].options`, read at call
-  time.** A state that is not an option cannot be produced, which is the
-  worksheet importer's guarantee moved one step earlier. It is validated again
-  server-side anyway: `strict` is a promise from the API, and this is a safety
-  path. Anything rejected is logged, never silently dropped.
-- **The translation is a suggestion, never a submission.** It pre-fills the
-  form and the user confirms — the rule the spore print matcher already
-  follows. `DescribeOut` has no `verdict` or `candidates` field, and a test
-  pins that too.
-- **`/describe` extracts no taste.** `TRANSLATABLE` excludes it. The
-  interrogation engine may ask for one only when no deadly candidate holds
-  mass (rule 5); a free-text box has no such gate.
-- **The keyword fallback's characteristic error is a colour word lifted out of
-  the wrong phrase.** "Spore print came out rust brown" says nothing about the
-  cap. Two ordering rules stop it: a cue that names what it describes is tried
-  before a bare one, and a match may not claim text another cue already took.
-  Both are pinned — the second as a property of `CUES`, not by example.
 - **`notes` is rendered verbatim to users.** Rationale, policy and review
   flags go in `internal_note`, which is never surfaced.
 - **The ebook's field data is generated, never hand-copied.** The book and

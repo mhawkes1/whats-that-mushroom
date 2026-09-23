@@ -6,7 +6,6 @@ Endpoints are deliberately few:
   POST /answer      answer a diagnostic question -> revised assessment
   POST /spore-print/match  a photographed spore print -> which chart colour
   GET  /field-form  the characters to offer on the capture form
-  POST /describe    free text -> field notes, for the form to be pre-filled with
   GET  /species     reference data for one species
   GET  /disclaimer  what a user acknowledges before first use
   POST /incident    a suspected misidentification
@@ -33,7 +32,6 @@ from .config import settings
 from .disclaimer import build as build_disclaimer
 from .incidents import EMERGENCY_GUIDANCE, IncidentStore, build_report
 from .inference import Classifier, OnnxBackend
-from .translate import default_translator
 from .interrogation import InterrogationEngine
 from .safety import SafetyLayer
 from .spore_print import read_from_photograph
@@ -44,8 +42,6 @@ from .schemas import (
     AnswerRequest,
     ColourMatchOut,
     CandidateOut,
-    DescribeOut,
-    DescribeRequest,
     DisclaimerOut,
     FieldFormOut,
     FieldNoteFieldOut,
@@ -110,7 +106,6 @@ async def lifespan(app: FastAPI):
         engine=InterrogationEngine(taxonomy),
         calibrated=calibrated,
         incidents=IncidentStore(settings.incident_log_path),
-        translator=default_translator(),
     )
     log.info("Ready: %d classes, calibrated=%s", len(classifier.classes), calibrated)
     yield
@@ -400,47 +395,6 @@ def _taxonomy_reviewed() -> bool:
 
     return bool(
         json.loads(settings.taxonomy_path.read_text(encoding="utf-8")).get("reviewed_by")
-    )
-
-
-@app.post("/describe", response_model=DescribeOut)
-def describe(request: DescribeRequest) -> DescribeOut:
-    """Turn a sentence into field notes.
-
-    A translator, not an identifier. What comes back is the same
-    character-and-option pairs the form produces, and it goes through the same
-    `/identify` and the same safety layer. The response has no field in which
-    a species could be named.
-
-    It is a suggestion. The client pre-fills the form with it and the user
-    confirms -- the rule the spore print matcher already follows, for the same
-    reason: the app proposes and the person decides.
-    """
-    if not state:
-        raise HTTPException(503, "Service is still starting.")
-
-    text = request.description.strip()
-    if not text:
-        raise HTTPException(400, "Nothing to translate.")
-
-    try:
-        result = state["translator"].translate(text)
-    except Exception:
-        # A failed translation costs the user a shortcut. The form still
-        # works, so this is a degraded convenience and never an error page.
-        log.exception("translation failed")
-        return DescribeOut(
-            field_notes={}, not_understood=[text], rejected={},
-            backend="unavailable",
-        )
-
-    if result.rejected:
-        log.warning("translator produced non-catalogue values: %s", result.rejected)
-    return DescribeOut(
-        field_notes=result.field_notes,
-        not_understood=result.not_understood,
-        rejected=result.rejected,
-        backend=result.backend,
     )
 
 

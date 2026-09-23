@@ -55,13 +55,34 @@ path.
 
 ```bash
 pip install -r ml/requirements.txt
+
+# First, and separately: resolve the taxon keys and read the refusals.
+python scripts/build_dataset.py --resolve-only
+
+# Then the download.
 python scripts/build_dataset.py --target 400 --country GB
 ```
 
+Do the resolve step on its own and look at `data/gbif-keys.json` before
+starting the download. It is the point at which a name silently becomes the
+wrong fungus, it costs a minute, and every refusal it prints is a species
+that will otherwise be absent from the label space. A refusal is fixed by
+setting `gbif_key` by hand on that species in `data/taxonomy.seed.json`,
+having checked the key on gbif.org yourself.
+
+The build refuses to continue if a DEADLY species did not resolve.
+
 **This is the gate on everything else, and it needs no GPU.** It is bound by
-network and disk: roughly 20k images pulled one at a time from GBIF, which is
-hours of wall time and tens of GB. Renting a GPU to sit idle through it wastes
-the rent.
+network and disk. At `--target 400` across 235 species the ceiling is 94k
+images pulled one at a time from GBIF; the realistic figure is well below
+that, because most of the label space does not have 400 research-grade
+British records. Either way it is hours of wall time and tens of GB, and
+renting a GPU to sit idle through it wastes the rent.
+
+Only openly-licensed images are taken (`ACCEPTED_LICENCES`), and an absent
+licence is refused rather than assumed permissive. Note that the list
+currently includes `CC_BY_NC_4_0`: fine for research, a question for a
+lawyer if the app is ever sold. Dropping NC costs images and settles it.
 
 It also needs unrestricted outbound access to `api.gbif.org` and to the
 iNaturalist media CDN. Sandboxes and locked-down CI runners commonly block
@@ -69,10 +90,16 @@ both, which fails at the first request rather than partway through. The run is
 resumable -- images already on disk are skipped -- so an interrupted build
 costs only the time already spent.
 
-Check before moving on: how many species survived `--min-images 40`. The seed
-taxonomy has 57, and the long tail of UK fungi means fewer will clear the
-threshold. Species that were dropped are not in the label space, and the safety
-layer cannot warn about a lookalike the model cannot name.
+Check before moving on: how many species survived `--min-images 40`, and how
+many the run flags as having fewer than `--min-observations` records. The
+taxonomy has 235, and the long tail of UK fungi means far fewer will clear
+either threshold — many of the additions are separable only under a
+microscope, and some are resupinate crusts that get photographed rarely.
+A species clearing 40 images on four fruiting bodies has effectively no
+validation set; the run lists those separately for that reason.
+
+Species that were dropped are not in the label space, and the safety layer
+cannot warn about a lookalike the model cannot name.
 
 ### 2. Train the first model
 
