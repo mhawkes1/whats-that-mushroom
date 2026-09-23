@@ -58,12 +58,21 @@ def _session() -> requests.Session:
     return session
 
 
+# What `image_source` on a species means. The default restricts to
+# iNaturalist, whose export is research-grade by publication policy. "any"
+# lifts that restriction for a species iNaturalist does not cover, and the
+# manifest records which dataset every image came from so the difference
+# stays visible downstream rather than being averaged away.
+IMAGE_SOURCES = {"inaturalist": INATURALIST_DATASET_KEY, "any": None}
+
+
 @dataclass
 class SpeciesQuota:
     key: str
     scientific_name: str
     gbif_key: int
     target: int
+    dataset_key: str | None = INATURALIST_DATASET_KEY
 
 
 # A match below this confidence is not trusted without a human looking at it.
@@ -280,17 +289,23 @@ def _research_grade(occ: dict) -> bool:
 
 
 def _occurrence_page(
-    session: requests.Session, taxon_key: int, offset: int, limit: int, country: str | None
+    session: requests.Session,
+    taxon_key: int,
+    offset: int,
+    limit: int,
+    country: str | None,
+    dataset_key: str | None = INATURALIST_DATASET_KEY,
 ) -> dict:
     params = {
         "taxonKey": taxon_key,
-        "datasetKey": INATURALIST_DATASET_KEY,
         "mediaType": "StillImage",
         "hasCoordinate": "true",
         "occurrenceStatus": "PRESENT",
         "limit": limit,
         "offset": offset,
     }
+    if dataset_key:
+        params["datasetKey"] = dataset_key
     if country:
         params["country"] = country
     resp = session.get(f"{GBIF_API}/occurrence/search", params=params, timeout=60)
@@ -323,7 +338,8 @@ def build_manifest(
         while collected < quota.target:
             try:
                 page = _occurrence_page(
-                    session, quota.gbif_key, offset, page_size, country
+                    session, quota.gbif_key, offset, page_size, country,
+                    quota.dataset_key,
                 )
             except requests.RequestException as exc:
                 log.error("GBIF page failed for %s at offset %d: %s", quota.key, offset, exc)
@@ -354,6 +370,7 @@ def build_manifest(
                             "gbif_key": quota.gbif_key,
                             "observation_id": observation_id,
                             "image_url": url,
+                            "dataset_key": occ.get("datasetKey"),
                             "licence": occ.get("license"),
                             "rights_holder": occ.get("rightsHolder"),
                             "latitude": occ.get("decimalLatitude"),
@@ -377,10 +394,11 @@ def build_manifest(
             time.sleep(sleep_between_pages)
 
         log.info(
-            "%s: %d images across %d observations",
+            "%s: %d images across %d observations%s",
             quota.key,
             collected,
             len(by_observation),
+            "" if quota.dataset_key else "  [any dataset -- not iNaturalist]",
         )
 
     frame = pd.DataFrame(rows)
@@ -461,7 +479,39 @@ def fetch_images(
     manifest = manifest.copy()
     manifest["path"] = manifest["image_url"].map(resolved)
     ok = manifest[manifest["path"].notna()].reset_index(drop=True)
+    lost = manifest[manifest["path"].isna()]
     log.info("Retained %d of %d images", len(ok), len(manifest))
+
+    # A silent download failure is the worst kind here, because the manifest
+    # looks healthy and the species simply has fewer images than intended --
+    # or none. The ivory funnels lost 24 of 24 on the first live run, because
+    # their images live on svampe.databasen.org, mushroomobserver.org and
+    # artsobservasjoner.no rather than the iNaturalist CDN, and the sandbox
+    # allowed only the latter. The run said "Retained 59 of 83" and moved on.
+    if len(lost):
+        from urllib.parse import urlparse
+
+        hosts = lost["image_url"].map(lambda u: urlparse(u).netloc).value_counts()
+        log.warning("%d images failed to download, by host:", len(lost))
+        for host, count in hosts.head(10).items():
+            log.warning("    %5d  %s", count, host)
+
+        wanted = manifest.groupby("species_key").size()
+        got = ok.groupby("species_key").size().reindex(wanted.index, fill_value=0)
+        wiped = [k for k in wanted.index if got[k] == 0]
+        if wiped:
+            log.error(
+                "%d species lost EVERY image and are now absent from the "
+                "dataset: %s",
+                len(wiped),
+                ", ".join(wiped),
+            )
+            log.error(
+                "    A species with no images cannot be trained, cannot be "
+                "named, and cannot be warned about. Check the hosts above "
+                "against your network policy before treating this as a "
+                "property of the data."
+            )
     return ok
 
 
@@ -581,12 +631,19 @@ def load_quotas(
             refused.append(match)
             continue
         entry = by_name[match.scientific_name]
+        source = entry.get("image_source", "inaturalist")
+        if source not in IMAGE_SOURCES:
+            raise ValueError(
+                f"{entry['key']}: image_source {source!r} is not one of "
+                f"{sorted(IMAGE_SOURCES)}"
+            )
         quotas.append(
             SpeciesQuota(
                 key=entry["key"],
                 scientific_name=match.scientific_name,
                 gbif_key=match.usage_key,
                 target=target_per_species,
+                dataset_key=IMAGE_SOURCES[source],
             )
         )
 

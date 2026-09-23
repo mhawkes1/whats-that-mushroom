@@ -22,6 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from fungi_ml.data.sources import (  # noqa: E402
     CollidingTaxonKeys,
+    INATURALIST_DATASET_KEY,
     MIN_MATCH_CONFIDENCE,
     RESEARCH_GRADE,
     UnresolvedDeadlySpecies,
@@ -161,6 +162,49 @@ def test_a_synonym_with_nowhere_to_follow_is_refused():
     )
     assert not verdict.accepted
     assert verdict.usage_key is None
+
+
+def test_image_source_any_lifts_the_dataset_restriction(tmp_path):
+    """The ivory funnels have zero iNaturalist images and 1,300 elsewhere.
+
+    So `image_source: "any"` drops the datasetKey filter for that species
+    alone. Every other species keeps it, because the research-grade
+    property comes from iNaturalist's publication policy and widening
+    trades it away.
+    """
+    path = seed_taxonomy(
+        tmp_path,
+        [
+            {"key": "clitocybe-rivulosa", "scientific_name": "Clitocybe rivulosa",
+             "toxicity": "DEADLY", "gbif_key": 2531052, "image_source": "any"},
+            {"key": "amanita-phalloides", "scientific_name": "Amanita phalloides",
+             "toxicity": "DEADLY", "gbif_key": 5240325},
+        ],
+    )
+    quotas = {q.key: q for q in load_quotas(path, 100, session=StubSession())}
+    assert quotas["clitocybe-rivulosa"].dataset_key is None
+    assert quotas["amanita-phalloides"].dataset_key == INATURALIST_DATASET_KEY
+
+
+def test_an_unknown_image_source_is_refused(tmp_path):
+    path = seed_taxonomy(
+        tmp_path,
+        [{"key": "x", "scientific_name": "Amanita phalloides", "toxicity": "DEADLY",
+          "gbif_key": 1, "image_source": "flickr"}],
+    )
+    with pytest.raises(ValueError, match="flickr"):
+        load_quotas(path, 100, session=StubSession())
+
+
+def test_the_manifest_records_which_dataset_each_image_came_from(tmp_path, monkeypatch):
+    """Provenance has to survive into the manifest, or the widening is invisible."""
+    import fungi_ml.data.sources as sources
+
+    monkeypatch.setattr(sources, "_session", lambda: StubSession(
+        pages=[{"results": [occurrence(1, datasetKey="abc-123")], "endOfRecords": True}]
+    ))
+    frame, _ = build([], tmp_path=tmp_path)
+    assert frame["dataset_key"].tolist() == ["abc-123"]
 
 
 def test_two_species_may_not_claim_the_same_taxon(tmp_path):
@@ -458,7 +502,14 @@ def test_resolution_is_cached_and_readable(tmp_path):
 # Keys set by hand, with the reason. A hand-set key skips GBIF's matcher
 # entirely, so each one is a claim somebody has to stand behind.
 HAND_SET_KEYS = {
-    "Helvella crispa": 2554614,  # /species/match falls back to the Fungi KINGDOM
+    # /species/match falls back to the Fungi KINGDOM -- four authorships,
+    # three DOUBTFUL.
+    "Helvella crispa": 2554614,
+    # Pinned to their own usage rather than following acceptedUsageKey,
+    # because following it would collide two label-space species onto one
+    # taxon. Martin's decision, 2026-09-23: keep them separate.
+    "Clitocybe dealbata": 2531056,   # GBIF: synonym of C. rivulosa
+    "Inocybe lilacina": 3331644,     # GBIF: synonym of I. geophylla
 }
 
 
@@ -475,3 +526,36 @@ def test_hand_set_gbif_keys_are_the_expected_ones(tmp_path):
         if s.get("gbif_key") is not None
     }
     assert declared == HAND_SET_KEYS
+
+
+def test_a_species_losing_every_image_is_reported_loudly(tmp_path, caplog):
+    """A silent download failure leaves a healthy-looking manifest.
+
+    On the first live run the ivory funnels lost 24 of 24 images, because
+    their photographs live on svampe.databasen.org, mushroomobserver.org
+    and artsobservasjoner.no rather than the iNaturalist CDN, and the
+    sandbox allowed only the latter. The run printed "Retained 59 of 83"
+    and carried on. Two DEADLY species had silently left the dataset.
+    """
+    import logging
+
+    import pandas as pd
+
+    from fungi_ml.data.sources import fetch_images
+
+    manifest = pd.DataFrame(
+        [
+            {"species_key": "gone", "image_url": "https://blocked.example/a.jpg"},
+            {"species_key": "gone", "image_url": "https://blocked.example/b.jpg"},
+        ]
+    )
+    with caplog.at_level(logging.WARNING):
+        kept = fetch_images(manifest, tmp_path / "img", workers=2)
+
+    assert kept.empty
+    text = caplog.text
+    assert "blocked.example" in text, "must name the host that failed"
+    assert "gone" in text, "must name the species that vanished"
+    assert any(r.levelno >= logging.ERROR for r in caplog.records), (
+        "a species losing every image is an error, not a warning"
+    )

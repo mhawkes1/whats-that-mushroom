@@ -158,12 +158,29 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   sinuatum*, against 38–171 globally; *Amanita phalloides* 309 vs 8,617; 52
   species below `--min-images 40`. A death cap photographed in France is the
   same fungus, and the geographic prior comes from the metadata branch.
-- **`datasetKey` restricted to iNaturalist costs both ivory funnels.**
-  *Clitocybe rivulosa* has 11,661 GBIF occurrences and 1,068 with images, and
-  **zero** in the iNaturalist dataset — iNat observers do not identify to that
-  species. Widening beyond iNaturalist means losing the research-grade
-  publication policy that the quality argument rests on, so it is a trade,
-  not a fix. Unresolved.
+- **`image_source` is per species, and defaults to iNaturalist.**
+  *Clitocybe rivulosa* has 11,661 GBIF occurrences and 1,068 with images and
+  **zero** in the iNaturalist dataset — iNat observers do not identify to it.
+  Martin's decision, 2026-09-23: keep the ivory funnels separate and source
+  them elsewhere, so both carry `image_source: "any"`, which drops the
+  `datasetKey` filter for those two alone. Everything else keeps it, because
+  the research-grade property comes from iNaturalist's publication policy and
+  widening trades it away. The manifest records `dataset_key` per image so
+  the difference stays visible rather than averaging out.
+- **Both collisions were resolved by pinning `gbif_key`, not by merging.**
+  *Clitocybe dealbata* → 2531056 and *Inocybe lilacina* → 3331644: each
+  species' own usage rather than the accepted one it is a synonym of. Worth
+  being honest about what that buys — the split now rests on **recorder
+  determination**, not on an accepted taxon, and both pairs are long-standing
+  taxonomic arguments. A mycologist should confirm the splits are real.
+- **`image_source: "any"` means images come from arbitrary hosts.** The ivory
+  funnels' photographs live on `svampe.databasen.org`,
+  `mushroomobserver.org` and `www.artsobservasjoner.no`, none of which a
+  restricted network policy allows by default. On the first live sample run
+  all 24 of their images failed and `fetch_images` reported "Retained 59 of
+  83" and carried on — two DEADLY species had silently left the dataset. It
+  now names the failing hosts and raises an ERROR listing any species that
+  lost every image; a test pins that.
 - **Resolution is a reviewable artefact, not a step.** `--resolve-only`
   writes `data/gbif-keys.json` with every match and every refusal's reason.
   Run it before the download: it takes a minute, and it is the point where a

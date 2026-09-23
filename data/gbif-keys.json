@@ -507,15 +507,15 @@
     },
     {
       "scientific_name": "Clitocybe dealbata",
-      "usage_key": 2531052,
+      "usage_key": 2531056,
       "matched_name": "Clitocybe dealbata",
       "rank": "SPECIES",
-      "match_type": "EXACT",
-      "confidence": 100,
-      "status": "SYNONYM",
-      "synonym": true,
+      "match_type": "DECLARED",
+      "confidence": null,
+      "status": null,
+      "synonym": false,
       "accepted": true,
-      "reason": "Clitocybe dealbata is a SYNONYM in the GBIF backbone; following acceptedUsageKey 2531052 (Clitocybe), because occurrences are indexed against the accepted usage"
+      "reason": "gbif_key set in the taxonomy"
     },
     {
       "scientific_name": "Clitocybe fragrans",
@@ -1443,15 +1443,15 @@
     },
     {
       "scientific_name": "Inocybe lilacina",
-      "usage_key": 3330851,
+      "usage_key": 3331644,
       "matched_name": "Inocybe lilacina",
       "rank": "SPECIES",
-      "match_type": "EXACT",
-      "confidence": 100,
-      "status": "SYNONYM",
-      "synonym": true,
+      "match_type": "DECLARED",
+      "confidence": null,
+      "status": null,
+      "synonym": false,
       "accepted": true,
-      "reason": "Inocybe lilacina is a SYNONYM in the GBIF backbone; following acceptedUsageKey 3330851 (Inocybe), because occurrences are indexed against the accepted usage"
+      "reason": "gbif_key set in the taxonomy"
     },
     {
       "scientific_name": "Jackrogersella multiformis",

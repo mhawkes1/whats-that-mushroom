@@ -1704,7 +1704,7 @@
         "Ivory Funnel"
       ],
       "toxicity": "DEADLY",
-      "gbif_key": null,
+      "gbif_key": 2531056,
       "lookalikes": [
         "marasmius-oreades",
         "calocybe-gambosa"
@@ -1726,7 +1726,9 @@
           "No trees nearby",
           "Mixed broadleaf"
         ]
-      }
+      },
+      "image_source": "any",
+      "internal_note": "gbif_key pinned and image_source widened, 2026-09-23, Martin's decision to keep the ivory funnels as separate species. GBIF's backbone treats this as a SYNONYM of Clitocybe rivulosa, so following acceptedUsageKey would collide the two onto one label. 2531056 is this name's own usage, carrying the records whose recorder determined them as dealbata. NOT the same evidential standard as an accepted taxon: the split rests on recorder determination, and the two are a long-standing taxonomic argument. A mycologist should confirm the split is real. image_source 'any' because iNaturalist holds ZERO images for either ivory funnel; 233 exist across other GBIF datasets, mostly Norwegian survey projects."
     },
     {
       "key": "clitocybe-fragrans",
@@ -1898,7 +1900,9 @@
         "cap_surface": [
           "Smooth and dry"
         ]
-      }
+      },
+      "image_source": "any",
+      "internal_note": "image_source widened 2026-09-23. iNaturalist holds zero images for this species -- its observers do not identify to it -- while GBIF as a whole has 11,661 occurrences and 1,068 with images. Those come from survey and herbarium datasets rather than iNaturalist, so the research-grade publication policy does not cover them; the manifest records dataset_key per image so the difference stays visible."
     },
     {
       "key": "clitocybe-vibecina",
@@ -4918,7 +4922,7 @@
         "Lilac Fibrecap"
       ],
       "toxicity": "SERIOUS",
-      "gbif_key": null,
+      "gbif_key": 3331644,
       "lookalikes": [
         "inocybe-geophylla",
         "inocybe-erubescens",
@@ -4935,7 +4939,7 @@
         "gill_colour"
       ],
       "notes": "The lilac form of the white fibrecap: same silky pointed cap, same earthy smell, same muscarine. Mistaken for the amethyst deceiver, which prints white where this prints brown.",
-      "internal_note": "Long treated as Inocybe geophylla var. lilacina. SERIOUS for the same reason, with the same generous state lists.",
+      "internal_note": "gbif_key pinned 2026-09-23, Martin's decision to keep this separate from Inocybe geophylla. GBIF treats it as a SYNONYM of geophylla, so following acceptedUsageKey would collide the two. 3331644 is this name's own usage and carries 361 iNaturalist images, so no source change is needed. The split rests on recorder determination; a mycologist should confirm it.",
       "character_states": {
         "cap_colour": [
           "Purple",
