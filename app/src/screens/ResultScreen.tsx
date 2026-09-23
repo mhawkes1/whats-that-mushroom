@@ -23,7 +23,7 @@ import { theme } from '../lib/theme';
  *
  *   1. the verdict, including a refusal when that is the honest answer
  *   2. the next diagnostic question, so the user can actually resolve it
- *   3. the candidate list, with toxicity on every row
+ *   3. the candidate list, with a hazard on the rows that have one
  *   4. warnings
  *
  * The candidate list is not the headline. Putting a species name and a big

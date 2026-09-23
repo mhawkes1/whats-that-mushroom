@@ -35,8 +35,9 @@ import { theme } from '../lib/theme';
  * species, because a name on a glanceable row read weeks later is the answer
  * whatever sits around it.
  *
- * Everything else -- the candidates, their toxicity, the warnings shown at the
- * time -- is one tap away. Expanding is a deliberate act; scrolling is not.
+ * Everything else -- the candidates, any hazard on them, the warnings shown
+ * at the time -- is one tap away. Expanding is a deliberate act; scrolling
+ * is not.
  */
 
 const TONE_COLOUR: Record<Tone, string> = {
