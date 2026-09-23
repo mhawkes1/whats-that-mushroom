@@ -2952,7 +2952,7 @@
       "common_names": [
         "Wood Pinkgill"
       ],
-      "toxicity": "TOXIC",
+      "toxicity": "SERIOUS",
       "gbif_key": null,
       "lookalikes": [
         "entoloma-sinuatum",
@@ -2968,12 +2968,13 @@
         "cap_colour"
       ],
       "notes": "Greyish-brown, in damp broadleaf woodland, with a smell of raw meal. Pink spore print. Slimmer and more fragile than the livid pinkgill.",
-      "internal_note": "A significant cause of poisoning where it is eaten. Classified TOXIC; a reviewer should consider whether SERIOUS is warranted, as it is for Entoloma sinuatum. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "internal_note": "SERIOUS, decided by Martin Hawkes 2026-09-23. Raised from TOXIC: a significant cause of poisoning where it is eaten, and flagged here as an open review question alongside Entoloma sinuatum, which was already SERIOUS. Toxicity grading overall still awaits mycological sign-off.",
       "character_states": {
         "spore_print_colour": [
           "Pink"
         ],
         "gill_colour": [
+          "White",
           "Pink"
         ],
         "smell": [
@@ -9502,7 +9503,7 @@
       "common_names": [
         "Grey Knight"
       ],
-      "toxicity": "TOXIC",
+      "toxicity": "SERIOUS",
       "gbif_key": null,
       "lookalikes": [
         "tricholoma-pardinum",
@@ -9517,7 +9518,7 @@
         "size"
       ],
       "notes": "Grey, dry and felted or finely fibrous, under pine. Smaller and more slender than the tiger knight, whose cap is spotted with distinct dark scales on a paler ground.",
-      "internal_note": "REVIEW QUESTION, raised deliberately: T. terreum has been implicated in rhabdomyolysis in the same literature that made T. equestre SERIOUS. Classified TOXIC here rather than SERIOUS because the evidence is thinner, but a reviewer should decide, and SERIOUS is the safer error. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
+      "internal_note": "SERIOUS, decided by Martin Hawkes 2026-09-23. Raised from TOXIC: this was flagged here as an open review question, because T. terreum has been implicated in rhabdomyolysis in the same literature that made T. equestre SERIOUS. The evidence is thinner than for T. equestre and the call was made deliberately in the safer direction. Toxicity grading overall still awaits mycological sign-off.",
       "character_states": {
         "cap_colour": [
           "Grey"

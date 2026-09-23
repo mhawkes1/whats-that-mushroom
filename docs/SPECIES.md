@@ -35,13 +35,14 @@ Eating this can be fatal.
 | ***Lepiota brunneoincarnata*** | Deadly Dapperling | *Marasmius oreades*, *Agaricus campestris*, *Macrolepiota procera* |
 | ***Lepiota subincarnata*** | Fatal Dapperling | ***Lepiota brunneoincarnata***, *Lepiota cristata*, *Marasmius oreades*, *Agaricus campestris* |
 
-## Causes serious illness — `SERIOUS` (10)
+## Causes serious illness — `SERIOUS` (12)
 
 Hospital treatment is usual.
 
 | Species | Also known as | Confused with |
 | --- | --- | --- |
 | ***Amanita pantherina*** | Panther Cap | *Amanita rubescens*, *Amanita muscaria* |
+| ***Entoloma rhodopolium*** | Wood Pinkgill | *Entoloma sinuatum*, *Entoloma sericeum*, *Clitopilus prunulus*, *Clitocybe nebularis* |
 | ***Entoloma sinuatum*** | Livid Pinkgill, Livid Entoloma | *Clitopilus prunulus*, *Calocybe gambosa*, *Agaricus arvensis* |
 | ***Inocybe geophylla*** | White Fibrecap | ***Inocybe erubescens***, ***Clitocybe rivulosa***, ***Clitocybe dealbata***, ***Amanita virosa*** (+1) |
 | ***Inocybe lilacina*** | Lilac Fibrecap | *Inocybe geophylla*, ***Inocybe erubescens***, *Laccaria amethystina*, *Mycena pura* (+1) |
@@ -51,8 +52,9 @@ Hospital treatment is usual.
 | ***Rubroboletus satanas*** | Devil's Bolete | *Boletus edulis* |
 | ***Tricholoma equestre*** | Yellow Knight, Man on Horseback | ***Amanita phalloides***, *Russula ochroleuca* |
 | ***Tricholoma pardinum*** | Leopard Knight | *Tricholoma equestre*, *Calocybe gambosa*, *Clitocybe nebularis* |
+| ***Tricholoma terreum*** | Grey Knight | *Tricholoma pardinum*, *Tricholoma saponaceum*, *Tricholoma equestre* |
 
-## Causes illness — `TOXIC` (69)
+## Causes illness — `TOXIC` (67)
 
 Poisoning is reported.
 
@@ -76,7 +78,6 @@ Poisoning is reported.
 | ***Collybiopsis peronata*** | Wood Woollyfoot | *Gymnopus dryophilus*, *Collybiopsis confluens*, *Marasmius oreades* |
 | ***Coprinopsis atramentaria*** | Common Inkcap | *Coprinus comatus* |
 | ***Entoloma conferendum*** | Star Pinkgill | *Entoloma sinuatum*, *Pluteus cervinus*, *Clitopilus prunulus* |
-| ***Entoloma rhodopolium*** | Wood Pinkgill | *Entoloma sinuatum*, *Entoloma sericeum*, *Clitopilus prunulus*, *Clitocybe nebularis* |
 | ***Entoloma sericeum*** | Silky Pinkgill | *Entoloma sinuatum*, *Entoloma conferendum*, *Marasmius oreades*, *Clitopilus prunulus* |
 | ***Galerina hypnorum*** | Moss Bell | ***Galerina marginata*** |
 | ***Hebeloma crustuliniforme*** | Poison Pie | ***Clitocybe rivulosa***, *Agaricus campestris*, *Entoloma sinuatum*, *Inocybe geophylla* |
@@ -123,7 +124,6 @@ Poisoning is reported.
 | ***Tricholoma fulvum*** | Birch Knight | *Tricholoma equestre*, *Tricholoma pardinum*, *Hebeloma crustuliniforme* |
 | ***Tricholoma saponaceum*** | Soapy Knight | *Tricholoma terreum*, *Tricholoma pardinum*, *Tricholoma sulphureum*, *Tricholoma equestre* |
 | ***Tricholoma sulphureum*** | Sulphur Knight | *Tricholoma equestre*, *Tricholoma saponaceum*, *Tricholoma pardinum* |
-| ***Tricholoma terreum*** | Grey Knight | *Tricholoma pardinum*, *Tricholoma saponaceum*, *Tricholoma equestre* |
 | ***Tricholoma ustale*** | Burnt Knight | *Tricholoma fulvum*, *Tricholoma equestre*, *Tricholoma pardinum* |
 | ***Verpa bohemica*** | Early Morel, Thimble Morel | *Morchella esculenta*, ***Gyromitra esculenta*** |
 | ***Volvopluteus gloiocephalus*** | Stubble Rosegill | ***Amanita phalloides***, ***Amanita virosa***, *Agaricus arvensis* |

@@ -327,6 +327,16 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   separates nothing), "No ring" moves it 44% → 57%, and the verdict stays
   `dangerous_group` because a deadly candidate still holds 23.6%. Rule 3 is
   not a threshold on the leader.
+- **Raising a species' toxicity can invalidate the width of its state
+  lists.** *Tricholoma terreum* and *Entoloma rhodopolium* went TOXIC →
+  SERIOUS on 2026-09-23 (Martin's call, both had been flagged here as open
+  review questions). Their lists had been written **tight**, because the
+  convention makes lists tight for the safe half of a pair — which they were
+  no longer. *E. rhodopolium* listed only `Pink` gills when *Entoloma* gills
+  are pale before the spores mature, so a young one would have contradicted
+  itself and pushed a SERIOUS species down. Widened. The contradiction tier
+  moves on its own (`SERIOUS_INCONSISTENT` 0.40 rather than `INCONSISTENT`
+  0.25); the list width does not, and has to be revisited by hand.
 - **All twelve were added as the non-deadly half, so their state lists are
   tight.** They exist to give the mass somewhere accurate to go inside a
   genus whose dangerous members were already there and, in several cases,
