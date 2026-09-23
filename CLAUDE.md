@@ -74,6 +74,7 @@ characters come from standard references but are unverified.
 | `scripts/demo.py` | Drives the real safety layer, engine and matcher in a terminal |
 | `scripts/frdbi_gap.py` | Label space vs. how often things are actually found |
 | `scripts/species_list.py` | Generates `docs/SPECIES.md`, the label space for a human to read |
+| `docs/frdbi-top-250.csv` | The 250 most-recorded macrofungi, ranked, for review (`frdbi_gap.py --csv`) |
 | `data/frdbi-records.csv` | Every FRDBI taxon and its record count, exported 2026-09-22 |
 | `data/frdbi-genera.csv` | Genus → fungus / micro / host / slime-mould, so the ranking can be filtered |
 
@@ -337,10 +338,33 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
 - **Filtering happens at genus, and an unclassified genus counts as nothing.**
   `data/frdbi-genera.csv`. Eighteen thousand species cannot be judged by hand;
   a genus can be checked by somebody. The failure mode is silent, so two tests
-  guard it: no unclassified taxon may out-record the hundredth macrofungus,
-  and every genus in the label space must be classified `fungus` however rare
-  it is. Cortinarius and Galerina were both unclassified on the first pass —
-  the orellanine webcaps and the funeral bell.
+  guard it: no unclassified taxon may out-record the `GUARDED_DEPTH`th
+  macrofungus, and every genus in the label space must be classified `fungus`
+  however rare it is. Cortinarius and Galerina were both unclassified on the
+  first pass — the orellanine webcaps and the funeral bell.
+- **`GUARDED_DEPTH` must track the depth actually in use.** It sat at 100
+  while the working depth was 250, and eight unclassified taxa were sitting
+  above the 250 cutoff the whole time — four of them real macrofungi (dog
+  stinkhorn, beech tarcrust, leafy brain, conifercone cap). The test passed
+  throughout. A guard shallower than the working depth reports on somewhere
+  nobody is standing.
+- **The top 250 says what to add; the danger graph says what cannot be
+  dropped.** 204 of the label space's 235 are in FRDBI's top 250; the other
+  31 are too rarely recorded to reach it, and **10 of the 11 DEADLY species
+  are among them** — only the death cap makes the ranking, at 226. A label
+  space trimmed to the top 250 would hold the field mushroom without the
+  destroying angel and honey fungus without the funeral bell. Rarity is
+  part of why those species poison people.
+- **Nothing that writes a toxicity into a file may use `.value`.**
+  `Toxicity` is an `IntEnum` with DEADLY 4 and INEDIBLE 1, so `.value` in a
+  spreadsheet is an unlabelled 1–4 scale whose dangerous end reads like the
+  good one. `.name` everywhere.
+- **A report must not reassure past its own warning.** `frdbi_gap.py`
+  correctly printed that eight unclassified taxa out-recorded the cutoff and
+  then, forty lines later, printed a hardcoded "All below the cutoff, so none
+  of them belongs in the top N". The `--csv` output now refuses to write at
+  all while intruders exist: a spreadsheet outlives the terminal warning it
+  came with.
 - **Slime moulds are neither fungi nor hosts, and are photographed anyway.**
   Fuligo, Lycogala, Ceratiomyxa. They can never be identified here, so what
   the app owes them is the out-of-scope answer rather than the nearest

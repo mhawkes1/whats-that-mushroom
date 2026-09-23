@@ -135,12 +135,65 @@ def load_genera() -> dict[str, str]:
     return {r["genus"]: r["kind"] for r in csv.DictReader(lines)}
 
 
+def write_review_csv(out_path, wanted, resolve, known, top, intruders) -> None:
+    """Write the ranking for a person to go through, one row per species.
+
+    Refuses to write while unclassified genera out-record the cutoff. A
+    spreadsheet outlives the terminal output it came from: the warning
+    scrolls away, the file gets opened next week, and nothing in it says
+    the ranking was provisional. Somebody would then review a top 250 with
+    real macrofungi missing from it and believe they had seen the list.
+
+    No edibility column, here as anywhere (rule 1). `toxicity` is the
+    taxonomy's own value, and INEDIBLE is the safest it has.
+    """
+    if intruders:
+        raise SystemExit(
+            f"Refusing to write {out_path}: {len(intruders)} unclassified taxa "
+            f"out-record the cutoff, so the top {top} is not yet the top {top}. "
+            "Classify their genus in data/frdbi-genera.csv and re-run."
+        )
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.writer(fh)
+        writer.writerow([
+            "rank", "records", "scientific_name", "common_name",
+            "in_label_space", "toxicity", "genus",
+            "dangerous_already_in_genus", "confusion_note",
+            "REVIEW_verdict", "REVIEW_notes", "REVIEWER",
+        ])
+        for rank, (name, count) in enumerate(wanted, 1):
+            species = resolve(name)
+            genus = name.split()[0]
+            siblings = [s for s in known.values() if s.genus == genus]
+            dangerous = [s.scientific_name for s in siblings
+                         if s.toxicity in (Toxicity.DEADLY, Toxicity.SERIOUS)]
+            writer.writerow([
+                rank,
+                count,
+                name,
+                "; ".join(species.common_names) if species else "",
+                "yes" if species else "no",
+                # .name, never .value: Toxicity is an IntEnum and DEADLY is 4,
+                # so a bare 1-4 column in a forager's spreadsheet is an
+                # unlabelled scale whose dangerous end reads like the good one.
+                species.toxicity.name if species else "",
+                genus,
+                "; ".join(dangerous),
+                RISK_NOTE.get(name, ""),
+                "", "", "",
+            ])
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     ap.add_argument("--top", type=int, default=100,
                     help="How many of the most-recorded macrofungi to report on.")
+    ap.add_argument("--csv", default=None, metavar="PATH",
+                    help="Also write the ranking to a CSV for a human to "
+                         "review, one row per species.")
     args = ap.parse_args()
 
     taxonomy = TaxonomyService.load(TAXONOMY)
@@ -214,6 +267,11 @@ def main() -> int:
         if name in RISK_NOTE:
             print(f"           ! {RISK_NOTE[name]}")
 
+    if args.csv:
+        write_review_csv(Path(args.csv), wanted, resolve, known, args.top, intruders)
+        print()
+        print(f"  Wrote {len(wanted)} rows to {args.csv}")
+
     print()
     print("─" * 76)
     print("WHAT THE RANKING WOULD HAVE CONTAINED WITHOUT FILTERING")
@@ -235,9 +293,19 @@ def main() -> int:
         print("─" * 76)
         print("UNCLASSIFIED, most-recorded first")
         print("─" * 76)
-        print(f"  All below the cutoff of {cutoff:,}, so none of them belongs in")
-        print(f"  the top {args.top}. Classify their genus in data/frdbi-genera.csv")
-        print("  before running --top much deeper than this.")
+        if intruders:
+            # Never reassure here. The block above has already said these
+            # out-record the cutoff, and a hardcoded "all below" underneath
+            # it is the report contradicting itself in the reader's favour.
+            print(f"  {len(intruders)} of these out-record the cutoff of "
+                  f"{cutoff:,} and belong in the")
+            print(f"  top {args.top}. Classify their genus in "
+                  f"data/frdbi-genera.csv and re-run.")
+        else:
+            print(f"  All below the cutoff of {cutoff:,}, so none of them belongs")
+            print(f"  in the top {args.top}. Classify their genus in "
+                  f"data/frdbi-genera.csv")
+            print("  before running --top much deeper than this.")
         for name, count in kinds["?"][:8]:
             print(f"    {count:>7,}  {name}")
     return 0

@@ -349,6 +349,12 @@ def test_no_two_frdbi_rows_resolve_to_the_same_species():
     assert not duplicates, f"rows resolving to the same name: {duplicates}"
 
 
+# How deep the ranking is trusted. Raise this with the label space, never
+# above it: every genus above the cutoff must be classified for the coverage
+# figure at that depth to mean anything.
+GUARDED_DEPTH = 250
+
+
 def test_no_unclassified_genus_outranks_the_species_being_reported_on():
     """The quiet failure this report could have.
 
@@ -360,6 +366,13 @@ def test_no_unclassified_genus_outranks_the_species_being_reported_on():
 
     Cortinarius and Galerina were both unclassified when this table was first
     written, which is the orellanine webcaps and the funeral bell.
+
+    Guarded to the depth actually in use, not to rank 100. When this test
+    stopped at 100 the table had eight unclassified taxa above the top-250
+    cutoff, four of them real macrofungi -- the dog stinkhorn, beech
+    tarcrust, leafy brain and conifercone cap -- and the test passed
+    throughout. A guard shallower than the working depth is a guard that
+    reports on somewhere nobody is standing.
     """
     gap = _gap()
     genera = gap.load_genera()
@@ -368,11 +381,11 @@ def test_no_unclassified_genus_outranks_the_species_being_reported_on():
         by_kind.setdefault(genera.get(name.split()[0], "?"), []).append((name, count))
 
     fungi = by_kind["fungus"]
-    cutoff = fungi[99][1]
+    cutoff = fungi[GUARDED_DEPTH - 1][1]
     intruders = [(n, c) for n, c in by_kind.get("?", []) if c >= cutoff]
     assert not intruders, (
-        f"unclassified taxa out-record the 100th macrofungus ({cutoff:,}): "
-        f"{intruders[:10]}"
+        f"unclassified taxa out-record the {GUARDED_DEPTH}th macrofungus "
+        f"({cutoff:,}): {intruders[:10]}"
     )
 
 

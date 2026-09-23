@@ -23,6 +23,7 @@ genus,kind
 # --- hosts -------------------------------------------------------------------
 Arum,host
 Carex,host
+Chamaenerion,host
 Epilobium,host
 Hedera,host
 Juncus,host
@@ -76,6 +77,7 @@ Rumex,host
 Salix,host
 Sambucus,host
 Silene,host
+Taraxacum,host
 Taxus,host
 Tilia,host
 Tussilago,host
@@ -83,6 +85,8 @@ Ulex,host
 Ulmus,host
 Urtica,host
 # --- leaf spots, mildews, rusts, minute cups ---------------------------------
+Calloria,micro
+Chaetosphaerella,micro
 Cheilymenia,micro
 Cudoniella,micro
 Entyloma,micro
@@ -132,13 +136,17 @@ Lycogala,slime-mould
 Reticularia,slime-mould
 Stemonitis,slime-mould
 # --- macrofungi --------------------------------------------------------------
+Baeospora,fungus
+Biscogniauxia,fungus
 Calvatia,fungus
 Cerioporus,fungus
 Craterellus,fungus
 Gyromitra,fungus
 Lepista,fungus
 Morchella,fungus
+Mutinus,fungus
 Omphalotus,fungus
+Phaeotremella,fungus
 Pleurocybella,fungus
 Rubroboletus,fungus
 Sparassis,fungus
