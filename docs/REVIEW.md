@@ -365,19 +365,22 @@ The remaining 1,104 rows — everything TOXIC and below — are still
 | --- | --- | --- | --- |
 | *Galerina marginata* | ring | three states | all four |
 | *Inocybe erubescens* | smell | blank | apricot/fruity; ink/chemicals |
-| *Lepiota subincarnata* | size | under 2 cm – 10 cm | 2–5 cm |
 | *Tricholoma pardinum* | gill colour | white | white; yellow/green |
 | *Tricholoma pardinum* | habitat | beech; mixed | + birch |
 | *Tricholoma terreum* | gill colour | white; grey | + yellow/green |
 | *Tricholoma equestre* | habitat | pine/spruce | + birch |
 
-Two are worth a second look by whoever does the mycological sign-off:
+**One correction to the correction.** He first gave *Lepiota subincarnata*
+as 2–3.5 cm, which narrowed a DEADLY species against the generous-list
+convention and was flagged here as needing a second look. He corrected it to
+**1.5–6 cm** on 2026-09-26, which spans all three size buckets, so the
+original list stands unchanged and the concern is closed. Worth keeping as an
+illustration: the flag was raised because the change ran against a documented
+convention, and that is exactly the kind of change that turns out to be a
+slip.
 
-- **`Lepiota subincarnata` size narrows a DEADLY species.** Cap 2–3.5 cm is
-  his measurement, and it is surely right, but it means a 6 cm specimen is
-  now pushed away from this label where before it was not. That runs against
-  the generous-list convention for deadly species. Accepted on his
-  authority.
+One thing is still worth a look by whoever does the mycological sign-off:
+
 - ***Cortinarius orellanus* under conifers was NOT added**, though his note
   records it. `habitat` is the only character separating it from
   *C. rubellus*, and both cause the same delayed kidney failure; listing
