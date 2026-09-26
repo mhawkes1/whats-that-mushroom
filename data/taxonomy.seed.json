@@ -3485,6 +3485,7 @@
         ],
         "ring": [
           "Firm skirt-like ring",
+          "Cobwebby fibres",
           "Faint zone only",
           "No ring"
         ],
@@ -4817,6 +4818,10 @@
         "spore_print_colour": [
           "Rust or cinnamon brown",
           "Chocolate or purple-brown"
+        ],
+        "smell": [
+          "Apricot or fruity",
+          "Ink or chemicals"
         ]
       }
     },
@@ -5782,9 +5787,7 @@
           "Smooth and dry"
         ],
         "size": [
-          "Under 2 cm",
-          "2-5 cm",
-          "5-10 cm"
+          "2-5 cm"
         ],
         "habitat": [
           "No trees nearby",
@@ -9243,7 +9246,8 @@
           "Yellow or green"
         ],
         "habitat": [
-          "Pine or spruce"
+          "Pine or spruce",
+          "Birch"
         ]
       }
     },
@@ -9321,7 +9325,8 @@
           "Fibrous"
         ],
         "gill_colour": [
-          "White"
+          "White",
+          "Yellow or green"
         ],
         "spore_print_colour": [
           "White or cream"
@@ -9331,7 +9336,8 @@
         ],
         "habitat": [
           "Beech",
-          "Mixed broadleaf"
+          "Mixed broadleaf",
+          "Birch"
         ]
       }
     },
@@ -9450,7 +9456,8 @@
         ],
         "gill_colour": [
           "White",
-          "Grey"
+          "Grey",
+          "Yellow or green"
         ],
         "habitat": [
           "Pine or spruce"

@@ -342,6 +342,49 @@ For each species, per the worksheet columns:
 
 These are separable, and it is worth recording them separately.
 
+## Field-character review of the dangerous species: DONE, 2026-09-26
+
+Martin Hawkes reviewed every character of all 21 DEADLY and SERIOUS species
+— 96 rows — and signed each one. `docs/QA-dangerous-species-completed.xlsx`
+is his return, kept as received. Eight states changed; the rest he agreed,
+often adding field description the seed data did not have.
+
+This is **field-character review only**. It says nothing about toxicity
+grading or nomenclature, both of which still need qualified sign-off, so
+`/health` still reports `taxonomy_reviewed: false` and the release blocker
+in `SAFETY.md` is still open. What it does mean is that the characters the
+interrogation engine asks about, for the species where a wrong answer kills,
+have been checked by somebody who finds these mushrooms.
+
+The remaining 1,104 rows — everything TOXIC and below — are still
+`unreviewed-seed-fill`.
+
+### What he changed
+
+| Species | Character | Was | Now |
+| --- | --- | --- | --- |
+| *Galerina marginata* | ring | three states | all four |
+| *Inocybe erubescens* | smell | blank | apricot/fruity; ink/chemicals |
+| *Lepiota subincarnata* | size | under 2 cm – 10 cm | 2–5 cm |
+| *Tricholoma pardinum* | gill colour | white | white; yellow/green |
+| *Tricholoma pardinum* | habitat | beech; mixed | + birch |
+| *Tricholoma terreum* | gill colour | white; grey | + yellow/green |
+| *Tricholoma equestre* | habitat | pine/spruce | + birch |
+
+Two are worth a second look by whoever does the mycological sign-off:
+
+- **`Lepiota subincarnata` size narrows a DEADLY species.** Cap 2–3.5 cm is
+  his measurement, and it is surely right, but it means a 6 cm specimen is
+  now pushed away from this label where before it was not. That runs against
+  the generous-list convention for deadly species. Accepted on his
+  authority.
+- ***Cortinarius orellanus* under conifers was NOT added**, though his note
+  records it. `habitat` is the only character separating it from
+  *C. rubellus*, and both cause the same delayed kidney failure; listing
+  conifers for both would leave the app unable to say which webcap a forager
+  is holding. A test pins that separation and caught the change when it was
+  briefly made. The conifer records are real, so the note is kept as prose.
+
 **Field-character review** asks whether the diagnostic characters are usable
 in practice — the right things to look at, described the way a non-expert
 would recognise them. An experienced forager is often *better* at this than

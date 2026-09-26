@@ -58,18 +58,68 @@ def test_every_species_appears_in_the_worksheet():
     assert listed == expected
 
 
-def test_every_filled_row_is_flagged_unreviewed():
-    """Nothing in the sheet may read as sign-off.
+# Rows a named human has actually reviewed. Martin Hawkes returned the
+# DEADLY and SERIOUS subset on 2026-09-26 -- every character of all 21 of
+# them. This is FIELD-CHARACTER review, which REVIEW.md says a forager can
+# do and which unblocks development; it is NOT the qualified mycological
+# sign-off that SAFETY.md blocks release on, and it does not touch toxicity
+# or nomenclature.
+REVIEWED_BY_A_HUMAN = 96
 
-    Every state was compiled from the taxonomy's own notes rather than from a
-    mycologist, and the sheet has to say so on each row, because the sheet is
-    what a reviewer will actually open.
+
+def test_a_seed_filled_row_still_says_unreviewed():
+    """Nothing compiled from the taxonomy's own notes may read as sign-off.
+
+    The sheet is what a reviewer opens, so each unreviewed row has to say so
+    on its own face. Rows a named human has signed are exempt -- they are
+    the point of the exercise -- but they must carry that name rather than
+    `unreviewed-seed-fill`, and the count is pinned so the reviewed set
+    cannot grow by accident.
     """
     rows = list(csv.DictReader(WORKSHEET.open(encoding="utf-8")))
     filled = [row for row in rows if row["REVIEW_states"].strip()]
     assert filled, "the worksheet should be filled in"
-    assert all("UNREVIEWED" in row["REVIEW_notes"] for row in filled)
     assert all(row["REVIEWER"].strip() for row in filled)
+
+    seeded = [r for r in filled if r["REVIEWER"].strip() == "unreviewed-seed-fill"]
+    unflagged = [r["species_key"] for r in seeded if "UNREVIEWED" not in r["REVIEW_notes"]]
+    assert not unflagged, f"seed-filled rows not flagged UNREVIEWED: {unflagged[:5]}"
+
+    # Counted over every row, not just the filled ones. A reviewer looking at
+    # a row and agreeing it should stay EMPTY has reviewed it: Amanita virosa
+    # does not bruise distinctively, and leaving that blank is the finding.
+    signed = [r for r in rows if r["REVIEWER"].strip() not in ("", "unreviewed-seed-fill")]
+
+    assert len(signed) == REVIEWED_BY_A_HUMAN, (
+        f"{len(signed)} rows carry a reviewer's name, expected "
+        f"{REVIEWED_BY_A_HUMAN}. Raise REVIEWED_BY_A_HUMAN deliberately when "
+        f"more review lands; never lower it."
+    )
+
+
+def test_every_dangerous_species_row_has_been_reviewed():
+    """The DEADLY and SERIOUS rows are the ones that had to be signed first."""
+    import sys
+
+    sys.path.insert(0, str(ROOT / "server"))
+    from app.taxonomy_service import TaxonomyService, Toxicity
+
+    taxonomy = TaxonomyService.load(ROOT / "data" / "taxonomy.seed.json")
+    dangerous = {
+        k for k, s in taxonomy.species.items()
+        if s.toxicity in (Toxicity.DEADLY, Toxicity.SERIOUS)
+    }
+    rows = list(csv.DictReader(WORKSHEET.open(encoding="utf-8")))
+    unsigned = [
+        f"{r['scientific_name']}/{r['character']}"
+        for r in rows
+        if r["species_key"] in dangerous
+        and r["REVIEWER"].strip() == "unreviewed-seed-fill"
+    ]
+    assert not unsigned, (
+        f"{len(unsigned)} rows on species that can kill or hospitalise are "
+        f"still seed-filled: {unsigned[:5]}"
+    )
 
 
 def test_every_worksheet_row_offers_the_real_answer_options():

@@ -215,9 +215,9 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   good, check this before believing it.
 - **`character_states` is complete for all 247 species and UNREVIEWED
   throughout.** Derived from the taxonomy's own `notes`, not from a
-  mycologist. Complete is not reviewed: `reviewed_by` is still null and
-  `/health` still reports `taxonomy_reviewed: false`. A forager's eye over
-  `docs/character-states-worksheet.csv` is the highest-value review left.
+  mycologist, except for the dangerous 21 above. Complete is not reviewed:
+  `reviewed_by` is still null and `/health` still reports
+  `taxonomy_reviewed: false`. The remaining 1,104 rows are the review left.
 - **Describing a species makes it *dismissable*, never easier to confirm.**
   An undescribed species gets likelihood 1.0, so it already drifts upward
   whenever a rival is contradicted — "a consistent answer never boosts"
