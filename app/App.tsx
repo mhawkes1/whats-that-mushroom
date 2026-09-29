@@ -76,10 +76,10 @@ function useGate(): Gate | null {
 export default function App() {
   const decision = useGate();
 
-  // The cover's typeface. Deliberately not awaited: `useFonts` reports an
+  // The title's typeface. Deliberately not awaited: `useFonts` reports an
   // error as well as a loading state, and a front page that will not render
-  // because a font did not arrive is worse than a cover set in the platform
-  // serif. The cover names Fraunces and React Native falls back on its own.
+  // because a font did not arrive is worse than a title set in the platform
+  // serif. `AppHeader` names Fraunces and React Native falls back on its own.
   useFonts({ Fraunces_600SemiBold, Fraunces_300Light_Italic });
 
   if (decision === null) {

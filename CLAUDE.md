@@ -71,7 +71,7 @@ characters come from standard references but are unverified.
 | `server/app/characters.py` | How to ask a non-expert for evidence |
 | `app/` | Expo React Native client |
 | `app/src/lib/observationLog.ts` | Local history; what a stored verdict may say later |
-| `app/src/components/CoverHeader.tsx` | The book's cover as the app's front page |
+| `app/src/components/AppHeader.tsx` | Front-page header; `APP_NAME` lives here |
 | `server/app/disclaimer.py` | What a user acknowledges before first use; the version is the text |
 | `server/app/incidents.py` | Reports that the app was wrong, and how they are graded |
 | `docs/INCIDENTS.md` | Who acts on a report, and in what order |
@@ -328,19 +328,25 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   suggestion beside the manual list and the user picks. Spore print colour is
   what separates an *Amanita* from a young *Agaricus*, so the app proposes and
   the person decides.
-- **The front page is the book's cover, with three deliberate departures.**
-  `CoverHeader.tsx` reproduces Martin Hawkes's cover — same photograph, same
-  Fraunces setting, same gold rule. It is *not* full-screen (on an app that
-  puts the thing the user came to do below the fold); the emergency route is
-  pinned to the top corner (the one control that must never need a scroll);
-  and the book's "1st Edition · 25 most common species" flag is dropped,
-  because the app's label space is 247 and on that screen the line would be
-  false. The scrim is a real gradient, not stacked translucent views — flat
-  bands leave visible edges across the photograph.
-- **The cover's typeface is loaded but never awaited.** `useFonts` reports an
+- **The book cover was the front page until 2026-09-29, and is not any
+  more.** Martin asked for the photograph off the first screen.
+  `CoverHeader.tsx` and `assets/cover.jpg` are gone, replaced by
+  `AppHeader.tsx`: serif title, the book's gold rule, tagline, and the
+  emergency button. What mattered about the removal is what had to survive
+  it — **the emergency route was pinned to the cover's top corner** because
+  it is the one control that must never need a scroll, and deleting its
+  host is exactly how an app silently loses its panic button.
+  `app/test/emergencyRoute.test.ts` now guards it at the source level,
+  because vitest cannot drive the RN renderer.
+- **`APP_NAME` in `AppHeader.tsx` is the only place the name is written.**
+  The name is not settled; change that string and the tagline beside it and
+  the app is renamed. Nothing else reads either.
+- **The title's typeface is loaded but never awaited.** `useFonts` reports an
   error as well as a loading state, and a front page that will not render
-  because a font did not arrive is worse than a cover set in the platform
-  serif. `theme.cover` names the family; React Native falls back on its own.
+  because a font did not arrive is worse than a title in the platform serif.
+  `theme.cover.display` names the family; React Native falls back on its own.
+  `theme.cover` keeps its unused values (`ground`, `byline`, `displayItalic`)
+  because the ebook generator shares them.
 - **A history row names a species only under a `species` verdict.** Including
   `dangerous_group`, where the result screen *does* name both halves of the
   pair — naming both is a warning while the refusal is on the screen beside

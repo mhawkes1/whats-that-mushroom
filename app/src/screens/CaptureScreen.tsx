@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-import { CoverHeader } from '../components/CoverHeader';
+import { AppHeader } from '../components/AppHeader';
 import { readLog } from '../lib/observationLog';
 import { theme } from '../lib/theme';
 
@@ -107,14 +107,14 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-      <CoverHeader onEmergency={() => navigation.navigate('Emergency')} />
+      <AppHeader onEmergency={() => navigation.navigate('Emergency')} />
 
       <View style={styles.header}>
         <View style={styles.headerText}>
-          {/* The cover already carries a subtitle. This says the one thing
-              the cover does not, which is the whole argument for the app. */}
+          {/* The header carries the tagline now that the cover is gone, so
+              this says the next thing rather than repeating it. */}
           <Text style={styles.subtitle}>
-            Photograph one, and I'll tell you when I can't tell.
+            Photograph the same mushroom from a few angles.
           </Text>
         </View>
 

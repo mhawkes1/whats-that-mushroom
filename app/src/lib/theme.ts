@@ -28,16 +28,22 @@ export const theme = {
     accent: '#c98b4b',
   },
   /**
-   * The book's cover, which is now the app's front page.
+   * What survives of the book's cover.
    *
-   * Kept beside the app palette rather than inside the component so the two
-   * cannot drift: these are the ebook's own values -- `--gold`, the subtitle
-   * and byline colours, the near-black behind the photograph.
+   * The cover was the front page until 2026-09-29, when the photograph and
+   * the byline were dropped at Martin's request. `gold` and `display` are
+   * still used, by `AppHeader`: the rule under the title and the serif the
+   * title is set in are the only visual thread left back to the printed
+   * guide, and they are kept beside the app palette so the two cannot drift.
    *
-   * `display` names a font that is loaded asynchronously at launch. If it
-   * has not arrived, or fails, React Native falls back to the platform serif
-   * rather than to nothing -- a cover set in Georgia is a worse cover, and a
-   * front page that will not render is a worse app.
+   * `display` names a font loaded asynchronously at launch. If it has not
+   * arrived, or fails, React Native falls back to the platform serif rather
+   * than to nothing -- a title in Georgia is worse than one in Fraunces, and
+   * a front page that will not render is worse than either.
+   *
+   * `ground`, `subtitle`, `byline` and `displayItalic` are unused now the
+   * photograph has gone. Left in place because the ebook generator shares
+   * these values and a future cover screen would want them back.
    */
   cover: {
     ground: '#0a0e08',
