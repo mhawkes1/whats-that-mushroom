@@ -86,18 +86,6 @@
       "reason": "exact match"
     },
     {
-      "scientific_name": "Amanita gemmata",
-      "usage_key": 5240292,
-      "matched_name": "Amanita gemmata",
-      "rank": "SPECIES",
-      "match_type": "EXACT",
-      "confidence": 99,
-      "status": "ACCEPTED",
-      "synonym": false,
-      "accepted": true,
-      "reason": "exact match"
-    },
-    {
       "scientific_name": "Amanita muscaria",
       "usage_key": 8168319,
       "matched_name": "Amanita muscaria",

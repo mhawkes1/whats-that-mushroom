@@ -3,7 +3,7 @@
 Every species this app can name, generated from `data/taxonomy.seed.json`
 by `python scripts/species_list.py`. Do not edit it by hand.
 
-**245 species · 114 lethal lookalike pairs.**
+**244 species · 112 lethal lookalike pairs.**
 
 It holds all 200 of the most-recorded British macrofungi (`python scripts/frdbi_gap.py --top 200`) plus the dangerous species each of those is confused with.
 
@@ -52,7 +52,7 @@ Hospital treatment is usual.
 | ***Tricholoma pardinum*** | Leopard Knight | *Tricholoma equestre*, *Calocybe gambosa*, *Clitocybe nebularis* |
 | ***Tricholoma terreum*** | Grey Knight | *Tricholoma pardinum*, *Tricholoma saponaceum*, *Tricholoma equestre* |
 
-## Causes illness — `TOXIC` (67)
+## Causes illness — `TOXIC` (66)
 
 Poisoning is reported.
 
@@ -60,7 +60,6 @@ Poisoning is reported.
 | --- | --- | --- |
 | ***Agaricus xanthodermus*** | Yellow Stainer | *Agaricus campestris*, *Agaricus arvensis* |
 | ***Amanita fulva*** | Tawny Grisette | ***Amanita phalloides***, ***Amanita virosa***, *Amanita rubescens*, *Volvopluteus gloiocephalus* |
-| ***Amanita gemmata*** | Jewelled Amanita | *Amanita pantherina*, *Amanita muscaria*, *Amanita citrina* |
 | ***Amanita muscaria*** | Fly Agaric | *Amanita rubescens*, *Russula emetica* |
 | ***Amanita rubescens*** | The Blusher | *Amanita muscaria*, ***Amanita phalloides*** |
 | ***Amanita vaginata*** | Grisette | ***Amanita phalloides***, ***Amanita virosa***, *Amanita fulva*, *Volvopluteus gloiocephalus* |

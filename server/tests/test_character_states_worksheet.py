@@ -59,12 +59,13 @@ def test_every_species_appears_in_the_worksheet():
 
 
 # Rows a named human has actually reviewed. Martin Hawkes returned the
-# DEADLY and SERIOUS subset on 2026-09-26 -- every character of all 21 of
-# them. This is FIELD-CHARACTER review, which REVIEW.md says a forager can
-# do and which unblocks development; it is NOT the qualified mycological
-# sign-off that SAFETY.md blocks release on, and it does not touch toxicity
-# or nomenclature.
-REVIEWED_BY_A_HUMAN = 96
+# DEADLY and SERIOUS subset on 2026-09-26 and the whole remainder on
+# 2026-10-12, so this is now every row in the sheet. This is
+# FIELD-CHARACTER review, which REVIEW.md says a forager can do and which
+# unblocks development; it is NOT the qualified mycological sign-off that
+# SAFETY.md blocks release on, and it does not touch toxicity or
+# nomenclature.
+REVIEWED_BY_A_HUMAN = 1204
 
 
 def test_a_seed_filled_row_still_says_unreviewed():

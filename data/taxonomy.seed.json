@@ -32,6 +32,9 @@
         "smell": [
           "Aniseed or almond"
         ],
+        "bruising_reaction": [
+          "Yellow, especially at the stem base"
+        ],
         "ring": [
           "Firm skirt-like ring"
         ],
@@ -126,7 +129,8 @@
           "Neither"
         ],
         "habitat": [
-          "Pine or spruce"
+          "Pine or spruce",
+          "Mixed broadleaf"
         ]
       }
     },
@@ -288,46 +292,6 @@
         ],
         "spore_print_colour": [
           "White or cream"
-        ]
-      }
-    },
-    {
-      "key": "amanita-gemmata",
-      "scientific_name": "Amanita gemmata",
-      "genus": "Amanita",
-      "common_names": [
-        "Jewelled Amanita"
-      ],
-      "toxicity": "TOXIC",
-      "gbif_key": null,
-      "lookalikes": [
-        "amanita-pantherina",
-        "amanita-muscaria",
-        "amanita-citrina"
-      ],
-      "diagnostic_characters": [
-        "volva",
-        "ring",
-        "cap_colour",
-        "cap_surface"
-      ],
-      "notes": "Pale yellow cap with white patches and a fragile ring that frequently disappears. Shares the ibotenic acid and muscimol of the Panther Cap, which it hybridises and intergrades with.",
-      "character_states": {
-        "volva": [
-          "Swollen but no cup"
-        ],
-        "ring": [
-          "Firm skirt-like ring",
-          "Faint zone only",
-          "No ring"
-        ],
-        "cap_colour": [
-          "Yellow",
-          "White or cream"
-        ],
-        "cap_surface": [
-          "Scaly",
-          "Smooth and dry"
         ]
       }
     },
@@ -526,7 +490,9 @@
           "No ring"
         ],
         "cap_colour": [
-          "Grey"
+          "Grey",
+          "White or cream",
+          "Brown"
         ],
         "cap_margin": [
           "Straight"
@@ -1314,7 +1280,9 @@
         ],
         "habitat": [
           "Birch",
-          "Pine or spruce"
+          "Pine or spruce",
+          "Beech",
+          "Mixed broadleaf"
         ]
       }
     },
@@ -1722,7 +1690,8 @@
       "character_states": {
         "cap_colour": [
           "White or cream",
-          "Brown"
+          "Brown",
+          "Grey"
         ],
         "cap_shape": [
           "Funnel-shaped",
@@ -1779,6 +1748,9 @@
         ],
         "substrate": [
           "Soil or leaf litter"
+        ],
+        "smell": [
+          "Nothing much"
         ]
       }
     },
@@ -1902,7 +1874,8 @@
           "Brown"
         ],
         "smell": [
-          "Raw potato or earthy"
+          "Raw potato or earthy",
+          "Rotting or foul"
         ],
         "cap_shape": [
           "Funnel-shaped"
@@ -3036,9 +3009,6 @@
           "White",
           "Pink"
         ],
-        "smell": [
-          "Raw potato or earthy"
-        ],
         "substrate": [
           "Grass or lawn"
         ],
@@ -3780,7 +3750,8 @@
       "notes": "Minute brown parachutes on black horsehair stems, binding conifer needles and dead leaves with black runners.",
       "character_states": {
         "cap_colour": [
-          "Brown"
+          "Brown",
+          "White or cream"
         ],
         "size": [
           "Under 2 cm"
@@ -4116,7 +4087,8 @@
           "White or cream"
         ],
         "gill_attachment": [
-          "Running down the stem"
+          "Running down the stem",
+          "Squarely attached"
         ]
       }
     },
@@ -4196,7 +4168,8 @@
           "White or cream"
         ],
         "gill_attachment": [
-          "Squarely attached"
+          "Squarely attached",
+          "Running down the stem"
         ]
       }
     },
@@ -4230,9 +4203,6 @@
         ],
         "cap_shape": [
           "Conical"
-        ],
-        "bruising_reaction": [
-          "Brown"
         ],
         "substrate": [
           "Grass or lawn"
@@ -4434,6 +4404,9 @@
         "flesh_colour": [
           "Orange",
           "Yellow"
+        ],
+        "smell": [
+          "Pleasantly mushroomy"
         ]
       }
     },
@@ -4735,7 +4708,8 @@
           "White or cream"
         ],
         "growth_form": [
-          "In a ring"
+          "In a ring",
+          "Scattered"
         ],
         "size": [
           "10-20 cm"
@@ -4988,7 +4962,9 @@
       "notes": "Scaly stem below the ring and a two-toned hygrophanous cap. The app will not return this at species level when Galerina marginata is in the candidate set, because the two cannot be reliably separated from photographs.",
       "character_states": {
         "stipe_surface": [
-          "Scaly or shaggy"
+          "Scaly or shaggy",
+          "Smooth",
+          "Fibrous"
         ],
         "spore_print_colour": [
           "Rust or cinnamon brown"
@@ -5283,7 +5259,8 @@
       "character_states": {
         "cap_colour": [
           "Grey",
-          "Brown"
+          "Brown",
+          "White or cream"
         ],
         "latex_colour": [
           "White"
@@ -5299,9 +5276,6 @@
         ],
         "taste": [
           "Burning or peppery"
-        ],
-        "gill_spacing": [
-          "Well spaced"
         ]
       }
     },
@@ -5738,8 +5712,8 @@
           "Scaly"
         ],
         "size": [
-          "Under 2 cm",
-          "2-5 cm"
+          "2-5 cm",
+          "5-10 cm"
         ],
         "ring": [
           "Faint zone only",
@@ -5818,10 +5792,14 @@
       "notes": "Toxic raw and must be thoroughly cooked. Pale pinkish-buff spore print, no cortina, distinguishing it from purple Cortinarius species.",
       "character_states": {
         "spore_print_colour": [
-          "Pink"
+          "Pink",
+          "White or cream"
         ],
         "cortina": [
           "No"
+        ],
+        "smell": [
+          "Pleasantly mushroomy"
         ]
       },
       "image_source": "any",
@@ -6335,9 +6313,6 @@
         "spore_print_colour": [
           "White or cream"
         ],
-        "smell": [
-          "Ink or chemicals"
-        ],
         "size": [
           "Under 2 cm"
         ]
@@ -6450,9 +6425,6 @@
       ],
       "notes": "Wine-red bonnet in small tufts on dead wood, bleeding dark red-brown juice from the stem when broken.",
       "character_states": {
-        "latex_colour": [
-          "Orange or carrot"
-        ],
         "cap_colour": [
           "Red",
           "Purple"
@@ -6809,10 +6781,6 @@
         ],
         "bruising_reaction": [
           "Blue"
-        ],
-        "stipe_surface": [
-          "Fibrous",
-          "Smooth"
         ],
         "flesh_colour": [
           "Yellow"
@@ -8041,7 +8009,8 @@
           "Red or pink"
         ],
         "spore_print_colour": [
-          "Pink"
+          "Pink",
+          "White or cream"
         ],
         "substrate": [
           "Soil or leaf litter"
@@ -8460,6 +8429,11 @@
         ],
         "gill_texture": [
           "Brittle, shattering like chalk"
+        ],
+        "taste": [
+          "Mild",
+          "Bitter",
+          "Burning or peppery"
         ]
       }
     },
@@ -8604,6 +8578,9 @@
         ],
         "skin_thickness": [
           "Thick and rubbery"
+        ],
+        "smell": [
+          "Ink or chemicals"
         ]
       }
     },
@@ -9004,9 +8981,6 @@
         ],
         "ring": [
           "Firm skirt-like ring"
-        ],
-        "habitat": [
-          "Pine or spruce"
         ]
       }
     },
@@ -9368,11 +9342,13 @@
       "notes": "Smells of household soap, and the flesh in the stem base turns pink or reddish when cut. Colour is unreliable -- grey, olive, brownish or nearly white on different collections.",
       "internal_note": "Carried partly because its variability is the point: a user matching on colour alone will match it to almost anything, including the tiger knight. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
       "character_states": {
-        "smell": [
-          "Ink or chemicals"
-        ],
         "bruising_reaction": [
           "Red or pink"
+        ],
+        "cap_colour": [
+          "Grey",
+          "Olive or greenish",
+          "White or cream"
         ],
         "gill_spacing": [
           "Well spaced"

@@ -356,8 +356,71 @@ in `SAFETY.md` is still open. What it does mean is that the characters the
 interrogation engine asks about, for the species where a wrong answer kills,
 have been checked by somebody who finds these mushrooms.
 
-The remaining 1,104 rows — everything TOXIC and below — are still
-`unreviewed-seed-fill`.
+## And the remainder: DONE, 2026-10-12
+
+Martin returned the other 1,108 rows. **Every row in the worksheet is now
+signed by him and none is `unreviewed-seed-fill`.** His return is kept as
+received at `docs/QA-remaining-species-completed.xlsx`. 29 states changed,
+13 of them from an explicit "no".
+
+He also removed *Amanita gemmata* from the label space as too uncommon in
+the UK, which the data supports: zero FRDBI records, absent from both the
+top 250 and the top 300, and nothing listed it as a lookalike, so no edges
+broke. 245 → 244 species, 114 → 112 lethal pairs. The safety direction is
+right too — a gemmata photograph now lands on *A. pantherina*, which is
+SERIOUS where gemmata was TOXIC, so the app over-warns rather than under.
+
+Three rows came back labelled `chlorophyllum rhacodes` in lower case, with
+*rhacodes* already holding its own copies of those characters. They are
+*Chlorophyllum brunneum*'s: their `CURRENT_states` matched it exactly and
+they were the only three brunneum rows absent from the return. Recovered
+and recorded as such in `REVIEW_notes`.
+
+### The catalogue cannot say what he said
+
+The most useful thing this round produced is not a state change. **Ten
+characters have no answer option for a field character he described**, so
+the honest entry is now blank where it used to be wrong:
+
+| Character | What he described | Species |
+| --- | --- | --- |
+| `smell` | soap | *Tricholoma saponaceum* |
+| `smell` | coconut | *Lactarius glyciosmus* |
+| `latex_colour` | dark red | *Mycena haematopus*, *Lactarius deliciosus* |
+| `habitat` | larch | *Suillus grevillei* |
+| `habitat` | hazel | *Lactarius pyrogalus* |
+| `stipe_surface` | fine red dots | *Neoboletus luridiformis* |
+| `bruising_reaction` | black | *Hygrocybe conica* |
+| `cap_colour` | pink | *Mycena rosea*, *Gliophorus laetus* |
+| `cap_colour` | black | *Exidia glandulosa* |
+| `gill_colour` | violet | *Cortinarius anomalus* |
+| `gill_spacing` | moderate | *Lactarius pyrogalus* |
+| `pore_colour` | cinnamon | *Chalciporus piperatus* |
+
+Several of these are a species' *defining* character. *Hygrocybe conica* is
+the blackening waxcap. *Suillus grevillei* is the larch bolete and grows
+with nothing else. *Mycena haematopus* bleeds dark red, which is what the
+name means. The app cannot currently ask the question that identifies them.
+
+Extending `CHARACTERS` would fix it, and it is a bigger change than it
+looks: the options drive the API enums, the worksheet's `permitted_states`
+and what the client renders as answer buttons. It is held pending a
+decision rather than done quietly.
+
+### Two he rejected that could not be acted on
+
+- ***Psilocybe semilanceata* bruising**, marked no with no note. The
+  current `Blue` is what the literature says; nothing to act on without
+  knowing what he meant.
+- ***Psilocybe semilanceata* spore print**, "Dark Purple". The catalogue's
+  `Chocolate or purple-brown` is the nearest thing it has, which is what is
+  stored, so the row is unchanged.
+
+### A nomenclature question for the mycologist
+
+He asked whether *Mycena filopes* is now *Mycena vitilis*. That is exactly
+the kind of question the toxicity-and-nomenclature sign-off covers, and it
+is out of scope for field-character review.
 
 ### What he changed
 
