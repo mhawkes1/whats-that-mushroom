@@ -1266,7 +1266,7 @@
       "notes": "Small cinnamon bolete with rusty-orange pores and bright yellow flesh in the stem base. Fiercely peppery. Usually near fly agaric.",
       "character_states": {
         "pore_colour": [
-          "Red or orange"
+          "Cinnamon or brown"
         ],
         "cap_colour": [
           "Orange",
@@ -2294,6 +2294,7 @@
           "Brown"
         ],
         "gill_colour": [
+          "Violet or lilac",
           "Brown"
         ],
         "habitat": [
@@ -2379,7 +2380,8 @@
           "Blade-like gills"
         ],
         "habitat": [
-          "Pine or spruce"
+          "Pine or spruce",
+          "Larch"
         ]
       }
     },
@@ -3089,7 +3091,8 @@
           "Dead wood or a stump"
         ],
         "cap_colour": [
-          "Grey"
+          "Grey",
+          "Black"
         ],
         "hymenium_type": [
           "Smooth surface"
@@ -3619,7 +3622,8 @@
       "character_states": {
         "cap_colour": [
           "Orange",
-          "Purple"
+          "Purple",
+          "Pink"
         ],
         "gill_texture": [
           "Flexible and greasy"
@@ -4203,6 +4207,9 @@
         ],
         "cap_shape": [
           "Conical"
+        ],
+        "bruising_reaction": [
+          "Black"
         ],
         "substrate": [
           "Grass or lawn"
@@ -4795,7 +4802,8 @@
         ],
         "smell": [
           "Apricot or fruity",
-          "Ink or chemicals"
+          "Ink or chemicals",
+          "Soap"
         ]
       }
     },
@@ -4831,7 +4839,8 @@
         "cap_colour": [
           "White or cream",
           "Yellow",
-          "Purple"
+          "Purple",
+          "Pink"
         ],
         "cap_shape": [
           "Conical",
@@ -4850,7 +4859,8 @@
         "gill_colour": [
           "White",
           "Brown",
-          "Grey"
+          "Grey",
+          "Violet or lilac"
         ]
       }
     },
@@ -5176,7 +5186,8 @@
       "notes": "Exudes carrot-orange latex that slowly stains green. Pine woodland.",
       "character_states": {
         "latex_colour": [
-          "Orange or carrot"
+          "Orange or carrot",
+          "Dark red"
         ],
         "bruising_reaction": [
           "Green"
@@ -5228,7 +5239,7 @@
           "Birch"
         ],
         "smell": [
-          "Apricot or fruity"
+          "Coconut"
         ]
       }
     },
@@ -6425,6 +6436,9 @@
       ],
       "notes": "Wine-red bonnet in small tufts on dead wood, bleeding dark red-brown juice from the stem when broken.",
       "character_states": {
+        "latex_colour": [
+          "Dark red"
+        ],
         "cap_colour": [
           "Red",
           "Purple"
@@ -6621,8 +6635,8 @@
       "notes": "Rose-pink cap, radish smell, in beech litter. Contains muscarine, as does Mycena pura, which it was long treated as a form of.",
       "character_states": {
         "cap_colour": [
-          "Purple",
-          "Red"
+          "Pink",
+          "Purple"
         ],
         "smell": [
           "Radish"
@@ -6781,6 +6795,9 @@
         ],
         "bruising_reaction": [
           "Blue"
+        ],
+        "stipe_surface": [
+          "Covered in fine red dots"
         ],
         "flesh_colour": [
           "Yellow"
@@ -8981,6 +8998,9 @@
         ],
         "ring": [
           "Firm skirt-like ring"
+        ],
+        "habitat": [
+          "Larch"
         ]
       }
     },
@@ -9223,7 +9243,8 @@
         ],
         "habitat": [
           "Pine or spruce",
-          "Birch"
+          "Birch",
+          "Larch"
         ]
       }
     },
@@ -9342,6 +9363,9 @@
       "notes": "Smells of household soap, and the flesh in the stem base turns pink or reddish when cut. Colour is unreliable -- grey, olive, brownish or nearly white on different collections.",
       "internal_note": "Carried partly because its variability is the point: a user matching on colour alone will match it to almost anything, including the tiger knight. UNREVIEWED: compiled from standard references for this repository, not from a mycologist.",
       "character_states": {
+        "smell": [
+          "Soap"
+        ],
         "bruising_reaction": [
           "Red or pink"
         ],
@@ -9438,7 +9462,8 @@
           "Yellow or green"
         ],
         "habitat": [
-          "Pine or spruce"
+          "Pine or spruce",
+          "Larch"
         ],
         "size": [
           "2-5 cm",

@@ -123,7 +123,13 @@ CHARACTERS: dict[str, Character] = {
         label="Gill colour",
         prompt="What colour are the gills right now?",
         how="Describe the colour of the gills themselves, not the cap.",
-        options=("White", "Pink", "Brown", "Chocolate or black", "Yellow or green", "Grey"),
+        # Cortinarius gills are violaceous before the spores brown them,
+        # and that youth is when the cortina is still visible -- the stage
+        # the engine most wants to ask about.
+        options=(
+            "White", "Pink", "Violet or lilac", "Brown", "Chocolate or black",
+            "Yellow or green", "Grey",
+        ),
         safety_note=(
             "Gills that stay pure white at every age are a warning sign in a "
             "ringed, white-stemmed mushroom."
@@ -138,9 +144,11 @@ CHARACTERS: dict[str, Character] = {
             "and rub the cap edge. Wait a full two minutes and watch for a change."
         ),
         effort="minutes",
+        # Hygrocybe conica is the blackening waxcap: turning black IS the
+        # identification, and "Brown" was the nearest the catalogue had.
         options=(
             "Yellow, especially at the stem base", "Red or pink", "Blue",
-            "Green", "Brown", "No change",
+            "Green", "Brown", "Black", "No change",
         ),
         safety_note=(
             "Chrome-yellow staining at the base of the stem marks the Yellow Stainer, "
@@ -174,9 +182,16 @@ CHARACTERS: dict[str, Character] = {
             "narrows the possibilities sharply."
         ),
         options=(
-            "Oak", "Beech", "Birch", "Pine or spruce", "Mixed broadleaf",
-            "No trees nearby",
+            "Oak", "Beech", "Birch", "Pine or spruce", "Larch",
+            "Mixed broadleaf", "No trees nearby",
         ),
+        # Larch added 2026-10-12 from Martin's review. It is not covered by
+        # "Pine or spruce": larch is deciduous, and Suillus grevillei grows
+        # with larch and nothing else, so without this the app cannot ask
+        # the question that identifies it. He also asked for Hazel, which is
+        # NOT here on purpose -- "Mixed broadleaf" already covers it, and
+        # adding single broadleaf trees as peer options turns that catch-all
+        # into something a hazel answer would contradict.
     ),
     "smell": Character(
         key="smell",
@@ -186,7 +201,8 @@ CHARACTERS: dict[str, Character] = {
         options=(
             "Pleasantly mushroomy", "Aniseed or almond", "Apricot or fruity",
             "Fresh bread dough", "Radish", "Raw potato or earthy",
-            "Ink or chemicals", "Rotting or foul", "Nothing much",
+            "Soap", "Coconut", "Ink or chemicals", "Rotting or foul",
+            "Nothing much",
         ),
         safety_note=(
             "A phenolic or inky smell, strongest at the stem base, is a reliable "
@@ -228,9 +244,12 @@ CHARACTERS: dict[str, Character] = {
         label="Stem surface",
         prompt="What does the stem look like below the ring?",
         how="Photograph the full length of the stem.",
+        # The red punctae of Neoboletus luridiformis: not scales, not
+        # fibres, and nothing else in the label space shows them.
         options=(
             "Snakeskin-patterned", "Scaly or shaggy", "Smooth",
-            "Netted or with a raised mesh", "Fibrous",
+            "Netted or with a raised mesh", "Covered in fine red dots",
+            "Fibrous",
         ),
         requires_photo=True,
     ),
@@ -248,7 +267,12 @@ CHARACTERS: dict[str, Character] = {
         label="Pore colour",
         prompt="What colour are the pores underneath?",
         how="Photograph the underside of the cap.",
-        options=("White or cream", "Yellow", "Olive", "Red or orange", "Pink"),
+        # Chalciporus piperatus, whose pores are cinnamon rather than the
+        # "Red or orange" the catalogue forced on it.
+        options=(
+            "White or cream", "Yellow", "Olive", "Red or orange",
+            "Cinnamon or brown", "Pink",
+        ),
         safety_note="Red pores on a bolete are a standing warning sign.",
         requires_photo=True,
     ),
@@ -288,7 +312,11 @@ CHARACTERS: dict[str, Character] = {
         label="Milk",
         prompt="Does it leak milk when the gills are scratched? What colour?",
         how="Scratch the gills and watch for droplets for about a minute.",
-        options=("White", "Orange or carrot", "Yellow", "No milk"),
+        # "Dark red" is what Mycena haematopus is named for -- the bleeding
+        # bonnet -- and what Lactarius deliciosus turns to with age.
+        options=(
+            "White", "Orange or carrot", "Yellow", "Dark red", "No milk",
+        ),
     ),
     "gill_texture": Character(
         key="gill_texture",
@@ -318,9 +346,11 @@ CHARACTERS: dict[str, Character] = {
         label="Cap colour",
         prompt="What colour is the cap?",
         how="Photograph from above in natural light, avoiding deep shade.",
+        # Pink for Mycena rosea and Gliophorus laetus, black for Exidia
+        # glandulosa. Neither was expressible, and "Purple" is not pink.
         options=(
-            "White or cream", "Yellow", "Orange", "Red", "Brown",
-            "Olive or greenish", "Grey", "Purple",
+            "White or cream", "Yellow", "Orange", "Red", "Pink", "Brown",
+            "Olive or greenish", "Grey", "Purple", "Black",
         ),
         requires_photo=True,
     ),

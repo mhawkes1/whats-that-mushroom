@@ -278,6 +278,35 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
 - **`Question.expected_information_gain` is bits; `Question.priority` is the
   sort key.** They were one field, which let the dangerous-pair bonus publish
   a near-zero-information question to the client as a high-scoring one.
+- **The catalogue gained nine options on 2026-10-12, and what that bought
+  is *dismissability*, not identification.** Martin's review found twelve
+  rows holding a state the options could not express — soap and coconut
+  smells, dark red latex, larch, a punctate stem, black bruising, pink and
+  black caps, violet gills, cinnamon pores — so those rows were blank or
+  forced onto the nearest wrong value. Adding the options does **not** mean
+  a matching answer now confirms the species: a consistent answer never
+  boosts, and the rivals are mostly undescribed for these characters, so
+  "Larch" against the other boletes moves nothing at all. What changed is
+  that a *contradicting* answer can now rule them out, where before no
+  answer could touch them. *Suillus grevillei* on an oak answer: 34% →
+  11%. Two tests pin it.
+- **Adding an option contradicts every species that does not list it.**
+  Which is the dangerous direction for a DEADLY species, because the
+  existing lists were written against the old option set.
+  `Larch` would have pushed *Cortinarius rubellus*, *Tricholoma equestre*
+  and *T. terreum* down for growing where they do in fact grow; `Pink` and
+  `Violet or lilac` would have done it to *Inocybe geophylla*. Six lists
+  were widened to compensate, marked `claude-option-widening` rather than
+  attributed to Martin, and a test asserts each one carries the new option.
+  **Check this before adding any further option.**
+- **Two of the twelve were declined on purpose.** `Hazel`, because
+  "Mixed broadleaf" already covers it and adding single broadleaf trees as
+  peer options turns that catch-all into something a hazel answer
+  contradicts. And `Moderately spaced` on `gill_spacing`, because a middle
+  bucket in a binary a non-expert cannot judge reliably would create a
+  contradiction channel against *Clitocybe rivulosa* — DEADLY, listed
+  `Crowded` — for no identification gain. *Lactarius pyrogalus*'s row stays
+  blank instead.
 - **Some answer options are non-observations, not states.** `volva`'s "I cut
   it off" and `cortina`'s "Can't tell" are in `uninformative_options` and get
   a likelihood of 1.0. Without that, the commonest field mistake — cutting the

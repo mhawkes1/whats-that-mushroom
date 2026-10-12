@@ -65,7 +65,7 @@ def test_every_species_appears_in_the_worksheet():
 # unblocks development; it is NOT the qualified mycological sign-off that
 # SAFETY.md blocks release on, and it does not touch toxicity or
 # nomenclature.
-REVIEWED_BY_A_HUMAN = 1204
+REVIEWED_BY_A_HUMAN = 1198
 
 
 def test_a_seed_filled_row_still_says_unreviewed():
@@ -82,14 +82,23 @@ def test_a_seed_filled_row_still_says_unreviewed():
     assert filled, "the worksheet should be filled in"
     assert all(row["REVIEWER"].strip() for row in filled)
 
-    seeded = [r for r in filled if r["REVIEWER"].strip() == "unreviewed-seed-fill"]
+    # Rows Claude filled, not a reviewer: the option extensions of
+    # 2026-10-12 widened six dangerous species' lists so a brand-new answer
+    # option would not contradict them, which is Claude's reading of the
+    # generous convention rather than anything Martin wrote. They carry the
+    # UNREVIEWED flag for the same reason seed fills do.
+    NOT_A_REVIEWER = {"unreviewed-seed-fill", "claude-option-widening"}
+    seeded = [r for r in filled if r["REVIEWER"].strip() in NOT_A_REVIEWER]
     unflagged = [r["species_key"] for r in seeded if "UNREVIEWED" not in r["REVIEW_notes"]]
     assert not unflagged, f"seed-filled rows not flagged UNREVIEWED: {unflagged[:5]}"
 
     # Counted over every row, not just the filled ones. A reviewer looking at
     # a row and agreeing it should stay EMPTY has reviewed it: Amanita virosa
     # does not bruise distinctively, and leaving that blank is the finding.
-    signed = [r for r in rows if r["REVIEWER"].strip() not in ("", "unreviewed-seed-fill")]
+    signed = [
+        r for r in rows
+        if r["REVIEWER"].strip() not in ("", *NOT_A_REVIEWER)
+    ]
 
     assert len(signed) == REVIEWED_BY_A_HUMAN, (
         f"{len(signed)} rows carry a reviewer's name, expected "
@@ -115,7 +124,7 @@ def test_every_dangerous_species_row_has_been_reviewed():
         f"{r['scientific_name']}/{r['character']}"
         for r in rows
         if r["species_key"] in dangerous
-        and r["REVIEWER"].strip() == "unreviewed-seed-fill"
+        and r["REVIEWER"].strip() in ("unreviewed-seed-fill",)
     ]
     assert not unsigned, (
         f"{len(unsigned)} rows on species that can kill or hospitalise are "

@@ -665,3 +665,61 @@ def test_every_dangerous_lookalike_edge_has_a_separating_character(taxonomy):
         f"described on both sides, so no answer can separate them: "
         f"{stranded[:5]}"
     )
+
+
+def test_the_new_options_make_their_species_dismissable(taxonomy):
+    """What extending the catalogue on 2026-10-12 actually bought.
+
+    Twelve rows held a state the old options could not express, so they were
+    blank or forced onto the nearest wrong value. The gain is NOT that a
+    matching answer now confirms the species -- a consistent answer never
+    boosts, and the rivals here are undescribed for these characters, so a
+    "Larch" answer moves nothing at all. The gain is that a *contradicting*
+    answer can now rule them out, where before no answer could touch them.
+    """
+    cases = [
+        # (character, an answer that is NOT this species' state, the species)
+        ("habitat", "Oak", "suillus-grevillei"),
+        ("bruising_reaction", "Brown", "hygrocybe-conica"),
+        ("latex_colour", "White", "mycena-haematopus"),
+        ("smell", "Radish", "tricholoma-saponaceum"),
+        ("stipe_surface", "Smooth", "neoboletus-luridiformis"),
+        ("pore_colour", "Yellow", "chalciporus-piperatus"),
+    ]
+    for character, answer, key in cases:
+        assert taxonomy[key].character_states.get(character), (
+            f"{key} must be described for {character} or this proves nothing"
+        )
+        ranked = [(key, 0.5), ("trametes-versicolor", 0.5)]
+        after = dict(reweight(ranked, character, answer, taxonomy))
+        assert after[key] < 0.5, (
+            f"{answer!r} should contradict {key} on {character}, "
+            f"but it sits at {after[key]:.3f}"
+        )
+
+
+def test_a_new_option_does_not_dismiss_a_dangerous_species(taxonomy):
+    """Adding an option contradicts everything that does not list it.
+
+    `Larch` is a conifer. Cortinarius rubellus is a conifer associate and
+    lists `Pine or spruce`; without widening it, the brand-new `Larch`
+    answer would have pushed a DEADLY species down for growing where it
+    does in fact grow. Same for Tricholoma equestre and T. terreum, and for
+    `Pink`/`Violet or lilac` against Inocybe geophylla.
+    """
+    from app.taxonomy_service import Toxicity
+
+    for key, character, answer in [
+        ("cortinarius-rubellus", "habitat", "Larch"),
+        ("tricholoma-equestre", "habitat", "Larch"),
+        ("tricholoma-terreum", "habitat", "Larch"),
+        ("inocybe-geophylla", "cap_colour", "Pink"),
+        ("inocybe-geophylla", "gill_colour", "Violet or lilac"),
+        ("inocybe-erubescens", "smell", "Soap"),
+    ]:
+        species = taxonomy[key]
+        assert species.toxicity in (Toxicity.DEADLY, Toxicity.SERIOUS)
+        assert answer in species.character_states.get(character, ()), (
+            f"{answer!r} is missing from {key}'s {character}, so that answer "
+            f"would push a {species.toxicity.name} species down"
+        )
