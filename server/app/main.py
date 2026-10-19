@@ -24,7 +24,7 @@ import logging
 import uuid
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image, UnidentifiedImageError
 
@@ -32,6 +32,7 @@ from .config import settings
 from .disclaimer import build as build_disclaimer
 from .incidents import EMERGENCY_GUIDANCE, IncidentStore, build_report
 from .inference import Classifier, OnnxBackend
+from .ratelimit import RateLimiter, client_key
 from .interrogation import InterrogationEngine
 from .safety import SafetyLayer
 from .spore_print import read_from_photograph
@@ -64,6 +65,13 @@ state: dict = {}
 # In-memory store, sufficient for a single-process deployment and for the
 # follow-up question flow. Swap for Redis or Postgres before scaling out.
 observations: dict[str, dict] = {}
+
+# Rate limiting for the one unauthenticated write route. Same single-process
+# caveat as `observations`; `ratelimit.py` says what that costs.
+incident_limiter = RateLimiter(
+    limit=settings.incident_rate_limit,
+    window_seconds=settings.incident_rate_window_seconds,
+)
 
 
 @asynccontextmanager
@@ -430,7 +438,7 @@ def disclaimer() -> DisclaimerOut:
 
 
 @app.post("/incident", response_model=IncidentOut)
-def incident(request: IncidentRequest) -> IncidentOut:
+def incident(request: IncidentRequest, http_request: Request) -> IncidentOut:
     """Report a suspected misidentification.
 
     Stored for a person to read. Nothing here changes the taxonomy: see
@@ -439,9 +447,41 @@ def incident(request: IncidentRequest) -> IncidentOut:
     A report saying someone ate it, or that anyone is unwell, is not a defect
     report. It comes back flagged, with the emergency guidance, and the client
     shows that instead of a confirmation.
+
+    Rate limited per client, because this is the only unauthenticated write
+    route the service has -- **except** for a report declaring that someone
+    ate it or is unwell, which is never limited. A flood of medical reports
+    costs a large file; dropping one costs something this project will not
+    trade away. The check reads the request's own flags rather than the
+    triaged severity, so it happens before any work is done.
     """
     if not state:
         raise HTTPException(503, "Service is still starting.")
+
+    medical_claim = request.anyone_ate_it or request.anyone_unwell
+    if not medical_claim:
+        key = client_key(
+            http_request.client.host if http_request.client else None,
+            http_request.headers.get("x-forwarded-for"),
+            trust_forwarded_for=settings.trust_forwarded_for,
+        )
+        if not incident_limiter.allow(key):
+            retry_after = incident_limiter.retry_after(key)
+            # Logged at WARNING: a client hitting the limit is either broken
+            # or hostile, and a limiter nobody can see firing is a limiter
+            # that hides an attack rather than reporting one.
+            log.warning(
+                "incident rate limit reached for %s; refusing for %ds", key, retry_after
+            )
+            raise HTTPException(
+                429,
+                detail=(
+                    "Too many reports from this device. Try again later. "
+                    "If someone has eaten a mushroom or is unwell, say so on "
+                    "the form and it will always go through."
+                ),
+                headers={"Retry-After": str(retry_after)},
+            )
 
     report = build_report(
         taxonomy=state["taxonomy"],

@@ -118,14 +118,50 @@ capped, and the form says the report is just as useful without it. No location
 is sent: the observation log holds coordinates on the device and they stay
 there.
 
+## Rate limiting
+
+`POST /incident` is the only unauthenticated write route the service has, so
+it is rate limited per client: `server/app/ratelimit.py`, five reports an
+hour by default (`WTM_INCIDENT_RATE_LIMIT`, `WTM_INCIDENT_RATE_WINDOW_SECONDS`).
+
+**A report declaring that someone ate it, or that anyone is unwell, is never
+limited.** Not counted, not refused, and not charged against the ordinary
+quota either, so a genuine emergency cannot lock the reporter out of filing
+the defect report afterwards. Someone whose child has eaten something may
+submit repeatedly, from a bad signal, in a panic; every one of those lands.
+A flood of medical reports costs a large file. The other error costs
+something this project will not trade away. Six tests pin it.
+
+A refusal returns 429 with `Retry-After`, and its message names the way
+through — a frightened person must not be left believing the route is shut.
+
+Two things about it are deliberately modest, and should be read as decisions
+rather than oversights:
+
+- **The counter is in memory**, so it is per-process and resets on restart.
+  That is sufficient for the single-process deployment this is, and it is
+  not a Redis dependency standing in for a decision nobody has made. Run
+  more than one worker and the limit silently becomes `n_workers x limit`;
+  move it to a shared store at that point rather than lowering the number.
+- **`X-Forwarded-For` is ignored** unless `WTM_TRUST_FORWARDED_FOR` is set.
+  The header is caller-supplied, so honouring it by default would hand
+  anyone a fresh quota per request while reading, in the config, as
+  protection. Enable it only behind a proxy that overwrites the header.
+
 ## Before launch
 
 - [ ] A named person on the rota for `medical` and `dangerous_miss`, with a
-      real response time rather than this document's aspiration.
-- [ ] Authentication or rate limiting in front of `POST /incident`. It takes
-      unauthenticated input; the free-text fields are capped and nothing is
-      executed, but an open endpoint on the internet needs more than that.
+      real response time rather than this document's aspiration. **This is
+      the one that cannot be written in code.** `dangerous_miss` says "same
+      day" above; until somebody's name is against it, that is a sentence
+      rather than a commitment, and the app should not be in public hands
+      with an unattended report queue.
+- [x] Authentication or rate limiting in front of `POST /incident`. Done —
+      see above. Authentication was not added: the route must work for
+      somebody who has just installed the app and has no account, and the
+      medical exemption has to hold for a stranger.
 - [ ] A retention period for `data/incidents.jsonl`, decided with the legal
       review rather than before it.
 - [ ] A way to tell a reporter what happened to their report, where they left
-      a contact address.
+      a contact address. Blocked on the first item: there is nobody to send
+      it from yet.

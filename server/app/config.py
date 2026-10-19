@@ -26,6 +26,15 @@ class Settings(BaseSettings):
 
     cors_origins: list[str] = ["*"]
 
+    # Rate limiting on POST /incident. See server/app/ratelimit.py and the
+    # "Before launch" list in docs/INCIDENTS.md. A report declaring that
+    # someone ate it, or is unwell, is never limited.
+    incident_rate_limit: int = 5
+    incident_rate_window_seconds: int = 3600
+    # Only enable behind a proxy that OVERWRITES X-Forwarded-For. Trusting a
+    # caller-supplied header hands anyone a fresh quota per request.
+    trust_forwarded_for: bool = False
+
     model_config = SettingsConfigDict(env_prefix="WTM_")
 
 

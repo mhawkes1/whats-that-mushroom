@@ -639,3 +639,29 @@ commits.
   palette colour that is dominantly green and not declared chrome, which is
   how `confident` — a teal-green meaning "reasonably confident in the
   identification" — was caught and replaced with slate blue.
+- **`POST /incident` is rate limited, and a medical report is never limited.**
+  `server/app/ratelimit.py`, five an hour per client by default. A report
+  declaring that someone ate it or is unwell bypasses the limiter entirely,
+  is not counted against the ordinary quota, and so cannot lock the reporter
+  out of filing the defect report afterwards. The check reads the request's
+  own flags rather than the triaged severity, so it happens before any work.
+  A limiter that silently discarded those would turn the one route that must
+  always work into the one that fails under exactly the conditions that
+  produce a flood. Six of the thirteen tests are about that exemption.
+  Two deliberate limitations, written down so they are not read as
+  oversights: the counter is in memory, so more than one worker makes the
+  limit `n_workers x limit`; and `X-Forwarded-For` is ignored unless
+  `WTM_TRUST_FORWARDED_FOR` is set, because a caller-supplied header would
+  hand anyone a fresh quota while reading as protection.
+- **A refused attempt is not counted.** Otherwise a buggy client in a retry
+  loop holds itself out forever, which punishes the broken caller far harder
+  than the malicious one — who simply changes address.
+- **`server/tests/conftest.py` resets the limiter between tests.** Without it
+  the eighth test in a module to file a report fails because the third one
+  spent the allowance, and the failure moves whenever tests are reordered. It
+  resets rather than disables, so a test filing more reports than a real
+  client would still meets the limit.
+- **The client shows the server's `detail`, not the raw body.** `handle` in
+  `api.ts` used to render `Request failed (429). {"detail":"..."}`. On the
+  report screen that message is the one telling a frightened person how to
+  get through, so the JSON around it is not acceptable noise.

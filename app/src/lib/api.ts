@@ -220,12 +220,36 @@ export async function reportIncident(report: IncidentReport): Promise<IncidentRe
 
 async function handle<T>(response: Response): Promise<T> {
   if (!response.ok) {
-    const detail = await response.text().catch(() => '');
-    throw new Error(
-      `Request failed (${response.status}). ${detail.slice(0, 200)}`.trim(),
-    );
+    throw new Error(await failureMessage(response));
   }
   return (await response.json()) as T;
+}
+
+/**
+ * What to put in front of the user when a request fails.
+ *
+ * FastAPI puts the human-readable part in `detail`, so passing the raw body
+ * through showed people `Request failed (429). {"detail":"Too many reports
+ * from this device..."}`. The message the server wrote is the useful half
+ * and the JSON around it is noise -- and on the report screen in particular
+ * that message is the one telling a frightened person how to get through.
+ *
+ * The status code is kept only where there is no detail to show, because
+ * "something went wrong" with no number is unreportable.
+ */
+async function failureMessage(response: Response): Promise<string> {
+  const body = await response.text().catch(() => '');
+  try {
+    const parsed = JSON.parse(body);
+    const detail = typeof parsed?.detail === 'string' ? parsed.detail.trim() : '';
+    if (detail) return detail.slice(0, 400);
+  } catch {
+    // Not JSON. Fall through to the raw body.
+  }
+  const raw = body.trim().slice(0, 200);
+  return raw
+    ? `Request failed (${response.status}). ${raw}`
+    : `Request failed (${response.status}).`;
 }
 
 async function appendPhoto(
