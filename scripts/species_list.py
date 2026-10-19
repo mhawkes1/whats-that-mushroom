@@ -42,8 +42,27 @@ LABEL = {
 }
 
 
+def accepted_names() -> dict[str, str]:
+    """Species whose displayed name both nomenclators call a synonym.
+
+    Read from the raw JSON rather than from the loaded `Species`, which
+    deliberately does not carry it: `accepted_name` is reference data for a
+    reviewer and never reaches a user. A reader of this file is exactly the
+    reviewer, so here it belongs.
+    """
+    import json
+
+    raw = json.loads(TAXONOMY.read_text())
+    return {
+        sp["scientific_name"]: sp["accepted_name"]
+        for sp in raw["species"]
+        if sp.get("accepted_name")
+    }
+
+
 def main() -> int:
     taxonomy = TaxonomyService.load(TAXONOMY)
+    moved = accepted_names()
     species = list(taxonomy.species.values())
     pairs = taxonomy.dangerous_pairs()
 
@@ -98,7 +117,10 @@ def main() -> int:
             shown = ", ".join(f"*{n}*" for n in deadly_looks[:4]) or "—"
             if len(deadly_looks) > 4:
                 shown += f" (+{len(deadly_looks) - 4})"
-            lines.append(f"| ***{sp.scientific_name}*** | {common} | {shown} |")
+            marker = " †" if sp.scientific_name in moved else ""
+            lines.append(
+                f"| ***{sp.scientific_name}***{marker} | {common} | {shown} |"
+            )
         lines.append("")
 
     lines += [
@@ -107,6 +129,41 @@ def main() -> int:
         "Species in **bold** under *Confused with* can kill. A row naming one is a",
         "pair the app refuses to resolve from a photograph.",
     ]
+
+    if moved:
+        lines += [
+            "",
+            "## † Names the nomenclators have moved",
+            "",
+            "The app displays the name on the left. Both the GBIF backbone and",
+            "Species Fungorum Plus treat it as a synonym of the name on the right",
+            "(`python scripts/nomenclature_check.py`).",
+            "",
+            "Showing the older name is a deliberate choice, not an oversight: it is",
+            "what the British field guides and the companion book use, and it is the",
+            "one a beginner can look up. **The training data is unaffected** — the",
+            "image fetcher resolves through GBIF's `acceptedUsageKey`, so it already",
+            "downloads the accepted taxon.",
+            "",
+            "| Displayed | Accepted | Hazard |",
+            "| --- | --- | --- |",
+        ]
+        by_name = {sp.scientific_name: sp for sp in species}
+        for shown_name, accepted in sorted(
+            moved.items(), key=lambda kv: -by_name[kv[0]].toxicity.value
+        ):
+            tox = by_name[shown_name].toxicity
+            hazard = LABEL[tox.name][0] if tox is not Toxicity.NO_RECORDED_TOXICITY else "—"
+            lines.append(f"| *{shown_name}* | *{accepted}* | {hazard} |")
+        lines += [
+            "",
+            "One of these is not routine. ***Russula nigricans*** is made a synonym",
+            "of *R. adusta* by both sources, while British field guides treat the",
+            "blackening and winecork brittlegills as two species — so images of",
+            "*R. adusta* are currently filed under this label. **A reviewer's view",
+            "on that one would be welcome.** Neither species is dangerous, so it is",
+            "a question of data honesty rather than of safety.",
+        ]
 
     OUT.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"Wrote {OUT} — {len(species)} species, {len(pairs)} lethal pairs")

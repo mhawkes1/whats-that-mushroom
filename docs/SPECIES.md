@@ -30,7 +30,7 @@ Eating this can be fatal.
 | ***Cortinarius rubellus*** | Deadly Webcap | *Cantharellus cibarius*, *Lactarius deliciosus*, *Armillaria mellea* |
 | ***Galerina marginata*** | Funeral Bell | *Kuehneromyces mutabilis*, *Armillaria mellea*, *Hypholoma fasciculare*, *Pholiota squarrosa* |
 | ***Gyromitra esculenta*** | False Morel, Turban Fungus | *Morchella esculenta* |
-| ***Inocybe erubescens*** | Deadly Fibrecap | *Calocybe gambosa*, *Agaricus campestris* |
+| ***Inocybe erubescens*** † | Deadly Fibrecap | *Calocybe gambosa*, *Agaricus campestris* |
 | ***Lepiota brunneoincarnata*** | Deadly Dapperling | *Marasmius oreades*, *Agaricus campestris*, *Macrolepiota procera* |
 | ***Lepiota subincarnata*** | Fatal Dapperling | ***Lepiota brunneoincarnata***, *Lepiota cristata*, *Marasmius oreades*, *Agaricus campestris* |
 
@@ -117,7 +117,7 @@ Poisoning is reported.
 | ***Russula nobilis*** | Beechwood Sickener | *Russula emetica*, *Russula cyanoxantha*, *Russula ochroleuca* |
 | ***Scleroderma citrinum*** | Common Earthball | *Lycoperdon perlatum*, *Calvatia gigantea* |
 | ***Scleroderma verrucosum*** | Scaly Earthball | *Scleroderma citrinum*, *Lycoperdon perlatum*, ***Amanita virosa***, *Calvatia gigantea* |
-| ***Stropharia semiglobata*** | Dung Roundhead | *Panaeolus papilionaceus*, *Bolbitius titubans*, *Psilocybe semilanceata* |
+| ***Stropharia semiglobata*** † | Dung Roundhead | *Panaeolus papilionaceus*, *Bolbitius titubans*, *Psilocybe semilanceata* |
 | ***Tricholoma fulvum*** | Birch Knight | *Tricholoma equestre*, *Tricholoma pardinum*, *Hebeloma crustuliniforme* |
 | ***Tricholoma saponaceum*** | Soapy Knight | *Tricholoma terreum*, *Tricholoma pardinum*, *Tricholoma sulphureum*, *Tricholoma equestre* |
 | ***Tricholoma sulphureum*** | Sulphur Knight | *Tricholoma equestre*, *Tricholoma saponaceum*, *Tricholoma pardinum* |
@@ -178,10 +178,10 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Dacrymyces stillatus*** | Common Jellyspot | *Tremella mesenterica*, *Calocera viscosa* |
 | ***Daedaleopsis confragosa*** | Blushing Bracket | *Trametes versicolor* |
 | ***Daldinia concentrica*** | King Alfred's Cakes, Cramp Balls | — |
-| ***Datronia mollis*** | Common Mazegill | *Daedaleopsis confragosa*, *Bjerkandera adusta* |
+| ***Datronia mollis*** † | Common Mazegill | *Daedaleopsis confragosa*, *Bjerkandera adusta* |
 | ***Entoloma sericellum*** | Cream Pinkgill | *Entoloma sericeum*, *Entoloma sinuatum*, *Clitopilus prunulus* |
 | ***Exidia glandulosa*** | Witches' Butter | *Exidia nucleata*, *Exidia thuretiana*, *Auricularia auricula-judae* |
-| ***Exidia nucleata*** | Crystal Brain | *Exidia thuretiana*, *Exidia glandulosa*, *Tremella mesenterica* |
+| ***Exidia nucleata*** † | Crystal Brain | *Exidia thuretiana*, *Exidia glandulosa*, *Tremella mesenterica* |
 | ***Exidia thuretiana*** | White Brain | *Exidia nucleata*, *Tremella mesenterica* |
 | ***Fistulina hepatica*** | Beefsteak Fungus | — |
 | ***Flammulina velutipes*** | Velvet Shank | ***Galerina marginata***, *Kuehneromyces mutabilis*, *Hypholoma fasciculare*, *Armillaria mellea* |
@@ -251,16 +251,16 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Phloeomana speirea*** | Bark Bonnet | ***Galerina marginata*** |
 | ***Pleurotus ostreatus*** | Oyster Mushroom | *Omphalotus olearius*, *Crepidotus mollis* |
 | ***Pluteus cervinus*** | Deer Shield | *Volvopluteus gloiocephalus*, *Entoloma sinuatum*, ***Amanita phalloides*** |
-| ***Polyporus leptocephalus*** | Blackfoot Polypore | *Cerioporus squamosus*, *Trametes versicolor* |
-| ***Postia caesia*** | Conifer Blueing Bracket | *Trametes versicolor* |
-| ***Psathyrella candolleana*** | Pale Brittlestem | ***Galerina marginata***, *Psathyrella piluliformis*, *Hypholoma fasciculare*, *Coprinellus micaceus* |
+| ***Polyporus leptocephalus*** † | Blackfoot Polypore | *Cerioporus squamosus*, *Trametes versicolor* |
+| ***Postia caesia*** † | Conifer Blueing Bracket | *Trametes versicolor* |
+| ***Psathyrella candolleana*** † | Pale Brittlestem | ***Galerina marginata***, *Psathyrella piluliformis*, *Hypholoma fasciculare*, *Coprinellus micaceus* |
 | ***Psathyrella corrugis*** | Red Edge Brittlestem | *Psathyrella candolleana*, *Psathyrella piluliformis*, ***Galerina marginata*** |
 | ***Psathyrella piluliformis*** | Common Stump Brittlestem | ***Galerina marginata***, *Psathyrella candolleana*, *Hypholoma fasciculare*, *Kuehneromyces mutabilis* |
 | ***Rhodocollybia butyracea*** | Butter Cap | *Gymnopus dryophilus*, *Marasmius oreades*, *Clitocybe nebularis* |
 | ***Rickenella fibula*** | Orange Mosscap | — |
 | ***Russula atropurpurea*** | Purple Brittlegill | *Russula cyanoxantha*, *Russula emetica*, *Russula nobilis* |
 | ***Russula cyanoxantha*** | Charcoal Burner | ***Amanita phalloides***, *Russula emetica* |
-| ***Russula nigricans*** | Blackening Brittlegill | *Russula cyanoxantha*, *Russula nobilis*, *Russula emetica* |
+| ***Russula nigricans*** † | Blackening Brittlegill | *Russula cyanoxantha*, *Russula nobilis*, *Russula emetica* |
 | ***Russula ochroleuca*** | Ochre Brittlegill | *Tricholoma equestre*, *Russula cyanoxantha* |
 | ***Russula vesca*** | The Flirt | *Russula cyanoxantha*, *Russula emetica*, *Russula nobilis*, *Russula ochroleuca* |
 | ***Sarcoscypha austriaca*** | Scarlet Elfcup | — |
@@ -287,9 +287,40 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Xylaria carpophila*** | Beechmast Candlesnuff | *Xylaria hypoxylon* |
 | ***Xylaria hypoxylon*** | Candlesnuff Fungus | *Daldinia concentrica* |
 | ***Xylaria polymorpha*** | Dead Man's Fingers | *Xylaria hypoxylon*, *Kretzschmaria deusta* |
-| ***Xylodon sambuci*** | Elder Whitewash | — |
+| ***Xylodon sambuci*** † | Elder Whitewash | — |
 
 ---
 
 Species in **bold** under *Confused with* can kill. A row naming one is a
 pair the app refuses to resolve from a photograph.
+
+## † Names the nomenclators have moved
+
+The app displays the name on the left. Both the GBIF backbone and
+Species Fungorum Plus treat it as a synonym of the name on the right
+(`python scripts/nomenclature_check.py`).
+
+Showing the older name is a deliberate choice, not an oversight: it is
+what the British field guides and the companion book use, and it is the
+one a beginner can look up. **The training data is unaffected** — the
+image fetcher resolves through GBIF's `acceptedUsageKey`, so it already
+downloads the accepted taxon.
+
+| Displayed | Accepted | Hazard |
+| --- | --- | --- |
+| *Inocybe erubescens* | *Inosperma erubescens* | Can kill |
+| *Stropharia semiglobata* | *Protostropharia semiglobata* | Causes illness |
+| *Datronia mollis* | *Podofomes mollis* | — |
+| *Exidia nucleata* | *Myxarium nucleatum* | — |
+| *Polyporus leptocephalus* | *Cerioporus leptocephalus* | — |
+| *Postia caesia* | *Cyanosporus caesius* | — |
+| *Psathyrella candolleana* | *Candolleomyces candolleanus* | — |
+| *Russula nigricans* | *Russula adusta* | — |
+| *Xylodon sambuci* | *Lyomyces sambuci* | — |
+
+One of these is not routine. ***Russula nigricans*** is made a synonym
+of *R. adusta* by both sources, while British field guides treat the
+blackening and winecork brittlegills as two species — so images of
+*R. adusta* are currently filed under this label. **A reviewer's view
+on that one would be welcome.** Neither species is dangerous, so it is
+a question of data honesty rather than of safety.

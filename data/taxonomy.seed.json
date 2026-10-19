@@ -2845,7 +2845,9 @@
         "cap_colour": [
           "Brown"
         ]
-      }
+      },
+      "accepted_name": "Podofomes mollis",
+      "internal_note": "accepted_name recorded 2026-10-19 from scripts/nomenclature_check.py: the GBIF backbone and Species Fungorum Plus agree this name is a synonym of Podofomes mollis. Martin's call is to keep displaying Datronia mollis, which is the name his book and the British field guides use and the one a beginner can look up. The training data is unaffected either way -- the image fetcher resolves through acceptedUsageKey, so it already downloads Podofomes mollis."
     },
     {
       "key": "entoloma-conferendum",
@@ -3143,7 +3145,9 @@
         "growth_form": [
           "Scattered"
         ]
-      }
+      },
+      "accepted_name": "Myxarium nucleatum",
+      "internal_note": "accepted_name recorded 2026-10-19 from scripts/nomenclature_check.py: the GBIF backbone and Species Fungorum Plus agree this name is a synonym of Myxarium nucleatum. Martin's call is to keep displaying Exidia nucleata, which is the name his book and the British field guides use and the one a beginner can look up. The training data is unaffected either way -- the image fetcher resolves through acceptedUsageKey, so it already downloads Myxarium nucleatum."
     },
     {
       "key": "exidia-thuretiana",
@@ -4805,7 +4809,9 @@
           "Ink or chemicals",
           "Soap"
         ]
-      }
+      },
+      "accepted_name": "Inosperma erubescens",
+      "internal_note": "accepted_name recorded 2026-10-19 from scripts/nomenclature_check.py: the GBIF backbone and Species Fungorum Plus agree this name is a synonym of Inosperma erubescens. Martin's call is to keep displaying Inocybe erubescens, which is the name his book and the British field guides use and the one a beginner can look up. The training data is unaffected either way -- the image fetcher resolves through acceptedUsageKey, so it already downloads Inosperma erubescens."
     },
     {
       "key": "inocybe-geophylla",
@@ -7648,7 +7654,7 @@
         "stipe_presence"
       ],
       "notes": "Smooth tan cap on a short stem that is jet black at the base, on fallen broadleaf branches.",
-      "internal_note": "Older references call it Polyporus varius.",
+      "internal_note": "Older references call it Polyporus varius. accepted_name recorded 2026-10-19 from scripts/nomenclature_check.py: the GBIF backbone and Species Fungorum Plus agree this name is a synonym of Cerioporus leptocephalus. Martin's call is to keep displaying Polyporus leptocephalus, which is the name his book and the British field guides use and the one a beginner can look up. The training data is unaffected either way -- the image fetcher resolves through acceptedUsageKey, so it already downloads Cerioporus leptocephalus.",
       "character_states": {
         "growth_form": [
           "As a bracket"
@@ -7673,7 +7679,8 @@
           "Off-centre stem",
           "Stem at the side"
         ]
-      }
+      },
+      "accepted_name": "Cerioporus leptocephalus"
     },
     {
       "key": "postia-caesia",
@@ -7719,7 +7726,9 @@
         "habitat": [
           "Pine or spruce"
         ]
-      }
+      },
+      "accepted_name": "Cyanosporus caesius",
+      "internal_note": "accepted_name recorded 2026-10-19 from scripts/nomenclature_check.py: the GBIF backbone and Species Fungorum Plus agree this name is a synonym of Cyanosporus caesius. Martin's call is to keep displaying Postia caesia, which is the name his book and the British field guides use and the one a beginner can look up. The training data is unaffected either way -- the image fetcher resolves through acceptedUsageKey, so it already downloads Cyanosporus caesius."
     },
     {
       "key": "psathyrella-candolleana",
@@ -7766,7 +7775,9 @@
         "cap_margin": [
           "Shaggy or woolly"
         ]
-      }
+      },
+      "accepted_name": "Candolleomyces candolleanus",
+      "internal_note": "accepted_name recorded 2026-10-19 from scripts/nomenclature_check.py: the GBIF backbone and Species Fungorum Plus agree this name is a synonym of Candolleomyces candolleanus. Martin's call is to keep displaying Psathyrella candolleana, which is the name his book and the British field guides use and the one a beginner can look up. The training data is unaffected either way -- the image fetcher resolves through acceptedUsageKey, so it already downloads Candolleomyces candolleanus."
     },
     {
       "key": "psathyrella-corrugis",
@@ -8382,7 +8393,9 @@
           "Brown",
           "Grey"
         ]
-      }
+      },
+      "accepted_name": "Russula adusta",
+      "internal_note": "accepted_name recorded 2026-10-19 from scripts/nomenclature_check.py: the GBIF backbone and Species Fungorum Plus agree this name is a synonym of Russula adusta. Martin's call is to keep displaying Russula nigricans, which is the name his book and the British field guides use and the one a beginner can look up. The training data is unaffected either way -- the image fetcher resolves through acceptedUsageKey, so it already downloads Russula adusta. OPEN QUESTION FOR THE REVIEWER, and the only one of the nine that is not routine: both nomenclators make Russula nigricans a synonym of R. adusta, while British field guides treat the blackening and winecork brittlegills as two species. Because the fetcher follows the accepted key, images of R. adusta are currently being filed under this label. Not resolved here: accept the merge, split by pinning gbif_key as the ivory funnels were, or leave it -- neither species is dangerous, so this is data honesty rather than safety."
     },
     {
       "key": "russula-nobilis",
@@ -8884,7 +8897,9 @@
         "ring": [
           "Faint zone only"
         ]
-      }
+      },
+      "accepted_name": "Protostropharia semiglobata",
+      "internal_note": "accepted_name recorded 2026-10-19 from scripts/nomenclature_check.py: the GBIF backbone and Species Fungorum Plus agree this name is a synonym of Protostropharia semiglobata. Martin's call is to keep displaying Stropharia semiglobata, which is the name his book and the British field guides use and the one a beginner can look up. The training data is unaffected either way -- the image fetcher resolves through acceptedUsageKey, so it already downloads Protostropharia semiglobata."
     },
     {
       "key": "suillus-bovinus",
@@ -9986,7 +10001,9 @@
         "habitat": [
           "Mixed broadleaf"
         ]
-      }
+      },
+      "accepted_name": "Lyomyces sambuci",
+      "internal_note": "accepted_name recorded 2026-10-19 from scripts/nomenclature_check.py: the GBIF backbone and Species Fungorum Plus agree this name is a synonym of Lyomyces sambuci. Martin's call is to keep displaying Xylodon sambuci, which is the name his book and the British field guides use and the one a beginner can look up. The training data is unaffected either way -- the image fetcher resolves through acceptedUsageKey, so it already downloads Lyomyces sambuci."
     }
   ]
 }

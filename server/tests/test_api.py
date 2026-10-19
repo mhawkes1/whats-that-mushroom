@@ -489,3 +489,103 @@ def test_matching_never_asserts_edibility(client):
             data={"sample_region": SAMPLE_REGION, "white_region": WHITE_REGION},
         ).json()
         assert not affirmative.search(body["reason"]), body["reason"]
+
+
+def test_accepted_name_never_reaches_a_client():
+    """`accepted_name` is reference data, not something a user reads.
+
+    Nine species in the label space carry a name both nomenclators treat as
+    a synonym — *Inocybe erubescens*, DEADLY, among them. Martin's call on
+    2026-10-19 was to keep displaying the familiar name, which is what his
+    book and the British field guides use, and to record the accepted one
+    alongside so the data is not quietly wrong.
+
+    "Alongside" has to mean invisible. Showing a user two names for the same
+    mushroom in an app whose whole job is reducing confusion is the opposite
+    of the point, and it would put a name beside a species that no
+    identification here was made against. Same argument as `internal_note`,
+    and the same mechanism: the loaded `Species` simply never carries it.
+    """
+    import json
+
+    from app.taxonomy_service import TaxonomyService
+
+    raw = json.loads((ROOT / "data" / "taxonomy.seed.json").read_text())
+    carrying = {
+        sp["key"]: sp["accepted_name"]
+        for sp in raw["species"]
+        if sp.get("accepted_name")
+    }
+    assert carrying, "no species carries accepted_name -- has the field been dropped?"
+
+    taxonomy = TaxonomyService.load(ROOT / "data" / "taxonomy.seed.json")
+    for key in carrying:
+        assert not hasattr(taxonomy.get(key), "accepted_name")
+
+
+def test_accepted_name_is_absent_from_the_species_response(client):
+    """The same check one level out, against what a client is actually served.
+
+    The test above pins the mechanism -- the loaded `Species` has no such
+    field. This pins the outcome, because a future response model could
+    reintroduce it by reading the raw JSON, and the mechanism test would
+    still pass.
+    """
+    import json
+
+    raw = json.loads((ROOT / "data" / "taxonomy.seed.json").read_text())
+    key = next(sp["key"] for sp in raw["species"] if sp.get("accepted_name"))
+    accepted = next(
+        sp["accepted_name"] for sp in raw["species"] if sp["key"] == key
+    )
+
+    body = client.get(f"/species/{key}").json()
+    assert "accepted_name" not in body
+    assert accepted not in json.dumps(body)
+
+    listing = client.get("/species").text
+    assert "accepted_name" not in listing
+
+
+def test_an_accepted_name_is_never_the_name_already_shown():
+    """A field recording that a name is a synonym of itself records nothing.
+
+    It would read, to a reviewer, as a checked and settled name — which is
+    the one thing it must not do for a row nobody has checked.
+    """
+    import json
+
+    raw = json.loads((ROOT / "data" / "taxonomy.seed.json").read_text())
+    for sp in raw["species"]:
+        accepted = sp.get("accepted_name")
+        if accepted is None:
+            continue
+        assert accepted.strip(), f"{sp['key']}: accepted_name is blank"
+        assert accepted != sp["scientific_name"], (
+            f"{sp['key']}: accepted_name repeats scientific_name"
+        )
+
+
+def test_every_accepted_name_matches_the_nomenclature_check():
+    """The field and the artefact it came from must not drift.
+
+    `docs/nomenclature-check.csv` is regenerated against GBIF; this field is
+    written from it by hand. If a later run changes an accepted name and the
+    taxonomy keeps the old one, the record stops being a record.
+    """
+    import csv
+    import json
+
+    report = ROOT / "docs" / "nomenclature-check.csv"
+    flagged = {
+        row["scientific_name"]: row["backbone_accepted_name"]
+        for row in csv.DictReader(report.open())
+        if row["flag"] == "SYNONYM"
+    }
+    raw = json.loads((ROOT / "data" / "taxonomy.seed.json").read_text())
+    recorded = {
+        sp["scientific_name"]: sp["accepted_name"]
+        for sp in raw["species"]
+        if sp.get("accepted_name")
+    }
+    assert recorded == flagged

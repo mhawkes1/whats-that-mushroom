@@ -672,3 +672,28 @@ commits.
   `api.ts` used to render `Request failed (429). {"detail":"..."}`. On the
   report screen that message is the one telling a frightened person how to
   get through, so the JSON around it is not acceptable noise.
+- **`accepted_name` records a synonym without displaying one.** Nine species
+  carry a name both the GBIF backbone and Species Fungorum Plus call a
+  synonym — *Inocybe erubescens*, DEADLY, among them. Martin's call,
+  2026-10-19: keep displaying the familiar name, which is what the British
+  field guides and the companion book use and the one a beginner can look up,
+  and record the accepted one alongside so the data is not quietly wrong.
+  **"Alongside" means invisible.** Showing a user two names for one mushroom,
+  in an app whose job is reducing confusion, is the opposite of the point —
+  and it would put a name beside a species that no identification here was
+  made against. Same mechanism as `internal_note`: the loaded `Species` never
+  carries it, pinned at both the object level and the HTTP level. The
+  training data is unaffected either way, because the fetcher resolves
+  through `acceptedUsageKey` and already downloads the accepted taxon.
+  A test keeps the field in step with `docs/nomenclature-check.csv`, since
+  the CSV is regenerated against GBIF and the field is written from it by
+  hand; and another refuses an `accepted_name` equal to the name already
+  shown, because a synonym of itself reads to a reviewer as a checked name.
+- **One of the nine is not routine, and is for the reviewer.**
+  *Russula nigricans* is a synonym of *R. adusta* in both sources, while
+  British field guides treat the blackening and winecork brittlegills as two
+  species — so the fetcher is currently filing *adusta* images under this
+  label. Deliberately not resolved: accept the merge, split by pinning
+  `gbif_key` as the ivory funnels were, or leave it. Neither is dangerous, so
+  it is data honesty rather than safety. `docs/SPECIES.md` asks for a view on
+  it under "Names the nomenclators have moved".
