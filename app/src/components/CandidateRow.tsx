@@ -12,6 +12,17 @@ const TOXICITY_COLOUR: Record<string, string> = {
 };
 
 /**
+ * The stripe on a row with no hazard to report.
+ *
+ * Deliberately the faintest thing in the list. It was falling through to
+ * `textMuted`, which on the light palette drew a *darker* bar than the amber
+ * on a TOXIC row -- so the species the app has nothing to say about was the
+ * most emphatic thing on the screen. The stripe exists to keep the rows
+ * aligned, not to grade anything, and silence is what rule 1 asks for here.
+ */
+const NO_HAZARD_STRIPE = theme.colour.border;
+
+/**
  * One candidate species.
  *
  * A hazard chip is rendered wherever there is a hazard to report, including
@@ -28,7 +39,7 @@ export function CandidateRow({
   candidate: Candidate;
   showConfidence?: boolean;
 }) {
-  const colour = TOXICITY_COLOUR[candidate.toxicity] ?? theme.colour.textMuted;
+  const colour = TOXICITY_COLOUR[candidate.toxicity] ?? NO_HAZARD_STRIPE;
   const isDeadly = candidate.toxicity === 'DEADLY';
   const hazard = hazardLabel(candidate.toxicity);
 

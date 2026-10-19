@@ -149,7 +149,19 @@ The result screen inverts the competition's information hierarchy on purpose:
 
 Leading with a species name and a large percentage is precisely the design
 that gets people poisoned, so the candidate list is deliberately **not** the
-headline. There is no green in the palette and no edibility claim in the type system
-in either direction: a species with a recorded hazard says so, and one
-without says nothing at all. Users read a best-case label as permission, so
-there is no best-case label.
+headline. There is no edibility claim in the type system in either direction: a
+species with a recorded hazard says so, and one without says nothing at
+all. Users read a best-case label as permission, so there is no best-case
+label.
+
+Green was excluded from the palette entirely until 2026-10-19, when the
+theme moved from near-black to paper at Martin's request. The reason for
+excluding it stands and has been narrowed rather than dropped: **green is
+chrome, never a verdict.** It appears on the header ground and on advice
+about how to photograph, and it may not appear on a verdict card, a
+candidate row, a hazard chip or a confidence marker. The old `confident`
+colour was a teal-green and has gone for exactly this reason — on a
+white-and-green palette, a green marker beside a species name is the
+misread the whole product exists to prevent. `app/test/theme.test.ts`
+pins it: any colour in the palette that is dominantly green has to be
+declared chrome or the test fails.

@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
     padding: theme.spacing(1.5),
     alignItems: 'center',
   },
-  emergencyButtonText: { fontSize: theme.font.body, fontWeight: '800', color: '#fff' },
+  emergencyButtonText: { fontSize: theme.font.body, fontWeight: '800', color: theme.colour.onAccent },
 
   section: { gap: theme.spacing(1) },
   sectionHeading: {
@@ -387,7 +387,7 @@ const styles = StyleSheet.create({
     padding: theme.spacing(2),
     alignItems: 'center',
   },
-  primaryText: { fontSize: theme.font.body, fontWeight: '700', color: theme.colour.background },
+  primaryText: { fontSize: theme.font.body, fontWeight: '700', color: theme.colour.onAccent },
   sent: {
     fontSize: theme.font.small,
     color: theme.colour.confident,

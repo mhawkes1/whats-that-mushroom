@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
   stepNumber: {
     fontSize: theme.font.small,
     fontWeight: '800',
-    color: theme.colour.background,
+    color: theme.colour.onAccent,
     backgroundColor: theme.colour.accent,
     width: 24,
     height: 24,
@@ -402,7 +402,7 @@ const styles = StyleSheet.create({
   primaryText: {
     fontSize: theme.font.heading,
     fontWeight: '700',
-    color: theme.colour.background,
+    color: theme.colour.onAccent,
   },
   secondary: {
     flex: 1,

@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   call999: { backgroundColor: theme.colour.danger, borderColor: theme.colour.danger },
-  call999Text: { fontSize: theme.font.heading, fontWeight: '800', color: '#fff' },
+  call999Text: { fontSize: theme.font.heading, fontWeight: '800', color: theme.colour.onAccent },
   callText: { fontSize: theme.font.heading, fontWeight: '800', color: theme.colour.danger },
   callHint: { fontSize: theme.font.tiny, color: theme.colour.textMuted },
   step: { flexDirection: 'row', gap: theme.spacing(1.5) },

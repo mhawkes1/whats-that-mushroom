@@ -59,12 +59,22 @@ export function AppHeader({ onEmergency }: { onEmergency: () => void }) {
 }
 
 const styles = StyleSheet.create({
+  // The woodland ground. Green is allowed here and nowhere that states an
+  // outcome: this band names the app, not a mushroom, so it cannot be read
+  // as permission. See the note at the top of `theme.ts`.
   header: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     gap: theme.spacing(2),
+    backgroundColor: theme.colour.canopySurface,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colour.lichen,
+    borderRadius: theme.radius.md,
+    paddingHorizontal: theme.spacing(2),
+    paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   },
   titleBlock: { flex: 1 },
   title: {
@@ -94,5 +104,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: theme.colour.danger,
   },
-  sosGlyph: { color: '#fff', fontSize: 24, fontWeight: '700', lineHeight: 26 },
+  sosGlyph: { color: theme.colour.onAccent, fontSize: 24, fontWeight: '700', lineHeight: 26 },
 });

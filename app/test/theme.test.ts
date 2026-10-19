@@ -1,0 +1,154 @@
+import { describe, expect, it } from 'vitest';
+
+import { theme } from '../src/lib/theme';
+
+/**
+ * The palette went from near-black to paper on 2026-10-19, and two things
+ * about it are safety properties rather than taste.
+ *
+ * A hazard colour chosen for a dark ground is too light for a pale one. The
+ * old `danger` (#e5484d) reads at about 3:1 against paper, which is below
+ * the threshold for body text at any size -- so the warning that matters
+ * most would have been the hardest thing on the screen to read. These tests
+ * exist so a future palette change cannot quietly undo that.
+ *
+ * And green: `POSITIONING.md` kept it out of the palette because green is
+ * the colour of permission. The light theme brings woodland greens back as
+ * chrome, which is a different thing -- but only if nothing semantic uses
+ * them, which is what the second test pins.
+ */
+
+function luminance(hex: string): number {
+  const v = hex.replace('#', '');
+  const channels = [0, 2, 4].map((i) => {
+    const c = parseInt(v.slice(i, i + 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+function contrast(a: string, b: string): number {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+describe('hazard colours stay readable on their own surfaces', () => {
+  const pairs: [string, string, string][] = [
+    ['danger on its surface', theme.colour.danger, theme.colour.dangerSurface],
+    ['danger on the page', theme.colour.danger, theme.colour.background],
+    ['danger on a card', theme.colour.danger, theme.colour.surface],
+    ['caution on its surface', theme.colour.caution, theme.colour.cautionSurface],
+    ['caution on a card', theme.colour.caution, theme.colour.surface],
+  ];
+
+  // AA for body text is 4.5:1. A lethal-ambiguity warning gets AAA.
+  it.each(pairs)('%s clears 4.5:1', (_label, fg, bg) => {
+    expect(contrast(fg, bg)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('danger clears AAA, 7:1, on every ground it appears on', () => {
+    for (const bg of [
+      theme.colour.dangerSurface,
+      theme.colour.background,
+      theme.colour.surface,
+    ]) {
+      expect(contrast(theme.colour.danger, bg)).toBeGreaterThanOrEqual(7);
+    }
+  });
+
+  it('body and muted text are readable on paper', () => {
+    expect(contrast(theme.colour.text, theme.colour.background)).toBeGreaterThanOrEqual(12);
+    expect(contrast(theme.colour.textMuted, theme.colour.background)).toBeGreaterThanOrEqual(4.5);
+  });
+});
+
+describe('labels on filled controls stay readable', () => {
+  /**
+   * The light palette broke every primary button at once, because screens
+   * wrote `color: theme.colour.background` for a label on a gold button.
+   * That was only ever correct while the background was near-black. The
+   * role is now named, and these pin it.
+   */
+  it('onAccent reads on every filled control it sits on', () => {
+    for (const bg of [
+      theme.colour.accent,
+      theme.colour.danger,
+      theme.colour.canopy,
+      theme.colour.confident,
+    ]) {
+      expect(contrast(theme.colour.onAccent, bg)).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  it('a disabled label reads on the disabled ground', () => {
+    expect(
+      contrast(theme.colour.onDisabled, theme.colour.surfaceRaised),
+    ).toBeGreaterThanOrEqual(3);
+  });
+
+  it('onAccent is not usable as body text, so it cannot be misapplied', () => {
+    expect(
+      contrast(theme.colour.onAccent, theme.colour.background),
+    ).toBeLessThan(1.5);
+  });
+});
+
+describe('green never states an outcome', () => {
+  /**
+   * The hue test, rather than a list of names: any future colour that is
+   * dominantly green has to justify itself here. `canopy` and `lichen` are
+   * allowed because they are chrome; `canopySurface` is a near-white tint.
+   */
+  const CHROME = new Set(['canopy', 'lichen', 'canopySurface']);
+
+  function isGreen(hex: string): boolean {
+    const v = hex.replace('#', '');
+    const [r, g, b] = [0, 2, 4].map((i) => parseInt(v.slice(i, i + 2), 16));
+    return g > r + 12 && g > b + 12;
+  }
+
+  it.each(Object.entries(theme.colour))('%s is not green unless it is chrome', (name, hex) => {
+    if (CHROME.has(name)) return;
+    expect(isGreen(hex), `${name} (${hex}) is green and is not chrome`).toBe(false);
+  });
+
+  it('confident is not green, because it is attached to an identification', () => {
+    expect(CHROME.has('confident')).toBe(false);
+    expect(isGreen(theme.colour.confident)).toBe(false);
+    // Nor warm, which would make it read as a hazard. Luminance contrast is
+    // the wrong instrument here -- a deep blue and a deep red can sit at
+    // nearly the same luminance and still be unmistakable -- so this tests
+    // the hue instead.
+    const [r, , b] = [0, 2, 4].map((i) =>
+      parseInt(theme.colour.confident.replace('#', '').slice(i, i + 2), 16),
+    );
+    expect(b).toBeGreaterThan(r + 20);
+  });
+});
+
+describe('hazard emphasis is ordered', () => {
+  /**
+   * The stripe on a candidate row must get *fainter* as the hazard gets
+   * milder, and faintest of all where there is no hazard. On the light
+   * palette the no-hazard case fell through to `textMuted` and drew a
+   * darker bar than a TOXIC row's amber, so the species the app had
+   * nothing to say about was the loudest thing in the list.
+   */
+  function weight(hex: string): number {
+    // How far the colour is from the page it sits on.
+    return contrast(hex, theme.colour.surface);
+  }
+
+  it('deadly is heavier than toxic, which is heavier than no hazard', () => {
+    const deadly = weight(theme.colour.danger);
+    const toxic = weight(theme.colour.caution);
+    const none = weight(theme.colour.border);
+
+    expect(deadly).toBeGreaterThan(toxic);
+    expect(toxic).toBeGreaterThan(none);
+  });
+
+  it('a row with no hazard barely marks the page at all', () => {
+    expect(weight(theme.colour.border)).toBeLessThan(1.6);
+  });
+});

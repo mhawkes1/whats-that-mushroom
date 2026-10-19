@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   guideText: {
     fontSize: theme.font.body,
     fontWeight: '700',
-    color: theme.colour.background,
+    color: theme.colour.onAccent,
   },
   options: { gap: theme.spacing(1), marginTop: theme.spacing(0.5) },
   option: {

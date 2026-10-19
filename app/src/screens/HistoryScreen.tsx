@@ -417,5 +417,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: theme.spacing(2),
   },
-  primaryText: { fontSize: theme.font.body, fontWeight: '700', color: theme.colour.background },
+  primaryText: { fontSize: theme.font.body, fontWeight: '700', color: theme.colour.onAccent },
 });

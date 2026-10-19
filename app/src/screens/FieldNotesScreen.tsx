@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   },
   chipChosen: { backgroundColor: theme.colour.accent, borderColor: theme.colour.accent },
   chipText: { fontSize: theme.font.small, color: theme.colour.text },
-  chipTextChosen: { color: theme.colour.background, fontWeight: '700' },
+  chipTextChosen: { color: theme.colour.onAccent, fontWeight: '700' },
   skipHint: { fontSize: theme.font.tiny, color: theme.colour.textFaint },
   clearHint: { fontSize: theme.font.tiny, color: theme.colour.textFaint },
   actions: { gap: theme.spacing(1.25) },
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
   primaryText: {
     fontSize: theme.font.heading,
     fontWeight: '700',
-    color: theme.colour.background,
+    color: theme.colour.onAccent,
   },
   secondary: {
     backgroundColor: theme.colour.surfaceRaised,

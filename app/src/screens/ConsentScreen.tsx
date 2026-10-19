@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   boxOn: { borderColor: theme.colour.accent, backgroundColor: theme.colour.accent },
-  tick: { color: theme.colour.background, fontSize: 15, fontWeight: '900' },
+  tick: { color: theme.colour.onAccent, fontSize: 15, fontWeight: '900' },
   ackBody: { flex: 1, gap: theme.spacing(0.75) },
   statement: {
     fontSize: theme.font.small,
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   primaryWaiting: { backgroundColor: theme.colour.surfaceRaised },
-  primaryText: { fontSize: theme.font.body, fontWeight: '700', color: theme.colour.background },
+  primaryText: { fontSize: theme.font.body, fontWeight: '700', color: theme.colour.onAccent },
   primaryWaitingText: { color: theme.colour.textFaint },
   footnote: { fontSize: theme.font.tiny, color: theme.colour.textFaint, textAlign: 'center' },
 });

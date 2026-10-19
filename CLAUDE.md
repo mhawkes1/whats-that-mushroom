@@ -618,3 +618,24 @@ commits.
   edibility verdict in the most-read text in the app, shown to every user
   before first use. `test_the_disclaimer_makes_no_inedibility_claim_either`
   now covers it across all eight service states.
+- **The palette went from near-black to paper on 2026-10-19, and inverting it
+  broke every primary button at once.** Screens wrote
+  `color: theme.colour.background` for the label on a filled gold button,
+  which was only ever correct because the background happened to be
+  near-black; on paper each one turned cream on cream. `onAccent` and
+  `onDisabled` now name the role instead of borrowing a colour. The same
+  inversion also made the *no-hazard* candidate stripe darker than a TOXIC
+  one — it fell through to `textMuted` — so the species the app has nothing
+  to say about was the loudest thing in the list. `app/test/theme.test.ts`
+  pins the emphasis ordering and the contrast ratios, including AAA (7:1)
+  for `danger` on every ground it appears on: the dark theme's `#e5484d`
+  reads at about 3:1 on paper, so the warning that matters most would have
+  been the hardest thing on the screen to read.
+- **Green is chrome, never a verdict.** `POSITIONING.md` kept green out of
+  the palette altogether because green is the colour of permission. The light
+  theme brings woodland greens back for the header ground and the
+  how-to-photograph advice, and bars them from anything that names a species
+  or states an outcome. A hue test in `theme.test.ts` fails on any new
+  palette colour that is dominantly green and not declared chrome, which is
+  how `confident` — a teal-green meaning "reasonably confident in the
+  identification" — was caught and replaced with slate blue.

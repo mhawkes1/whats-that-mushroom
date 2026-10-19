@@ -181,7 +181,7 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
         disabled={!photos.top}
         accessibilityRole="button"
       >
-        <Text style={styles.primaryText}>
+        <Text style={[styles.primaryText, !photos.top && styles.primaryTextDisabled]}>
           {photos.top ? 'Next — what did you see?' : 'Add the cap photo to start'}
         </Text>
       </Pressable>
@@ -293,10 +293,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   primaryDisabled: { backgroundColor: theme.colour.surfaceRaised },
+  // The disabled label needs its own colour: `primaryText` is the near-white
+  // that sits on a filled gold button, and on the pale disabled ground it
+  // vanishes completely.
+  primaryTextDisabled: { color: theme.colour.onDisabled },
   primaryText: {
     fontSize: theme.font.heading,
     fontWeight: '700',
-    color: theme.colour.background,
+    color: theme.colour.onAccent,
   },
   nudge: {
     fontSize: theme.font.small,
@@ -304,8 +308,11 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'center',
   },
+  // Advice about how to photograph, which states no outcome about any
+  // species -- so the woodland tint is safe here. A candidate row or a
+  // verdict card may never use it.
   tips: {
-    backgroundColor: theme.colour.surface,
+    backgroundColor: theme.colour.canopySurface,
     borderRadius: theme.radius.lg,
     padding: theme.spacing(2.5),
     gap: theme.spacing(1),

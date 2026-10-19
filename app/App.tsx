@@ -26,7 +26,7 @@ const Stack = createNativeStackNavigator();
 
 const navTheme = {
   ...DefaultTheme,
-  dark: true,
+  dark: false,
   colors: {
     ...DefaultTheme.colors,
     background: theme.colour.background,
@@ -85,7 +85,7 @@ export default function App() {
   if (decision === null) {
     return (
       <SafeAreaProvider>
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
         <View
           style={{
             flex: 1,
@@ -102,7 +102,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <NavigationContainer theme={navTheme}>
         <Stack.Navigator
           initialRouteName={decision === 'allow' ? 'Capture' : 'Consent'}
