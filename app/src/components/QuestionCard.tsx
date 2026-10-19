@@ -80,7 +80,15 @@ export function QuestionCard({
         ))}
       </View>
 
-      <Pressable onPress={() => onAnswer('')} disabled={disabled}>
+      <Pressable
+        onPress={() => onAnswer('')}
+        disabled={disabled}
+        accessibilityRole="button"
+        // Spelled out rather than left to the glyph-free label: "skip this"
+        // read aloud on its own does not say what is being skipped, and this
+        // is the control that keeps a user from guessing.
+        accessibilityLabel={`I can't tell. Skip the question about ${question.label.toLowerCase()}.`}
+      >
         <Text style={styles.skip}>I can't tell / skip this</Text>
       </Pressable>
     </View>

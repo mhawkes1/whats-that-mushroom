@@ -118,7 +118,11 @@ export function HistoryScreen({ navigation }: { navigation: any }) {
         <Text style={styles.empty}>
           The log stays on this phone. Nothing here is uploaded.
         </Text>
-        <Pressable style={styles.primary} onPress={() => navigation.navigate('Capture')}>
+        <Pressable
+          style={styles.primary}
+          onPress={() => navigation.navigate('Capture')}
+          accessibilityRole="button"
+        >
           <Text style={styles.primaryText}>Photograph something</Text>
         </Pressable>
       </ScrollView>

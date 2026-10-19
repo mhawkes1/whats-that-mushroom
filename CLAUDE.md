@@ -606,10 +606,17 @@ commits.
   `fullPage: true` stops at the viewport because React Native Web scrolls an
   inner container rather than the document, so the viewport has to be made
   tall enough for the whole screen and the result trimmed.
-- **31 `Pressable`s across the client carry no `accessibilityRole`**, among
-  them the primary action on the field-notes screen and every option chip. A
-  screen reader announces them as plain text. Found while driving the client;
-  not fixed, and worth doing before release.
+- **Every `Pressable` now declares an `accessibilityRole`**, and
+  `app/test/accessibility.test.ts` keeps it that way. Eleven of thirty-six
+  were missing one — the primary action on the field-notes screen, the
+  "I can't tell / skip this" control, and *every* control on the spore print
+  screen, which is the flow that asks a user for twelve hours. Without a role
+  the control is readable but not announced as activatable, and it is skipped
+  by element-type navigation.
+  **The first audit of this said 31, and that was wrong.** A regex scanning
+  to the first `>` ends the tag at the `>` inside `onPress={() => …}`, so it
+  reported controls that *do* declare a role. The test tracks brace depth.
+  Any future count of JSX attributes has the same trap in it.
 - **Rule 1 reaches the consent text, and a test did not.**
   `test_no_user_facing_path_makes_an_inedibility_claim` scans what `assess`
   returns, which is where `INEDIBLE` used to surface. It never read

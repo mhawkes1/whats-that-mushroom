@@ -172,7 +172,7 @@ export function SporePrintScreen({ navigation, route }: { navigation: any; route
           </Text>
         </View>
 
-        <Pressable style={styles.primary} onPress={begin}>
+        <Pressable style={styles.primary} onPress={begin} accessibilityRole="button">
           <Text style={styles.primaryText}>It's set up — start the timer</Text>
         </Pressable>
         <Text style={styles.footnote}>
@@ -200,7 +200,7 @@ export function SporePrintScreen({ navigation, route }: { navigation: any; route
           <Text style={styles.statusText}>{status?.summary}</Text>
         </View>
 
-        <Pressable style={styles.primary} onPress={capture}>
+        <Pressable style={styles.primary} onPress={capture} accessibilityRole="button">
           <Text style={styles.primaryText}>
             {early ? 'Look anyway' : 'Photograph the print'}
           </Text>
@@ -212,7 +212,13 @@ export function SporePrintScreen({ navigation, route }: { navigation: any; route
           </Text>
         ) : null}
 
-        <Pressable onPress={abandon}>
+        <Pressable
+          onPress={abandon}
+          accessibilityRole="button"
+          // "Start over" alone does not say what is lost. The wait is hours
+          // long, so discarding it by mistake costs the whole thing.
+          accessibilityLabel="Start over. Discards the print you are waiting on."
+        >
           <Text style={styles.abandon}>Start over</Text>
         </Pressable>
       </ScrollView>
@@ -252,10 +258,20 @@ export function SporePrintScreen({ navigation, route }: { navigation: any; route
       </Text>
 
       <View style={styles.row}>
-        <Pressable style={styles.secondary} onPress={() => setSwapped((s) => !s)}>
+        <Pressable
+          style={styles.secondary}
+          onPress={() => setSwapped((s) => !s)}
+          accessibilityRole="button"
+          accessibilityLabel="Swap the sample and white boxes"
+        >
           <Text style={styles.secondaryText}>Swap boxes</Text>
         </Pressable>
-        <Pressable style={styles.secondary} onPress={capture}>
+        <Pressable
+          style={styles.secondary}
+          onPress={capture}
+          accessibilityRole="button"
+          accessibilityLabel="Retake the photograph"
+        >
           <Text style={styles.secondaryText}>Retake</Text>
         </Pressable>
       </View>
@@ -263,7 +279,7 @@ export function SporePrintScreen({ navigation, route }: { navigation: any; route
       {busy ? (
         <ActivityIndicator color={theme.colour.accent} />
       ) : (
-        <Pressable style={styles.primary} onPress={read}>
+        <Pressable style={styles.primary} onPress={read} accessibilityRole="button">
           <Text style={styles.primaryText}>Read the colour</Text>
         </Pressable>
       )}
@@ -292,6 +308,16 @@ export function SporePrintScreen({ navigation, route }: { navigation: any; route
                   styles.optionSuggested,
               ]}
               onPress={() => accept(match.option)}
+              accessibilityRole="button"
+              // The suggestion is carried by a border, which a screen reader
+              // cannot see -- and this is the list where the app proposes and
+              // the person decides, so which one it proposed has to be
+              // audible or the proposal silently becomes a free choice.
+              accessibilityLabel={
+                reading.confident && match.option === reading.option
+                  ? `${match.option}. Suggested by the photograph. Check it yourself.`
+                  : match.option
+              }
             >
               <Text style={styles.optionText}>{match.option}</Text>
             </Pressable>

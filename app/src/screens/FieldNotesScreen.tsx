@@ -116,7 +116,11 @@ export function FieldNotesScreen({ navigation, route }: { navigation: any; route
     return (
       <View style={[styles.screen, styles.centred]}>
         <Text style={styles.error}>{loadError}</Text>
-        <Pressable style={styles.secondary} onPress={submit}>
+        <Pressable
+          style={styles.secondary}
+          onPress={submit}
+          accessibilityRole="button"
+        >
           <Text style={styles.secondaryText}>Identify from the photos alone</Text>
         </Pressable>
       </View>
@@ -179,7 +183,11 @@ export function FieldNotesScreen({ navigation, route }: { navigation: any; route
         </View>
       ) : (
         <View style={styles.actions}>
-          <Pressable style={styles.primary} onPress={submit}>
+          <Pressable
+            style={styles.primary}
+            onPress={submit}
+            accessibilityRole="button"
+          >
             <Text style={styles.primaryText}>
               {answered > 0
                 ? `Identify — with ${answered} note${answered === 1 ? '' : 's'}`
