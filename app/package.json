@@ -7,16 +7,17 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "web": "expo start --web"
   },
   "dependencies": {
     "@expo-google-fonts/fraunces": "^0.4.1",
-    "@react-native-async-storage/async-storage": "^3.1.1",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "expo": "~51.0.0",
     "expo-camera": "~15.0.0",
-    "expo-font": "^57.0.4",
+    "expo-font": "~12.0.10",
     "expo-image-picker": "~15.0.0",
     "expo-location": "~17.0.0",
     "expo-status-bar": "~1.12.0",
@@ -26,7 +27,10 @@
     "react-native-screens": "3.31.1"
   },
   "devDependencies": {
+    "@expo/metro-runtime": "~3.2.3",
     "@types/react": "~18.2.79",
+    "react-dom": "18.2.0",
+    "react-native-web": "~0.19.13",
     "typescript": "~5.3.3",
     "vitest": "^2.1.9"
   },

@@ -255,6 +255,53 @@ def test_field_notes_cannot_talk_the_safety_layer_into_naming_a_species():
         )
 
 
+def test_the_disclaimer_makes_no_inedibility_claim_either():
+    """Rule 1 applies to the consent text, not only to the safety layer.
+
+    The test above scans what `assess` returns, which is where the
+    `INEDIBLE` value used to surface. It does not reach the disclaimer --
+    and the disclaimer is read by every user before first use, which makes
+    it the *most* read text in the app.
+
+    Found by rendering the client for the first time on 2026-10-19. The
+    `never_asserts_edibility` acknowledgement still explained itself with
+    "the strongest thing it says about any species is that the risk has not
+    been assessed", which survived the September removal of `INEDIBLE` and
+    described a category the app no longer has. A soft verdict is still a
+    verdict, and this is the half of rule 1 that is easiest to leave behind.
+    """
+    import re
+
+    from app.disclaimer import build
+
+    claims = [
+        re.compile(r"\binedible\b"),
+        re.compile(r"\bnot assessed as safe\b"),
+        re.compile(r"\brisk has not been assessed\b"),
+        re.compile(r"\bunpalatable\b"),
+        re.compile(r"\bno_recorded_toxicity\b"),
+    ]
+
+    # Every combination of service state, because three statements are
+    # conditional on it and a claim could hide in any of them.
+    for model_loaded in (False, True):
+        for calibrated in (False, True):
+            for taxonomy_reviewed in (False, True):
+                disclaimer = build(
+                    model_loaded=model_loaded,
+                    calibrated=calibrated,
+                    taxonomy_reviewed=taxonomy_reviewed,
+                )
+                texts = [disclaimer.heading, disclaimer.body]
+                for ack in disclaimer.acknowledgements:
+                    texts += [ack.statement, ack.because]
+                for text in texts:
+                    for pattern in claims:
+                        assert not pattern.search(text.lower()), (
+                            f"inedibility claim in the disclaimer: {text!r}"
+                        )
+
+
 def test_no_user_facing_path_makes_an_inedibility_claim(layer, taxonomy):
     """The other direction of rule 1, and the newer half of it.
 

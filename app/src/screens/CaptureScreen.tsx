@@ -3,6 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import {
   Alert,
   Image,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -89,6 +90,17 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
 
   const chooseSource = useCallback(
     (slot: Slot) => {
+      // `Alert.alert` with buttons is native-only -- on web it is a no-op,
+      // which silently makes every photo slot dead and the app unusable in
+      // a browser. Found the first time the client was rendered, 2026-10-19.
+      //
+      // There is nothing to choose between on web anyway: the browser's own
+      // file picker offers the camera where the device has one, so the
+      // camera-or-library question is a native question.
+      if (Platform.OS === 'web') {
+        capture(slot, true);
+        return;
+      }
       Alert.alert('Add a photo', undefined, [
         { text: 'Take a photo', onPress: () => capture(slot, false) },
         { text: 'Choose from library', onPress: () => capture(slot, true) },

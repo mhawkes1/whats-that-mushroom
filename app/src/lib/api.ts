@@ -6,6 +6,8 @@
  * That is deliberate -- it makes the unsafe rendering the awkward one to write.
  */
 
+import { Platform } from 'react-native';
+
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8000';
 
 export type Verdict =
@@ -226,7 +228,24 @@ async function handle<T>(response: Response): Promise<T> {
   return (await response.json()) as T;
 }
 
-function appendPhoto(form: FormData, field: string, uri: string): void {
+async function appendPhoto(
+  form: FormData,
+  field: string,
+  uri: string,
+): Promise<void> {
+  // `{ uri, name, type }` is React Native's own extension to FormData, and
+  // it is what the native build must send -- the file never passes through
+  // JS there. A browser has no such extension: it stringifies the object to
+  // "[object Object]" and posts that, so the upload fails in a way the
+  // server reads as a malformed request rather than a missing file.
+  //
+  // Found the first time the client was rendered, 2026-10-19. On web the
+  // picker hands back a blob: or data: URI that fetch can read directly.
+  if (Platform.OS === 'web') {
+    const blob = await (await fetch(uri)).blob();
+    form.append(field, blob, `${field}.jpg`);
+    return;
+  }
   form.append(field, {
     uri,
     name: `${field}.jpg`,
@@ -243,9 +262,9 @@ export async function identify(
 
   // `image` is the top view. The name is historical -- it was the only
   // photograph the API took -- and is kept so a single-photo client still works.
-  appendPhoto(form, 'image', views.top);
-  if (views.side) appendPhoto(form, 'side', views.side);
-  if (views.underside) appendPhoto(form, 'underside', views.underside);
+  await appendPhoto(form, 'image', views.top);
+  if (views.side) await appendPhoto(form, 'side', views.side);
+  if (views.underside) await appendPhoto(form, 'underside', views.underside);
 
   if (context.month) form.append('month', String(context.month));
   if (context.latitude !== undefined) {
@@ -364,7 +383,7 @@ export async function matchSporePrint(
   white: Region,
 ): Promise<SporePrintReading> {
   const form = new FormData();
-  appendPhoto(form, 'image', imageUri);
+  await appendPhoto(form, 'image', imageUri);
   const asField = (r: Region) => `${r.x},${r.y},${r.width},${r.height}`;
   form.append('sample_region', asField(sample));
   form.append('white_region', asField(white));

@@ -71,8 +71,14 @@ CONSTANT: tuple[Acknowledgement, ...] = (
         key="never_asserts_edibility",
         statement="I understand this app will never tell me a mushroom is safe to eat.",
         because=(
-            "There is no such category in it. The strongest thing it says about "
-            "any species is that the risk has not been assessed."
+            # Not "the risk has not been assessed". That sentence survived the
+            # September removal of `INEDIBLE` and was describing a category
+            # the app no longer has -- a soft edibility verdict, which is the
+            # half of rule 1 that is easiest to leave behind. A species with
+            # no recorded hazard gets a name and nothing else.
+            "There is no such category in it. It names what it can and warns "
+            "about recorded hazards. Where there is no hazard on record it "
+            "says nothing at all, which is not the same as saying it is safe."
         ),
     ),
     Acknowledgement(
