@@ -34,6 +34,17 @@ log = logging.getLogger(__name__)
 GBIF_API = "https://api.gbif.org/v1"
 INATURALIST_DATASET_KEY = "50c9509d-22c7-4a22-a47d-8c48425ef4a7"
 
+# The Danish Mycological Society's records, published through GBIF by the
+# Natural History Museum of Denmark. Found with
+# /dataset/search?q=Danish+Mycological+Society.
+#
+# It exists here for the species iNaturalist declines to identify to, and
+# it is a better answer for them than `any` was. Its determinations carry a
+# published verification process -- peer agreement weighted by each
+# recorder's track record, then confirmation by the atlas's own experts --
+# where `any` means arbitrary datasets with no stated standard at all.
+DANISH_ATLAS_DATASET_KEY = "84d26682-f762-11e1-a439-00145eb45e9a"
+
 # Licences we will redistribute a derived model from. Deliberately excludes
 # ND (no-derivatives) and anything unstated.
 ACCEPTED_LICENCES = {
@@ -63,11 +74,21 @@ def _session() -> requests.Session:
 
 
 # What `image_source` on a species means. The default restricts to
-# iNaturalist, whose export is research-grade by publication policy. "any"
-# lifts that restriction for a species iNaturalist does not cover, and the
-# manifest records which dataset every image came from so the difference
-# stays visible downstream rather than being averaged away.
-IMAGE_SOURCES = {"inaturalist": INATURALIST_DATASET_KEY, "any": None}
+# iNaturalist, whose export is research-grade by publication policy.
+# "danish_atlas" names a second curated dataset for the species
+# iNaturalist carries only as complexes and so never identifies to; it is a
+# restriction, not a widening, and it is the right answer for those species
+# rather than a compromise. "any" lifts the restriction entirely and is a
+# last resort: it means arbitrary datasets, arbitrary hosts and no stated
+# determination standard.
+#
+# The manifest records which dataset every image came from, so the
+# difference stays visible downstream rather than being averaged away.
+IMAGE_SOURCES = {
+    "inaturalist": INATURALIST_DATASET_KEY,
+    "danish_atlas": DANISH_ATLAS_DATASET_KEY,
+    "any": None,
+}
 
 
 @dataclass
@@ -77,6 +98,10 @@ class SpeciesQuota:
     gbif_key: int
     target: int
     dataset_key: str | None = INATURALIST_DATASET_KEY
+    # The `image_source` name this quota came from. Carried so the run log
+    # can name the source rather than inferring "not iNaturalist" from a
+    # null key, which stopped being true once there was a third source.
+    source: str = "inaturalist"
 
 
 # A match below this confidence is not trusted without a human looking at it.
@@ -281,6 +306,28 @@ def _licence_accepted(raw: str | None) -> bool:
 REJECTED_VERIFICATION = frozenset({"needs id", "casual", "unverified", "unconfirmed"})
 
 
+def _attribution(occ: dict, media: dict) -> str | None:
+    """Who the licence requires us to credit for this image.
+
+    Every accepted licence except CC0 carries an attribution condition, so
+    losing this is a compliance failure rather than a missing nice-to-have.
+
+    iNaturalist sets `rightsHolder` on the occurrence. The Danish atlas
+    does not -- it is null on every record sampled -- and names the
+    photographer on the *media* record instead, as `rightsHolder` and
+    `creator`. Reading only the occurrence would have filed 1,995 CC BY-NC
+    images with nobody to credit.
+    """
+    for candidate in (
+        media.get("rightsHolder"),
+        media.get("creator"),
+        occ.get("rightsHolder"),
+    ):
+        if candidate and str(candidate).strip():
+            return str(candidate).strip()
+    return None
+
+
 def _research_grade(occ: dict) -> bool:
     """Reject a record that explicitly declares a sub-research grade.
 
@@ -400,7 +447,7 @@ def build_manifest(
                             "image_url": url,
                             "dataset_key": occ.get("datasetKey"),
                             "licence": occ.get("license"),
-                            "rights_holder": occ.get("rightsHolder"),
+                            "rights_holder": _attribution(occ, media),
                             "latitude": occ.get("decimalLatitude"),
                             "longitude": occ.get("decimalLongitude"),
                             "month": occ.get("month"),
@@ -426,7 +473,7 @@ def build_manifest(
             quota.key,
             collected,
             len(by_observation),
-            "" if quota.dataset_key else "  [any dataset -- not iNaturalist]",
+            "" if quota.source == "inaturalist" else f"  [source: {quota.source}]",
         )
 
     frame = pd.DataFrame(rows)
@@ -684,6 +731,7 @@ def load_quotas(
                 gbif_key=match.usage_key,
                 target=target_per_species,
                 dataset_key=IMAGE_SOURCES[source],
+                source=source,
             )
         )
 

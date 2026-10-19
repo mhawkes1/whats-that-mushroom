@@ -161,6 +161,29 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   sinuatum*, against 38–171 globally; *Amanita phalloides* 309 vs 8,617; 52
   species below `--min-images 40`. A death cap photographed in France is the
   same fungus, and the geographic prior comes from the metadata branch.
+- **`image_source: "danish_atlas"` replaced `"any"` for three species on
+  2026-10-19, and it is a *restriction*, not a widening.** *Lepista nuda*
+  (1,142 Danish images against 0 on iNaturalist), *Clitocybe rivulosa* (329,
+  DEADLY) and *Amanita vaginata* (227). The photographs were already coming
+  from the Danish atlas -- `any` reached them by dropping the dataset filter
+  entirely, so they arrived with no stated determination standard attached.
+  Naming the dataset recovers one: the Danish Mycological Society publishes a
+  verification process (peer agreement weighted by recorder track record, then
+  confirmation by the atlas's experts), which is more than `any` ever had.
+  *Exidia thuretiana* and *Neoboletus luridiformis* have zero images there too
+  and stay on `any`; neither is dangerous, and a test now asserts no DEADLY or
+  SERIOUS species is left on an unnamed source.
+- **A null `dataset_key` no longer means "not iNaturalist".** It means `any`.
+  `SpeciesQuota.source` carries the name, because `if quota.dataset_key` cannot
+  tell a third named source from no source at all -- the run log had been
+  inferring exactly that.
+- **The Danish records put the photographer one level down, and CC BY-NC needs
+  a credit.** Their occurrence `rightsHolder` is null on every record sampled;
+  the name is on the *media* record as `rightsHolder` and `creator`. Reading
+  only the occurrence, as the code did, filed 1,995 CC BY-NC images with nobody
+  to credit -- a licence breach rather than a cosmetic gap. `_attribution`
+  falls back media-then-occurrence and returns None rather than an empty
+  string, so a genuinely missing credit stays visible in the manifest.
 - **`image_source` is per species, and defaults to iNaturalist.**
   *Clitocybe rivulosa* has 11,661 GBIF occurrences and 1,068 with images and
   **zero** in the iNaturalist dataset — iNat observers do not identify to it.

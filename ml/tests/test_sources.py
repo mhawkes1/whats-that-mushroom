@@ -22,6 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from fungi_ml.data.sources import (  # noqa: E402
     CollidingTaxonKeys,
+    DANISH_ATLAS_DATASET_KEY,
     INATURALIST_DATASET_KEY,
     MIN_MATCH_CONFIDENCE,
     RESEARCH_GRADE,
@@ -184,6 +185,93 @@ def test_image_source_any_lifts_the_dataset_restriction(tmp_path):
     quotas = {q.key: q for q in load_quotas(path, 100, session=StubSession())}
     assert quotas["clitocybe-rivulosa"].dataset_key is None
     assert quotas["amanita-phalloides"].dataset_key == INATURALIST_DATASET_KEY
+
+
+def test_the_danish_atlas_is_a_restriction_not_a_widening(tmp_path):
+    """The species iNaturalist will not identify to get a named source.
+
+    *Lepista nuda*, *Clitocybe rivulosa* and *Amanita vaginata* have zero
+    images in iNaturalist's GBIF export, because iNaturalist carries them
+    as complexes with no species-rank record to publish. They had
+    `image_source: "any"`, which dropped the dataset filter entirely and
+    in practice fetched them from the Danish atlas anyway -- so the
+    photographs arrived with no stated determination standard attached to
+    them.
+
+    Naming the dataset recovers one. The distinction matters in the type
+    system, not only in prose: "any" is a null key, so a check written as
+    `if quota.dataset_key` cannot tell the two apart.
+    """
+    path = seed_taxonomy(
+        tmp_path,
+        [
+            {"key": "clitocybe-rivulosa", "scientific_name": "Clitocybe rivulosa",
+             "toxicity": "DEADLY", "gbif_key": 2531052,
+             "image_source": "danish_atlas"},
+            {"key": "exidia-thuretiana", "scientific_name": "Exidia thuretiana",
+             "toxicity": "NO_RECORDED_TOXICITY", "gbif_key": 2553600,
+             "image_source": "any"},
+            {"key": "amanita-phalloides", "scientific_name": "Amanita phalloides",
+             "toxicity": "DEADLY", "gbif_key": 5240325},
+        ],
+    )
+    quotas = {q.key: q for q in load_quotas(path, 100, session=StubSession())}
+
+    assert quotas["clitocybe-rivulosa"].dataset_key == DANISH_ATLAS_DATASET_KEY
+    assert quotas["clitocybe-rivulosa"].source == "danish_atlas"
+    assert quotas["exidia-thuretiana"].dataset_key is None
+    assert quotas["amanita-phalloides"].dataset_key == INATURALIST_DATASET_KEY
+
+
+def test_no_dangerous_species_is_left_on_an_unnamed_source(tmp_path):
+    """A DEADLY species' images must come from somewhere that can be named.
+
+    `any` means arbitrary datasets and arbitrary hosts. For a species that
+    can kill, the model's whole training signal for it would then rest on
+    determinations nobody has described. This asserts against the real
+    taxonomy, not a fixture.
+    """
+    import json
+
+    taxonomy = json.loads(
+        (Path(__file__).resolve().parents[2] / "data" / "taxonomy.seed.json").read_text()
+    )
+    stranded = [
+        sp["scientific_name"]
+        for sp in taxonomy["species"]
+        if sp.get("image_source") == "any"
+        and sp["toxicity"] in {"DEADLY", "SERIOUS"}
+    ]
+    assert not stranded, (
+        "dangerous species sourced from an unnamed dataset: " + ", ".join(stranded)
+    )
+
+
+def test_attribution_falls_back_to_the_media_record(tmp_path):
+    """CC BY-NC requires a credit, and the Danish records hide it one level down.
+
+    Their occurrence `rightsHolder` is null on every record sampled; the
+    photographer is on the media record. Reading only the occurrence filed
+    the image with nobody to credit, which is a licence breach rather than
+    a cosmetic gap.
+    """
+    from fungi_ml.data.sources import _attribution
+
+    danish = ({"rightsHolder": None},
+              {"rightsHolder": "Maria Pedersen", "creator": "Maria Pedersen"})
+    assert _attribution(*danish) == "Maria Pedersen"
+
+    # Only a creator, which some records carry instead.
+    assert _attribution({"rightsHolder": None}, {"creator": "A Photographer"}) == (
+        "A Photographer"
+    )
+    # iNaturalist's shape is unchanged: the occurrence still wins when the
+    # media record says nothing.
+    assert _attribution({"rightsHolder": "Chuck Wilson"}, {}) == "Chuck Wilson"
+    # Nothing anywhere stays None rather than becoming an empty string,
+    # so a missing credit is visible in the manifest.
+    assert _attribution({}, {}) is None
+    assert _attribution({"rightsHolder": "   "}, {"creator": ""}) is None
 
 
 def test_an_unknown_image_source_is_refused(tmp_path):
