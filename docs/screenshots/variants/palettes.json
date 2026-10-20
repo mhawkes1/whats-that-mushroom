@@ -1,0 +1,20 @@
+{
+  "A-birch": {
+    "background": "#fbfaf5", "surface": "#ffffff", "surfaceRaised": "#f1f3ea",
+    "border": "#dfe3d4", "canopySurface": "#e7eedd", "canopy": "#3f5d37",
+    "lichen": "#9bae86", "danger": "#941613", "dangerSurface": "#fceceb",
+    "caution": "#7d5206", "cautionSurface": "#fcf3de"
+  },
+  "B-moss": {
+    "background": "#eef2e6", "surface": "#fcfdf9", "surfaceRaised": "#e2e9d6",
+    "border": "#cbd6b8", "canopySurface": "#dde7cd", "canopy": "#3a5a31",
+    "lichen": "#8aa06f", "danger": "#8d1310", "dangerSurface": "#f8e7e4",
+    "caution": "#704a05", "cautionSurface": "#f6eed6"
+  },
+  "C-fern": {
+    "background": "#e4ecd9", "surface": "#f7faf1", "surfaceRaised": "#d6e2c4",
+    "border": "#c3d1ae", "canopySurface": "#d7e4c7", "canopy": "#2f4d28",
+    "lichen": "#7d9460", "danger": "#85100e", "dangerSurface": "#f5e4e1",
+    "caution": "#674404", "cautionSurface": "#f1e9cf"
+  }
+}
