@@ -1,0 +1,158 @@
+"""The config file and the code must agree, in both directions.
+
+Audited on 2026-10-19, before the first paid GPU run. Nine keys in
+`default.yaml` were read by nobody, and two keys the code *does* read were
+not in the file at all -- one of them `risk_strength`, which is what makes
+this model different from an ordinary classifier.
+
+Both failures are quiet. A dead key reads as a decision somebody made:
+`mixup_alpha: 0.2` sat there for months while the training loop used hard
+targets throughout, so anyone reading the file would conclude the model had
+seen augmentation it has never seen. An undeclared key is worse in the
+other direction -- it has a default buried in `train.py` and nobody tuning
+a run ever sees it.
+
+Neither is caught by a run completing successfully, which is exactly why
+this is a test and not a code review.
+"""
+
+from __future__ import annotations
+
+import re
+from pathlib import Path
+
+import pytest
+import yaml
+
+ROOT = Path(__file__).resolve().parents[2]
+CONFIG = ROOT / "ml" / "configs" / "default.yaml"
+PACKAGE = ROOT / "ml" / "fungi_ml"
+
+
+def _flatten(d: dict, prefix: str = "") -> dict[str, object]:
+    out: dict[str, object] = {}
+    for key, value in d.items():
+        if isinstance(value, dict):
+            out.update(_flatten(value, f"{prefix}{key}."))
+        else:
+            out[f"{prefix}{key}"] = value
+    return out
+
+
+@pytest.fixture(scope="module")
+def config() -> dict[str, object]:
+    return _flatten(yaml.safe_load(CONFIG.read_text()))
+
+
+@pytest.fixture(scope="module")
+def source() -> str:
+    return "\n".join(p.read_text() for p in sorted(PACKAGE.rglob("*.py")))
+
+
+# Keys that are in the file on purpose while nothing reads them. Each needs
+# a reason, and the reason has to be that the *value* is informative even
+# though the code ignores it. Ten keys were dead when this was written; these
+# two are what survived the clear-out.
+DECLARED_BUT_UNREAD = {
+    "train.mixup_alpha": (
+        "Declared 0.0 to state that no mixup is applied. `SoftTargetRiskLoss` "
+        "is written and nothing calls it, so a non-zero value here would be a "
+        "claim about how the model was trained that is not true."
+    ),
+    "train.cutmix_alpha": (
+        "Same reason as mixup_alpha: declared 0.0 so the file states that no "
+        "CutMix is applied, rather than implying augmentation the training "
+        "loop has never performed."
+    ),
+}
+
+
+def test_every_config_key_is_read_by_something(config, source):
+    """No key may sit in the file doing nothing unexplained.
+
+    Matched on the quoted leaf, which is how the code reads them:
+    `config["train"]["epochs"]`. A loose check -- it cannot tell `"epochs"`
+    in a config lookup from `"epochs"` in a log string -- and tight enough
+    to have caught all ten, including `eval.topk`, which matched the
+    evaluator's own default by coincidence rather than by wiring.
+    """
+    dead = [
+        key
+        for key in config
+        if key not in DECLARED_BUT_UNREAD
+        and not re.search(rf'["\']{re.escape(key.split(".")[-1])}["\']', source)
+    ]
+    assert dead == [], (
+        "config keys nothing reads -- implement them, delete them, or add "
+        "them to DECLARED_BUT_UNREAD with a reason. A dead setting reads as "
+        f"a decision somebody made: {dead}"
+    )
+
+
+def test_the_allowlist_has_not_become_a_dumping_ground(config):
+    """Every exemption must still be a key, and must still carry a reason.
+
+    An allowlist entry for a key that has since been deleted is a comment
+    nobody will read; one with an empty reason is the habit this test exists
+    to prevent.
+    """
+    for key, reason in DECLARED_BUT_UNREAD.items():
+        assert key in config, f"{key} is exempted but no longer in the config"
+        assert len(reason) > 20, f"{key} is exempted without a real reason"
+
+
+@pytest.mark.parametrize(
+    "key",
+    [
+        "data.taxonomy",
+        "train.risk_strength",
+        "train.epochs",
+        "train.batch_size",
+        "data.image_size",
+        "output.dir",
+    ],
+)
+def test_keys_the_trainer_reads_are_declared(config, key):
+    """Specifically the two that were missing, plus the obvious ones.
+
+    `train.py` reads `data.taxonomy` and `train.risk_strength` through
+    `.get()` with a fallback, so the run works without them and nobody
+    notices they are tunable.
+    """
+    assert key in config, f"{key} is read by train.py but absent from the config"
+
+
+def test_risk_strength_is_on(config):
+    """Rule 6, at the level of the file that configures the run.
+
+    0 trains an ordinary accuracy-seeking classifier. That is a legitimate
+    ablation and must never be what `default.yaml` ships.
+    """
+    assert float(config["train.risk_strength"]) > 0
+
+
+def test_mixup_is_declared_off_rather_than_declared_and_ignored(config):
+    """`SoftTargetRiskLoss` exists; nothing calls it.
+
+    Until the training loop applies mixup, a non-zero alpha here is a lie
+    about how the model was trained. If someone wires it up, this test
+    should be deleted in the same commit -- not before.
+    """
+    source = (PACKAGE / "train.py").read_text()
+    wired = "mixup" in source.lower()
+    if not wired:
+        assert float(config["train.mixup_alpha"]) == 0.0
+        assert float(config["train.cutmix_alpha"]) == 0.0
+
+
+def test_checkpoint_selection_is_on_risk_not_accuracy():
+    """Rule 6 itself, read off the training loop.
+
+    The config no longer offers `save_top_k`, because a top-k selected on
+    the wrong metric is a footgun rather than a feature. This asserts the
+    metric the loop actually keeps.
+    """
+    source = (PACKAGE / "train.py").read_text()
+    assert "best_risk" in source
+    assert 'metrics["risk"]' in source
+    assert not re.search(r"best_acc|best_accuracy|metrics\[.accuracy.\]", source)

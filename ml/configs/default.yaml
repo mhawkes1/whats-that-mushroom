@@ -2,25 +2,33 @@
 #
 # Defaults target a single 24GB GPU (A10G / 3090 / 4090). Reduce batch_size
 # and enable grad_accum_steps to fit smaller cards.
+#
+# Audited against the code on 2026-10-19, before the first paid GPU run.
+# Nine keys were being read by nobody and two the code reads were not
+# declared here at all. `ml/tests/test_config.py` now checks both
+# directions, because a setting that silently does nothing is worse than a
+# missing one: it reads as a decision somebody made.
 
 data:
-  # Directory produced by `python -m fungi_ml.data.prepare`
-  root: data/processed
   manifest: data/processed/manifest.parquet
   label_map: data/processed/labels.json
+  # Relative to the working directory, and the documented command is run
+  # from `ml/`. Read by train.py, which falls back to this same value.
+  taxonomy: ../data/taxonomy.seed.json
   image_size: 384
-  # Species with fewer than this many usable images are dropped. Fungi datasets
-  # have a brutal long tail; training on 3-image classes produces confident
-  # nonsense, which is the one failure mode this project cannot tolerate.
-  min_images_per_class: 40
-  # Cap to stop Agaricus/Amanita from dominating the loss.
-  max_images_per_class: 1200
-  val_fraction: 0.10
-  test_fraction: 0.10
-  # Observations (not images) are split. The same fruiting body photographed
-  # five times must never straddle train and val, or metrics are fiction.
-  split_on: observation_id
   num_workers: 8
+
+  # NOTE: class filtering and the train/val/test split are decided in
+  # `python -m fungi_ml.data.prepare`, not here -- it writes the manifest
+  # this file then consumes, and it takes its own `--min-images`,
+  # `--max-images`, `--val-fraction` and `--test-fraction` flags (defaults
+  # 40, 1200, 0.10, 0.10). Those keys used to be duplicated into this file,
+  # where they did nothing. They matched prepare's defaults, so the mirror
+  # was invisible; editing one here would silently have had no effect.
+  #
+  # Splitting is on `observation_id` unconditionally and is not a setting.
+  # The same fruiting body photographed five times must never straddle
+  # train and val, so there is no option to turn it off.
 
 model:
   # timm identifier. vit_base_patch16_384 and convnext_base are the two that
@@ -40,8 +48,6 @@ train:
   weight_decay: 0.05
   warmup_epochs: 2
   label_smoothing: 0.1
-  mixup_alpha: 0.2
-  cutmix_alpha: 1.0
   amp: true
   ema_decay: 0.9998
   clip_grad_norm: 1.0
@@ -49,14 +55,40 @@ train:
   balanced_sampling: true
   seed: 1337
 
+  # How hard the risk matrix pulls. This is the single most consequential
+  # number in the file -- it is what makes confusing a death cap for a field
+  # mushroom cost more than confusing two brittlegills -- and until
+  # 2026-10-19 it was not in the file at all: `train.py` read it with a
+  # default of 1.0, so anyone tuning a run never saw it. 0 disables the
+  # weighting entirely and trains an ordinary classifier, which is not a
+  # thing this project should ship but is a useful ablation to have.
+  risk_strength: 1.0
+
+  # Mixup and CutMix are NOT applied. `losses.SoftTargetRiskLoss` is written
+  # and ready for them, and nothing in `train.py` calls it -- the loop uses
+  # hard targets throughout. These keys sat at 0.2 and 1.0 and did nothing,
+  # which is worse than absent: a reader would reasonably conclude the model
+  # was trained with augmentation it has never seen. Left at 0 and named so
+  # the file tells the truth; wiring them up is a change to make between
+  # runs and measure, not one to smuggle into the first one.
+  mixup_alpha: 0.0
+  cutmix_alpha: 0.0
+
 eval:
-  topk: [1, 3, 5]
-  # Genus-level accuracy matters more than species for real-world usefulness.
-  report_genus_accuracy: true
-  # Any confusion between these pairs is reported separately and loudly.
-  report_dangerous_confusions: true
+  # NOTE: nothing here is configurable, and `topk: [1, 3, 5]` used to sit in
+  # this block looking as though it were. `evaluate.py` takes `topk` as a
+  # function default of (1, 3, 5) and no caller passes the config value, so
+  # the list matched by coincidence rather than by wiring.
+  #
+  # Genus accuracy and dangerous confusions are reported
+  # unconditionally -- they were flags here too, and turning them off was
+  # never possible. Rule 6 is why: a model card without per-dangerous-pair
+  # counts is not a model card for this project.
+  {}
 
 output:
   dir: runs/baseline
-  save_top_k: 2
-  tensorboard: true
+  # NOTE: checkpointing is not configurable. `train.py` keeps one `best.pt`,
+  # selected on validation **risk** rather than accuracy -- rule 6, and the
+  # reason `save_top_k` has gone: a top-k on the wrong metric is a footgun.
+  # There is no TensorBoard writer either; `tensorboard: true` did nothing.

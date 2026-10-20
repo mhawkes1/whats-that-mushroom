@@ -697,3 +697,28 @@ commits.
   `gbif_key` as the ivory funnels were, or leave it. Neither is dangerous, so
   it is data honesty rather than safety. `docs/SPECIES.md` asks for a view on
   it under "Names the nomenclators have moved".
+- **The training config had ten keys nothing read, and was missing two the
+  code does.** Audited 2026-10-19 before the first paid GPU run;
+  `ml/tests/test_config.py` now checks both directions, because neither
+  failure shows up in a run that completes successfully.
+  The misleading ones: `mixup_alpha: 0.2` and `cutmix_alpha: 1.0` sat there
+  for months while the training loop used hard targets throughout, so anyone
+  reading the file would conclude the model had seen augmentation it has
+  never seen — `losses.SoftTargetRiskLoss` is written and **nothing calls
+  it**. They are 0.0 now, with the allowlist in the test carrying the reason.
+  The duplicated ones: `min_images_per_class`, `max_images_per_class`,
+  `val_fraction`, `test_fraction` and `split_on` are decided by
+  `fungi_ml.data.prepare`'s own CLI flags, not here. The values matched
+  prepare's defaults, so the mirror was invisible — editing one here would
+  silently have had no effect. `eval.topk` was the same trick:
+  `evaluate.py` takes `(1, 3, 5)` as a function default and no caller passes
+  the config value.
+  **The two that were missing matter more.** `train.risk_strength` is what
+  makes the model different from an ordinary classifier, and `train.py` read
+  it with a `.get(..., 1.0)` fallback, so nobody tuning a run ever saw it.
+  `data.taxonomy` likewise, defaulting to a relative `../data/...` that only
+  resolves because the documented command is run from `ml/`.
+- **Checkpoint selection really is on risk, not accuracy.** `best_risk` /
+  `metrics["risk"]` in `train.py`, asserted by a test that also refuses
+  `best_acc`. `output.save_top_k` was removed rather than implemented: a
+  top-k selected on the wrong metric is a footgun, not a feature.
