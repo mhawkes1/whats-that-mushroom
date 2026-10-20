@@ -1,0 +1,42 @@
+[
+  [
+    "a-big-stipple",
+    "Big Stipple",
+    "The original idea with far fewer, far larger dots, and the fade starting at 36%. Seven countable columns rather than a gradient."
+  ],
+  [
+    "b-blocks",
+    "Blocks",
+    "A pixel dissolve. Hard edges survive scaling in a way soft ones never do, and squares read as data rather than as decay."
+  ],
+  [
+    "c-slices",
+    "Slices",
+    "Vertical bars thinning to nothing. The simplest dissolve there is, and the likeliest to still work at 29&nbsp;px."
+  ],
+  [
+    "d-gill-slices",
+    "Gill Slices",
+    "The dissolve follows gills radiating from the stem, so it is the same mushroom losing its gills rather than an arbitrary left-to-right fade. Joins this idea to the other one you liked."
+  ],
+  [
+    "e-stepped",
+    "Stepped",
+    "Three flat zones: solid, half, sparse. No gradient anywhere, and the most mechanically robust of the eight."
+  ],
+  [
+    "f-outline",
+    "Outline",
+    "Solid, and then the shape persists only as a dashed line. The most elegant and the most fragile."
+  ],
+  [
+    "g-bands",
+    "Bands",
+    "Horizontal strips of decreasing length &mdash; a mushroom coming apart line by line, like a print that only half developed."
+  ],
+  [
+    "h-top-down",
+    "Top Down",
+    "Cap and stem solid, the base coming apart. The uncertainty is where it really is &mdash; the base is where the volva is, and the part most people leave in the ground. The falling dots read as spores, which was an accident and is worth keeping."
+  ]
+]

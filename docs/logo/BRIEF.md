@@ -84,3 +84,40 @@ On green: a *bright* green mushroom icon says "natural, wholesome, safe", which
 is the opposite of this product's position. A deep forest green behind a cream
 mark does not — it reads as woodland at dusk. That is the distinction to hold
 if the forest route is taken.
+
+---
+
+# Round three — `round3/`, developing Half Known
+
+Martin asked for more on the dissolving mushroom, with the fade starting
+earlier. Eight treatments in `sheet.png`; `build.py` generates them and
+`sheet.py` lays them out, reading the SVGs fresh each time.
+
+## Why round one failed, which is the whole of the fix
+
+The first Half Known used a **smooth** gradient of small dots, and a smooth
+gradient is exactly what scaling destroys: below 48 px every dot fell under a
+pixel and the right-hand side turned to grey mush.
+
+Everything here is **discrete** — a countable number of columns, blocks, bars
+or zones. Shrinking it then loses *detail* rather than turning to noise. The
+fade also starts at about **36% across** instead of 55%, so the mushroom is
+coming apart almost as soon as you have read it.
+
+## Ranking, by whether it survives 29 px
+
+| | Verdict |
+| --- | --- |
+| **Slices** | **The one that works.** Vertical bars thinning out. Still legible at 29 px as a mushroom with stripes, and the simplest thing here |
+| **Gill Slices** | Second. The dissolve follows gills radiating from the stem, so it is this mushroom losing *its gills* rather than an arbitrary fade — it joins Half Known to the other direction Martin liked. Needed the stem kept solid; without it the fan read as a wing |
+| **Blocks** | A pixel dissolve. Noisy at 29 but the silhouette holds. Squares read as *data* rather than decay, which is closer to what the app does |
+| **Big Stipple** / **Stepped** | Both fine to 48 px and soft below it. Stepped is the cleaner of the two |
+| **Top Down** | **The best idea here.** Cap and stem solid, the base coming apart — which puts the uncertainty where it really is, since the base is where the volva is and the part most people leave in the ground. The falling dots also read as *spores*, which was an accident and ties this mark to the spore-print idea. Soft at 29 |
+| **Bands** | The stem disappears into the strips. Drop it |
+| **Outline** | Dies at 29 px, exactly as predicted. Beautiful at large sizes and not an app icon |
+
+## What I would do
+
+**Slices** if the icon has to work everywhere, **Top Down** if the mark should
+mean something — and a designer could probably make Top Down survive small by
+reducing it to three or four much larger spores.
