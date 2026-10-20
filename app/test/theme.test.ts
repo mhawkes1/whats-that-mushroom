@@ -1,3 +1,6 @@
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { describe, expect, it } from 'vitest';
 
 import { theme } from '../src/lib/theme';
@@ -150,5 +153,52 @@ describe('hazard emphasis is ordered', () => {
 
   it('a row with no hazard barely marks the page at all', () => {
     expect(weight(theme.colour.border)).toBeLessThan(1.6);
+  });
+});
+
+describe('the palette is the only place colours live', () => {
+  /**
+   * The point of this one is that changing the colour scheme must be a
+   * one-file job. It is the question Martin asked on 2026-10-20 — can the
+   * palette still be changed later — and the honest answer depended on
+   * this being true.
+   *
+   * It was not quite. `SporePrintScreen` set a label's background to a
+   * hardcoded `rgba(0,0,0,0.6)` with `theme.colour.text` on top. That read
+   * correctly while the palette was near-black and became near-black ink on
+   * a near-black scrim the moment it went to paper — invisible, on the
+   * labels that tell a user which box holds the spore deposit and which
+   * holds the white card.
+   *
+   * The contrast tests above could not catch it, because the background was
+   * not a token. This catches the shape of the mistake instead.
+   */
+  const SRC = join(__dirname, '..', 'src');
+
+  function sources(dir: string): string[] {
+    return readdirSync(dir).flatMap((entry) => {
+      const path = join(dir, entry);
+      if (statSync(path).isDirectory()) return sources(path);
+      return /\.tsx?$/.test(path) && !path.endsWith('theme.ts') ? [path] : [];
+    });
+  }
+
+  it.each(sources(SRC).map((f) => [f.slice(f.indexOf('src')), f]))(
+    '%s names no colour of its own',
+    (_label, path) => {
+      const code = readFileSync(path, 'utf8')
+        // Comments may discuss a hex value; code may not use one.
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/^\s*\/\/.*$/gm, '');
+      const literals = code.match(/#[0-9a-fA-F]{3,8}\b|\brgba?\([^)]*\)/g) ?? [];
+      expect(literals, `define it in theme.ts instead: ${literals}`).toEqual([]);
+    },
+  );
+
+  it('a scrim over a photograph takes light text, never body text', () => {
+    // The photograph underneath is not themed, so the scrim stays dark in
+    // every palette and `text` is the wrong colour on it in any of them.
+    expect(contrast(theme.colour.onAccent, '#000000')).toBeGreaterThanOrEqual(7);
+    expect(contrast(theme.colour.text, '#000000')).toBeLessThan(3);
   });
 });

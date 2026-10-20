@@ -62,6 +62,12 @@ export const theme = {
     // And the label on a control that is present but not yet usable.
     onDisabled: '#8a8173',
 
+    // A dim laid over a *photograph*, so a label can be read against
+    // whatever the user happened to photograph. It stays dark in any
+    // palette -- the thing underneath is not themed -- which is why text on
+    // it must be `onAccent` and never `text`.
+    photoScrim: 'rgba(0, 0, 0, 0.62)',
+
     // Woodland chrome. Structural only -- see the note above.
     canopy: '#3f5d37',
     lichen: '#8fa07a',

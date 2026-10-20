@@ -722,3 +722,15 @@ commits.
   `metrics["risk"]` in `train.py`, asserted by a test that also refuses
   `best_acc`. `output.save_top_k` was removed rather than implemented: a
   top-k selected on the wrong metric is a footgun, not a feature.
+- **A colour that is not a token escapes every contrast test.**
+  `SporePrintScreen` set a patch label's background to a hardcoded
+  `rgba(0,0,0,0.6)` with `theme.colour.text` on top. Correct while the
+  palette was near-black; near-black ink on a near-black scrim the moment it
+  went to paper — invisible, on the labels telling a user which box holds the
+  spore deposit and which holds the white card. `theme.test.ts` now fails on
+  any colour literal outside `theme.ts`, which is the only way the palette
+  stays a one-file change.
+- **`photoScrim` is dark in every palette, because what is under it is not
+  themed.** It dims a user's photograph so a label can be read against
+  whatever they happened to photograph, so text on it is `onAccent` and never
+  `text` — asserted, in both directions.

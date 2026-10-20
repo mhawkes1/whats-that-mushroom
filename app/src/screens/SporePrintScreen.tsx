@@ -386,10 +386,15 @@ const styles = StyleSheet.create({
   patch: { position: 'absolute', borderWidth: 2, borderRadius: 4, justifyContent: 'flex-end' },
   depositPatch: { borderColor: theme.colour.accent },
   cardPatch: { borderColor: theme.colour.confident },
+  // Sits on a dark scrim over the user's photograph, so the label colour
+  // must be the light one. It was `theme.colour.text` on a hardcoded
+  // rgba black: correct while the palette was dark and near-black on
+  // near-black the moment it went to paper. The contrast tests did not
+  // catch it because the background was not a token.
   patchLabel: {
     fontSize: theme.font.tiny,
-    color: theme.colour.text,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    color: theme.colour.onAccent,
+    backgroundColor: theme.colour.photoScrim,
     textAlign: 'center',
   },
   row: { flexDirection: 'row', gap: theme.spacing(1.5) },
