@@ -1,0 +1,82 @@
+{
+  "marks": [
+    [
+      "gill-rose",
+      "Gill Rose",
+      "Round one's strongest, unchanged. The reference point for the rest."
+    ],
+    [
+      "gill-ring",
+      "Gill Ring",
+      "The same idea made geometric: an open ring, twelve gills, no centre. Colder and more logo-like."
+    ],
+    [
+      "gill-cap",
+      "Gill Cap",
+      "A whole mushroom with the gills knocked out of the cap. Both of the things you liked, in one mark."
+    ],
+    [
+      "toothed",
+      "Toothed",
+      "The cheapest possible gill cue: the cap's underside is a row of teeth. Reads as a mushroom first and rewards a second look."
+    ],
+    [
+      "solo",
+      "Solo",
+      "The mushroom and nothing else, drawn properly. Survives at any size and says nothing clever."
+    ],
+    [
+      "badge",
+      "Badge",
+      "The silhouette knocked out of a filled disc. The treatment most app icons end up at, for good reasons."
+    ],
+    [
+      "fan",
+      "Fan",
+      "A cap seen from below and tilted, so the gills fan across the top and the stem drops out of the bottom."
+    ],
+    [
+      "two-tone",
+      "Two Tone",
+      "Cap solid, stem outlined. One mark, two weights \u2014 useful if the brand needs a lighter variant."
+    ]
+  ],
+  "palettes": [
+    [
+      "ink",
+      "Ink &amp; Paper",
+      "#231e17",
+      "#f6f3ea"
+    ],
+    [
+      "forest",
+      "Forest &amp; Cream",
+      "#f2efe4",
+      "#1f3524"
+    ],
+    [
+      "rust",
+      "Rust &amp; Bone",
+      "#a8471f",
+      "#f7f1e6"
+    ],
+    [
+      "oxblood",
+      "Oxblood &amp; Oat",
+      "#6b1f1f",
+      "#f1e9da"
+    ],
+    [
+      "slate",
+      "Slate &amp; Sand",
+      "#1d3a40",
+      "#efe8db"
+    ],
+    [
+      "saffron",
+      "Saffron on Char",
+      "#e0a33a",
+      "#211f1c"
+    ]
+  ]
+}

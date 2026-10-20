@@ -39,3 +39,48 @@ Red `#941613`, which in this product means danger and is used nowhere else.
 If I had to pick two to develop: **Gill Rose** for distinctiveness and
 **Half Known** for meaning — and a designer is far more likely than I am to
 make the second one work.
+
+---
+
+# Round two — `round2/`
+
+Martin liked the plain mushroom and the gills, so round two develops only
+those two threads, and adds colour. `sheet-marks.png` is the eight shapes in
+ink and paper; `sheet-colour.png` is the five best across six colourways.
+
+## The shapes
+
+| Mark | Verdict |
+| --- | --- |
+| **Gill Rose** | Unchanged from round one. Still the most distinctive thing here |
+| **Gill Ring** | The same idea made geometric — open ring, twelve gills, no centre. Colder, more corporate, survives small |
+| **Gill Cap** | **Both liked things in one mark**: a whole mushroom with the gills knocked out of the cap. Soft at 29 px and worth a designer's attention |
+| **Toothed** | The cheapest gill cue — the cap's underside is a row of teeth. The teeth vanish at 29 px but the silhouette holds, so it degrades gracefully |
+| **Solo** | The mushroom and nothing else. Survives everything, says nothing clever |
+| **Badge** | Knocked out of a filled disc. **The best small-size performer of the lot** — at 29 px it is still unmistakably a mushroom |
+| **Fan** | A tilted cap from below. Pretty, but the stem reads as detached |
+| **Two Tone** | Outlined stem. Reads hollow rather than light |
+
+## The colourways
+
+**One of them is a mistake, and it is worth knowing why.** *Oxblood & Oat* is
+very close to `danger` (`#941613`), the colour this app uses for "a species
+that can kill is in play" and for nothing else. Making that the brand colour
+spends the one colour whose meaning the product depends on. Shown for
+completeness; do not pick it.
+
+Of the rest:
+
+- **Forest & Cream** and **Saffron on Char** are the two **dark-field** icons,
+  and on a store page full of white icons that is most of the battle. Forest
+  is the on-theme one, saffron the loud one.
+- **Rust & Bone** is the bookish one and sits closest to the printed guide.
+- **Slate & Sand** is the clinical, trustworthy one, and the least foraging-ish
+  of the six — which may be exactly right for an app that declines to tell
+  anyone what is safe to eat.
+- **Ink & Paper** matches the app's own palette and is the safe answer.
+
+On green: a *bright* green mushroom icon says "natural, wholesome, safe", which
+is the opposite of this product's position. A deep forest green behind a cream
+mark does not — it reads as woodland at dusk. That is the distinction to hold
+if the forest route is taken.
