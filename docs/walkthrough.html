@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>What's That Mushroom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+/* ---------------------------------------------------------------------------
+   Two palettes, deliberately.
+
+   The PAGE follows the reader's system preference, because this page is a
+   document and a document should not fight the device it is read on.
+
+   The PHONE inside it does not. Those values are copied from
+   app/src/lib/theme.ts and stay fixed in both modes, because the app is paper
+   in every palette and a dark mock-up would be a picture of something that
+   does not exist. The --app-* tokens are therefore never redefined.
+   --------------------------------------------------------------------------- */
+:root {
+  --bg: #f6f3ea;
+  --surface: #fffdf7;
+  --raised: #efeade;
+  --border: #d9d2c0;
+  --text: #231e17;
+  --muted: #5c5447;
+  --faint: #8a8173;
+  --accent: #9a6a24;
+  --gold: #9a7612;
+  --danger: #941613;
+  --danger-surface: #fbe9e7;
+  --caution: #7d5206;
+  --confident: #2f5a78;
+  --canopy: #3f5d37;
+  --canopy-surface: #eaefe2;
+  --on-accent: #fffdf7;
+  --shadow: rgba(35, 30, 23, 0.12);
+
+  /* The app's own palette. Never themed. */
+  --app-bg: #f6f3ea;
+  --app-surface: #fffdf7;
+  --app-raised: #efeade;
+  --app-border: #d9d2c0;
+  --app-text: #231e17;
+  --app-muted: #5c5447;
+  --app-faint: #8a8173;
+  --app-danger: #941613;
+  --app-danger-surface: #fbe9e7;
+  --app-caution: #7d5206;
+  --app-caution-surface: #fbf0d8;
+  --app-confident: #2f5a78;
+  --app-accent: #9a6a24;
+  --app-gold: #9a7612;
+  --app-canopy: #3f5d37;
+  --app-canopy-surface: #eaefe2;
+  --app-on-accent: #fffdf7;
+  --app-on-disabled: #8a8173;
+
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --gl: max(16px, env(safe-area-inset-left));
+  --gr: max(16px, env(safe-area-inset-right));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15130e;
+    --surface: #201d17;
+    --raised: #2a261e;
+    --border: #3d382f;
+    --text: #f1ece1;
+    --muted: #b9b1a2;
+    --faint: #8e8779;
+    --accent: #d8a556;
+    --gold: #d8ab49;
+    --danger: #ff8a82;
+    --danger-surface: #341512;
+    --caution: #e0ad55;
+    --confident: #8fc0e0;
+    --canopy: #a8c39c;
+    --canopy-surface: #1d2419;
+    --on-accent: #15130e;
+    --shadow: rgba(0, 0, 0, 0.5);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15130e;
+  --surface: #201d17;
+  --raised: #2a261e;
+  --border: #3d382f;
+  --text: #f1ece1;
+  --muted: #b9b1a2;
+  --faint: #8e8779;
+  --accent: #d8a556;
+  --gold: #d8ab49;
+  --danger: #ff8a82;
+  --danger-surface: #341512;
+  --caution: #e0ad55;
+  --confident: #8fc0e0;
+  --canopy: #a8c39c;
+  --canopy-surface: #1d2419;
+  --on-accent: #15130e;
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+.wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 var(--gr) 72px var(--gl);
+}
+
+/* --- Masthead ------------------------------------------------------------- */
+
+header.masthead {
+  background: var(--canopy-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 40px var(--gr) 32px var(--gl);
+  margin-bottom: 36px;
+}
+.masthead .inner { max-width: 760px; margin: 0 auto; }
+h1 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(30px, 8.5vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.rule {
+  height: 3px;
+  width: 92px;
+  background: var(--gold);
+  margin: 18px 0 16px;
+  border-radius: 2px;
+}
+.tagline {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(17px, 4.6vw, 21px);
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+.stamp {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+.stamp strong { color: var(--text); font-weight: 600; }
+
+/* --- Structure ------------------------------------------------------------ */
+
+h2 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(22px, 5.6vw, 29px);
+  line-height: 1.2;
+  margin: 52px 0 6px;
+}
+h2 .num {
+  display: block;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+h3 {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 28px 0 8px;
+}
+p { margin: 0 0 14px; }
+p.lede { font-size: 18px; color: var(--muted); }
+em.sci { font-style: italic; }
+a { color: var(--accent); }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 20px 0;
+}
+.panel.warn {
+  background: var(--danger-surface);
+  border-color: var(--danger);
+}
+.panel.warn h3 { color: var(--danger); margin-top: 0; }
+.panel > :last-child { margin-bottom: 0; }
+
+ul.plain { margin: 0 0 14px; padding-left: 22px; }
+ul.plain li { margin-bottom: 10px; }
+
+/* A margin note. Green, which in this project is chrome and never a verdict. */
+.notice {
+  border-left: 4px solid var(--canopy);
+  background: var(--canopy-surface);
+  border-radius: 0 12px 12px 0;
+  padding: 16px 18px;
+  margin: 20px 0;
+  font-size: 15.5px;
+}
+.notice .label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--canopy);
+  margin-bottom: 7px;
+}
+.notice p:last-child { margin-bottom: 0; }
+
+/* --- The health flags ----------------------------------------------------- */
+
+.flags { display: grid; gap: 10px; margin: 20px 0; }
+@media (min-width: 560px) { .flags { grid-template-columns: repeat(3, 1fr); } }
+.flag {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.flag code {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  margin-bottom: 4px;
+  word-break: break-all;
+}
+.flag .val {
+  font-size: 19px;
+  font-weight: 700;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  color: var(--danger);
+}
+.flag .why { font-size: 13.5px; color: var(--muted); margin-top: 4px; }
+
+/* --- The phone ------------------------------------------------------------ */
+
+.phone-stage { margin: 24px 0 8px; }
+.phone {
+  background: var(--app-bg);
+  color: var(--app-text);
+  border: 1px solid var(--app-border);
+  border-radius: 24px;
+  box-shadow: 0 10px 34px var(--shadow);
+  overflow: hidden;
+  max-width: 420px;
+  margin: 0 auto;
+  font-family: var(--sans);
+}
+.phone-head {
+  background: var(--app-canopy-surface);
+  border-bottom: 1px solid var(--app-border);
+  padding: 16px 18px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.phone-head .title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.15;
+  color: var(--app-text);
+  margin: 0;
+  flex: 1;
+}
+.phone-head .gold-rule {
+  height: 2px; width: 54px; background: var(--app-gold);
+  margin-top: 7px; border-radius: 1px;
+}
+.sos {
+  flex: 0 0 auto;
+  width: 38px; height: 38px;
+  border-radius: 19px;
+  background: var(--app-danger);
+  color: var(--app-on-accent);
+  display: grid; place-items: center;
+  font-size: 20px; font-weight: 700; line-height: 1;
+}
+.phone-body { padding: 18px; }
+
+.verdict-head { margin-bottom: 14px; }
+.verdict-kind {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  margin-bottom: 8px;
+}
+.verdict-headline {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 23px;
+  line-height: 1.2;
+  margin: 0 0 10px;
+  color: var(--app-text);
+}
+.verdict-detail { font-size: 15px; color: var(--app-muted); margin: 0; }
+
+.phone-warn {
+  border-radius: 12px;
+  padding: 13px 15px;
+  margin: 14px 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  background: var(--app-caution-surface);
+  color: var(--app-caution);
+  border: 1px solid transparent;
+}
+.phone-warn.deadly {
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
+  border-color: var(--app-danger);
+}
+
+.uncal {
+  font-size: 13px;
+  color: var(--app-muted);
+  background: var(--app-raised);
+  border-radius: 10px;
+  padding: 11px 14px;
+  margin: 14px 0;
+}
+
+.phone-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: var(--app-faint);
+  margin: 20px 0 10px;
+}
+
+.cand {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--app-surface);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  border: 1px solid transparent;
+}
+.cand.deadly { border-color: var(--app-danger); }
+.cand .stripe { width: 5px; align-self: stretch; min-height: 54px; background: var(--app-border); }
+.cand .cbody { flex: 1; padding: 11px 0; min-width: 0; }
+.cand .csci { font-size: 15.5px; font-style: italic; font-weight: 600; }
+.cand .ccom { font-size: 13.5px; color: var(--app-muted); }
+.cand .chaz { font-size: 11.5px; font-weight: 700; margin-top: 3px; letter-spacing: 0.02em; }
+.cand .cpc {
+  font-size: 15.5px; color: var(--app-faint);
+  font-variant-numeric: tabular-nums;
+  padding-right: 14px; flex: 0 0 auto;
+}
+
+.q {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  padding: 15px 16px;
+  margin-bottom: 10px;
+}
+.q .qlabel {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--app-accent);
+  display: flex; justify-content: space-between; gap: 10px;
+  margin-bottom: 7px;
+}
+.q .qeffort { color: var(--app-faint); letter-spacing: 0.04em; }
+.q .qprompt { font-size: 16.5px; font-weight: 600; margin-bottom: 6px; }
+.q .qhow { font-size: 13.5px; color: var(--app-muted); margin-bottom: 10px; }
+.q .qwhy {
+  font-size: 13px; color: var(--app-muted);
+  border-left: 3px solid var(--app-gold);
+  padding-left: 10px; margin-bottom: 10px;
+}
+.q .qsafety {
+  font-size: 13px; font-weight: 600; color: var(--app-danger);
+  background: var(--app-danger-surface);
+  border-radius: 8px; padding: 9px 11px; margin-bottom: 10px;
+}
+.opts { display: flex; flex-wrap: wrap; gap: 7px; }
+.opt {
+  font: inherit;
+  font-size: 13.5px;
+  background: var(--app-bg);
+  border: 1px solid var(--app-border);
+  color: var(--app-text);
+  border-radius: 999px;
+  padding: 7px 13px;
+  cursor: default;
+}
+
+/* --- The verdict picker --------------------------------------------------- */
+
+.picker {
+  display: flex; gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 10px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.picker button {
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 9px 15px;
+  cursor: pointer;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+.picker button[aria-selected="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+/* --- The consent gate ---------------------------------------------------- */
+
+.acks { display: grid; gap: 9px; margin: 16px 0; }
+.ack {
+  display: flex; gap: 13px;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  padding: 14px 15px;
+  text-align: left;
+  font: inherit;
+  color: var(--app-text);
+  cursor: pointer;
+  width: 100%;
+}
+.ack[aria-checked="true"] { border-color: var(--app-accent); }
+.ack .box {
+  flex: 0 0 auto;
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--app-faint);
+  display: grid; place-items: center;
+  margin-top: 2px;
+  font-size: 14px; font-weight: 700;
+  color: var(--app-on-accent);
+}
+.ack[aria-checked="true"] .box {
+  background: var(--app-accent);
+  border-color: var(--app-accent);
+}
+.ack .atext { min-width: 0; display: block; }
+.ack .as { display: block; font-size: 15px; font-weight: 600; line-height: 1.4; }
+.ack .ab { display: block; font-size: 13.5px; color: var(--app-muted); margin-top: 5px; line-height: 1.45; }
+
+.gate-btn {
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 15px;
+  margin-top: 4px;
+  background: var(--app-raised);
+  color: var(--app-on-disabled);
+  cursor: not-allowed;
+}
+.gate-btn[data-ready="true"] {
+  background: var(--app-accent);
+  color: var(--app-on-accent);
+  cursor: pointer;
+}
+.gate-count {
+  font-size: 13px; color: var(--app-muted);
+  text-align: center; margin-top: 10px;
+}
+
+/* --- The follow-up ------------------------------------------------------- */
+
+.answer-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 18px; }
+.answer-row button {
+  font: inherit; font-size: 14px; font-weight: 600;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 9px 15px;
+  cursor: pointer;
+}
+.answer-row button[aria-selected="true"] {
+  background: var(--accent); border-color: var(--accent); color: var(--on-accent);
+}
+
+.shift { display: grid; gap: 12px; margin: 18px 0; }
+@media (min-width: 560px) { .shift { grid-template-columns: 1fr 1fr; } }
+.shift .col {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+}
+.shift .col.after { border-color: var(--accent); }
+.shift .when {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: var(--faint); margin-bottom: 10px;
+}
+.shift .vk {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 14px; font-weight: 700; margin-bottom: 8px;
+}
+.shift .hl { font-family: var(--serif); font-size: 18px; font-weight: 600; margin-bottom: 12px; }
+.shift .num {
+  font-size: 30px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--danger); line-height: 1;
+}
+.shift .numwhy { font-size: 13.5px; color: var(--muted); margin-top: 6px; }
+
+/* --- Tables -------------------------------------------------------------- */
+
+.tbl { width: 100%; border-collapse: collapse; font-size: 14.5px; margin: 16px 0; }
+.tbl th, .tbl td {
+  text-align: left; padding: 10px 12px 10px 0;
+  border-bottom: 1px solid var(--border); vertical-align: top;
+}
+.tbl th { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
+.tbl td:first-child { font-weight: 600; white-space: nowrap; padding-right: 16px; }
+
+footer {
+  border-top: 1px solid var(--border);
+  margin-top: 56px;
+  padding-top: 24px;
+  font-size: 14px;
+  color: var(--muted);
+}
+footer p { margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="inner">
+    <h1>What&rsquo;s That Mushroom</h1>
+    <div class="rule"></div>
+    <p class="tagline">Fungi identification that admits when it doesn&rsquo;t know.</p>
+    <p class="stamp">A <strong>recording</strong> of the working app &middot; captured <span id="stamp-date">26 October 2026</span> &middot; <span id="stamp-n">244</span> British species</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <p class="lede">Every headline, warning, candidate list and question on this page came out of the running server. Nothing here was drawn, mocked up or written to look good.</p>
+
+  <div class="panel warn">
+    <h3>Two things to know before you read anything</h3>
+    <p><strong>The species names are meaningless.</strong> There is no trained classifier yet. A stub returns deterministic nonsense, so nothing below was really photographed and no name below is really an identification. The names are furniture.</p>
+    <p style="margin-bottom:0"><strong>Everything around the names is real.</strong> Which verdict the app reaches, what it refuses to say, which hazards it shows, what it asks you to check next, and what it will not claim about eating anything &mdash; all of that is the actual safety layer, running, on these actual rankings.</p>
+  </div>
+
+  <div class="notice">
+    <span class="label">Why a recording rather than a demo</span>
+    <p>The alternative was rewriting the safety layer in JavaScript so this page could compute its own answers. That means two copies of the one piece of code this project cannot afford to get wrong, drifting apart silently. A recording cannot drift. It can only go stale, and it stamps itself so you can tell.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">One</span>What the service admits about itself</h2>
+  <p>Anyone can ask the running API for its own state, and this is what it says today. Three flags, all false, all published rather than buried.</p>
+  <div class="flags" id="flags"></div>
+  <p>A competitor cannot ship this endpoint, because an app whose business model requires confidence cannot afford a field called <code>calibrated</code> that says <code>false</code>.</p>
+</section>
+
+<section>
+  <h2><span class="num">Two</span>The gate, before anyone sees a mushroom</h2>
+  <p>Six statements. Each one is ticked on its own and there is no accept-all, because one blanket agreement is a formality and a formality is what people learn to tap past.</p>
+  <p>This part is live &mdash; tick them and watch the button. The text is the server&rsquo;s.</p>
+
+  <div class="phone-stage">
+    <div class="phone">
+      <div class="phone-head">
+        <div>
+          <p class="title" id="dis-heading">Before you use this</p>
+          <div class="gold-rule"></div>
+        </div>
+      </div>
+      <div class="phone-body">
+        <p class="verdict-detail" id="dis-body"></p>
+        <div class="acks" id="acks"></div>
+        <button class="gate-btn" id="gate" data-ready="false" type="button">Continue</button>
+        <p class="gate-count" id="gate-count"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice">
+    <span class="label">What to notice</span>
+    <p>Three of the six are conditional on the service&rsquo;s state &mdash; the model, the calibration, the taxonomy review. Training a model therefore changes the text, which changes its version hash, which re-asks every user who already agreed. That is intended: the terms genuinely changed, and agreeing to an older statement is not agreeing to a newer one.</p>
+    <p>The version is a hash of the text itself: <code id="dis-version"></code>.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">Three</span>Five verdicts</h2>
+  <p>The app does not have one answer shape. It has five, and four of them decline to name a mushroom. Pick one.</p>
+
+  <div class="picker" id="picker" role="tablist" aria-label="Verdict"></div>
+
+  <div class="phone-stage">
+    <div class="phone">
+      <div class="phone-head">
+        <div style="flex:1">
+          <p class="title">What&rsquo;s That Mushroom</p>
+          <div class="gold-rule"></div>
+        </div>
+        <div class="sos" aria-hidden="true">+</div>
+      </div>
+      <div class="phone-body" id="scene"></div>
+    </div>
+  </div>
+
+  <div class="notice" id="scene-note"></div>
+</section>
+
+<section>
+  <h2><span class="num">Four</span>What answering a question does</h2>
+  <p>On the refusal, the app asked whether the mushroom changes colour when cut. Answer it, as a user would, and this is what the engine did with each answer. Four answers, four real responses.</p>
+
+  <div class="answer-row" id="answers"></div>
+
+  <div class="shift" id="shift"></div>
+
+  <div class="notice">
+    <span class="label">What to notice, and it is not what you would expect</span>
+    <p>Every one of the four answers <em>lifted the refusal</em> &mdash; and every one of them left the destroying angel <strong>higher</strong> than it started, and kept the deadly warning on the screen.</p>
+    <p>That is the design, not a bug. Evidence here can only eliminate; a consistent answer never boosts anything. What each answer did was contradict <em>Amanita pantherina</em>, the other half of the dangerous pair, which is why the app stopped refusing to choose between them. The mass that left <em>pantherina</em> had to go somewhere, and some of it went to the deadliest thing in the list.</p>
+    <p>So the verdict improved from <code>dangerous_group</code> to <code>uncertain</code> and the situation got <em>worse</em>. The app says so. It still names nothing.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">Five</span>The rules this is enforcing</h2>
+  <p>Six, each one enforced by a test rather than by good intentions. If a change makes one of those tests fail, the change is wrong.</p>
+
+  <table class="tbl">
+    <thead><tr><th>Rule</th><th>What it rules out</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>No edibility claim, in either direction. Not &ldquo;edible&rdquo;, and equally not &ldquo;inedible&rdquo; or &ldquo;not assessed as safe&rdquo;. Where there is no hazard on record the app shows a name and says nothing else &mdash; which is why most rows above carry no hazard line at all.</td></tr>
+      <tr><td>2</td><td>Never resolve a lethal ambiguity from a photograph. If the leaders straddle a known dangerous pair it returns <code>dangerous_group</code> and names neither.</td></tr>
+      <tr><td>3</td><td>Never round away a small probability of death. Two per cent on a deadly species triggers the full warning. It is not a threshold on the leader.</td></tr>
+      <tr><td>4</td><td>Never show uncalibrated confidence as confidence. Hence the grey note under every percentage above, and hence the stored verdict in your history carrying the calibration state it was produced under.</td></tr>
+      <tr><td>5</td><td>Never ask for a taste test while a deadly candidate holds mass. Amatoxins are tasteless.</td></tr>
+      <tr><td>6</td><td>Never select checkpoints on accuracy. Selection is on risk-weighted error, where confusing a death cap for a field mushroom costs a thousand times an ordinary mistake.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">Six</span>What this page cannot show you</h2>
+  <p>Four parts of the app are real, tested and impossible to put in a recording.</p>
+  <ul class="plain">
+    <li><strong>The emergency screen.</strong> One hardcoded, offline, ungated string &mdash; the only text in the app that is not served. It sits <em>above</em> the consent gate, because someone whose child has eaten something is not going to complete an onboarding flow, and a wood is where the network is not. It is the red cross in the corner of the header above.</li>
+    <li><strong>The spore print, which takes between two and twelve hours.</strong> The app photographs the deposit against a half-black, half-white card and reads it against a colour chart, then <em>offers</em> the match beside the manual list rather than filling it in. Spore colour is what separates an <em>Amanita</em> from a young <em>Agaricus</em>, so the app proposes and the person decides.</li>
+    <li><strong>The report form</strong>, for telling us the app was wrong. It checks for a medical emergency before it submits &mdash; not only on the server&rsquo;s reply, because the reply needs the network &mdash; and its confirmation deliberately does not thank anyone for their feedback.</li>
+    <li><strong>The history.</strong> A stored row names a species only where the app named one, so a refusal does not quietly become two guesses to choose between weeks later. And a stored confidence carries the model version it came from, so &ldquo;uncalibrated&rdquo; survives into the future rather than being said once and forgotten.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="num">Seven</span>What is not done</h2>
+  <p>Everything above works. Four things are outstanding, and only one of them is code.</p>
+  <ul class="plain">
+    <li><strong>No trained classifier.</strong> The pipeline is written and has been rehearsed end to end on synthetic data; the dataset is about 93,000 photographs across 244 species, and the run needs a rented GPU for an afternoon.</li>
+    <li><strong>The taxonomy has not been reviewed by a qualified mycologist.</strong> Toxicity gradings, lookalike relationships and diagnostic characters come from standard references and are unverified. This blocks any public release. It is the one thing on this list that cannot be bought or written.</li>
+    <li><strong>No legal review</strong> of the disclaimer and terms.</li>
+    <li><strong>Nobody is named</strong> on the incident rota, and the log has no retention period.</li>
+  </ul>
+  <div class="notice">
+    <span class="label">If you are the mycologist</span>
+    <p>The ask is smaller than it looks. 21 species carry a hazard grading that changes how the model is trained and what the app refuses to do; those are the rows that matter, and they are the ones worth your afternoon. The remaining 1,104 rows are depth, and can wait.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Captured from the running API on <span id="foot-date">26 October 2026</span>, model version <code id="foot-model">0.1.0</code>. Re-run <code>scripts/capture_walkthrough.py</code> and rebuild this page to refresh it.</p>
+  <p>Not a medical resource. Never eat a wild mushroom identified by an app.</p>
+</footer>
+
+</div>
+
+<script id="walkthrough" type="application/json">{"captured_at":"2026-10-26T21:19:01.620161+00:00","health":{"status":"ok","model_loaded":false,"calibrated":false,"n_classes":244,"model_version":"0.1.0","taxonomy_reviewed":false,"character_states_described":244},"disclaimer":{"heading":"Before you use this","body":"This app exists because the other ones answer every question. It will often tell you that it cannot identify what you have photographed, and that is the app working, not failing.\n\nIt will never tell you that a mushroom is safe to eat. No app can. People are killed every year by mushrooms that were identified confidently and wrongly, and the species responsible have ordinary lookalikes that experienced foragers collect on purpose.","version":"279b0060b6c394d9","acks":[{"s":"I understand this app will never tell me a mushroom is safe to eat.","b":"There is no such category in it. It names what it can and warns about recorded hazards. Where there is no hazard on record it says nothing at all, which is not the same as saying it is safe."},{"s":"I understand a photograph cannot rule out a deadly lookalike.","b":"The features that separate the dangerous species from their ordinary lookalikes are usually underground, underneath, or only visible hours later in a spore print."},{"s":"I will not eat a wild mushroom on the strength of what this app tells me.","b":"An identification here is a starting point for a person who already knows what they are doing, and nothing more than that."},{"s":"I understand this build has no trained model, and the identifications it produces are placeholders.","b":"The classifier has not been trained yet. Results come from a stub that produces consistent but meaningless answers, so that everything around it can be built and tested."},{"s":"I understand the percentages shown are not probabilities.","b":"Calibration has not been fitted. Until it is, a number is an ordering between candidates and nothing more -- 80% does not mean eight times in ten."},{"s":"I understand the reference data has not been checked by a mycologist.","b":"Which species are dangerous, which are confused with which, and what separates them are compiled from standard references and have not been reviewed by a qualified person. Errors in that data become errors in every answer."}]},"scenes":[{"verdict":"species","headline":"Most likely Tricholoma saponaceum","detail":"Smells of household soap, and the flesh in the stem base turns pink or reddish when cut. Colour is unreliable -- grey, olive, brownish or nearly white on different collections.","deadly_in_play":false,"warnings":["This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."],"calibrated":false,"model_version":"0.1.0","candidates":[{"n":"Tricholoma saponaceum","c":"Soapy Knight","p":0.8923,"t":"TOXIC"},{"n":"Tricholoma pardinum","c":"Leopard Knight","p":0.0064,"t":"SERIOUS"},{"n":"Coprinopsis lagopus","c":"Hare'sfoot Inkcap","p":0.0036,"t":"NO_RECORDED_TOXICITY"},{"n":"Omphalotus olearius","c":"Jack-o'-Lantern","p":0.003,"t":"TOXIC"},{"n":"Tubaria furfuracea","c":"Scurfy Twiglet","p":0.0027,"t":"NO_RECORDED_TOXICITY"},{"n":"Tricholoma sulphureum","c":"Sulphur Knight","p":0.0023,"t":"TOXIC"},{"n":"Hypoxylon fragiforme","c":"Beech Woodwart","p":0.0022,"t":"NO_RECORDED_TOXICITY"},{"n":"Stereum hirsutum","c":"Hairy Curtain Crust","p":0.002,"t":"NO_RECORDED_TOXICITY"}],"questions":[{"label":"Spore print","prompt":"What colour is the spore print?","how":"Cut the cap off and lay it gills-down on paper that is half white and half black, cover it with a bowl, and leave it for two to twelve hours. The colour of the powder that falls is the spore print.","effort":"hours","options":["White or cream","Pink","Rust or cinnamon brown","Chocolate or purple-brown","Black","Olive or yellow"],"rationale":"This is what separates Tricholoma pardinum from Coprinopsis lagopus.","safety_note":""}],"n_questions":1},{"verdict":"group","headline":"This looks like a Psilocybe species","detail":"The candidates cannot be separated from this photograph alone. They differ by characters that are not visible here. I'm reasonably confident about the genus (51%) but not about which species within it.","deadly_in_play":false,"warnings":["This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."],"calibrated":false,"model_version":"0.1.0","candidates":[{"n":"Psilocybe semilanceata","c":"Liberty Cap","p":0.5098,"t":"TOXIC"},{"n":"Collybiopsis ramealis","c":"Twig Parachute","p":0.0233,"t":"NO_RECORDED_TOXICITY"},{"n":"Coprinellus disseminatus","c":"Fairy Inkcap","p":0.0227,"t":"NO_RECORDED_TOXICITY"},{"n":"Byssomerulius corium","c":"Netted Crust","p":0.0122,"t":"NO_RECORDED_TOXICITY"},{"n":"Amanita vaginata","c":"Grisette","p":0.0115,"t":"TOXIC"},{"n":"Imleria badia","c":"Bay Bolete","p":0.0112,"t":"NO_RECORDED_TOXICITY"},{"n":"Tricholoma equestre","c":"Yellow Knight","p":0.0108,"t":"SERIOUS"},{"n":"Gymnopus androsaceus","c":"Horsehair Parachute","p":0.0105,"t":"NO_RECORDED_TOXICITY"}],"questions":[{"label":"Growth habit","prompt":"How is it growing?","how":"Step back and photograph the whole group in place.","effort":"instant","options":["Singly","Scattered","In a tight cluster","In a ring","As a bracket"],"rationale":"This is what separates Collybiopsis ramealis from Coprinellus disseminatus.","safety_note":""}],"n_questions":3},{"verdict":"uncertain","headline":"I'm not sure what this is","detail":"No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.","deadly_in_play":true,"warnings":["One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.","This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."],"calibrated":false,"model_version":"0.1.0","candidates":[{"n":"Amanita citrina","c":"False Deathcap","p":0.3125,"t":"NO_RECORDED_TOXICITY"},{"n":"Apioperdon pyriforme","c":"Stump Puffball","p":0.0371,"t":"NO_RECORDED_TOXICITY"},{"n":"Heterobasidion annosum","c":"Root Rot","p":0.0273,"t":"NO_RECORDED_TOXICITY"},{"n":"Cortinarius violaceus","c":"Violet Webcap","p":0.0229,"t":"NO_RECORDED_TOXICITY"},{"n":"Paxillus involutus","c":"Brown Roll-rim","p":0.022,"t":"SERIOUS"},{"n":"Psathyrella corrugis","c":"Red Edge Brittlestem","p":0.0162,"t":"NO_RECORDED_TOXICITY"},{"n":"Calocera cornea","c":"Small Stagshorn","p":0.015,"t":"NO_RECORDED_TOXICITY"},{"n":"Inocybe erubescens","c":"Deadly Fibrecap","p":0.0146,"t":"DEADLY"}],"questions":[{"label":"What it is growing on","prompt":"What is it growing on or out of?","how":"Look at what the base actually emerges from, not just what is nearby. Buried wood and roots count as wood.","effort":"instant","options":["Soil or leaf litter","Dead wood or a stump","A living tree","Grass or lawn","Dung","Moss"],"rationale":"This is what separates Apioperdon pyriforme from Heterobasidion annosum.","safety_note":""}],"n_questions":3},{"verdict":"dangerous_group","headline":"I can't safely narrow this down","detail":"The leading candidates include both Amanita virosa and Amanita pantherina. These are confused with each other in the field, and one of them can kill. I will not choose between them from a photograph.","deadly_in_play":true,"warnings":["One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.","This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."],"calibrated":false,"model_version":"0.1.0","candidates":[{"n":"Amanita virosa","c":"Destroying Angel","p":0.2398,"t":"DEADLY"},{"n":"Tricholomopsis rutilans","c":"Plums and Custard","p":0.0376,"t":"NO_RECORDED_TOXICITY"},{"n":"Tricholoma equestre","c":"Yellow Knight","p":0.0269,"t":"SERIOUS"},{"n":"Neoboletus luridiformis","c":"Scarletina Bolete","p":0.0239,"t":"TOXIC"},{"n":"Amanita pantherina","c":"Panther Cap","p":0.0237,"t":"SERIOUS"},{"n":"Calocera viscosa","c":"Yellow Stagshorn","p":0.0179,"t":"NO_RECORDED_TOXICITY"},{"n":"Phlebia radiata","c":"Wrinkled Crust","p":0.0153,"t":"NO_RECORDED_TOXICITY"},{"n":"Craterellus cornucopioides","c":"Horn of Plenty","p":0.0152,"t":"NO_RECORDED_TOXICITY"}],"questions":[{"label":"Bruising","prompt":"Does it change colour when cut or rubbed?","how":"Cut the mushroom in half lengthways, including the very base of the stem, and rub the cap edge. Wait a full two minutes and watch for a change.","effort":"minutes","options":["Yellow, especially at the stem base","Red or pink","Blue","Green","Brown","Black","No change"],"rationale":"This separates Amanita virosa, which can kill, from Amanita pantherina.","safety_note":"Chrome-yellow staining at the base of the stem marks the Yellow Stainer, the commonest cause of mushroom poisoning in Britain."}],"n_questions":3},{"verdict":"out_of_scope","headline":"This doesn't match anything I know well","detail":"The photograph does not resemble any species in my range with reasonable confidence. It may be a species I was never trained on, or the photograph may not show enough of the mushroom.","deadly_in_play":true,"warnings":["Because this does not match anything I know, I cannot tell you what it is -- and I cannot rule out that it is one of the species that can kill. Treat an unidentified mushroom as more dangerous than a named one, not less.","One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.","This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."],"calibrated":false,"model_version":"0.1.0","candidates":[{"n":"Inocybe geophylla","c":"White Fibrecap","p":0.0395,"t":"SERIOUS"},{"n":"Hymenopellis radicata","c":"Rooting Shank","p":0.0287,"t":"NO_RECORDED_TOXICITY"},{"n":"Laetiporus sulphureus","c":"Chicken of the Woods","p":0.0267,"t":"TOXIC"},{"n":"Gliophorus irrigatus","c":"Slimy Waxcap","p":0.0261,"t":"NO_RECORDED_TOXICITY"},{"n":"Calocybe gambosa","c":"St George's Mushroom","p":0.025,"t":"NO_RECORDED_TOXICITY"},{"n":"Lactarius glyciosmus","c":"Coconut Milkcap","p":0.0234,"t":"TOXIC"},{"n":"Phlebia radiata","c":"Wrinkled Crust","p":0.023,"t":"NO_RECORDED_TOXICITY"},{"n":"Lycoperdon nigrescens","c":"Dusky Puffball","p":0.0225,"t":"NO_RECORDED_TOXICITY"}],"questions":[{"label":"What it is growing on","prompt":"What is it growing on or out of?","how":"Look at what the base actually emerges from, not just what is nearby. Buried wood and roots count as wood.","effort":"instant","options":["Soil or leaf litter","Dead wood or a stump","A living tree","Grass or lawn","Dung","Moss"],"rationale":"This is what separates Hymenopellis radicata from Laetiporus sulphureus.","safety_note":""}],"n_questions":3}],"follow_ups":[{"answered":"Yellow, especially at the stem base","result":{"verdict":"uncertain","headline":"I'm not sure what this is","detail":"No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.","deadly_in_play":true,"warnings":["One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.","This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."],"calibrated":false,"model_version":"0.1.0","candidates":[{"n":"Amanita virosa","c":"Destroying Angel","p":0.2608,"t":"DEADLY"},{"n":"Tricholomopsis rutilans","c":"Plums and Custard","p":0.0409,"t":"NO_RECORDED_TOXICITY"},{"n":"Tricholoma equestre","c":"Yellow Knight","p":0.0292,"t":"SERIOUS"},{"n":"Calocera viscosa","c":"Yellow Stagshorn","p":0.0194,"t":"NO_RECORDED_TOXICITY"},{"n":"Phlebia radiata","c":"Wrinkled Crust","p":0.0166,"t":"NO_RECORDED_TOXICITY"},{"n":"Craterellus cornucopioides","c":"Horn of Plenty","p":0.0165,"t":"NO_RECORDED_TOXICITY"},{"n":"Stereum hirsutum","c":"Hairy Curtain Crust","p":0.0148,"t":"NO_RECORDED_TOXICITY"},{"n":"Hypholoma fasciculare","c":"Sulphur Tuft","p":0.0148,"t":"TOXIC"}],"questions":[{"label":"Cap colour","prompt":"What colour is the cap?","how":"Photograph from above in natural light, avoiding deep shade.","effort":"instant","options":["White or cream","Yellow","Orange","Red","Pink","Brown","Olive or greenish","Grey","Purple","Black"],"rationale":"This is what separates Tricholomopsis rutilans from Calocera viscosa.","safety_note":""}],"n_questions":3}},{"answered":"Red or pink","result":{"verdict":"uncertain","headline":"I'm not sure what this is","detail":"No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.","deadly_in_play":true,"warnings":["One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.","This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."],"calibrated":false,"model_version":"0.1.0","candidates":[{"n":"Amanita virosa","c":"Destroying Angel","p":0.2679,"t":"DEADLY"},{"n":"Tricholomopsis rutilans","c":"Plums and Custard","p":0.042,"t":"NO_RECORDED_TOXICITY"},{"n":"Tricholoma equestre","c":"Yellow Knight","p":0.03,"t":"SERIOUS"},{"n":"Calocera viscosa","c":"Yellow Stagshorn","p":0.0199,"t":"NO_RECORDED_TOXICITY"},{"n":"Phlebia radiata","c":"Wrinkled Crust","p":0.0171,"t":"NO_RECORDED_TOXICITY"},{"n":"Craterellus cornucopioides","c":"Horn of Plenty","p":0.017,"t":"NO_RECORDED_TOXICITY"},{"n":"Stereum hirsutum","c":"Hairy Curtain Crust","p":0.0152,"t":"NO_RECORDED_TOXICITY"},{"n":"Hypholoma fasciculare","c":"Sulphur Tuft","p":0.0152,"t":"TOXIC"}],"questions":[{"label":"Cap colour","prompt":"What colour is the cap?","how":"Photograph from above in natural light, avoiding deep shade.","effort":"instant","options":["White or cream","Yellow","Orange","Red","Pink","Brown","Olive or greenish","Grey","Purple","Black"],"rationale":"This is what separates Tricholomopsis rutilans from Calocera viscosa.","safety_note":""}],"n_questions":3}},{"answered":"Blue","result":{"verdict":"uncertain","headline":"I'm not sure what this is","detail":"No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.","deadly_in_play":true,"warnings":["One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.","This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."],"calibrated":false,"model_version":"0.1.0","candidates":[{"n":"Amanita virosa","c":"Destroying Angel","p":0.27,"t":"DEADLY"},{"n":"Tricholomopsis rutilans","c":"Plums and Custard","p":0.0423,"t":"NO_RECORDED_TOXICITY"},{"n":"Tricholoma equestre","c":"Yellow Knight","p":0.0302,"t":"SERIOUS"},{"n":"Calocera viscosa","c":"Yellow Stagshorn","p":0.0201,"t":"NO_RECORDED_TOXICITY"},{"n":"Phlebia radiata","c":"Wrinkled Crust","p":0.0172,"t":"NO_RECORDED_TOXICITY"},{"n":"Craterellus cornucopioides","c":"Horn of Plenty","p":0.0171,"t":"NO_RECORDED_TOXICITY"},{"n":"Stereum hirsutum","c":"Hairy Curtain Crust","p":0.0153,"t":"NO_RECORDED_TOXICITY"},{"n":"Hypholoma fasciculare","c":"Sulphur Tuft","p":0.0153,"t":"TOXIC"}],"questions":[{"label":"Cap colour","prompt":"What colour is the cap?","how":"Photograph from above in natural light, avoiding deep shade.","effort":"instant","options":["White or cream","Yellow","Orange","Red","Pink","Brown","Olive or greenish","Grey","Purple","Black"],"rationale":"This is what separates Tricholomopsis rutilans from Calocera viscosa.","safety_note":""}],"n_questions":3}},{"answered":"Green","result":{"verdict":"uncertain","headline":"I'm not sure what this is","detail":"No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.","deadly_in_play":true,"warnings":["One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.","This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."],"calibrated":false,"model_version":"0.1.0","candidates":[{"n":"Amanita virosa","c":"Destroying Angel","p":0.2716,"t":"DEADLY"},{"n":"Tricholomopsis rutilans","c":"Plums and Custard","p":0.0425,"t":"NO_RECORDED_TOXICITY"},{"n":"Tricholoma equestre","c":"Yellow Knight","p":0.0304,"t":"SERIOUS"},{"n":"Calocera viscosa","c":"Yellow Stagshorn","p":0.0202,"t":"NO_RECORDED_TOXICITY"},{"n":"Phlebia radiata","c":"Wrinkled Crust","p":0.0173,"t":"NO_RECORDED_TOXICITY"},{"n":"Craterellus cornucopioides","c":"Horn of Plenty","p":0.0172,"t":"NO_RECORDED_TOXICITY"},{"n":"Stereum hirsutum","c":"Hairy Curtain Crust","p":0.0154,"t":"NO_RECORDED_TOXICITY"},{"n":"Hypholoma fasciculare","c":"Sulphur Tuft","p":0.0154,"t":"TOXIC"}],"questions":[{"label":"Cap colour","prompt":"What colour is the cap?","how":"Photograph from above in natural light, avoiding deep shade.","effort":"instant","options":["White or cream","Yellow","Orange","Red","Pink","Brown","Olive or greenish","Grey","Purple","Black"],"rationale":"This is what separates Tricholomopsis rutilans from Calocera viscosa.","safety_note":""}],"n_questions":3}}]}</script>
+<script>
+(function () {
+  'use strict';
+
+  var DATA = JSON.parse(document.getElementById('walkthrough').textContent);
+
+  /* The app's own map, copied rather than re-decided. A missing entry is
+     deliberate: NO_RECORDED_TOXICITY renders nothing at all. */
+  var HAZARD = {
+    DEADLY: 'Can kill',
+    SERIOUS: 'Causes serious illness',
+    TOXIC: 'Causes illness',
+    UNKNOWN: 'Unassessed'
+  };
+  var HAZARD_CLASS = {
+    DEADLY: 'deadly',
+    SERIOUS: 'deadly',
+    TOXIC: 'caution'
+  };
+
+  var VERDICT_NAME = {
+    species: 'species',
+    group: 'group',
+    uncertain: 'uncertain',
+    dangerous_group: 'dangerous_group',
+    out_of_scope: 'out_of_scope'
+  };
+
+  var NOTES = {
+    species: '<span class="label">What to notice</span>' +
+      '<p>The one verdict that names a mushroom, and even here the app volunteers the next thing to check rather than stopping. The percentage carries a note saying it is not a probability, because calibration has not been fitted &mdash; rule 4.</p>' +
+      '<p>Look at what is <em>absent</em> from the rows beneath. Five of the eight carry no hazard line, and that is not missing data. The app has nothing on record about them and says nothing, rather than filling the slot with &ldquo;not assessed as safe&rdquo;. Silence cannot be read as permission, cannot be read as a warning, and cannot be disputed.</p>',
+
+    group: '<span class="label">What to notice</span>' +
+      '<p>It names a genus and refuses the species. Nothing dangerous is in play, so there is no red &mdash; but the app still will not pick between members of the genus from a photograph, and it says which question would separate them.</p>',
+
+    uncertain: '<span class="label">What to notice</span>' +
+      '<p>No candidate is likely enough to name, so none is named. A competitor would show you this list&rsquo;s top row as an answer; the top row here is at twenty-six per cent and the app says plainly that the photograph does not settle it.</p>' +
+      '<p>A deadly species holds mass, so the lethal warning is on the screen above the list, not tucked underneath it.</p>',
+
+    dangerous_group: '<span class="label">What to notice &mdash; this is the one that matters</span>' +
+      '<p><em>Amanita virosa</em>, the destroying angel, leads at twenty-four per cent. <em>Amanita pantherina</em> is fifth. Those two are confused in the field and one of them kills, so the app refuses to choose between them from a photograph and <strong>names neither as the answer</strong> &mdash; while showing both, because a hazard the app conceals is worse than one it names.</p>' +
+      '<p>Twenty-four per cent would be a confident answer in most apps. Here it is a refusal. And the question it asks next is chosen to split that specific pair &mdash; the engine simulates every possible answer through the real update before recommending a question, so it cannot suggest something its own reasoning would ignore.</p>',
+
+    out_of_scope: '<span class="label">What to notice</span>' +
+      '<p>&ldquo;This doesn&rsquo;t match anything I know well.&rdquo; Not the nearest mushroom &mdash; nothing.</p>' +
+      '<p>This is harder than it sounds. The usual confidence score cannot detect it at all: softmax depends only on the differences between the network&rsquo;s outputs, so an input the model has recognised nothing in can score ninety-eight per cent, byte-identically to one it recognises perfectly. The check here reads the magnitude instead, on the raw outputs, before any of that is thrown away.</p>'
+  };
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function pct(p) { return Math.round(p * 100) + '%'; }
+
+  /* --- Section 1: the flags ---------------------------------------------- */
+
+  var FLAG_WHY = {
+    model_loaded: 'No classifier has been trained. Everything else is real.',
+    calibrated: 'So no percentage here may be read as a probability.',
+    taxonomy_reviewed: 'No mycologist has checked the reference data. This blocks release.'
+  };
+
+  (function flags() {
+    var host = document.getElementById('flags');
+    ['model_loaded', 'calibrated', 'taxonomy_reviewed'].forEach(function (k) {
+      var el = document.createElement('div');
+      el.className = 'flag';
+      el.innerHTML = '<code>' + k + '</code>' +
+        '<div class="val">' + String(DATA.health[k]) + '</div>' +
+        '<div class="why">' + FLAG_WHY[k] + '</div>';
+      host.appendChild(el);
+    });
+  })();
+
+  /* --- Section 2: the gate ---------------------------------------------- */
+
+  (function gate() {
+    document.getElementById('dis-heading').textContent = DATA.disclaimer.heading;
+    document.getElementById('dis-body').textContent = DATA.disclaimer.body;
+    document.getElementById('dis-version').textContent = DATA.disclaimer.version;
+
+    var host = document.getElementById('acks');
+    var btn = document.getElementById('gate');
+    var count = document.getElementById('gate-count');
+    var ticked = DATA.disclaimer.acks.map(function () { return false; });
+
+    function refresh() {
+      var n = ticked.filter(Boolean).length;
+      var all = n === ticked.length;
+      btn.dataset.ready = String(all);
+      btn.textContent = all ? 'Continue' : 'Continue';
+      count.textContent = all
+        ? 'All ' + ticked.length + ' agreed — isComplete() requires every key individually.'
+        : n + ' of ' + ticked.length + ' ticked. There is no accept-all.';
+    }
+
+    DATA.disclaimer.acks.forEach(function (ack, i) {
+      var el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'ack';
+      el.setAttribute('role', 'checkbox');
+      el.setAttribute('aria-checked', 'false');
+      el.innerHTML = '<span class="box" aria-hidden="true">✓</span>' +
+        '<span class="atext"><span class="as">' + esc(ack.s) + '</span>' +
+        '<span class="ab">' + esc(ack.b) + '</span></span>';
+      el.addEventListener('click', function () {
+        ticked[i] = !ticked[i];
+        el.setAttribute('aria-checked', String(ticked[i]));
+        refresh();
+      });
+      host.appendChild(el);
+    });
+
+    refresh();
+  })();
+
+  /* --- Section 3: the verdicts ------------------------------------------ */
+
+  function candidateHTML(c) {
+    var hazard = HAZARD[c.t] || null;
+    var cls = HAZARD_CLASS[c.t];
+    var stripe = cls === 'deadly' ? 'var(--app-danger)'
+      : cls === 'caution' ? 'var(--app-caution)'
+      : 'var(--app-border)';
+    var colour = cls === 'deadly' ? 'var(--app-danger)' : 'var(--app-caution)';
+    return '<div class="cand' + (c.t === 'DEADLY' ? ' deadly' : '') + '">' +
+      '<div class="stripe" style="background:' + stripe + '"></div>' +
+      '<div class="cbody">' +
+        '<div class="csci">' + esc(c.n) + '</div>' +
+        (c.c ? '<div class="ccom">' + esc(c.c) + '</div>' : '') +
+        (hazard ? '<div class="chaz" style="color:' + colour + '">' + hazard + '</div>' : '') +
+      '</div>' +
+      '<div class="cpc">' + pct(c.p) + '</div>' +
+    '</div>';
+  }
+
+  function questionHTML(q) {
+    return '<div class="q">' +
+      '<div class="qlabel"><span>' + esc(q.label) + '</span>' +
+        '<span class="qeffort">' + esc(q.effort) + '</span></div>' +
+      '<div class="qprompt">' + esc(q.prompt) + '</div>' +
+      (q.how ? '<div class="qhow">' + esc(q.how) + '</div>' : '') +
+      (q.safety_note ? '<div class="qsafety">' + esc(q.safety_note) + '</div>' : '') +
+      (q.rationale ? '<div class="qwhy">' + esc(q.rationale) + '</div>' : '') +
+      '<div class="opts">' + q.options.map(function (o) {
+        return '<span class="opt">' + esc(o) + '</span>';
+      }).join('') + '</div>' +
+    '</div>';
+  }
+
+  function sceneHTML(s) {
+    var colour = (s.verdict === 'dangerous_group' || s.deadly_in_play) ? 'var(--app-danger)'
+      : s.verdict === 'species' ? 'var(--app-confident)'
+      : 'var(--app-caution)';
+
+    var html = '<div class="verdict-head">' +
+      '<div class="verdict-kind" style="color:' + colour + '">' + VERDICT_NAME[s.verdict] + '</div>' +
+      '<h3 class="verdict-headline">' + esc(s.headline) + '</h3>' +
+      '<p class="verdict-detail">' + esc(s.detail) + '</p>' +
+    '</div>';
+
+    s.warnings.forEach(function (w, i) {
+      var deadly = s.deadly_in_play && i === 0;
+      html += '<div class="phone-warn' + (deadly ? ' deadly' : '') + '">' + esc(w) + '</div>';
+    });
+
+    if (!s.calibrated) {
+      html += '<div class="uncal">Confidence has not been calibrated on this build, ' +
+        'so the percentages below rank the candidates and are not probabilities.</div>';
+    }
+
+    html += '<div class="phone-label">Candidates</div>';
+    html += s.candidates.map(candidateHTML).join('');
+
+    if (s.questions && s.questions.length) {
+      html += '<div class="phone-label">' +
+        (s.n_questions === 1 ? 'What to check next'
+          : 'What to check next — the best of ' + s.n_questions +
+            ', shown first') + '</div>';
+      html += s.questions.map(questionHTML).join('');
+    }
+
+    return html;
+  }
+
+  (function verdicts() {
+    var picker = document.getElementById('picker');
+    var stage = document.getElementById('scene');
+    var note = document.getElementById('scene-note');
+    var buttons = [];
+
+    function show(i) {
+      var s = DATA.scenes[i];
+      stage.innerHTML = sceneHTML(s);
+      note.innerHTML = NOTES[s.verdict] || '';
+      buttons.forEach(function (b, j) {
+        b.setAttribute('aria-selected', String(i === j));
+      });
+    }
+
+    DATA.scenes.forEach(function (s, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('role', 'tab');
+      b.textContent = VERDICT_NAME[s.verdict];
+      b.addEventListener('click', function () { show(i); });
+      picker.appendChild(b);
+      buttons.push(b);
+    });
+
+    show(0);
+  })();
+
+  /* --- Section 4: the follow-up ----------------------------------------- */
+
+  (function followUp() {
+    var before = DATA.scenes.filter(function (s) {
+      return s.verdict === 'dangerous_group';
+    })[0];
+    if (!before || !DATA.follow_ups.length) { return; }
+
+    var row = document.getElementById('answers');
+    var shift = document.getElementById('shift');
+    var buttons = [];
+
+    var beforeTop = before.candidates[0];
+
+    function col(when, verdict, headline, top, why, after) {
+      var colour = verdict === 'dangerous_group' ? 'var(--danger)' : 'var(--caution)';
+      return '<div class="col' + (after ? ' after' : '') + '">' +
+        '<div class="when">' + when + '</div>' +
+        '<div class="vk" style="color:' + colour + '">' + verdict + '</div>' +
+        '<div class="hl">' + esc(headline) + '</div>' +
+        '<div class="num">' + pct(top.p) + '</div>' +
+        '<div class="numwhy">' + why + '</div>' +
+      '</div>';
+    }
+
+    function show(i) {
+      var f = DATA.follow_ups[i];
+      var r = f.result;
+      shift.innerHTML =
+        col('Before the answer', before.verdict, before.headline, beforeTop,
+            '<em>' + esc(beforeTop.n) + '</em> — can kill') +
+        col('After &ldquo;' + esc(f.answered) + '&rdquo;', r.verdict, r.headline,
+            r.candidates[0],
+            '<em>' + esc(r.candidates[0].n) + '</em> — can kill, and the warning is still on the screen',
+            true);
+      buttons.forEach(function (b, j) {
+        b.setAttribute('aria-selected', String(i === j));
+      });
+    }
+
+    DATA.follow_ups.forEach(function (f, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = f.answered;
+      b.addEventListener('click', function () { show(i); });
+      row.appendChild(b);
+      buttons.push(b);
+    });
+
+    show(0);
+  })();
+
+  /* --- Stamps ----------------------------------------------------------- */
+
+  (function stamps() {
+    var when = new Date(DATA.captured_at);
+    var text = when.toLocaleDateString('en-GB', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
+    document.getElementById('stamp-date').textContent = text;
+    document.getElementById('foot-date').textContent = text;
+    document.getElementById('stamp-n').textContent = DATA.health.n_classes;
+    document.getElementById('foot-model').textContent = DATA.health.model_version;
+  })();
+})();
+</script>
+</body>
+</html>

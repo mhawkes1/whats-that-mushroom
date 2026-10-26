@@ -1,0 +1,1584 @@
+{
+  "captured_at": "2026-10-26T21:19:01.620161+00:00",
+  "health": {
+    "status": "ok",
+    "model_loaded": false,
+    "calibrated": false,
+    "n_classes": 244,
+    "model_version": "0.1.0",
+    "taxonomy_reviewed": false,
+    "character_states_described": 244
+  },
+  "disclaimer": {
+    "version": "279b0060b6c394d9",
+    "heading": "Before you use this",
+    "body": "This app exists because the other ones answer every question. It will often tell you that it cannot identify what you have photographed, and that is the app working, not failing.\n\nIt will never tell you that a mushroom is safe to eat. No app can. People are killed every year by mushrooms that were identified confidently and wrongly, and the species responsible have ordinary lookalikes that experienced foragers collect on purpose.",
+    "acknowledgements": [
+      {
+        "key": "never_asserts_edibility",
+        "statement": "I understand this app will never tell me a mushroom is safe to eat.",
+        "because": "There is no such category in it. It names what it can and warns about recorded hazards. Where there is no hazard on record it says nothing at all, which is not the same as saying it is safe."
+      },
+      {
+        "key": "photograph_cannot_rule_out",
+        "statement": "I understand a photograph cannot rule out a deadly lookalike.",
+        "because": "The features that separate the dangerous species from their ordinary lookalikes are usually underground, underneath, or only visible hours later in a spore print."
+      },
+      {
+        "key": "not_a_substitute",
+        "statement": "I will not eat a wild mushroom on the strength of what this app tells me.",
+        "because": "An identification here is a starting point for a person who already knows what they are doing, and nothing more than that."
+      },
+      {
+        "key": "no_trained_model",
+        "statement": "I understand this build has no trained model, and the identifications it produces are placeholders.",
+        "because": "The classifier has not been trained yet. Results come from a stub that produces consistent but meaningless answers, so that everything around it can be built and tested."
+      },
+      {
+        "key": "uncalibrated",
+        "statement": "I understand the percentages shown are not probabilities.",
+        "because": "Calibration has not been fitted. Until it is, a number is an ordering between candidates and nothing more -- 80% does not mean eight times in ten."
+      },
+      {
+        "key": "taxonomy_unreviewed",
+        "statement": "I understand the reference data has not been checked by a mycologist.",
+        "because": "Which species are dangerous, which are confused with which, and what separates them are compiled from standard references and have not been reviewed by a qualified person. Errors in that data become errors in every answer."
+      }
+    ]
+  },
+  "field_form": {
+    "fields": [
+      {
+        "key": "habitat",
+        "label": "Surroundings",
+        "prompt": "What trees are within about ten metres?",
+        "how": "Many fungi partner with one kind of tree and grow nowhere else, so this narrows the possibilities sharply.",
+        "options": [
+          "Oak",
+          "Beech",
+          "Birch",
+          "Pine or spruce",
+          "Larch",
+          "Mixed broadleaf",
+          "No trees nearby"
+        ],
+        "effort": "instant"
+      },
+      {
+        "key": "substrate",
+        "label": "What it is growing on",
+        "prompt": "What is it growing on or out of?",
+        "how": "Look at what the base actually emerges from, not just what is nearby. Buried wood and roots count as wood.",
+        "options": [
+          "Soil or leaf litter",
+          "Dead wood or a stump",
+          "A living tree",
+          "Grass or lawn",
+          "Dung",
+          "Moss"
+        ],
+        "effort": "instant"
+      },
+      {
+        "key": "growth_form",
+        "label": "Growth habit",
+        "prompt": "How is it growing?",
+        "how": "Step back and photograph the whole group in place.",
+        "options": [
+          "Singly",
+          "Scattered",
+          "In a tight cluster",
+          "In a ring",
+          "As a bracket"
+        ],
+        "effort": "instant"
+      },
+      {
+        "key": "cap_colour",
+        "label": "Cap colour",
+        "prompt": "What colour is the cap?",
+        "how": "Photograph from above in natural light, avoiding deep shade.",
+        "options": [
+          "White or cream",
+          "Yellow",
+          "Orange",
+          "Red",
+          "Pink",
+          "Brown",
+          "Olive or greenish",
+          "Grey",
+          "Purple",
+          "Black"
+        ],
+        "effort": "instant"
+      },
+      {
+        "key": "gill_colour",
+        "label": "Gill colour",
+        "prompt": "What colour are the gills right now?",
+        "how": "Describe the colour of the gills themselves, not the cap.",
+        "options": [
+          "White",
+          "Pink",
+          "Violet or lilac",
+          "Brown",
+          "Chocolate or black",
+          "Yellow or green",
+          "Grey"
+        ],
+        "effort": "instant"
+      },
+      {
+        "key": "ring",
+        "label": "Ring on the stem",
+        "prompt": "Is there a ring or skirt of tissue on the stem?",
+        "how": "Look partway up the stem for a collar, skirt or a distinct zone of fibres.",
+        "options": [
+          "Firm skirt-like ring",
+          "Cobwebby fibres",
+          "Faint zone only",
+          "No ring"
+        ],
+        "effort": "instant"
+      },
+      {
+        "key": "smell",
+        "label": "Smell",
+        "prompt": "What does it smell like?",
+        "how": "Break a piece and smell it immediately, close up.",
+        "options": [
+          "Pleasantly mushroomy",
+          "Aniseed or almond",
+          "Apricot or fruity",
+          "Fresh bread dough",
+          "Radish",
+          "Raw potato or earthy",
+          "Soap",
+          "Coconut",
+          "Ink or chemicals",
+          "Rotting or foul",
+          "Nothing much"
+        ],
+        "effort": "instant"
+      },
+      {
+        "key": "spore_print_colour",
+        "label": "Spore print",
+        "prompt": "What colour is the spore print?",
+        "how": "Cut the cap off and lay it gills-down on paper that is half white and half black, cover it with a bowl, and leave it for two to twelve hours. The colour of the powder that falls is the spore print.",
+        "options": [
+          "White or cream",
+          "Pink",
+          "Rust or cinnamon brown",
+          "Chocolate or purple-brown",
+          "Black",
+          "Olive or yellow"
+        ],
+        "effort": "hours"
+      }
+    ],
+    "note": "Every field is optional. Answer only what you actually observed -- a guess is worse than a blank, because the app cannot tell the two apart."
+  },
+  "scenes": [
+    {
+      "verdict": "out_of_scope",
+      "result": {
+        "observation_id": "772ba04ed8774d75bf1118a707be3af9",
+        "verdict": "out_of_scope",
+        "headline": "This doesn't match anything I know well",
+        "detail": "The photograph does not resemble any species in my range with reasonable confidence. It may be a species I was never trained on, or the photograph may not show enough of the mushroom.",
+        "candidates": [
+          {
+            "species_key": "inocybe-geophylla",
+            "scientific_name": "Inocybe geophylla",
+            "common_names": [
+              "White Fibrecap",
+              "Lilac Fibrecap"
+            ],
+            "confidence": 0.0395,
+            "toxicity": "SERIOUS",
+            "genus": "Inocybe"
+          },
+          {
+            "species_key": "hymenopellis-radicata",
+            "scientific_name": "Hymenopellis radicata",
+            "common_names": [
+              "Rooting Shank"
+            ],
+            "confidence": 0.0287,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Hymenopellis"
+          },
+          {
+            "species_key": "laetiporus-sulphureus",
+            "scientific_name": "Laetiporus sulphureus",
+            "common_names": [
+              "Chicken of the Woods"
+            ],
+            "confidence": 0.0267,
+            "toxicity": "TOXIC",
+            "genus": "Laetiporus"
+          },
+          {
+            "species_key": "gliophorus-irrigatus",
+            "scientific_name": "Gliophorus irrigatus",
+            "common_names": [
+              "Slimy Waxcap"
+            ],
+            "confidence": 0.0261,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Gliophorus"
+          },
+          {
+            "species_key": "calocybe-gambosa",
+            "scientific_name": "Calocybe gambosa",
+            "common_names": [
+              "St George's Mushroom"
+            ],
+            "confidence": 0.025,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Calocybe"
+          },
+          {
+            "species_key": "lactarius-glyciosmus",
+            "scientific_name": "Lactarius glyciosmus",
+            "common_names": [
+              "Coconut Milkcap"
+            ],
+            "confidence": 0.0234,
+            "toxicity": "TOXIC",
+            "genus": "Lactarius"
+          },
+          {
+            "species_key": "phlebia-radiata",
+            "scientific_name": "Phlebia radiata",
+            "common_names": [
+              "Wrinkled Crust"
+            ],
+            "confidence": 0.023,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Phlebia"
+          },
+          {
+            "species_key": "lycoperdon-nigrescens",
+            "scientific_name": "Lycoperdon nigrescens",
+            "common_names": [
+              "Dusky Puffball"
+            ],
+            "confidence": 0.0225,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Lycoperdon"
+          }
+        ],
+        "warnings": [
+          "Because this does not match anything I know, I cannot tell you what it is -- and I cannot rule out that it is one of the species that can kill. Treat an unidentified mushroom as more dangerous than a named one, not less.",
+          "One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.",
+          "This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."
+        ],
+        "deadly_in_play": true,
+        "questions": [
+          {
+            "key": "substrate",
+            "label": "What it is growing on",
+            "prompt": "What is it growing on or out of?",
+            "how": "Look at what the base actually emerges from, not just what is nearby. Buried wood and roots count as wood.",
+            "effort": "instant",
+            "options": [
+              "Soil or leaf litter",
+              "Dead wood or a stump",
+              "A living tree",
+              "Grass or lawn",
+              "Dung",
+              "Moss"
+            ],
+            "requires_photo": false,
+            "safety_note": "",
+            "rationale": "This is what separates Hymenopellis radicata from Laetiporus sulphureus.",
+            "expected_information_gain": 0.2316
+          },
+          {
+            "key": "cap_colour",
+            "label": "Cap colour",
+            "prompt": "What colour is the cap?",
+            "how": "Photograph from above in natural light, avoiding deep shade.",
+            "effort": "instant",
+            "options": [
+              "White or cream",
+              "Yellow",
+              "Orange",
+              "Red",
+              "Pink",
+              "Brown",
+              "Olive or greenish",
+              "Grey",
+              "Purple",
+              "Black"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This is what separates Inocybe geophylla from Hymenopellis radicata.",
+            "expected_information_gain": 0.185
+          },
+          {
+            "key": "smell",
+            "label": "Smell",
+            "prompt": "What does it smell like?",
+            "how": "Break a piece and smell it immediately, close up.",
+            "effort": "instant",
+            "options": [
+              "Pleasantly mushroomy",
+              "Aniseed or almond",
+              "Apricot or fruity",
+              "Fresh bread dough",
+              "Radish",
+              "Raw potato or earthy",
+              "Soap",
+              "Coconut",
+              "Ink or chemicals",
+              "Rotting or foul",
+              "Nothing much"
+            ],
+            "requires_photo": false,
+            "safety_note": "",
+            "rationale": "This would help confirm or rule out Inocybe geophylla.",
+            "expected_information_gain": 0.1765
+          }
+        ],
+        "model_version": "0.1.0",
+        "calibrated": false
+      }
+    },
+    {
+      "verdict": "uncertain",
+      "result": {
+        "observation_id": "045972da81d34a169afc389c3be7c2de",
+        "verdict": "uncertain",
+        "headline": "I'm not sure what this is",
+        "detail": "No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.",
+        "candidates": [
+          {
+            "species_key": "amanita-citrina",
+            "scientific_name": "Amanita citrina",
+            "common_names": [
+              "False Deathcap"
+            ],
+            "confidence": 0.3125,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Amanita"
+          },
+          {
+            "species_key": "apioperdon-pyriforme",
+            "scientific_name": "Apioperdon pyriforme",
+            "common_names": [
+              "Stump Puffball"
+            ],
+            "confidence": 0.0371,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Apioperdon"
+          },
+          {
+            "species_key": "heterobasidion-annosum",
+            "scientific_name": "Heterobasidion annosum",
+            "common_names": [
+              "Root Rot"
+            ],
+            "confidence": 0.0273,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Heterobasidion"
+          },
+          {
+            "species_key": "cortinarius-violaceus",
+            "scientific_name": "Cortinarius violaceus",
+            "common_names": [
+              "Violet Webcap"
+            ],
+            "confidence": 0.0229,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Cortinarius"
+          },
+          {
+            "species_key": "paxillus-involutus",
+            "scientific_name": "Paxillus involutus",
+            "common_names": [
+              "Brown Roll-rim"
+            ],
+            "confidence": 0.022,
+            "toxicity": "SERIOUS",
+            "genus": "Paxillus"
+          },
+          {
+            "species_key": "psathyrella-corrugis",
+            "scientific_name": "Psathyrella corrugis",
+            "common_names": [
+              "Red Edge Brittlestem"
+            ],
+            "confidence": 0.0162,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Psathyrella"
+          },
+          {
+            "species_key": "calocera-cornea",
+            "scientific_name": "Calocera cornea",
+            "common_names": [
+              "Small Stagshorn"
+            ],
+            "confidence": 0.015,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Calocera"
+          },
+          {
+            "species_key": "inocybe-erubescens",
+            "scientific_name": "Inocybe erubescens",
+            "common_names": [
+              "Deadly Fibrecap"
+            ],
+            "confidence": 0.0146,
+            "toxicity": "DEADLY",
+            "genus": "Inocybe"
+          }
+        ],
+        "warnings": [
+          "One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.",
+          "This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."
+        ],
+        "deadly_in_play": true,
+        "questions": [
+          {
+            "key": "substrate",
+            "label": "What it is growing on",
+            "prompt": "What is it growing on or out of?",
+            "how": "Look at what the base actually emerges from, not just what is nearby. Buried wood and roots count as wood.",
+            "effort": "instant",
+            "options": [
+              "Soil or leaf litter",
+              "Dead wood or a stump",
+              "A living tree",
+              "Grass or lawn",
+              "Dung",
+              "Moss"
+            ],
+            "requires_photo": false,
+            "safety_note": "",
+            "rationale": "This is what separates Apioperdon pyriforme from Heterobasidion annosum.",
+            "expected_information_gain": 0.3348
+          },
+          {
+            "key": "hymenium_type",
+            "label": "Spore surface",
+            "prompt": "What carries the spores underneath?",
+            "how": "Photograph the underside close up.",
+            "effort": "instant",
+            "options": [
+              "Gills",
+              "Pores",
+              "Spines",
+              "Smooth surface",
+              "Ridges"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This is what separates Apioperdon pyriforme from Heterobasidion annosum.",
+            "expected_information_gain": 0.2737
+          },
+          {
+            "key": "growth_form",
+            "label": "Growth habit",
+            "prompt": "How is it growing?",
+            "how": "Step back and photograph the whole group in place.",
+            "effort": "instant",
+            "options": [
+              "Singly",
+              "Scattered",
+              "In a tight cluster",
+              "In a ring",
+              "As a bracket"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This is what separates Apioperdon pyriforme from Heterobasidion annosum.",
+            "expected_information_gain": 0.2737
+          }
+        ],
+        "model_version": "0.1.0",
+        "calibrated": false
+      }
+    },
+    {
+      "verdict": "group",
+      "result": {
+        "observation_id": "4aa8fb18a17e4b479a1edbe6fb35111a",
+        "verdict": "group",
+        "headline": "This looks like a Psilocybe species",
+        "detail": "The candidates cannot be separated from this photograph alone. They differ by characters that are not visible here. I'm reasonably confident about the genus (51%) but not about which species within it.",
+        "candidates": [
+          {
+            "species_key": "psilocybe-semilanceata",
+            "scientific_name": "Psilocybe semilanceata",
+            "common_names": [
+              "Liberty Cap"
+            ],
+            "confidence": 0.5098,
+            "toxicity": "TOXIC",
+            "genus": "Psilocybe"
+          },
+          {
+            "species_key": "collybiopsis-ramealis",
+            "scientific_name": "Collybiopsis ramealis",
+            "common_names": [
+              "Twig Parachute"
+            ],
+            "confidence": 0.0233,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Collybiopsis"
+          },
+          {
+            "species_key": "coprinellus-disseminatus",
+            "scientific_name": "Coprinellus disseminatus",
+            "common_names": [
+              "Fairy Inkcap"
+            ],
+            "confidence": 0.0227,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Coprinellus"
+          },
+          {
+            "species_key": "byssomerulius-corium",
+            "scientific_name": "Byssomerulius corium",
+            "common_names": [
+              "Netted Crust"
+            ],
+            "confidence": 0.0122,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Byssomerulius"
+          },
+          {
+            "species_key": "amanita-vaginata",
+            "scientific_name": "Amanita vaginata",
+            "common_names": [
+              "Grisette"
+            ],
+            "confidence": 0.0115,
+            "toxicity": "TOXIC",
+            "genus": "Amanita"
+          },
+          {
+            "species_key": "imleria-badia",
+            "scientific_name": "Imleria badia",
+            "common_names": [
+              "Bay Bolete"
+            ],
+            "confidence": 0.0112,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Imleria"
+          },
+          {
+            "species_key": "tricholoma-equestre",
+            "scientific_name": "Tricholoma equestre",
+            "common_names": [
+              "Yellow Knight",
+              "Man on Horseback"
+            ],
+            "confidence": 0.0108,
+            "toxicity": "SERIOUS",
+            "genus": "Tricholoma"
+          },
+          {
+            "species_key": "gymnopus-androsaceus",
+            "scientific_name": "Gymnopus androsaceus",
+            "common_names": [
+              "Horsehair Parachute"
+            ],
+            "confidence": 0.0105,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Gymnopus"
+          }
+        ],
+        "warnings": [
+          "This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."
+        ],
+        "deadly_in_play": false,
+        "questions": [
+          {
+            "key": "growth_form",
+            "label": "Growth habit",
+            "prompt": "How is it growing?",
+            "how": "Step back and photograph the whole group in place.",
+            "effort": "instant",
+            "options": [
+              "Singly",
+              "Scattered",
+              "In a tight cluster",
+              "In a ring",
+              "As a bracket"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This is what separates Collybiopsis ramealis from Coprinellus disseminatus.",
+            "expected_information_gain": 0.289
+          },
+          {
+            "key": "size",
+            "label": "Size",
+            "prompt": "How wide is the cap?",
+            "how": "Measure across the widest point, or photograph it beside a coin.",
+            "effort": "instant",
+            "options": [
+              "Under 2 cm",
+              "2-5 cm",
+              "5-10 cm",
+              "10-20 cm",
+              "Over 20 cm"
+            ],
+            "requires_photo": false,
+            "safety_note": "",
+            "rationale": "This is what separates Collybiopsis ramealis from Coprinellus disseminatus.",
+            "expected_information_gain": 0.2112
+          },
+          {
+            "key": "texture",
+            "label": "Texture",
+            "prompt": "What does it feel like?",
+            "how": "Press it between your fingers.",
+            "effort": "instant",
+            "options": [
+              "Gelatinous and rubbery",
+              "Firm and fleshy",
+              "Woody",
+              "Soft and fragile"
+            ],
+            "requires_photo": false,
+            "safety_note": "",
+            "rationale": "This is what separates Coprinellus disseminatus from Byssomerulius corium.",
+            "expected_information_gain": 0.1656
+          }
+        ],
+        "model_version": "0.1.0",
+        "calibrated": false
+      }
+    },
+    {
+      "verdict": "dangerous_group",
+      "result": {
+        "observation_id": "2f64cf76e4474e4ab8ac426d91f3bf4b",
+        "verdict": "dangerous_group",
+        "headline": "I can't safely narrow this down",
+        "detail": "The leading candidates include both Amanita virosa and Amanita pantherina. These are confused with each other in the field, and one of them can kill. I will not choose between them from a photograph.",
+        "candidates": [
+          {
+            "species_key": "amanita-virosa",
+            "scientific_name": "Amanita virosa",
+            "common_names": [
+              "Destroying Angel"
+            ],
+            "confidence": 0.2398,
+            "toxicity": "DEADLY",
+            "genus": "Amanita"
+          },
+          {
+            "species_key": "tricholomopsis-rutilans",
+            "scientific_name": "Tricholomopsis rutilans",
+            "common_names": [
+              "Plums and Custard"
+            ],
+            "confidence": 0.0376,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Tricholomopsis"
+          },
+          {
+            "species_key": "tricholoma-equestre",
+            "scientific_name": "Tricholoma equestre",
+            "common_names": [
+              "Yellow Knight",
+              "Man on Horseback"
+            ],
+            "confidence": 0.0269,
+            "toxicity": "SERIOUS",
+            "genus": "Tricholoma"
+          },
+          {
+            "species_key": "neoboletus-luridiformis",
+            "scientific_name": "Neoboletus luridiformis",
+            "common_names": [
+              "Scarletina Bolete"
+            ],
+            "confidence": 0.0239,
+            "toxicity": "TOXIC",
+            "genus": "Neoboletus"
+          },
+          {
+            "species_key": "amanita-pantherina",
+            "scientific_name": "Amanita pantherina",
+            "common_names": [
+              "Panther Cap"
+            ],
+            "confidence": 0.0237,
+            "toxicity": "SERIOUS",
+            "genus": "Amanita"
+          },
+          {
+            "species_key": "calocera-viscosa",
+            "scientific_name": "Calocera viscosa",
+            "common_names": [
+              "Yellow Stagshorn"
+            ],
+            "confidence": 0.0179,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Calocera"
+          },
+          {
+            "species_key": "phlebia-radiata",
+            "scientific_name": "Phlebia radiata",
+            "common_names": [
+              "Wrinkled Crust"
+            ],
+            "confidence": 0.0153,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Phlebia"
+          },
+          {
+            "species_key": "craterellus-cornucopioides",
+            "scientific_name": "Craterellus cornucopioides",
+            "common_names": [
+              "Horn of Plenty",
+              "Black Trumpet"
+            ],
+            "confidence": 0.0152,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Craterellus"
+          }
+        ],
+        "warnings": [
+          "One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.",
+          "This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."
+        ],
+        "deadly_in_play": true,
+        "questions": [
+          {
+            "key": "bruising_reaction",
+            "label": "Bruising",
+            "prompt": "Does it change colour when cut or rubbed?",
+            "how": "Cut the mushroom in half lengthways, including the very base of the stem, and rub the cap edge. Wait a full two minutes and watch for a change.",
+            "effort": "minutes",
+            "options": [
+              "Yellow, especially at the stem base",
+              "Red or pink",
+              "Blue",
+              "Green",
+              "Brown",
+              "Black",
+              "No change"
+            ],
+            "requires_photo": true,
+            "safety_note": "Chrome-yellow staining at the base of the stem marks the Yellow Stainer, the commonest cause of mushroom poisoning in Britain.",
+            "rationale": "This separates Amanita virosa, which can kill, from Amanita pantherina.",
+            "expected_information_gain": 0.2209
+          },
+          {
+            "key": "ring",
+            "label": "Ring on the stem",
+            "prompt": "Is there a ring or skirt of tissue on the stem?",
+            "how": "Look partway up the stem for a collar, skirt or a distinct zone of fibres.",
+            "effort": "instant",
+            "options": [
+              "Firm skirt-like ring",
+              "Cobwebby fibres",
+              "Faint zone only",
+              "No ring"
+            ],
+            "requires_photo": false,
+            "safety_note": "",
+            "rationale": "This separates Amanita virosa, which can kill, from Amanita pantherina.",
+            "expected_information_gain": 0.0846
+          },
+          {
+            "key": "volva",
+            "label": "Base of the stem",
+            "prompt": "Dig up the very base of the stem. Is there a cup or bag around it?",
+            "how": "Do not cut the mushroom at ground level. Lever the whole thing out with a knife or your fingers so the base comes up intact, then brush off the soil. You are looking for a sac, cup or rim of tissue around the bottom.",
+            "effort": "minutes",
+            "options": [
+              "Clear cup or sac",
+              "Swollen but no cup",
+              "Neither",
+              "I cut it off"
+            ],
+            "requires_photo": true,
+            "safety_note": "This is the single most important check in mushroom foraging. The sac at the base is the mark of Amanita, the genus responsible for most fatal poisonings. It is often buried and is routinely cut off and missed.",
+            "rationale": "This separates Amanita virosa, which can kill, from Amanita pantherina.",
+            "expected_information_gain": 0.0618
+          }
+        ],
+        "model_version": "0.1.0",
+        "calibrated": false
+      }
+    },
+    {
+      "verdict": "species",
+      "result": {
+        "observation_id": "deb223bc285c4b5091595782dd53a3d2",
+        "verdict": "species",
+        "headline": "Most likely Tricholoma saponaceum",
+        "detail": "Smells of household soap, and the flesh in the stem base turns pink or reddish when cut. Colour is unreliable -- grey, olive, brownish or nearly white on different collections.",
+        "candidates": [
+          {
+            "species_key": "tricholoma-saponaceum",
+            "scientific_name": "Tricholoma saponaceum",
+            "common_names": [
+              "Soapy Knight"
+            ],
+            "confidence": 0.8923,
+            "toxicity": "TOXIC",
+            "genus": "Tricholoma"
+          },
+          {
+            "species_key": "tricholoma-pardinum",
+            "scientific_name": "Tricholoma pardinum",
+            "common_names": [
+              "Leopard Knight"
+            ],
+            "confidence": 0.0064,
+            "toxicity": "SERIOUS",
+            "genus": "Tricholoma"
+          },
+          {
+            "species_key": "coprinopsis-lagopus",
+            "scientific_name": "Coprinopsis lagopus",
+            "common_names": [
+              "Hare'sfoot Inkcap"
+            ],
+            "confidence": 0.0036,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Coprinopsis"
+          },
+          {
+            "species_key": "omphalotus-olearius",
+            "scientific_name": "Omphalotus olearius",
+            "common_names": [
+              "Jack-o'-Lantern"
+            ],
+            "confidence": 0.003,
+            "toxicity": "TOXIC",
+            "genus": "Omphalotus"
+          },
+          {
+            "species_key": "tubaria-furfuracea",
+            "scientific_name": "Tubaria furfuracea",
+            "common_names": [
+              "Scurfy Twiglet"
+            ],
+            "confidence": 0.0027,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Tubaria"
+          },
+          {
+            "species_key": "tricholoma-sulphureum",
+            "scientific_name": "Tricholoma sulphureum",
+            "common_names": [
+              "Sulphur Knight"
+            ],
+            "confidence": 0.0023,
+            "toxicity": "TOXIC",
+            "genus": "Tricholoma"
+          },
+          {
+            "species_key": "hypoxylon-fragiforme",
+            "scientific_name": "Hypoxylon fragiforme",
+            "common_names": [
+              "Beech Woodwart"
+            ],
+            "confidence": 0.0022,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Hypoxylon"
+          },
+          {
+            "species_key": "stereum-hirsutum",
+            "scientific_name": "Stereum hirsutum",
+            "common_names": [
+              "Hairy Curtain Crust"
+            ],
+            "confidence": 0.002,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Stereum"
+          }
+        ],
+        "warnings": [
+          "This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."
+        ],
+        "deadly_in_play": false,
+        "questions": [
+          {
+            "key": "spore_print_colour",
+            "label": "Spore print",
+            "prompt": "What colour is the spore print?",
+            "how": "Cut the cap off and lay it gills-down on paper that is half white and half black, cover it with a bowl, and leave it for two to twelve hours. The colour of the powder that falls is the spore print.",
+            "effort": "hours",
+            "options": [
+              "White or cream",
+              "Pink",
+              "Rust or cinnamon brown",
+              "Chocolate or purple-brown",
+              "Black",
+              "Olive or yellow"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This is what separates Tricholoma pardinum from Coprinopsis lagopus.",
+            "expected_information_gain": 0.0645
+          }
+        ],
+        "model_version": "0.1.0",
+        "calibrated": false
+      }
+    }
+  ],
+  "follow_ups": [
+    {
+      "answered": "Yellow, especially at the stem base",
+      "result": {
+        "observation_id": "2f64cf76e4474e4ab8ac426d91f3bf4b",
+        "verdict": "uncertain",
+        "headline": "I'm not sure what this is",
+        "detail": "No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.",
+        "candidates": [
+          {
+            "species_key": "amanita-virosa",
+            "scientific_name": "Amanita virosa",
+            "common_names": [
+              "Destroying Angel"
+            ],
+            "confidence": 0.2608,
+            "toxicity": "DEADLY",
+            "genus": "Amanita"
+          },
+          {
+            "species_key": "tricholomopsis-rutilans",
+            "scientific_name": "Tricholomopsis rutilans",
+            "common_names": [
+              "Plums and Custard"
+            ],
+            "confidence": 0.0409,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Tricholomopsis"
+          },
+          {
+            "species_key": "tricholoma-equestre",
+            "scientific_name": "Tricholoma equestre",
+            "common_names": [
+              "Yellow Knight",
+              "Man on Horseback"
+            ],
+            "confidence": 0.0292,
+            "toxicity": "SERIOUS",
+            "genus": "Tricholoma"
+          },
+          {
+            "species_key": "calocera-viscosa",
+            "scientific_name": "Calocera viscosa",
+            "common_names": [
+              "Yellow Stagshorn"
+            ],
+            "confidence": 0.0194,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Calocera"
+          },
+          {
+            "species_key": "phlebia-radiata",
+            "scientific_name": "Phlebia radiata",
+            "common_names": [
+              "Wrinkled Crust"
+            ],
+            "confidence": 0.0166,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Phlebia"
+          },
+          {
+            "species_key": "craterellus-cornucopioides",
+            "scientific_name": "Craterellus cornucopioides",
+            "common_names": [
+              "Horn of Plenty",
+              "Black Trumpet"
+            ],
+            "confidence": 0.0165,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Craterellus"
+          },
+          {
+            "species_key": "stereum-hirsutum",
+            "scientific_name": "Stereum hirsutum",
+            "common_names": [
+              "Hairy Curtain Crust"
+            ],
+            "confidence": 0.0148,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Stereum"
+          },
+          {
+            "species_key": "hypholoma-fasciculare",
+            "scientific_name": "Hypholoma fasciculare",
+            "common_names": [
+              "Sulphur Tuft"
+            ],
+            "confidence": 0.0148,
+            "toxicity": "TOXIC",
+            "genus": "Hypholoma"
+          }
+        ],
+        "warnings": [
+          "One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.",
+          "This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."
+        ],
+        "deadly_in_play": true,
+        "questions": [
+          {
+            "key": "cap_colour",
+            "label": "Cap colour",
+            "prompt": "What colour is the cap?",
+            "how": "Photograph from above in natural light, avoiding deep shade.",
+            "effort": "instant",
+            "options": [
+              "White or cream",
+              "Yellow",
+              "Orange",
+              "Red",
+              "Pink",
+              "Brown",
+              "Olive or greenish",
+              "Grey",
+              "Purple",
+              "Black"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
+            "expected_information_gain": 0.3659
+          },
+          {
+            "key": "substrate",
+            "label": "What it is growing on",
+            "prompt": "What is it growing on or out of?",
+            "how": "Look at what the base actually emerges from, not just what is nearby. Buried wood and roots count as wood.",
+            "effort": "instant",
+            "options": [
+              "Soil or leaf litter",
+              "Dead wood or a stump",
+              "A living tree",
+              "Grass or lawn",
+              "Dung",
+              "Moss"
+            ],
+            "requires_photo": false,
+            "safety_note": "",
+            "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
+            "expected_information_gain": 0.3537
+          },
+          {
+            "key": "hymenium_type",
+            "label": "Spore surface",
+            "prompt": "What carries the spores underneath?",
+            "how": "Photograph the underside close up.",
+            "effort": "instant",
+            "options": [
+              "Gills",
+              "Pores",
+              "Spines",
+              "Smooth surface",
+              "Ridges"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This would help confirm or rule out Calocera viscosa.",
+            "expected_information_gain": 0.2679
+          }
+        ],
+        "model_version": "0.1.0",
+        "calibrated": false
+      }
+    },
+    {
+      "answered": "Red or pink",
+      "result": {
+        "observation_id": "2f64cf76e4474e4ab8ac426d91f3bf4b",
+        "verdict": "uncertain",
+        "headline": "I'm not sure what this is",
+        "detail": "No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.",
+        "candidates": [
+          {
+            "species_key": "amanita-virosa",
+            "scientific_name": "Amanita virosa",
+            "common_names": [
+              "Destroying Angel"
+            ],
+            "confidence": 0.2679,
+            "toxicity": "DEADLY",
+            "genus": "Amanita"
+          },
+          {
+            "species_key": "tricholomopsis-rutilans",
+            "scientific_name": "Tricholomopsis rutilans",
+            "common_names": [
+              "Plums and Custard"
+            ],
+            "confidence": 0.042,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Tricholomopsis"
+          },
+          {
+            "species_key": "tricholoma-equestre",
+            "scientific_name": "Tricholoma equestre",
+            "common_names": [
+              "Yellow Knight",
+              "Man on Horseback"
+            ],
+            "confidence": 0.03,
+            "toxicity": "SERIOUS",
+            "genus": "Tricholoma"
+          },
+          {
+            "species_key": "calocera-viscosa",
+            "scientific_name": "Calocera viscosa",
+            "common_names": [
+              "Yellow Stagshorn"
+            ],
+            "confidence": 0.0199,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Calocera"
+          },
+          {
+            "species_key": "phlebia-radiata",
+            "scientific_name": "Phlebia radiata",
+            "common_names": [
+              "Wrinkled Crust"
+            ],
+            "confidence": 0.0171,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Phlebia"
+          },
+          {
+            "species_key": "craterellus-cornucopioides",
+            "scientific_name": "Craterellus cornucopioides",
+            "common_names": [
+              "Horn of Plenty",
+              "Black Trumpet"
+            ],
+            "confidence": 0.017,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Craterellus"
+          },
+          {
+            "species_key": "stereum-hirsutum",
+            "scientific_name": "Stereum hirsutum",
+            "common_names": [
+              "Hairy Curtain Crust"
+            ],
+            "confidence": 0.0152,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Stereum"
+          },
+          {
+            "species_key": "hypholoma-fasciculare",
+            "scientific_name": "Hypholoma fasciculare",
+            "common_names": [
+              "Sulphur Tuft"
+            ],
+            "confidence": 0.0152,
+            "toxicity": "TOXIC",
+            "genus": "Hypholoma"
+          }
+        ],
+        "warnings": [
+          "One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.",
+          "This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."
+        ],
+        "deadly_in_play": true,
+        "questions": [
+          {
+            "key": "cap_colour",
+            "label": "Cap colour",
+            "prompt": "What colour is the cap?",
+            "how": "Photograph from above in natural light, avoiding deep shade.",
+            "effort": "instant",
+            "options": [
+              "White or cream",
+              "Yellow",
+              "Orange",
+              "Red",
+              "Pink",
+              "Brown",
+              "Olive or greenish",
+              "Grey",
+              "Purple",
+              "Black"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
+            "expected_information_gain": 0.3659
+          },
+          {
+            "key": "substrate",
+            "label": "What it is growing on",
+            "prompt": "What is it growing on or out of?",
+            "how": "Look at what the base actually emerges from, not just what is nearby. Buried wood and roots count as wood.",
+            "effort": "instant",
+            "options": [
+              "Soil or leaf litter",
+              "Dead wood or a stump",
+              "A living tree",
+              "Grass or lawn",
+              "Dung",
+              "Moss"
+            ],
+            "requires_photo": false,
+            "safety_note": "",
+            "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
+            "expected_information_gain": 0.3537
+          },
+          {
+            "key": "hymenium_type",
+            "label": "Spore surface",
+            "prompt": "What carries the spores underneath?",
+            "how": "Photograph the underside close up.",
+            "effort": "instant",
+            "options": [
+              "Gills",
+              "Pores",
+              "Spines",
+              "Smooth surface",
+              "Ridges"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This would help confirm or rule out Calocera viscosa.",
+            "expected_information_gain": 0.2679
+          }
+        ],
+        "model_version": "0.1.0",
+        "calibrated": false
+      }
+    },
+    {
+      "answered": "Blue",
+      "result": {
+        "observation_id": "2f64cf76e4474e4ab8ac426d91f3bf4b",
+        "verdict": "uncertain",
+        "headline": "I'm not sure what this is",
+        "detail": "No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.",
+        "candidates": [
+          {
+            "species_key": "amanita-virosa",
+            "scientific_name": "Amanita virosa",
+            "common_names": [
+              "Destroying Angel"
+            ],
+            "confidence": 0.27,
+            "toxicity": "DEADLY",
+            "genus": "Amanita"
+          },
+          {
+            "species_key": "tricholomopsis-rutilans",
+            "scientific_name": "Tricholomopsis rutilans",
+            "common_names": [
+              "Plums and Custard"
+            ],
+            "confidence": 0.0423,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Tricholomopsis"
+          },
+          {
+            "species_key": "tricholoma-equestre",
+            "scientific_name": "Tricholoma equestre",
+            "common_names": [
+              "Yellow Knight",
+              "Man on Horseback"
+            ],
+            "confidence": 0.0302,
+            "toxicity": "SERIOUS",
+            "genus": "Tricholoma"
+          },
+          {
+            "species_key": "calocera-viscosa",
+            "scientific_name": "Calocera viscosa",
+            "common_names": [
+              "Yellow Stagshorn"
+            ],
+            "confidence": 0.0201,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Calocera"
+          },
+          {
+            "species_key": "phlebia-radiata",
+            "scientific_name": "Phlebia radiata",
+            "common_names": [
+              "Wrinkled Crust"
+            ],
+            "confidence": 0.0172,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Phlebia"
+          },
+          {
+            "species_key": "craterellus-cornucopioides",
+            "scientific_name": "Craterellus cornucopioides",
+            "common_names": [
+              "Horn of Plenty",
+              "Black Trumpet"
+            ],
+            "confidence": 0.0171,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Craterellus"
+          },
+          {
+            "species_key": "stereum-hirsutum",
+            "scientific_name": "Stereum hirsutum",
+            "common_names": [
+              "Hairy Curtain Crust"
+            ],
+            "confidence": 0.0153,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Stereum"
+          },
+          {
+            "species_key": "hypholoma-fasciculare",
+            "scientific_name": "Hypholoma fasciculare",
+            "common_names": [
+              "Sulphur Tuft"
+            ],
+            "confidence": 0.0153,
+            "toxicity": "TOXIC",
+            "genus": "Hypholoma"
+          }
+        ],
+        "warnings": [
+          "One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.",
+          "This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."
+        ],
+        "deadly_in_play": true,
+        "questions": [
+          {
+            "key": "cap_colour",
+            "label": "Cap colour",
+            "prompt": "What colour is the cap?",
+            "how": "Photograph from above in natural light, avoiding deep shade.",
+            "effort": "instant",
+            "options": [
+              "White or cream",
+              "Yellow",
+              "Orange",
+              "Red",
+              "Pink",
+              "Brown",
+              "Olive or greenish",
+              "Grey",
+              "Purple",
+              "Black"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
+            "expected_information_gain": 0.3659
+          },
+          {
+            "key": "substrate",
+            "label": "What it is growing on",
+            "prompt": "What is it growing on or out of?",
+            "how": "Look at what the base actually emerges from, not just what is nearby. Buried wood and roots count as wood.",
+            "effort": "instant",
+            "options": [
+              "Soil or leaf litter",
+              "Dead wood or a stump",
+              "A living tree",
+              "Grass or lawn",
+              "Dung",
+              "Moss"
+            ],
+            "requires_photo": false,
+            "safety_note": "",
+            "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
+            "expected_information_gain": 0.3537
+          },
+          {
+            "key": "hymenium_type",
+            "label": "Spore surface",
+            "prompt": "What carries the spores underneath?",
+            "how": "Photograph the underside close up.",
+            "effort": "instant",
+            "options": [
+              "Gills",
+              "Pores",
+              "Spines",
+              "Smooth surface",
+              "Ridges"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This would help confirm or rule out Calocera viscosa.",
+            "expected_information_gain": 0.2679
+          }
+        ],
+        "model_version": "0.1.0",
+        "calibrated": false
+      }
+    },
+    {
+      "answered": "Green",
+      "result": {
+        "observation_id": "2f64cf76e4474e4ab8ac426d91f3bf4b",
+        "verdict": "uncertain",
+        "headline": "I'm not sure what this is",
+        "detail": "No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.",
+        "candidates": [
+          {
+            "species_key": "amanita-virosa",
+            "scientific_name": "Amanita virosa",
+            "common_names": [
+              "Destroying Angel"
+            ],
+            "confidence": 0.2716,
+            "toxicity": "DEADLY",
+            "genus": "Amanita"
+          },
+          {
+            "species_key": "tricholomopsis-rutilans",
+            "scientific_name": "Tricholomopsis rutilans",
+            "common_names": [
+              "Plums and Custard"
+            ],
+            "confidence": 0.0425,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Tricholomopsis"
+          },
+          {
+            "species_key": "tricholoma-equestre",
+            "scientific_name": "Tricholoma equestre",
+            "common_names": [
+              "Yellow Knight",
+              "Man on Horseback"
+            ],
+            "confidence": 0.0304,
+            "toxicity": "SERIOUS",
+            "genus": "Tricholoma"
+          },
+          {
+            "species_key": "calocera-viscosa",
+            "scientific_name": "Calocera viscosa",
+            "common_names": [
+              "Yellow Stagshorn"
+            ],
+            "confidence": 0.0202,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Calocera"
+          },
+          {
+            "species_key": "phlebia-radiata",
+            "scientific_name": "Phlebia radiata",
+            "common_names": [
+              "Wrinkled Crust"
+            ],
+            "confidence": 0.0173,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Phlebia"
+          },
+          {
+            "species_key": "craterellus-cornucopioides",
+            "scientific_name": "Craterellus cornucopioides",
+            "common_names": [
+              "Horn of Plenty",
+              "Black Trumpet"
+            ],
+            "confidence": 0.0172,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Craterellus"
+          },
+          {
+            "species_key": "stereum-hirsutum",
+            "scientific_name": "Stereum hirsutum",
+            "common_names": [
+              "Hairy Curtain Crust"
+            ],
+            "confidence": 0.0154,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Stereum"
+          },
+          {
+            "species_key": "hypholoma-fasciculare",
+            "scientific_name": "Hypholoma fasciculare",
+            "common_names": [
+              "Sulphur Tuft"
+            ],
+            "confidence": 0.0154,
+            "toxicity": "TOXIC",
+            "genus": "Hypholoma"
+          }
+        ],
+        "warnings": [
+          "One or more candidates for this photograph are species that can kill. Do not eat this mushroom. A photograph cannot rule these out.",
+          "This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."
+        ],
+        "deadly_in_play": true,
+        "questions": [
+          {
+            "key": "cap_colour",
+            "label": "Cap colour",
+            "prompt": "What colour is the cap?",
+            "how": "Photograph from above in natural light, avoiding deep shade.",
+            "effort": "instant",
+            "options": [
+              "White or cream",
+              "Yellow",
+              "Orange",
+              "Red",
+              "Pink",
+              "Brown",
+              "Olive or greenish",
+              "Grey",
+              "Purple",
+              "Black"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
+            "expected_information_gain": 0.3659
+          },
+          {
+            "key": "substrate",
+            "label": "What it is growing on",
+            "prompt": "What is it growing on or out of?",
+            "how": "Look at what the base actually emerges from, not just what is nearby. Buried wood and roots count as wood.",
+            "effort": "instant",
+            "options": [
+              "Soil or leaf litter",
+              "Dead wood or a stump",
+              "A living tree",
+              "Grass or lawn",
+              "Dung",
+              "Moss"
+            ],
+            "requires_photo": false,
+            "safety_note": "",
+            "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
+            "expected_information_gain": 0.3537
+          },
+          {
+            "key": "hymenium_type",
+            "label": "Spore surface",
+            "prompt": "What carries the spores underneath?",
+            "how": "Photograph the underside close up.",
+            "effort": "instant",
+            "options": [
+              "Gills",
+              "Pores",
+              "Spines",
+              "Smooth surface",
+              "Ridges"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This would help confirm or rule out Calocera viscosa.",
+            "expected_information_gain": 0.2679
+          }
+        ],
+        "model_version": "0.1.0",
+        "calibrated": false
+      }
+    }
+  ]
+}
