@@ -771,3 +771,33 @@ commits.
   version hid: `npm` is a `.cmd` shim that `subprocess` will not find bare,
   and `sys.executable` is the only reliable way to re-enter the interpreter
   that is actually running.
+- **`docs/walkthrough.html` is a *recording*, not a demo, and that was the
+  whole decision.** Martin is on Windows and has never opened a terminal, so
+  he asked whether the app could be shown through a link. Three options: a
+  mock-up, a JavaScript reimplementation of the safety layer, or a recording
+  of real responses. The reimplementation is the tempting one and the worst —
+  two copies of the one piece of code this project cannot afford to get
+  wrong, drifting apart silently. A recording cannot drift; it can only go
+  stale, and it stamps its own capture date so you can tell.
+  `scripts/capture_walkthrough.py` hits a running API (start it with
+  `scripts/try_it.py` first) and writes every response verbatim to
+  `docs/walkthrough.json`; `scripts/build_walkthrough_page.py` slims that into
+  the page's single JSON block. Same arrangement as `build_ebook.py`, same
+  reason. **Regenerate both after anything that changes what a user reads** —
+  a trained model, a disclaimer edit, a toxicity change — or the page is
+  showing last month's app over this month's claims.
+- **The page's chrome is themed and the phone inside it is not.** `--app-*`
+  tokens are copied from `theme.ts` and are never redefined under
+  `prefers-color-scheme: dark`, because the app is paper in every palette and
+  a dark mock-up is a picture of something that does not exist.
+- **It renders rule 1 rather than describing it.** No hazard line appears on a
+  `NO_RECORDED_TOXICITY` row — the slimmer passes the enum *name* through and
+  the page's `HAZARD` map simply has no entry, exactly as `hazardLabel` has
+  none. If a future edit adds one "for completeness", that is the rule broken
+  on the most-shared surface the project has.
+- **The follow-up section exists because the honest result was the
+  surprising one.** Answering the `dangerous_group` question lifts the
+  refusal to `uncertain` on all four answers *and* moves the destroying angel
+  **up**, 24% to 26–27%, with the deadly warning still on screen. The pair
+  partner was contradicted, so the mass had to go somewhere. Showing only the
+  verdict improving would have been the flattering half of a true thing.
