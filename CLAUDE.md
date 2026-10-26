@@ -756,3 +756,10 @@ commits.
 - **`scripts/incidents.py list` sorts worst first, then oldest first.** A
   newest-first queue buries the report that has been waiting longest, which
   is the one most likely to be the one you are failing.
+- **`./scripts/try_it.sh` is one command from a fresh clone to the app in a
+  browser.** It exists because the project had instructions for running each
+  piece and nothing that ran the whole thing — and because every screenshot
+  in `docs/screenshots/` was produced by a machine driving the app, which is
+  not the same as anybody having *used* it. A safety argument you have only
+  read is one you have not checked. That gap is what let three fatal client
+  bugs sit behind a green suite for months.

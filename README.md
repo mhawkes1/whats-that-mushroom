@@ -130,6 +130,27 @@ change to the model, the config schema or the export path.
 
 ## Running it
 
+```bash
+./scripts/try_it.sh
+```
+
+One command from a fresh clone. It installs what is missing, starts the API
+and the client, and prints a URL. No GPU, no dataset and no trained model —
+Python 3.11 and Node are the whole requirement. Ctrl-C stops it.
+
+The classifier is a stub, so whatever it names is meaningless. **What is
+worth looking at is everything around the name**: whether it refuses, what it
+asks for next, and what it declines to say about eating anything. Feed it
+different photographs until you get *"I can't safely narrow this down"* —
+that is the behaviour the whole project is built around, and the one no
+competitor will show you.
+
+For a version with no Node and no browser, `python3 scripts/demo.py` walks
+eight scenes through the real safety layer in a terminal, in about thirty
+seconds.
+
+### The pieces separately
+
 **API**
 
 ```bash

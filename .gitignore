@@ -30,3 +30,7 @@ dist/
 
 # Incident reports are real user data, never committed
 data/incidents*.jsonl
+
+# scripts/try_it.sh keeps its service logs here
+.try_it_api.log
+.try_it_web.log
