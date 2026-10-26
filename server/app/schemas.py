@@ -194,6 +194,35 @@ class IncidentRequest(BaseModel):
     contact: str | None = Field(default=None, max_length=200)
 
 
+class IncidentStatusOut(BaseModel):
+    """What happened to a report, for the person who filed it.
+
+    Note what this does not carry: the reporter's own account, their contact
+    details, the species they named, or anything the app said. The incident
+    id is unguessable but it is also the sort of string people paste into
+    forums, so this is written for a reader who might not be the reporter.
+    """
+
+    incident_id: str
+    received_at: str
+    outcome: str = Field(
+        description=(
+            "received | investigating | fixed | confirmed_not_yet_fixed | "
+            "could_not_determine | no_change."
+        )
+    )
+    public_note: str = Field(description="Written by a person, for the reporter.")
+    closed: bool
+    medical: bool = Field(
+        default=False,
+        description=(
+            "True when the report said someone had eaten something or was "
+            "unwell. Those are never tracked as defects and never shown a "
+            "ticket state."
+        ),
+    )
+
+
 class IncidentOut(BaseModel):
     incident_id: str
     severity: str = Field(

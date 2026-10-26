@@ -22,6 +22,7 @@ from __future__ import annotations
 import io
 import logging
 import uuid
+from dataclasses import asdict
 from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
@@ -50,6 +51,7 @@ from .schemas import (
     IdentifyResponse,
     IncidentOut,
     IncidentRequest,
+    IncidentStatusOut,
     QuestionOut,
     SpeciesListEntryOut,
     SpeciesListOut,
@@ -509,6 +511,37 @@ def incident(request: IncidentRequest, http_request: Request) -> IncidentOut:
         medical_emergency=medical,
         emergency_guidance=EMERGENCY_GUIDANCE if medical else None,
     )
+
+
+@app.get("/incident/{incident_id}", response_model=IncidentStatusOut)
+def incident_status(incident_id: str) -> IncidentStatusOut:
+    """What happened to a report.
+
+    `docs/INCIDENTS.md` listed "a way to tell a reporter what happened to
+    their report" as blocking for release. This is it, and it deliberately
+    needs no account, no email and no contact address: the reporter keeps
+    the id, and the id is the whole credential.
+
+    That choice is the privacy answer as much as the engineering one. The
+    alternative was storing an address in order to write to it later, which
+    means holding personal data on somebody whose only involvement was
+    telling us we were wrong.
+
+    Unauthenticated by necessity and safe because of what it returns: an
+    outcome, a note a person wrote for the reporter, and nothing else. No
+    free text of theirs, no contact, no species, nothing about any other
+    report. A uuid4 is not guessable, but it is the sort of string that gets
+    pasted into a forum, so the response is written for a reader who may not
+    be the person who filed it.
+    """
+    if not state:
+        raise HTTPException(503, "Service is still starting.")
+
+    status = state["incidents"].status(incident_id)
+    if status is None:
+        # Deliberately the same 404 for a malformed id and an unknown one.
+        raise HTTPException(404, "No report with that reference.")
+    return IncidentStatusOut(**asdict(status))
 
 
 @app.get("/species", response_model=SpeciesListOut)

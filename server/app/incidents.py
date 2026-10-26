@@ -185,6 +185,130 @@ def build_report(
     )
 
 
+class Outcome(str, Enum):
+    """What happened to a report, in the reporter's words rather than ours.
+
+    Deliberately short and deliberately blunt. A reporter who took the
+    trouble to tell us the app was wrong is owed an answer that says whether
+    it was, not a status page that says "in progress" forever.
+
+    There is no "wontfix". If a report is not acted on, the honest value is
+    `NO_CHANGE` plus a reason a person wrote, and the reason is what the
+    reporter reads.
+    """
+
+    RECEIVED = "received"
+    INVESTIGATING = "investigating"
+    # The app was wrong and the data or the model changed because of it.
+    FIXED = "fixed"
+    # The app was wrong and we have not fixed it yet. Still an admission.
+    CONFIRMED_NOT_YET_FIXED = "confirmed_not_yet_fixed"
+    # We could not tell. Not the same as "you were wrong".
+    COULD_NOT_DETERMINE = "could_not_determine"
+    # We looked and think the app was right. Says so plainly.
+    NO_CHANGE = "no_change"
+
+
+# Terminal outcomes. A report that has reached one of these is answered.
+CLOSED_OUTCOMES = frozenset(
+    {Outcome.FIXED, Outcome.CONFIRMED_NOT_YET_FIXED,
+     Outcome.COULD_NOT_DETERMINE, Outcome.NO_CHANGE}
+)
+
+# What a reporter is told when the report was a medical one. A person who
+# said somebody had eaten something is never shown a ticket state: see
+# `docs/INCIDENTS.md`, and the note on the confirmation text that
+# deliberately does not thank anyone for their feedback.
+MEDICAL_STATUS_TEXT = (
+    "This report said that someone had eaten a wild mushroom or was unwell. "
+    "It is not being tracked as a defect, and nothing here is a substitute "
+    "for medical advice."
+)
+
+
+@dataclass
+class IncidentUpdate:
+    """A responder's note on a report, appended rather than written over.
+
+    The log is append-only because a log that can be edited is not evidence,
+    and that applies to the *outcome* as much as to the report: a status
+    silently changed from "fixed" to "no change" would be exactly the record
+    nobody could trust. So an update is a new line, the current status is a
+    fold over every line for an id, and the whole history stays readable.
+    """
+
+    incident_id: str
+    recorded_at: str
+    outcome: str
+    # Written for the reporter to read, so it must not name another report,
+    # another user, or anything internal.
+    public_note: str
+    # Written for us.
+    internal_note: str = ""
+    responder: str = ""
+    record_type: str = "update"
+
+
+@dataclass
+class IncidentStatus:
+    """What a reporter is allowed to see about their own report.
+
+    Note what is absent: their own free-text account, their contact details,
+    the species they named, and everything the app said. All of that is in
+    the report and none of it is here.
+
+    The id is unguessable (uuid4), but it is also the kind of thing people
+    paste into forums, so this is written on the assumption that whoever
+    holds the id is not necessarily the person who filed it. Nothing here
+    identifies anybody or discloses anything they did not already know.
+    """
+
+    incident_id: str
+    received_at: str
+    outcome: str
+    public_note: str
+    closed: bool
+    medical: bool = False
+
+
+def status_for(
+    report: IncidentReport, updates: list[IncidentUpdate]
+) -> IncidentStatus:
+    """Fold a report and its updates into the one thing a reporter sees."""
+    if report.severity == Severity.MEDICAL.value:
+        # Not a defect report, so not a defect status.
+        return IncidentStatus(
+            incident_id=report.incident_id,
+            received_at=report.received_at,
+            outcome=Outcome.RECEIVED.value,
+            public_note=MEDICAL_STATUS_TEXT,
+            closed=True,
+            medical=True,
+        )
+
+    mine = [u for u in updates if u.incident_id == report.incident_id]
+    if not mine:
+        return IncidentStatus(
+            incident_id=report.incident_id,
+            received_at=report.received_at,
+            outcome=Outcome.RECEIVED.value,
+            public_note=(
+                "Recorded and waiting for a person to read it. Nothing is "
+                "changed automatically."
+            ),
+            closed=False,
+        )
+
+    latest = sorted(mine, key=lambda u: u.recorded_at)[-1]
+    return IncidentStatus(
+        incident_id=report.incident_id,
+        received_at=report.received_at,
+        outcome=latest.outcome,
+        public_note=latest.public_note,
+        closed=Outcome(latest.outcome) in CLOSED_OUTCOMES,
+    )
+
+
 class IncidentStore:
     """Append-only JSON lines.
 
@@ -197,16 +321,54 @@ class IncidentStore:
         self.path = path
 
     def append(self, report: IncidentReport) -> IncidentReport:
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        with self.path.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps(asdict(report), ensure_ascii=False) + "\n")
+        self._write(asdict(report))
         return report
 
-    def all(self) -> list[IncidentReport]:
+    def append_update(self, update: IncidentUpdate) -> IncidentUpdate:
+        """Record an outcome. Appended, never written over the report."""
+        self._write(asdict(update))
+        return update
+
+    def _write(self, record: dict) -> None:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        with self.path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+    def _lines(self) -> list[dict]:
         if not self.path.exists():
             return []
-        out: list[IncidentReport] = []
-        for line in self.path.read_text(encoding="utf-8").splitlines():
-            if line.strip():
-                out.append(IncidentReport(**json.loads(line)))
-        return out
+        return [
+            json.loads(line)
+            for line in self.path.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+
+    def all(self) -> list[IncidentReport]:
+        """Reports only.
+
+        Updates share the file, so they are filtered out by `record_type`.
+        Reports written before updates existed have no such key, which is
+        why the test is for the update marker rather than for a report one
+        -- an older line must keep reading as a report.
+        """
+        return [
+            IncidentReport(**row)
+            for row in self._lines()
+            if row.get("record_type") != "update"
+        ]
+
+    def updates(self) -> list[IncidentUpdate]:
+        return [
+            IncidentUpdate(**row)
+            for row in self._lines()
+            if row.get("record_type") == "update"
+        ]
+
+    def status(self, incident_id: str) -> IncidentStatus | None:
+        """What the reporter is shown, or None if no such report exists."""
+        report = next(
+            (r for r in self.all() if r.incident_id == incident_id), None
+        )
+        if report is None:
+            return None
+        return status_for(report, self.updates())

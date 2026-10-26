@@ -734,3 +734,25 @@ commits.
   themed.** It dims a user's photograph so a label can be read against
   whatever they happened to photograph, so text on it is `onAccent` and never
   `text` — asserted, in both directions.
+- **A reporter is told what happened without anyone storing their address.**
+  `GET /incident/{id}`; the reference is the whole credential. That is the
+  privacy answer as much as the engineering one — writing to people later
+  means holding personal data on somebody whose only involvement was telling
+  us we were wrong. The response carries an outcome and a note a person wrote
+  and nothing else: no free text of theirs, no contact, no species, nothing
+  about any other report, because a uuid4 is unguessable but is exactly the
+  sort of string people paste into a forum.
+- **An outcome is appended, never written over the report.** The log is
+  evidence, and that applies to the outcome too: a status quietly changed
+  from `fixed` to `no_change` is the record nobody could trust. Status is a
+  fold over every line for an id. `IncidentStore.all()` filters on the
+  *update* marker rather than a report one, because lines written before
+  updates existed carry no `record_type` and a positive test would have
+  silently dropped every historical report.
+- **A `medical` report is never shown a ticket state**, and
+  `scripts/incidents.py answer` refuses to touch one. "Investigating" shown
+  to somebody who said their child had eaten something is the same mistake as
+  a confirmation that thanks people for their feedback.
+- **`scripts/incidents.py list` sorts worst first, then oldest first.** A
+  newest-first queue buries the report that has been waiting longest, which
+  is the one most likely to be the one you are failing.

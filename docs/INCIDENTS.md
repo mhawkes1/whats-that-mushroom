@@ -162,6 +162,46 @@ rather than oversights:
       medical exemption has to hold for a stranger.
 - [ ] A retention period for `data/incidents.jsonl`, decided with the legal
       review rather than before it.
-- [ ] A way to tell a reporter what happened to their report, where they left
-      a contact address. Blocked on the first item: there is nobody to send
-      it from yet.
+- [x] A way to tell a reporter what happened to their report. Done, and
+      **without a contact address**: the reporter keeps their reference and
+      `GET /incident/{id}` returns the outcome. That is the privacy answer as
+      much as the engineering one — the alternative was storing an address in
+      order to write to it later, which means holding personal data on
+      somebody whose only involvement was telling us we were wrong.
+
+## Answering a report
+
+`python scripts/incidents.py list` is the queue, sorted worst first and then
+oldest first — newest-first would bury the report that has been waiting
+longest, which is the one you are most likely to be failing. It flags any
+`dangerous_miss` older than a day against the "same day" above.
+
+`show <id>` is one report in full. `answer <id> --outcome … --note …` records
+an outcome the reporter can then read.
+
+Six outcomes, and there is deliberately no "wontfix":
+
+| | |
+| --- | --- |
+| `investigating` | Looking at it. Not an answer, and does not close the report |
+| `fixed` | The app was wrong and the data or the model changed |
+| `confirmed_not_yet_fixed` | The app was wrong and we have not fixed it. Still an admission |
+| `could_not_determine` | We could not tell. Not the same as "you were wrong" |
+| `no_change` | We looked, and we think the app was right. Say so plainly |
+
+**An outcome is appended, never written over the report.** The log is
+evidence, and that applies to the outcome as much as to the report: a status
+quietly changed from `fixed` to `no_change` is exactly the record nobody
+could trust. The current status is a fold over every line for an id and the
+whole history stays readable.
+
+**A `medical` report cannot be answered**, and the tool refuses. It is not a
+defect report and is never shown a ticket state — a status page reading
+"investigating" at somebody who said their child had eaten something is the
+same mistake as a confirmation that thanks people for their feedback.
+
+What the status endpoint returns is an outcome and a note a person wrote, and
+nothing else: no free text of theirs, no contact, no species, nothing about
+any other report. A uuid4 is not guessable, but it is the sort of string that
+gets pasted into a forum, so it is written for a reader who may not be the
+person who filed it.

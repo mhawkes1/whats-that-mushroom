@@ -18,6 +18,7 @@ from fastapi.testclient import TestClient
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "server"))
 
+from app.incidents import IncidentStore  # noqa: E402
 from app.main import app, incident_limiter  # noqa: E402
 from app.ratelimit import RateLimiter, client_key  # noqa: E402
 
@@ -194,3 +195,149 @@ def test_the_first_forwarded_entry_is_the_client():
 def test_a_missing_peer_shares_one_bucket_rather_than_being_waved_through():
     assert client_key(None, None, trust_forwarded_for=False) == "unknown"
     assert client_key(None, "   ", trust_forwarded_for=True) == "unknown"
+
+
+# --- Telling a reporter what happened ---------------------------------------
+
+
+def test_a_reporter_can_look_up_their_own_report(client):
+    """`docs/INCIDENTS.md` listed this as blocking for release.
+
+    The id is the whole credential: no account, no email, no contact
+    address. That is the privacy answer as much as the engineering one --
+    the alternative was storing an address in order to write to it later,
+    which means holding personal data on somebody whose only involvement
+    was telling us we were wrong.
+    """
+    filed = client.post("/incident", json=_report()).json()
+    r = client.get(f"/incident/{filed['incident_id']}")
+
+    assert r.status_code == 200
+    body = r.json()
+    assert body["incident_id"] == filed["incident_id"]
+    assert body["outcome"] == "received"
+    assert body["closed"] is False
+    assert body["public_note"]
+
+
+def test_the_status_discloses_nothing_about_the_reporter(client):
+    """Written for a reader who may not be the person who filed it.
+
+    A uuid4 is not guessable, but it is exactly the sort of string someone
+    pastes into a forum thread. So the response carries an outcome and a
+    note a person wrote, and none of: the reporter's own free text, their
+    contact details, the species they named, or what the app said.
+    """
+    secret_account = "I am Martin and my number is 07700 900000"
+    filed = client.post(
+        "/incident",
+        json=_report(
+            account=secret_account,
+            contact="martin@example.com",
+            believed_species_key="amanita-phalloides",
+        ),
+    ).json()
+
+    body = client.get(f"/incident/{filed['incident_id']}").text
+
+    assert "07700" not in body
+    assert "martin@example.com" not in body
+    assert "Martin" not in body
+    assert "phalloides" not in body
+    assert "amanita" not in body.lower()
+
+
+def test_an_unknown_reference_is_a_plain_404(client):
+    assert client.get("/incident/not-a-real-id").status_code == 404
+    assert client.get("/incident/" + "0" * 32).status_code == 404
+
+
+def test_a_medical_report_is_never_shown_a_ticket_state(client):
+    """It is not a defect report, so it does not get a defect status.
+
+    `docs/INCIDENTS.md`: nothing is owed to the codebase here and
+    everything is owed to the person. A status page reading "investigating"
+    at somebody who said their child had eaten something would be the same
+    mistake as the confirmation text that thanks people for their feedback.
+    """
+    filed = client.post("/incident", json=_report(anyone_ate_it=True)).json()
+    body = client.get(f"/incident/{filed['incident_id']}").json()
+
+    assert body["medical"] is True
+    assert body["closed"] is True
+    assert "not being tracked as a defect" in body["public_note"]
+    assert "investigating" not in body["public_note"].lower()
+
+
+def test_an_outcome_is_appended_and_never_overwrites_the_report(tmp_path):
+    """The log is evidence, and that applies to the outcome too.
+
+    A status silently changed from "fixed" to "no change" is precisely the
+    record nobody could trust, so both lines survive and the history stays
+    readable.
+    """
+    from datetime import datetime, timezone
+
+    from app.incidents import IncidentStore, IncidentUpdate, Outcome, build_report
+    from app.taxonomy_service import TaxonomyService
+
+    taxonomy = TaxonomyService.load(ROOT / "data" / "taxonomy.seed.json")
+    store = IncidentStore(tmp_path / "incidents.jsonl")
+    report = store.append(
+        build_report(
+            taxonomy=taxonomy, observation_id="obs-1", verdict="species",
+            reported_candidates=["agaricus-campestris"], model_version="0.1.0",
+            calibrated=False, believed_species_key="amanita-phalloides",
+            account="wrong", anyone_ate_it=False, anyone_unwell=False,
+            contact=None,
+        )
+    )
+
+    def answer(outcome: Outcome, note: str) -> None:
+        store.append_update(
+            IncidentUpdate(
+                incident_id=report.incident_id,
+                recorded_at=datetime.now(timezone.utc).isoformat(),
+                outcome=outcome.value,
+                public_note=note,
+            )
+        )
+
+    answer(Outcome.INVESTIGATING, "Looking at this now.")
+    answer(Outcome.FIXED, "You were right. The lookalike edge was missing.")
+
+    # Both updates survive, and the report is untouched.
+    assert len(store.updates()) == 2
+    assert len(store.all()) == 1
+    assert store.all()[0].account == "wrong"
+
+    status = store.status(report.incident_id)
+    assert status.outcome == "fixed"
+    assert status.closed is True
+    assert "lookalike edge" in status.public_note
+
+
+def test_updates_do_not_contaminate_the_report_listing(tmp_path):
+    """`all()` filters on the update marker, not on a report one.
+
+    Reports written before updates existed carry no `record_type` at all,
+    so a test for a *report* marker would have silently dropped every
+    historical line.
+    """
+    import json
+
+    path = tmp_path / "incidents.jsonl"
+    legacy = {
+        "incident_id": "old", "received_at": "2026-01-01T00:00:00+00:00",
+        "severity": "ordinary", "observation_id": None, "verdict": None,
+        "reported_candidates": [], "model_version": None, "calibrated": None,
+        "believed_species": None, "believed_species_key": None,
+        "account": "from before updates existed", "anyone_ate_it": False,
+        "anyone_unwell": False, "contact": None, "notes": {},
+    }
+    path.write_text(json.dumps(legacy) + "\n")
+
+    store = IncidentStore(tmp_path / "incidents.jsonl")
+    assert len(store.all()) == 1
+    assert store.all()[0].incident_id == "old"
+    assert store.updates() == []
