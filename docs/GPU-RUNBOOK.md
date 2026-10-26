@@ -75,8 +75,16 @@ This is the step that stops people, because the repo is private and `git
 clone` will simply fail.
 
 On GitHub: **Settings → Developer settings → Personal access tokens → Fine-grained
-tokens**. Give it read access to `whats-that-mushroom` only, an expiry of a
-week, and nothing else. Then on the pod:
+tokens**. Scope it to `whats-that-mushroom` only, give it an expiry of a
+week, and grant **Contents: read and write**.
+
+Read-only is the tidier instinct and it is the wrong call here. You will
+almost certainly change `configs/default.yaml` on the box — the timing check
+in step 4 exists precisely so you can — and a change you cannot push is a
+change that dies with the pod. One repo, one week, one permission is a
+reasonable trade for not losing the fix.
+
+Then on the pod:
 
 ```bash
 cd /workspace
@@ -240,20 +248,71 @@ script declining to let a bad run pass quietly, not a verdict on the model.
 
 ---
 
-## 9. Take these home, then stop the box
+## 9. Get the results off the box
+
+Two routes, because the outputs split cleanly by size.
+
+**Small and text — commit and push them.** These belong in git anyway: they
+are the evidence for the release decision.
+
+```bash
+git add ml/runs/baseline/MODEL_CARD.md \
+        ml/runs/baseline/report.json \
+        ml/runs/baseline/calibration.json \
+        ml/runs/baseline/labels.json \
+        configs/default.yaml          # if the timing check made you change it
+git commit -m "First trained model: <top-1>, <n> dangerous confusions"
+git push
+```
+
+**Large and binary — do not put these in git.** `best.pt` and `model.onnx`
+are both roughly **350 MB** for ViT-B/16. A repository is the wrong place for
+them and GitHub will refuse anything over 100 MB regardless.
+
+```bash
+runpodctl send ml/runs/baseline/model.onnx
+runpodctl send ml/runs/baseline/best.pt
+```
+
+That prints a one-time code; run `runpodctl receive <code>` on your own
+machine. `runpodctl` is already on the pod. If you would rather not, the
+Jupyter file browser will download them over HTTP, slowly.
+
+Take **`model.onnx`** if you take nothing else — it is what the server
+loads. `best.pt` is the thing you would need to resume or re-export from, so
+it is worth the second transfer.
 
 ```
-ml/runs/baseline/best.pt            # the checkpoint
-ml/runs/baseline/model.onnx         # what the server loads
-ml/runs/baseline/labels.json
-ml/runs/baseline/calibration.json
-ml/runs/baseline/MODEL_CARD.md
-ml/runs/baseline/report.json
+ml/runs/baseline/model.onnx         # what the server loads     ~350 MB
+ml/runs/baseline/best.pt            # resume / re-export from   ~350 MB
+ml/runs/baseline/labels.json        # tiny, commit
+ml/runs/baseline/calibration.json   # tiny, commit
+ml/runs/baseline/MODEL_CARD.md      # tiny, commit
+ml/runs/baseline/report.json        # tiny, commit
 data/processed/manifest.parquet     # ~20 MB, reproduces every split
 ```
 
 The images do not need to come home. The manifest records every URL, licence
 and rights holder, so the dataset is rebuildable.
+
+**Then terminate the pod, rather than stopping it.** A stopped pod still
+bills for its volume, and the GitHub token is sitting in `.git/config` on it.
+
+## What to change on the box, and what not to
+
+The pod is an ordinary Linux machine with your repo on it, so you *can* edit
+anything. Two things are worth changing there and the rest is not.
+
+**Worth changing on the box:** `configs/default.yaml` (epochs, batch size,
+backbone — whatever the timing check tells you), and any training code that
+turns out to be broken under a real dataset. Commit and push both, or they
+die with the pod.
+
+**Not worth changing on the box:** the app. The server, the client, the
+taxonomy, the safety layer. Editing those at $0.34/hr is paying a GPU rate
+for a text editor, and you cannot meaningfully test the React Native client
+there anyway — there is no phone and no simulator. Do that work locally,
+push, and `git pull` on the pod if the training run needs it.
 
 ---
 
