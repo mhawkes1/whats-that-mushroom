@@ -40,10 +40,9 @@ with a lawyer.
 
 **RunPod Community Cloud, RTX 4090, ~$0.34/hr.** Not Vast.ai for the first
 run — the marketplace floor is lower and a host that dies three hours in
-costs more than the 20p it saved. Lambda does not offer the 4090.
-
-Ask for **≥ 60 GB disk**. The dataset is about 16 GB of images, plus the
-manifest, plus checkpoints.
+costs more than the 20p it saved. Lambda does not offer the 4090, and Nebius
+does not rent anything smaller than an L40S, which is four times the price
+for a card this job does not need.
 
 Budget **£50 for the whole exercise**, not £5. You will do three or four
 runs: one that dies on a config detail, one that reveals a data problem, one
@@ -51,12 +50,49 @@ that is real, one that is the keeper. At these prices that is still trivial,
 and treating it as trivial is what stops you shipping run one because you
 begrudged a second.
 
+### What to put in the form
+
+RunPod moves its labels around, so these are the values that matter rather
+than a click-by-click that will be wrong by spring.
+
+| Field | Value | Why |
+| --- | --- | --- |
+| Cloud type | **Community** | Half the price of Secure. Fine for a job you can restart |
+| GPU | **RTX 4090**, 1× | 24 GB, which is what `configs/default.yaml` targets |
+| Template | **RunPod PyTorch 2.x** (CUDA 12.x) | Saves installing torch. Any recent PyTorch image works |
+| Container disk | **30 GB** | Code, wheels, checkpoints |
+| Volume disk | **60 GB**, mounted at `/workspace` | The dataset is ~16 GB of images; this is the part that survives a restart, so **work in `/workspace`** |
+| Region | Any | Unless you are attaching a network volume, which pins you to its data centre |
+
+Then **Deploy**, wait for the pod to go green, and use **Connect → Web
+Terminal** (or SSH, if you have added a key).
+
+Add about $10 of credit. You will not spend it.
+
+### Getting the code onto the box
+
+This is the step that stops people, because the repo is private and `git
+clone` will simply fail.
+
+On GitHub: **Settings → Developer settings → Personal access tokens → Fine-grained
+tokens**. Give it read access to `whats-that-mushroom` only, an expiry of a
+week, and nothing else. Then on the pod:
+
+```bash
+cd /workspace
+git clone https://<TOKEN>@github.com/mhawkes1/whats-that-mushroom.git wtm
+cd wtm && git checkout claude/mushroom-app-continue-fy5f4m
+```
+
+The token ends up in `.git/config` on the pod. That is acceptable only
+because the pod is disposable — **terminate it when you are done, do not just
+stop it**, and let the token expire.
+
 ---
 
 ## 2. Set the box up
 
 ```bash
-git clone <this repo> wtm && cd wtm
 pip install -r ml/requirements.txt
 python -c "import torch; print(torch.cuda.get_device_name(0))"
 ```
