@@ -131,7 +131,8 @@ change to the model, the config schema or the export path.
 ## Running it
 
 ```bash
-./scripts/try_it.sh
+python scripts/try_it.py        # Windows
+python3 scripts/try_it.py       # macOS, Linux
 ```
 
 One command from a fresh clone. It installs what is missing, starts the API
@@ -145,9 +146,13 @@ different photographs until you get *"I can't safely narrow this down"* —
 that is the behaviour the whole project is built around, and the one no
 competitor will show you.
 
-For a version with no Node and no browser, `python3 scripts/demo.py` walks
+For a version with no Node and no browser, `python scripts/demo.py` walks
 eight scenes through the real safety layer in a terminal, in about thirty
 seconds.
+
+`scripts/try_it.sh` does the same as `try_it.py` and is a bash script, so it
+is macOS and Linux only. Prefer the Python one; it is the same work and it
+runs anywhere.
 
 ### The pieces separately
 

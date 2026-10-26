@@ -763,3 +763,11 @@ commits.
   not the same as anybody having *used* it. A safety argument you have only
   read is one you have not checked. That gap is what let three fatal client
   bugs sit behind a green suite for months.
+- **The launcher is `scripts/try_it.py`, not the `.sh` beside it.** The bash
+  version came first and quietly assumed macOS or Linux — Windows has no bash
+  unless you install one, and the person this was written for is on Windows
+  and has never opened a terminal. Python is already a hard requirement, so
+  the launcher may as well be written in it. Two Windows details the shell
+  version hid: `npm` is a `.cmd` shim that `subprocess` will not find bare,
+  and `sys.executable` is the only reliable way to re-enter the interpreter
+  that is actually running.
