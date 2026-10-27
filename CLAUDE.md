@@ -886,3 +886,33 @@ commits.
   `python docs/logo/truepx.py <mark>...` renders at one device pixel per CSS
   pixel and magnifies with nearest-neighbour. **Judge any small size with
   that, never with a sheet.**
+- **The palette was reviewed on 2026-10-27 and deliberately not changed.**
+  Martin liked **A (current, shipping)** and **B (deep chrome)** and chose
+  to leave `theme.ts` alone for now, so `scripts/palette_variants.py` is a
+  shortlist rather than a proposal. B is the one to reach for: same paper,
+  but the header band is painted with solid `canopy` and cream on it rather
+  than the pale `canopySurface` tint. Applying it is a `theme.ts` edit plus
+  the header's ground, and the variants script scores any change against
+  the real rules first -- `python scripts/palette_variants.py` then
+  `python scripts/palette_sheet.py`.
+- **Darkening `canopy` alone changes almost nothing a user sees.** The band
+  on screen is `canopySurface`, the pale tint; `canopy` is a rule and
+  divider colour. The first comparison sheet rendered the current palette
+  and the "darker greens" one as near-identical and I read that as a result
+  rather than a bug. Any future "make it greener" asks which of the two it
+  means.
+- **Inverting to a dark palette re-creates the October emphasis bug by
+  itself.** On paper, heavier means darker; on a dark ground it means
+  *lighter*. A deadly red of `#ff9a92` scores 7.86 against the dark surface
+  while a toxic amber scores 9.11, so the TOXIC row draws heavier than the
+  DEADLY one — exactly the failure `theme.test.ts` was written for. It only
+  passes once `danger` becomes the palest thing on the screen (`#ffb3ab`, a
+  pale pink). That is the cost of a dark theme here, not a detail to tune.
+- **The green hue test has a blind spot at the dark end, and it is not
+  fixed.** It flags `g > r + 12 && g > b + 12`, but channel gaps shrink with
+  luminance: a near-black forest green such as `#121a10` reads `g-r=8` and
+  is **not** flagged. So the rule catches a mid green and misses the one
+  that would make green the ground of the whole app, which is precisely
+  what `POSITIONING.md` barred. Left alone because nothing currently depends
+  on changing it — but a dark-green ground would pass the letter of the rule
+  and break its point, so **judge that by eye, not by the test**.

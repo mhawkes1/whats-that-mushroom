@@ -3,6 +3,7 @@
     "key": "A",
     "name": "Current",
     "blurb": "Warm bone paper, woodland green as a pale header tint. What ships today.",
+    "status": "SHIPPING -- this is app/src/lib/theme.ts today",
     "palette": {
       "background": "#f6f3ea",
       "surface": "#fffdf7",
@@ -76,6 +77,7 @@
     "key": "B",
     "name": "Deep chrome",
     "blurb": "The same paper, with the greens taken much darker. The header becomes a solid forest band with cream on it rather than a mint wash. The smallest change that answers 'darker greens'.",
+    "status": "APPROVED ALTERNATIVE -- liked, not applied. Reach for this one.",
     "palette": {
       "background": "#f6f3ea",
       "surface": "#fffdf7",
@@ -149,6 +151,7 @@
     "key": "C",
     "name": "Sage paper",
     "blurb": "The paper itself cools from bone toward sage, and the ink greens with it. Green throughout without green ever stating anything -- it stays a tint rather than a hue.",
+    "status": "considered, not chosen",
     "palette": {
       "background": "#f0f2ea",
       "surface": "#fafcf5",
@@ -222,6 +225,7 @@
     "key": "D",
     "name": "Dark forest",
     "blurb": "The inversion: deep forest grounds, light text. Every hazard colour has to be re-derived, because a red chosen for paper is unreadable here. Passes only after two fixes, both of which say something: a green border had to be neutralised, and the deadly colour had to become the PALEST thing on screen to outweigh the toxic one.",
+    "status": "considered, not chosen; see the warning in its blurb",
     "palette": {
       "background": "#121a10",
       "surface": "#1a2417",

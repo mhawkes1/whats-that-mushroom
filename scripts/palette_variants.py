@@ -125,6 +125,16 @@ D_DARK_FOREST = {
 # Which variants paint the header with solid `canopy` rather than the tint.
 SOLID_HEADER = {"B", "D"}
 
+# Where each one stands, decided 2026-10-27. Martin liked A and B and chose
+# to change nothing for now, so this file is a shortlist rather than a
+# proposal. Nothing here touches `app/src/lib/theme.ts`; A *is* theme.ts.
+STATUS = {
+    "A": "SHIPPING -- this is app/src/lib/theme.ts today",
+    "B": "APPROVED ALTERNATIVE -- liked, not applied. Reach for this one.",
+    "C": "considered, not chosen",
+    "D": "considered, not chosen; see the warning in its blurb",
+}
+
 VARIANTS = [
     ("A", "Current", A_CURRENT,
      "Warm bone paper, woodland green as a pale header tint. What ships today."),
@@ -202,10 +212,12 @@ def main() -> int:
         failed = [r for r in results if not r[1]]
         print(f"\n  {key}. {name}  --  "
               f"{'PASSES' if not failed else f'{len(failed)} FAILURE(S)'}")
+        print(f"  {STATUS[key]}")
         print("  " + "-" * 68)
         for label, ok, detail in results:
             print(f"   {'PASS' if ok else 'FAIL'}  {label:<42} {detail}")
         report.append({"key": key, "name": name, "blurb": blurb,
+                       "status": STATUS[key],
                        "palette": pal,
                        "solid_header": key in SOLID_HEADER,
                        "results": [{"check": c, "ok": o, "detail": d}
