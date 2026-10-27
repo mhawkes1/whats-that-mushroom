@@ -832,3 +832,42 @@ commits.
   **up**, 24% to 26–27%, with the deadly warning still on screen. The pair
   partner was contradicted, so the mass had to go somewhere. Showing only the
   verdict improving would have been the flattering half of a true thing.
+- **The app icon is `docs/logo/round5/m4-outline.svg`, and every size is
+  generated from it.** Martin's pick, 2026-10-27: the original two-path
+  drawing, not either of the rebuilds that followed. `python
+  scripts/build_icons.py` writes `app/assets/{icon,adaptive-icon,
+  splash-icon,favicon}.png` and nothing is touched by hand, for the same
+  reason the ebook's field data is generated -- a set kept by hand drifts,
+  and the drift shows up as a slightly different mushroom in the one place
+  a user looks every day.
+- **Four things about icons that fail late, so `app/test/icons.test.ts`
+  checks them now.** A missing asset stops an Expo build. **An alpha
+  channel on the iOS icon is rejected by App Store Connect at upload**,
+  after a build has been made, so `icon.png` is flattened to RGB and the
+  test reads the PNG's IHDR colour-type byte to prove it. The Android
+  foreground must *keep* its alpha, because the launcher composites it over
+  `adaptiveIcon.backgroundColor` and a flattened one paints its own square
+  through the mask. And both backgrounds are `#f6f3ea` rather than white:
+  the mark is drawn on paper, and a white plate shows as a ring of the
+  wrong cream once a launcher masks to a circle.
+- **The Android foreground is drawn smaller than the iOS icon on purpose.**
+  An adaptive icon is 108dp of which the central 72dp is visible and only a
+  66dp circle is guaranteed, because the launcher picks the mask. Content
+  sits inside about 58% of the canvas against the iOS composition's 62%. It
+  looks undersized in a file browser and correct on a phone.
+- **The mark is not centred in its own viewBox**, and composing icons
+  without checking that is how everything ends up hanging low on every
+  platform at once. Its ink box centres at (257, 288) against a canvas
+  centre of (256, 256) -- 32 units low. `build_icons.py` measures the box in
+  a browser, adds half a stroke on each side because `getBBox` ignores
+  stroke, and recentres.
+- **A comparison sheet lies about small sizes, and it fooled me.** Every
+  logo sheet is screenshotted at deviceScaleFactor 2 or 3, so a tile
+  labelled "29" is really 58 or 87 device pixels -- flattered four to nine
+  times in area. On that evidence I reported that the round-five outline
+  clogged at 29 px and spent a round rescuing it. It does not clog, and the
+  rescue (merging cap and stem into one path) was a regression that removed
+  the cap's full-width underside and turned the mushroom into a tree.
+  `python docs/logo/truepx.py <mark>...` renders at one device pixel per CSS
+  pixel and magnifies with nearest-neighbour. **Judge any small size with
+  that, never with a sheet.**
