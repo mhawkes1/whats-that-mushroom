@@ -2,7 +2,23 @@
 data/raw/
 data/processed/
 data/images/
-ml/runs/
+# Training outputs. The checkpoints are ~330 MB each and GitHub refuses
+# anything over 100 MB, so the directory is ignored by default -- but the
+# run-book's step 9 says to COMMIT the small text artefacts, because they
+# are the evidence for the release decision. Those are un-ignored below.
+#
+# Without the negations this rule silently swallowed MODEL_CARD.md and
+# report.json on the first real run, at the point where the pod was still
+# billing and the files existed nowhere else.
+ml/runs/**
+!ml/runs/
+!ml/runs/*/
+!ml/runs/*/MODEL_CARD.md
+!ml/runs/*/report.json
+!ml/runs/*/calibration.json
+!ml/runs/*/labels.json
+!ml/runs/*/config.yaml
+!ml/runs/*/history.json
 *.parquet
 *.pt
 *.pth
