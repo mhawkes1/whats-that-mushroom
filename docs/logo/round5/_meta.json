@@ -1,0 +1,52 @@
+[
+  [
+    "f1-baseline",
+    "F \u00b7 Baseline",
+    "Round four's mark with the spore drops off. The cap is not untouched, though: dropping the spores made it read as a flag, so the rim is blunter and the underside tucks back under. Overhang is what says mushroom once nothing beneath it is doing the explaining."
+  ],
+  [
+    "f2-flat",
+    "F \u00b7 Flat cap",
+    "A shallower cap, so the top arm sits closer to a true F. Reads as a letter fastest and as a mushroom slowest -- the trade in one picture."
+  ],
+  [
+    "f3-domed",
+    "F \u00b7 Domed",
+    "The opposite: a deeper, more arched cap. Unmistakably a fungus, and the F has to work harder to be seen."
+  ],
+  [
+    "f4-volva",
+    "F \u00b7 Volva",
+    "The stem swelling into a bag at the base. That bag is the single feature that separates a death cap from a field mushroom, and it is the part almost everyone leaves in the soil."
+  ],
+  [
+    "f5-gills",
+    "F \u00b7 Gills",
+    "Gills shown in cross-section under the cap. More information, more to lose when it shrinks."
+  ],
+  [
+    "f6-heavy",
+    "F \u00b7 Heavy",
+    "Thicker stem, shorter ring, tighter counters. Drawn for 29 px rather than scaled down to it -- the usual practice, and worth the extra file."
+  ],
+  [
+    "m1-classic",
+    "Mushroom \u00b7 Classic",
+    "No cut, no spores, nothing. The silhouette on its own."
+  ],
+  [
+    "m2-ringed",
+    "Mushroom \u00b7 Ringed",
+    "With an annulus. The ring is what tells you an Amanita has been there, so it earns its place rather than decorating."
+  ],
+  [
+    "m3-volva",
+    "Mushroom \u00b7 Volva",
+    "Ring and bag together: a textbook Amanita, which is the shape the whole app is organised around."
+  ],
+  [
+    "m4-outline",
+    "Mushroom \u00b7 Outline",
+    "Stroked rather than filled. Lighter on a dark ground, and the first to clog at small sizes -- check the 29 before falling for it."
+  ]
+]
