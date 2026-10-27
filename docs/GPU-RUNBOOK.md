@@ -44,11 +44,37 @@ costs more than the 20p it saved. Lambda does not offer the 4090, and Nebius
 does not rent anything smaller than an L40S, which is four times the price
 for a card this job does not need.
 
-Budget **£50 for the whole exercise**, not £5. You will do three or four
-runs: one that dies on a config detail, one that reveals a data problem, one
-that is real, one that is the keeper. At these prices that is still trivial,
-and treating it as trivial is what stops you shipping run one because you
-begrudged a second.
+### What it costs
+
+`python scripts/gpu_cost.py` prints this and will re-print it with a real
+number once step 4 has measured one; the figures below are its output at an
+**assumed** 140 img/s.
+
+| | GPU hours | Cost |
+| --- | --- | --- |
+| One complete run, start to finish | 7.9 | $2.68 · £2.11 |
+| Four attempts before a keeper | 19.9 | $6.77 · £5.34 |
+| Plus 60 GB of volume for three days | — | $0.42 |
+| **The whole exercise** | **19.9** | **$7.19 · £5.66** |
+
+Training is 4.6 of those hours and everything else is rounding. The only
+real uncertainty is throughput: at 100 img/s a run is 9.8 hours and at 180
+it is 6.8, which moves the total between about £4.50 and £7.50. That is why
+step 4 exists, and it is also why none of this is worth optimising.
+
+**Add $25 of credit.** It covers the exercise three times over. Budgeting
+tightly is how people end up not running a second attempt because they
+begrudged the first, and you will do three or four: one that dies on a
+config detail, one that reveals a data problem, one that is real, one that
+is the keeper.
+
+If Community has no 4090 free, Secure Cloud is roughly double — about $14
+for the whole exercise. Take it rather than wait. A host that dies three
+hours in costs more than the difference.
+
+**None of the expensive things are on this list**, because none of them is
+GPU time: mycological review, legal review, Apple's $99/year and Google's
+$25 one-off. The compute is the cheap part of shipping this, by a long way.
 
 ### What to put in the form
 
