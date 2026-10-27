@@ -1,0 +1,42 @@
+[
+  [
+    "o1-regular",
+    "Regular",
+    "One continuous path, stroke 30. The round-five mark redrawn so there is no stroke hidden inside it. This is the default."
+  ],
+  [
+    "o2-light",
+    "Light",
+    "Stroke 22. More air, more delicate, and the first to disappear against a busy wallpaper."
+  ],
+  [
+    "o3-bold",
+    "Bold",
+    "Stroke 40. Holds on any ground and starts to lose its counters -- look at the 29 before choosing it."
+  ],
+  [
+    "o4-small",
+    "Drawn for 29",
+    "Stroke 26 with a wider stem and a shallower cap, so the counters survive the reduction. Not the regular one shrunk: an outline mark needs two drawings the way a typeface needs optical sizes."
+  ],
+  [
+    "o5-wide",
+    "Wide cap",
+    "A broader, shallower cap. More overhang, which is the thing that stops an outline cap reading as a dome balanced on a stick."
+  ],
+  [
+    "o6-tall",
+    "Tall",
+    "A narrower cap and a longer stem. Elegant, and the furthest from the squat button-mushroom every competitor uses."
+  ],
+  [
+    "o7-ringed",
+    "Ringed",
+    "One extra line for the annulus. It is the feature that says Amanita, so it carries meaning rather than decoration -- and it is one more thing to lose at 29."
+  ],
+  [
+    "o8-gilled",
+    "Gilled",
+    "Short ticks under the cap. The most information of the eight and the least robust; included so the trade is visible."
+  ]
+]
