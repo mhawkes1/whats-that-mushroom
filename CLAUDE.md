@@ -1020,3 +1020,19 @@ before reaching for `risk_strength`, because `mixup_alpha` and
 `cutmix_alpha` are declared `0.0` and `losses.SoftTargetRiskLoss` is
 written and **called by nothing** -- a strong regulariser, already in the
 repo, dormant, aimed squarely at the overfitting this curve shows.
+- **The 4090 billed $0.90/hr, not the $0.34 every pricing roundup quotes.**
+  Martin's pod, EUR-IS-2, 2026-10-27 -- a different tier or region, nearly
+  three times the advertised Community rate `scripts/gpu_cost.py` was
+  defaulting to. He was quoted about £1 for the evening and spent nearer
+  £6. The default is now what was actually billed, because an estimate that
+  comes in under the bill is worse than no estimate: it is the one people
+  act on. **Read the hourly rate off the pod card before deploying** and
+  pass `--usd-per-hour` if it differs.
+- **A pod without a volume disk loses everything on stop, not just on
+  terminate.** The run-book says to mount 60 GB at `/workspace`; if that
+  field is missed at deploy time, `/workspace` is an ordinary directory on
+  the ephemeral container disk and RunPod warns "all data will be lost" when
+  you try to stop. There is then no cheap pause -- it is keep paying the
+  full hourly rate or lose the dataset. Nothing irreplaceable was lost here
+  because `model.onnx` and the text artefacts were already down, but the
+  16 GB of images and `best.pt` went with the pod.

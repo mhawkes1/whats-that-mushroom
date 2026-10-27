@@ -32,7 +32,17 @@ VAL_FRACTION = 0.10        # fungi_ml.data.prepare default
 TEST_FRACTION = 0.10
 
 # --- Priced 2026-10-27, and prices move -------------------------------------
-USD_PER_HOUR = 0.34        # RunPod Community, RTX 4090
+#
+# 0.34 was the Community Cloud rate for a 4090 that every pricing roundup
+# quoted. Martin's actual pod billed **0.90**, on EUR-IS-2 -- a different
+# tier or region, nearly three times the figure this script was telling him.
+# The default is now what was really charged rather than what was
+# advertised, because a cost estimate that is cheaper than the bill is
+# worse than no estimate: it is the one people act on.
+#
+# Check the hourly rate on the pod card BEFORE deploying and pass
+# --usd-per-hour if it differs.
+USD_PER_HOUR = 0.90        # RunPod, RTX 4090, as actually billed 2026-10-27
 USD_PER_GB_MONTH = 0.07    # network volume
 VOLUME_GB = 60
 USD_PER_GBP = 1.27
@@ -41,7 +51,11 @@ USD_PER_GBP = 1.27
 # ViT-B/16 at 384 px is 577 tokens a pass and about 55 GFLOPs forward, so
 # roughly 166 GFLOPs per image to train. Published 4090 figures for this
 # model and resolution with AMP sit around 100-180 img/s. Nobody has run it.
-IMG_PER_SEC_LOW, IMG_PER_SEC_MID, IMG_PER_SEC_HIGH = 100.0, 140.0, 180.0
+# MEASURED on the first real run: 354 s an epoch over 74,837 training
+# images plus validation, which is about 210 img/s. The 100-180 guess
+# below is kept only as the range the estimate spanned before anyone had
+# run it.
+IMG_PER_SEC_LOW, IMG_PER_SEC_MID, IMG_PER_SEC_HIGH = 100.0, 210.0, 240.0
 
 # Inference is roughly a third of the work of a training step.
 INFERENCE_SPEEDUP = 3.0
