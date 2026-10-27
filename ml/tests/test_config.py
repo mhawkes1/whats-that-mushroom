@@ -156,3 +156,52 @@ def test_checkpoint_selection_is_on_risk_not_accuracy():
     assert "best_risk" in source
     assert 'metrics["risk"]' in source
     assert not re.search(r"best_acc|best_accuracy|metrics\[.accuracy.\]", source)
+
+
+class TestDataPathsResolve:
+    """Every `data:` path must mean the same thing from any directory.
+
+    Found on the first real GPU run, 2026-10-27, after a two-hour dataset
+    build: the config carried `manifest: data/processed/...` (wanting the
+    repo root as cwd) beside `taxonomy: ../data/...` (wanting `ml/`). No
+    single working directory satisfied both, so the command
+    `build_dataset.py` prints as "Next:" failed from everywhere -- and
+    failed at the point where the meter had already been running for two
+    hours.
+
+    `train._data_path` anchors them to the repo root. These read the source
+    rather than importing it, like the rest of this file, so the checks run
+    without torch installed.
+    """
+
+    def test_the_trainer_anchors_data_paths_to_the_repo_root(self):
+        source = (PACKAGE / "train.py").read_text()
+        assert "REPO_ROOT" in source
+        assert "def _data_path" in source
+        # Each of the three must go through it, or the one that does not is
+        # the one that breaks, and only on a machine with a different cwd.
+        for key in ("manifest", "label_map", "taxonomy"):
+            assert re.search(rf'_data_path\([^)]*{key}', source), (
+                f"config['data']['{key}'] is not resolved through _data_path"
+            )
+
+    def test_output_dir_is_deliberately_not_anchored(self):
+        # `runs/baseline` must keep landing in `ml/runs/baseline`, which is
+        # where the run-book's later steps look for best.pt and the model
+        # card. Anchoring it would silently move every documented path.
+        source = (PACKAGE / "train.py").read_text()
+        assert 'Path(config["output"]["dir"])' in source
+
+    def test_no_data_path_climbs_out_of_the_repo(self, config):
+        # `../data/...` was the whole bug: read from `ml/` it worked, read
+        # from anywhere else it pointed outside the checkout entirely.
+        for key, value in config.items():
+            if key.startswith("data.") and isinstance(value, str):
+                assert not value.startswith(".."), (
+                    f"{key} is {value!r}; data paths resolve against the repo "
+                    "root, so a leading '..' leaves the checkout"
+                )
+
+    def test_the_taxonomy_the_config_names_is_really_there(self, config):
+        # The check that would have caught the original bug outright.
+        assert (ROOT / str(config["data.taxonomy"])).is_file()

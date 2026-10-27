@@ -58,7 +58,7 @@ characters come from standard references but are unverified.
 
 | Path | What it holds |
 | --- | --- |
-| `data/taxonomy.seed.json` | 247 UK species, lookalike graph, toxicity, diagnostic characters, character states |
+| `data/taxonomy.seed.json` | 244 UK species, lookalike graph, toxicity, diagnostic characters, character states |
 | `ml/fungi_ml/taxonomy.py` | Species model and the asymmetric risk matrix |
 | `ml/fungi_ml/losses.py` | Risk-weighted objective |
 | `ml/fungi_ml/calibrate.py` | Temperature scaling, threshold fitting |
@@ -193,12 +193,22 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   the research-grade property comes from iNaturalist's publication policy and
   widening trades it away. The manifest records `dataset_key` per image so
   the difference stays visible rather than averaging out.
-- **Both collisions were resolved by pinning `gbif_key`, not by merging.**
-  *Clitocybe dealbata* → 2531056 and *Inocybe lilacina* → 3331644: each
-  species' own usage rather than the accepted one it is a synonym of. Worth
-  being honest about what that buys — the split now rests on **recorder
-  determination**, not on an accepted taxon, and both pairs are long-standing
-  taxonomic arguments. A mycologist should confirm the splits are real.
+- **Both collisions were resolved by DROPPING one side, not by pinning.**
+  This entry used to say the opposite — that *Clitocybe dealbata* → 2531056
+  and *Inocybe lilacina* → 3331644 were pinned to their own usages so both
+  halves of each pair survived. Checked against the file on 2026-10-27 while
+  the first real dataset was building: **neither species is in the taxonomy,
+  and the only pinned `gbif_key` in all 244 entries is *Helvella crispa* →
+  2554614.** So the ivory funnels are represented by *C. rivulosa* alone
+  (DEADLY) and the fibrecaps by *I. geophylla* alone. The collision cannot
+  recur because there is nothing left to collide.
+  That is a defensible resolution and a different one from what was written
+  down, and the difference matters to a reviewer: the label space now
+  **follows GBIF's synonymy** on both pairs rather than splitting against
+  it. If a mycologist says the British field guides are right to treat them
+  as four species, re-adding two of them is the change — and `frdbi_gap.py`
+  ranks *Inocybe lilacina* at 2,883 records, missing, with two dangerous
+  species already in its genus.
 - **Six species have ZERO iNaturalist images, and it is not a key problem.**
   *Lepista nuda* (6,773 images elsewhere), *Amanita vaginata* (2,354),
   *Exidia thuretiana* (645), *Clitocybe rivulosa* (1,068), *C. dealbata*
@@ -239,7 +249,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   records; their validation score says almost nothing.
 - **Splits are on `observation_id`, never on image.** If accuracy looks too
   good, check this before believing it.
-- **`character_states` is complete for all 247 species and UNREVIEWED
+- **`character_states` is complete for all 244 species and UNREVIEWED
   throughout.** Derived from the taxonomy's own `notes`, not from a
   mycologist, except for the dangerous 21 above. Complete is not reviewed:
   `reviewed_by` is still null and `/health` still reports
@@ -506,7 +516,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   queue, not a bug. Filling it means the worksheet and a mycologist, not code.
 - **The label space holds all 200 of the most-recorded British macrofungi,
   plus the twelve from the top 300 whose genus already held something
-  dangerous.** 247 species, 135 lethal pairs. `frdbi_gap.py --top 300` now
+  dangerous.** 244 species, 135 lethal pairs. `frdbi_gap.py --top 300` now
   runs; the genus table was extended for it. The skeleton is still the danger
   graph; frequency filled it in.
 - **The grisette is why the twelve were added.** *Amanita vaginata* has a
@@ -532,7 +542,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   genus whose dangerous members were already there and, in several cases,
   were the genus's *only* members: every small tawny *Galerina* was a funeral
   bell, every common webcap was an orellanine one.
-- **247 species is a much bigger training problem than 79.** The 50–70% top-1
+- **244 species is a much bigger training problem than 79.** The 50–70% top-1
   expectation below was set for a label space a third of this size and is now
   optimistic. Many of the additions are separable only under a microscope
   (the two Crepidotus, the two Ganoderma) or are resupinate crusts with no
@@ -567,9 +577,9 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   throughout. A guard shallower than the working depth reports on somewhere
   nobody is standing.
 - **The top 250 says what to add; the danger graph says what cannot be
-  dropped.** 209 of the label space's 247 are in FRDBI's top 250; the other
-  38 are too rarely recorded to reach it, and **10 of the 11 DEADLY species
-  are among them** — only the death cap makes the ranking, at 226. A label
+  dropped.** 208 of the label space's 244 are in FRDBI's top 250; the other
+  36 are too rarely recorded to reach it, and **9 of the 10 DEADLY species
+  are among them** — only the death cap makes the ranking. A label
   space trimmed to the top 250 would hold the field mushroom without the
   destroying angel and honey fungus without the funeral bell. Rarity is
   part of why those species poison people.
@@ -593,7 +603,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   a cap and gills.
 - **`INEDIBLE` became `NO_RECORDED_TOXICITY`, and stopped being rendered.**
   Refusing to say "edible" was only half of rule 1: "Not assessed as safe"
-  was still a safety verdict, attached to 157 of the 247 species, and the
+  was still a safety verdict, attached to 157 of the 244 species, and the
   app cannot see what the user is holding in either direction. Silence
   cannot be misread as an endorsement, cannot be misread as a warning, and
   cannot be disputed — which is the liability argument as well as the honest
@@ -931,3 +941,22 @@ commits.
   `fetch_images` passes its own `workers`. A test asserts that coupling by
   reading the source, because a pool that stops tracking the worker count
   re-creates the bug the moment either is tuned.
+- **Count the file before quoting a number from these notes.** As of
+  2026-10-27 the taxonomy holds **244** species — 157 `NO_RECORDED_TOXICITY`,
+  66 `TOXIC`, 11 `SERIOUS`, 10 `DEADLY`. Several entries above said 247 and
+  one said eleven DEADLY; both were stale, and the derived figures around
+  them had drifted with them. The counts moved when a species was dropped
+  during the October character review (245 → 244 at `b65480c`) and nobody
+  re-read the prose. `python -c "import json; print(len(json.load(open(
+  'data/taxonomy.seed.json'))['species']))"` settles it in a second.
+- **The config carried two data paths that wanted different working
+  directories.** `manifest: data/processed/manifest.parquet` resolved
+  against the repo root while `taxonomy: ../data/taxonomy.seed.json`
+  resolved against `ml/`, so no single cwd satisfied both — and
+  `build_dataset.py` ends by printing "Next: python -m fungi_ml.train
+  --config configs/default.yaml", which only finds its config from `ml/`,
+  where the manifest does not exist. The documented next command therefore
+  failed from every directory, **two hours into a paid run**. Every `data:`
+  entry now resolves through `train._data_path` against the repo root;
+  `output.dir` deliberately does not, so `runs/baseline` keeps landing in
+  `ml/runs/baseline` where the run-book's later steps look for it.

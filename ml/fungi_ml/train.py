@@ -98,6 +98,37 @@ def evaluate_epoch(
     }
 
 
+# `ml/fungi_ml/train.py` -> `ml/fungi_ml` -> `ml` -> the repo root.
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _data_path(value: str | Path) -> Path:
+    """Resolve a `data:` path against the repo root, not the shell's cwd.
+
+    The config shipped two paths that wanted *different* working
+    directories and could not both be satisfied:
+
+        manifest: data/processed/manifest.parquet   # wants the repo root
+        taxonomy: ../data/taxonomy.seed.json        # wants ml/
+
+    `build_dataset.py` writes to `<root>/data/processed` and then prints
+    "Next: python -m fungi_ml.train --config configs/default.yaml", which
+    only finds its config from `ml/` -- where the manifest path resolves to
+    `ml/data/processed/...` and does not exist. So the documented next
+    command failed from every directory, and failed *after* a two-hour
+    dataset build rather than before it. Found on the first real run,
+    2026-10-27.
+
+    Anchoring to the repo root makes every `data:` entry mean the same
+    thing wherever it is run from. `output.dir` is deliberately NOT
+    anchored: it stays cwd-relative so `runs/baseline` keeps landing in
+    `ml/runs/baseline`, which is where the run-book's later steps and every
+    documented path expect it.
+    """
+    path = Path(value)
+    return path if path.is_absolute() else REPO_ROOT / path
+
+
 def train(config_path: str | Path) -> Path:
     config = yaml.safe_load(Path(config_path).read_text(encoding="utf-8"))
     torch.manual_seed(config["train"]["seed"])
@@ -111,13 +142,17 @@ def train(config_path: str | Path) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     shutil.copy(config_path, out_dir / "config.yaml")
 
-    manifest = load_manifest(config["data"]["manifest"])
-    labels_blob = json.loads(Path(config["data"]["label_map"]).read_text(encoding="utf-8"))
+    manifest_path = _data_path(config["data"]["manifest"])
+    label_map_path = _data_path(config["data"]["label_map"])
+    manifest = load_manifest(manifest_path)
+    labels_blob = json.loads(label_map_path.read_text(encoding="utf-8"))
     classes: list[str] = labels_blob["classes"]
     num_classes = len(classes)
-    shutil.copy(config["data"]["label_map"], out_dir / "labels.json")
+    shutil.copy(label_map_path, out_dir / "labels.json")
 
-    taxonomy = Taxonomy.load(config["data"].get("taxonomy", "../data/taxonomy.seed.json"))
+    taxonomy = Taxonomy.load(
+        _data_path(config["data"].get("taxonomy", "data/taxonomy.seed.json"))
+    )
     risk_matrix = build_risk_matrix(taxonomy, classes)
     np.save(out_dir / "risk_matrix.npy", risk_matrix)
 

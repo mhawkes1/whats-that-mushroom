@@ -12,9 +12,12 @@
 data:
   manifest: data/processed/manifest.parquet
   label_map: data/processed/labels.json
-  # Relative to the working directory, and the documented command is run
-  # from `ml/`. Read by train.py, which falls back to this same value.
-  taxonomy: ../data/taxonomy.seed.json
+  # Every path in this block is resolved against the REPO ROOT by
+  # `train._data_path`, not against the shell's working directory. It used
+  # to be `../data/...`, which wanted `ml/` as the cwd while `manifest`
+  # above wanted the repo root -- so no single directory satisfied both and
+  # the documented next command failed from either.
+  taxonomy: data/taxonomy.seed.json
   image_size: 384
   num_workers: 8
 
