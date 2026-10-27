@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Funga</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20512%20512%27%3E%3Crect%20width%3D%27512%27%20height%3D%27512%27%20rx%3D%27104%27%20fill%3D%27%23f6f3ea%27%2F%3E%3Cg%20transform%3D%27translate%2855.5%2C31.4%29%20scale%280.78%29%27%3E%3Cg%20fill%3D%27none%27%20stroke%3D%27%23231e17%27%20stroke-width%3D%2730%27%20stroke-linejoin%3D%27round%27%20stroke-linecap%3D%27round%27%20transform%3D%27translate%280%2C-16%29%27%3E%3Cpath%20d%3D%27M%2062%20268%20C%2062%20114%20452%20114%20452%20268%20C%20452%20284%20392%20292%20257%20292%20C%20122%20292%2062%20284%2062%20268%20Z%27%2F%3E%3Cpath%20d%3D%27M%20205%20292%20C%20198%20348%20194%20400%20199%20432%20C%20204%20464%20310%20464%20315%20432%20C%20320%20400%20316%20348%20309%20292%27%20stroke-linecap%3D%27butt%27%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,300&display=swap" rel="stylesheet">
@@ -135,6 +136,19 @@ header.masthead {
   margin-bottom: 36px;
 }
 .masthead .inner { max-width: 760px; margin: 0 auto; }
+/* The mark, on the page's own masthead only.
+   It is deliberately NOT added to the phone mock further down: the real app
+   header carries the wordmark, the gold rule and the emergency cross and no
+   mark at all, and this page is a recording of that app rather than a place
+   to improve it. `currentColor` so it follows the page into dark mode. */
+.brand { display: flex; align-items: center; gap: 16px; }
+.mark {
+  flex: 0 0 auto;
+  width: clamp(42px, 11vw, 62px);
+  height: auto;
+  color: var(--text);
+}
+
 h1 {
   font-family: var(--serif);
   font-weight: 600;
@@ -562,7 +576,15 @@ footer p { margin-bottom: 10px; }
 
 <header class="masthead">
   <div class="inner">
-    <h1>Funga</h1>
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 512 512" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-width="30" stroke-linejoin="round" stroke-linecap="round" transform="translate(0,-16)">
+          <path d="M 62 268 C 62 114 452 114 452 268 C 452 284 392 292 257 292 C 122 292 62 284 62 268 Z"/>
+          <path d="M 205 292 C 198 348 194 400 199 432 C 204 464 310 464 315 432 C 320 400 316 348 309 292" stroke-linecap="butt"/>
+        </g>
+      </svg>
+      <h1>Funga</h1>
+    </div>
     <div class="rule"></div>
     <p class="tagline">What&rsquo;s that mushroom? I&rsquo;ll tell you when I can&rsquo;t tell.</p>
     <p class="stamp">A <strong>recording</strong> of the working app &middot; captured <span id="stamp-date">26 October 2026</span> &middot; <span id="stamp-n">244</span> British species</p>
