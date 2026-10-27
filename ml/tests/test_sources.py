@@ -22,17 +22,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from fungi_ml.data.sources import (  # noqa: E402
     CollidingTaxonKeys,
+    USER_AGENT,
     DANISH_ATLAS_DATASET_KEY,
     INATURALIST_DATASET_KEY,
     MIN_MATCH_CONFIDENCE,
     RESEARCH_GRADE,
     UnresolvedDeadlySpecies,
     _licence_accepted,
+    _session,
     _research_grade,
     build_manifest,
     judge_match,
     load_quotas,
     resolve_label_space,
+    fetch_images,
     resolve_species,
     SpeciesQuota,
 )
@@ -724,3 +727,51 @@ def test_a_species_cut_short_by_gbif_is_reported(tmp_path, monkeypatch, caplog):
 
     assert "cut-short" in caplog.text
     assert "did NOT reach their quota" in caplog.text
+
+
+class TestConnectionPool:
+    """The session's pool must hold one connection per worker using it.
+
+    Found on the first real dataset build, 2026-10-27: the log filled with
+    "Connection pool is full, discarding connection" because `fetch_images`
+    runs 16 threads against a session carrying urllib3's default pool of 10.
+
+    Nothing was lost -- a discarded connection is not a discarded request --
+    but it cost a TLS handshake per image and, more to the point, buried the
+    log. The one error this build must never swallow is a species that lost
+    every image, and six species source from arbitrary hosts where that can
+    happen. A warning nobody can find among thousands of identical warnings
+    is a warning that does not work.
+    """
+
+    def test_the_pool_is_sized_to_the_caller(self):
+        for size in (1, 10, 16, 48):
+            session = _session(pool_size=size)
+            adapter = session.get_adapter("https://api.gbif.org")
+            assert adapter._pool_maxsize == size
+            # Several hosts are in play whenever a species carries
+            # `image_source: "any"`, so the per-host pool count matters too.
+            assert adapter._pool_connections == size
+
+    def test_both_schemes_are_mounted(self):
+        # Mounting only https would leave http on the default adapter, and
+        # the arbitrary hosts are not all https.
+        session = _session(pool_size=16)
+        for url in ("https://api.gbif.org", "http://api.gbif.org"):
+            assert session.get_adapter(url)._pool_maxsize == 16
+
+    def test_the_user_agent_survives_the_adapter(self):
+        # Mounting an adapter must not disturb the headers; GBIF asks for a
+        # identifying user agent and silently rate-limits without one.
+        session = _session()
+        assert session.headers["User-Agent"] == USER_AGENT
+
+    def test_fetch_images_sizes_the_pool_to_its_workers(self):
+        # The coupling is the whole point: a pool that does not track the
+        # worker count re-creates the bug the moment either is tuned.
+        import inspect
+
+        src = inspect.getsource(fetch_images)
+        assert "_session(pool_size=workers)" in src, (
+            "fetch_images must size its pool from its own worker count"
+        )

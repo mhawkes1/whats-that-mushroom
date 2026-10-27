@@ -916,3 +916,18 @@ commits.
   what `POSITIONING.md` barred. Left alone because nothing currently depends
   on changing it — but a dark-green ground would pass the letter of the rule
   and break its point, so **judge that by eye, not by the test**.
+- **The connection pool was ten against sixteen workers, and the cost was
+  the log rather than the data.** First real dataset build, 2026-10-27:
+  thousands of "Connection pool is full, discarding connection" from
+  urllib3. `_session()` returned a bare `requests.Session()`, which carries
+  urllib3's default pool of 10, while `fetch_images` runs 16 threads against
+  that one shared session. Nothing was lost -- a discarded *connection* is
+  not a discarded *request*, the download just opened a fresh socket -- so
+  the real price was a TLS handshake per image and **a log too noisy to find
+  a real warning in**. That second one is what made it worth fixing: the
+  error this build must never swallow is a species that lost every image,
+  and six species source from arbitrary hosts where exactly that happens.
+  `_session(pool_size=...)` now mounts an adapter on both schemes, and
+  `fetch_images` passes its own `workers`. A test asserts that coupling by
+  reading the source, because a pool that stops tracking the worker count
+  re-creates the bug the moment either is tuned.

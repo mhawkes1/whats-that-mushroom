@@ -67,9 +67,35 @@ PAGE_RETRIES = 4
 PAGE_BACKOFF_SECONDS = 2.0
 
 
-def _session() -> requests.Session:
+def _session(pool_size: int = 10) -> requests.Session:
+    """A session whose connection pool matches the concurrency using it.
+
+    A bare `requests.Session()` gets urllib3's default pool of 10, and
+    `fetch_images` runs 16 threads against one shared session. So six
+    threads at a time found the pool full and urllib3 discarded the
+    connection instead of keeping it for reuse -- "Connection pool is full,
+    discarding connection", once per image, right through a two-hour
+    download.
+
+    Nothing was being lost. A discarded *connection* is not a discarded
+    *request*; the download simply opened a fresh socket. What it cost was
+    a TCP and TLS handshake every time, and a log so noisy that a real
+    warning inside it would not have been noticed. That second cost is the
+    one that matters here: the error this build must never swallow is a
+    species that lost every image, and six species source from arbitrary
+    hosts where exactly that can happen.
+
+    `pool_connections` is the number of per-host pools and `pool_maxsize`
+    the connections within one. Both are set, because `image_source: "any"`
+    reaches three hosts besides iNaturalist.
+    """
     session = requests.Session()
     session.headers["User-Agent"] = USER_AGENT
+    adapter = requests.adapters.HTTPAdapter(
+        pool_connections=pool_size, pool_maxsize=pool_size
+    )
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
     return session
 
 
@@ -548,7 +574,9 @@ def fetch_images(
     image_root = Path(image_root)
     image_root.mkdir(parents=True, exist_ok=True)
 
-    session = _session()
+    # One session shared by every worker, so its pool has to hold one
+    # connection per worker or they fight over it.
+    session = _session(pool_size=workers)
 
     records = manifest.to_dict("records")
     resolved: dict[str, str | None] = {}
