@@ -3,11 +3,15 @@
 
     python scripts/build_icons.py
 
-Source of truth is `docs/logo/round5/m4-outline.svg` -- Martin's pick,
-2026-10-27, the original drawing rather than either of the rebuilds. One
-source, every size derived from it, because an icon set kept by hand drifts
-the same way two copies of a species list drift, and the drift shows up as
-a slightly different mushroom in the one place a user looks every day.
+Source of truth is `docs/logo/funga-mark.svg`, written by
+`docs/logo/mark.py`. That is Martin's round-five outline with one stroke
+removed -- the stem's own top edge, which a closed path drew straight across
+the stem and hid under the cap. He spotted it in the rendered icons. The
+geometry is otherwise untouched.
+
+One source, every size derived from it, because an icon set kept by hand
+drifts the same way two copies of a species list drift, and the drift shows
+up as a slightly different mushroom in the one place a user looks every day.
 
 Four things it gets right that are easy to get wrong:
 
@@ -29,7 +33,9 @@ looks wrong in a file browser and correct on a phone.
 **The mark is not centred in its own viewBox.** Its bounding box sits about
 32 units low, so composing it by dropping the 512 square into a 1024 square
 would hang everything slightly below centre on every platform at once. The
-box is measured in a browser and recentred.
+box is measured in a browser and recentred. `getBBox` ignores stroke, so
+half a stroke is added on each side: icon margins are measured from the ink,
+not from the maths.
 """
 
 from __future__ import annotations
@@ -42,7 +48,7 @@ import sys
 import tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SOURCE = ROOT / "docs" / "logo" / "round5" / "m4-outline.svg"
+SOURCE = ROOT / "docs" / "logo" / "funga-mark.svg"
 ASSETS = ROOT / "app" / "assets"
 
 PAPER = "#f6f3ea"

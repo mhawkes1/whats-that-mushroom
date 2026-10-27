@@ -83,6 +83,28 @@ describe('the icon set', () => {
     expect(pngSize(join(APP, 'assets/adaptive-icon.png'))).toEqual([1024, 1024]);
   });
 
+  it('leaves the stem open, so nothing is drawn across it', () => {
+    // Martin spotted this in the rendered icons: a *closed* stem path draws
+    // its own top edge as a straight line across the stem, hidden under the
+    // cap. Reclosing it would silently put that line back, and it is only
+    // visible once the mark is large.
+    const svg = readFileSync(
+      resolve(APP, '../docs/logo/funga-mark.svg'),
+      'utf8',
+    );
+    const paths = [...svg.matchAll(/d="([^"]+)"/g)].map((m) => m[1]);
+    expect(paths.length).toBeGreaterThanOrEqual(2);
+
+    const cap = paths[0];
+    const stem = paths[1];
+    expect(cap.trim().endsWith('Z'), 'the cap must stay closed').toBe(true);
+    expect(stem.includes('Z'), 'the stem must stay open').toBe(false);
+
+    // And its ends are butt-capped, or round caps bulge below the cap as a
+    // nub on each side.
+    expect(svg).toMatch(/stroke-linecap="butt"/);
+  });
+
   it('sets the adaptive background to the app paper, not white', () => {
     // The mark is drawn on #f6f3ea. A white plate behind it shows as a ring
     // of the wrong cream once a launcher masks it to a circle.

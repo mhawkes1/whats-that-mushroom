@@ -832,14 +832,29 @@ commits.
   **up**, 24% to 26–27%, with the deadly warning still on screen. The pair
   partner was contradicted, so the mass had to go somewhere. Showing only the
   verdict improving would have been the flattering half of a true thing.
-- **The app icon is `docs/logo/round5/m4-outline.svg`, and every size is
-  generated from it.** Martin's pick, 2026-10-27: the original two-path
-  drawing, not either of the rebuilds that followed. `python
-  scripts/build_icons.py` writes `app/assets/{icon,adaptive-icon,
-  splash-icon,favicon}.png` and nothing is touched by hand, for the same
-  reason the ebook's field data is generated -- a set kept by hand drifts,
-  and the drift shows up as a slightly different mushroom in the one place
-  a user looks every day.
+- **The production mark is `docs/logo/funga-mark.svg`, written by
+  `docs/logo/mark.py`.** Martin's round-five outline, picked 2026-10-27,
+  with exactly one stroke removed. `python scripts/build_icons.py` derives
+  `app/assets/{icon,adaptive-icon,splash-icon,favicon}.png` from it and
+  nothing is touched by hand, for the same reason the ebook's field data is
+  generated -- a set kept by hand drifts, and the drift shows up as a
+  slightly different mushroom in the one place a user looks every day.
+- **The stem is an *open* path, and reclosing it puts a line back across the
+  mushroom.** A closed stem draws its own top edge as a straight line
+  spanning the stem, hidden under the cap -- Martin spotted it in the
+  rendered 1024 icon. Dropping the `Z` leaves an open U; the geometry is
+  otherwise untouched, every control point original. Two follow-ons that
+  only show at large sizes: the open ends moved from y=290 to y=292, the cap
+  underside's own centreline, so each sits mid-stroke rather than just
+  inside its lower edge; and they take a **butt** cap, the only ones in the
+  drawing, because a round cap is a half-disc of radius 15 that bulged below
+  the cap as a nub on each side. `app/test/icons.test.ts` pins the cap
+  closed, the stem open and the butt cap present.
+- **That fix is invisible at icon sizes**, checked with `truepx.py`: at a
+  true 29 and 16 px the before and after are indistinguishable, because the
+  offending line sat under the cap's own stroke. It matters at 1024, on a
+  website and in print, which is where it was noticed. Do not take "looks
+  identical in the app" as a reason to undo it.
 - **Four things about icons that fail late, so `app/test/icons.test.ts`
   checks them now.** A missing asset stops an Expo build. **An alpha
   channel on the iOS icon is rejected by App Store Connect at upload**,
