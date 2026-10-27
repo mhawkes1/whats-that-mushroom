@@ -1,0 +1,294 @@
+[
+  {
+    "key": "A",
+    "name": "Current",
+    "blurb": "Warm bone paper, woodland green as a pale header tint. What ships today.",
+    "palette": {
+      "background": "#f6f3ea",
+      "surface": "#fffdf7",
+      "surfaceRaised": "#efeade",
+      "border": "#d9d2c0",
+      "text": "#231e17",
+      "textMuted": "#5c5447",
+      "textFaint": "#8a8173",
+      "danger": "#941613",
+      "dangerSurface": "#fbe9e7",
+      "caution": "#7d5206",
+      "cautionSurface": "#fbf0d8",
+      "confident": "#2f5a78",
+      "accent": "#9a6a24",
+      "onAccent": "#fffdf7",
+      "onDisabled": "#8a8173",
+      "canopy": "#3f5d37",
+      "lichen": "#8fa07a",
+      "canopySurface": "#eaefe2"
+    },
+    "solid_header": false,
+    "results": [
+      {
+        "check": "danger AAA (7:1) on every ground",
+        "ok": true,
+        "detail": "worst 7.52:1"
+      },
+      {
+        "check": "caution AA (4.5:1)",
+        "ok": true,
+        "detail": "worst 6.02:1"
+      },
+      {
+        "check": "body text 12:1 on the ground",
+        "ok": true,
+        "detail": "14.91:1"
+      },
+      {
+        "check": "muted text 4.5:1",
+        "ok": true,
+        "detail": "6.73:1"
+      },
+      {
+        "check": "onAccent on every filled control",
+        "ok": true,
+        "detail": "worst 4.63:1"
+      },
+      {
+        "check": "nothing semantic is green",
+        "ok": true,
+        "detail": "clean"
+      },
+      {
+        "check": "confident reads as information, not hazard",
+        "ok": true,
+        "detail": "blue-red 73"
+      },
+      {
+        "check": "hazard emphasis ordered",
+        "ok": true,
+        "detail": "deadly 8.66 > toxic 6.70 > none 1.48"
+      },
+      {
+        "check": "a no-hazard row barely marks the page",
+        "ok": true,
+        "detail": "1.48"
+      }
+    ]
+  },
+  {
+    "key": "B",
+    "name": "Deep chrome",
+    "blurb": "The same paper, with the greens taken much darker. The header becomes a solid forest band with cream on it rather than a mint wash. The smallest change that answers 'darker greens'.",
+    "palette": {
+      "background": "#f6f3ea",
+      "surface": "#fffdf7",
+      "surfaceRaised": "#efeade",
+      "border": "#d9d2c0",
+      "text": "#231e17",
+      "textMuted": "#5c5447",
+      "textFaint": "#8a8173",
+      "danger": "#941613",
+      "dangerSurface": "#fbe9e7",
+      "caution": "#7d5206",
+      "cautionSurface": "#fbf0d8",
+      "confident": "#2f5a78",
+      "accent": "#9a6a24",
+      "onAccent": "#fffdf7",
+      "onDisabled": "#8a8173",
+      "canopy": "#20341c",
+      "lichen": "#5d7350",
+      "canopySurface": "#dde5d4"
+    },
+    "solid_header": true,
+    "results": [
+      {
+        "check": "danger AAA (7:1) on every ground",
+        "ok": true,
+        "detail": "worst 7.52:1"
+      },
+      {
+        "check": "caution AA (4.5:1)",
+        "ok": true,
+        "detail": "worst 6.02:1"
+      },
+      {
+        "check": "body text 12:1 on the ground",
+        "ok": true,
+        "detail": "14.91:1"
+      },
+      {
+        "check": "muted text 4.5:1",
+        "ok": true,
+        "detail": "6.73:1"
+      },
+      {
+        "check": "onAccent on every filled control",
+        "ok": true,
+        "detail": "worst 4.63:1"
+      },
+      {
+        "check": "nothing semantic is green",
+        "ok": true,
+        "detail": "clean"
+      },
+      {
+        "check": "confident reads as information, not hazard",
+        "ok": true,
+        "detail": "blue-red 73"
+      },
+      {
+        "check": "hazard emphasis ordered",
+        "ok": true,
+        "detail": "deadly 8.66 > toxic 6.70 > none 1.48"
+      },
+      {
+        "check": "a no-hazard row barely marks the page",
+        "ok": true,
+        "detail": "1.48"
+      }
+    ]
+  },
+  {
+    "key": "C",
+    "name": "Sage paper",
+    "blurb": "The paper itself cools from bone toward sage, and the ink greens with it. Green throughout without green ever stating anything -- it stays a tint rather than a hue.",
+    "palette": {
+      "background": "#f0f2ea",
+      "surface": "#fafcf5",
+      "surfaceRaised": "#e5e9dc",
+      "border": "#ccd3c0",
+      "text": "#1c231a",
+      "textMuted": "#4e5749",
+      "textFaint": "#7d8678",
+      "danger": "#8f1511",
+      "dangerSurface": "#fae8e5",
+      "caution": "#6f4a07",
+      "cautionSurface": "#f7efd6",
+      "confident": "#2a5572",
+      "accent": "#8c6420",
+      "onAccent": "#fafcf5",
+      "onDisabled": "#7d8678",
+      "canopy": "#1e3119",
+      "lichen": "#5a7050",
+      "canopySurface": "#dbe4d2"
+    },
+    "solid_header": false,
+    "results": [
+      {
+        "check": "danger AAA (7:1) on every ground",
+        "ok": true,
+        "detail": "worst 7.77:1"
+      },
+      {
+        "check": "caution AA (4.5:1)",
+        "ok": true,
+        "detail": "worst 6.87:1"
+      },
+      {
+        "check": "body text 12:1 on the ground",
+        "ok": true,
+        "detail": "14.25:1"
+      },
+      {
+        "check": "muted text 4.5:1",
+        "ok": true,
+        "detail": "6.68:1"
+      },
+      {
+        "check": "onAccent on every filled control",
+        "ok": true,
+        "detail": "worst 5.13:1"
+      },
+      {
+        "check": "nothing semantic is green",
+        "ok": true,
+        "detail": "clean"
+      },
+      {
+        "check": "confident reads as information, not hazard",
+        "ok": true,
+        "detail": "blue-red 72"
+      },
+      {
+        "check": "hazard emphasis ordered",
+        "ok": true,
+        "detail": "deadly 8.89 > toxic 7.64 > none 1.49"
+      },
+      {
+        "check": "a no-hazard row barely marks the page",
+        "ok": true,
+        "detail": "1.49"
+      }
+    ]
+  },
+  {
+    "key": "D",
+    "name": "Dark forest",
+    "blurb": "The inversion: deep forest grounds, light text. Every hazard colour has to be re-derived, because a red chosen for paper is unreadable here. Passes only after two fixes, both of which say something: a green border had to be neutralised, and the deadly colour had to become the PALEST thing on screen to outweigh the toxic one.",
+    "palette": {
+      "background": "#121a10",
+      "surface": "#1a2417",
+      "surfaceRaised": "#243020",
+      "border": "#333a2f",
+      "text": "#eef2e6",
+      "textMuted": "#b3bda9",
+      "textFaint": "#8a9480",
+      "danger": "#ffb3ab",
+      "dangerSurface": "#3a1512",
+      "caution": "#e8bd6a",
+      "cautionSurface": "#33280f",
+      "confident": "#9ccbe8",
+      "accent": "#d9ad5e",
+      "onAccent": "#121a10",
+      "onDisabled": "#8a9480",
+      "canopy": "#9fbf92",
+      "lichen": "#6f8862",
+      "canopySurface": "#1d2a1a"
+    },
+    "solid_header": true,
+    "results": [
+      {
+        "check": "danger AAA (7:1) on every ground",
+        "ok": true,
+        "detail": "worst 9.39:1"
+      },
+      {
+        "check": "caution AA (4.5:1)",
+        "ok": true,
+        "detail": "worst 8.21:1"
+      },
+      {
+        "check": "body text 12:1 on the ground",
+        "ok": true,
+        "detail": "15.65:1"
+      },
+      {
+        "check": "muted text 4.5:1",
+        "ok": true,
+        "detail": "9.12:1"
+      },
+      {
+        "check": "onAccent on every filled control",
+        "ok": true,
+        "detail": "worst 8.54:1"
+      },
+      {
+        "check": "nothing semantic is green",
+        "ok": true,
+        "detail": "clean"
+      },
+      {
+        "check": "confident reads as information, not hazard",
+        "ok": true,
+        "detail": "blue-red 76"
+      },
+      {
+        "check": "hazard emphasis ordered",
+        "ok": true,
+        "detail": "deadly 9.39 > toxic 9.11 > none 1.37"
+      },
+      {
+        "check": "a no-hazard row barely marks the page",
+        "ok": true,
+        "detail": "1.37"
+      }
+    ]
+  }
+]
