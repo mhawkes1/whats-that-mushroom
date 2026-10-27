@@ -393,9 +393,35 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   host is exactly how an app silently loses its panic button.
   `app/test/emergencyRoute.test.ts` now guards it at the source level,
   because vitest cannot drive the RN renderer.
-- **`APP_NAME` in `AppHeader.tsx` is the only place the name is written.**
-  The name is not settled; change that string and the tagline beside it and
-  the app is renamed. Nothing else reads either.
+- **The app is `Funga`; the book stays *What's That Mushroom?*** Martin's
+  call, 2026-10-27, after checking the UK register himself. *Funga* is the
+  fungal counterpart to flora and fauna, proposed in the mycological
+  literature around 2018 and pushed since by the IUCN among others toward
+  "fauna, flora and funga" — so it reads, to the exact people whose review
+  is blocking release, as someone who has read their literature. Two
+  practical reasons it beat the alternatives. **Five characters against
+  twenty**, where a home screen label truncates at about twelve: the old
+  name read `What's That M…` under the icon forever. And it **promises
+  nothing** — every other candidate (FungID, MycoID, Fungi Finder, Mushroom
+  Finder) said "we will tell you what this is", which is the one thing this
+  app refuses to do, so the name would have needed walking back on the first
+  screen it appeared on. *My Mycologist* was rejected outright: claiming to
+  be a mycologist while no mycologist has reviewed the taxonomy is the
+  over-claim the product exists to reject.
+- **The name is written in two places, not one, and the second is the one
+  users see most.** `APP_NAME` in `AppHeader.tsx` is the in-app title;
+  `expo.name` in `app/app.json` is the **home screen label**, and nothing
+  keeps them in step. Change both. The tagline beside `APP_NAME` now carries
+  the work the name used to do — "Funga" tells a beginner nothing about
+  mushrooms, which is the accepted cost, paid for by the tagline in the app
+  and the subtitle in the store.
+- **`slug`, `package.json` name, the bundle identifiers and the dataset
+  builder's `USER_AGENT` were deliberately left as `whats-that-mushroom`.**
+  They are infrastructure identifiers no user reads, and changing a slug
+  breaks the Expo project link. **The bundle identifiers are the exception
+  worth revisiting before the first release**: `com.whatsthatmushroom.app`
+  is permanent once published to either store, so it is free to change now
+  and impossible to change later.
 - **The title's typeface is loaded but never awaited.** `useFonts` reports an
   error as well as a loading state, and a front page that will not render
   because a font did not arrive is worse than a title in the platform serif.

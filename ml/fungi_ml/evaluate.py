@@ -192,7 +192,7 @@ def write_model_card(report: dict, calibration: dict | None, out_path: str | Pat
     out_path = Path(out_path)
     acc = report["accuracy"]
     lines = [
-        "# Model card — What's That Mushroom classifier",
+        "# Model card — Funga classifier",
         "",
         "## What this model does",
         "",

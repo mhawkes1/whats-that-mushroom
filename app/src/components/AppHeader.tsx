@@ -4,12 +4,29 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { theme } from '../lib/theme';
 
 /**
- * The name, in one place, because it is not settled yet.
+ * The name, in one place.
  *
- * Working title. Change this string and the tagline below and the app is
- * renamed; nothing else reads either of them.
+ * Was "What's That Mushroom?", the book's title, until 2026-10-27. Martin's
+ * call: the book keeps that name and the app takes its own.
+ *
+ * *Funga* is the fungal counterpart to flora and fauna -- the fungal
+ * community of a place. It was proposed in the mycological literature around
+ * 2018 and there has been an active campaign since, the IUCN among its
+ * backers, to make "fauna, flora and funga" standard in conservation
+ * writing. Two things recommended it over the alternatives. It fits under an
+ * icon: five characters against twenty, where a home screen truncates at
+ * about twelve. And it promises nothing -- every other candidate on the list
+ * (FungID, MycoID, Fungi Finder) said "we will tell you what this is", which
+ * is the one thing this app refuses to do, so the name would have needed
+ * walking back on the first screen it appeared on.
+ *
+ * What it does not do is tell a beginner what the app is for, which is what
+ * the tagline and the store subtitle are now carrying. Change this string
+ * and the tagline below and the app is renamed; nothing else in the client
+ * reads either of them, though `app.json` carries the home screen label
+ * separately and has to be changed with it.
  */
-export const APP_NAME = "What's That Mushroom?";
+export const APP_NAME = 'Funga';
 const TAGLINE = "I'll tell you when I can't tell.";
 
 /**
@@ -29,10 +46,11 @@ const TAGLINE = "I'll tell you when I can't tell.";
  * the only screen that has to work when everything else has failed.
  *
  * **A little of the book's identity.** The gold rule and the serif title
- * remain, because an app that shares a name with a printed guide should not
- * look unrelated to it. The typeface is still loaded and still never
- * awaited: if Fraunces has not arrived, the title renders in the platform
- * serif rather than not at all.
+ * remain. They used to be reinforcement for a shared name; since the rename
+ * they are the *only* thread back to the printed guide, which makes them
+ * more load-bearing than they were, not less. The typeface is still loaded
+ * and still never awaited: if Fraunces has not arrived, the title renders in
+ * the platform serif rather than not at all.
  */
 export function AppHeader({ onEmergency }: { onEmergency: () => void }) {
   return (

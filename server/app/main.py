@@ -1,4 +1,4 @@
-"""HTTP API for What's That Mushroom.
+"""HTTP API for Funga.
 
 Endpoints are deliberately few:
 
@@ -123,7 +123,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="What's That Mushroom",
+    title="Funga",
     version="0.1.0",
     description=(
         "Fungi identification that reports honest uncertainty. This API never "

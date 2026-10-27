@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "What's That Mushroom?",
+    "name": "Funga",
     "slug": "whats-that-mushroom",
     "version": "0.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
-    "splash": { "resizeMode": "contain", "backgroundColor": "#1a1410" },
+    "splash": { "resizeMode": "contain", "backgroundColor": "#f6f3ea" },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.whatsthatmushroom.app",
