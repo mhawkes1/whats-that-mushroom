@@ -618,6 +618,13 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   otherwise short of.
 - **Expect 50–70% species top-1** on a first training run, with genus accuracy
   notably higher. 95% means a leak.
+  **Measured 2026-10-27: 87.9% top-1, 97.4% top-5.** The band above was
+  written pessimistically and the first real run cleared it by twenty
+  points. `scripts/check_splits.py` came back clean on the manifest that
+  produced it -- no observation, image URL or file in two splits -- so it is
+  not the leak the 95% line warns about. A ViT-Base pretrained on
+  ImageNet-21k, fine-tuned on 244 visually distinctive species, simply does
+  better than the note assumed.
 
 ## Related
 
@@ -980,3 +987,36 @@ commits.
   but two thirds of its memory is idle and `train.batch_size` could roughly
   double before it is tight. Free speed on the next run; not worth
   restarting a run that is already going.
+## The first real training run, 2026-10-27
+
+Curve in `docs/runs/2026-10-27-baseline.csv`. 244 species, 93,534 images,
+ViT-B/16 at 384 px, 30 epochs, 354 s each on a 4090.
+
+- **Accuracy settles at epoch 4 and never moves again.** Across epochs 4-29
+  top-1 spans 0.8749 to 0.8841 -- **0.92 of a percentage point**.
+- **Risk nearly doubles over the same stretch**, 1.665 to 3.113. Best is
+  **epoch 5 at 1.665**, matched at epoch 8 (1.684), then twelve epochs of
+  steady deterioration before a partial recovery to 2.854 at the end.
+- **Shipping the final epoch would have been 71% more dangerous for 0.40 of
+  a point LESS accuracy.** Rule 6 is not a style preference; it earned its
+  keep on the first run, visibly.
+
+**The mechanism matters more than the numbers.** Validation risk reads the
+*argmax* only -- confidence does not enter it. So with accuracy flat, the
+same ~12% of errors are simply landing differently. What the extra epochs
+buy is the conversion of "uncertain, spread across the genus" into
+"confidently the common one", and when the truth is a rare deadly species
+and the common neighbour is harmless, that is the 1000x cell of the risk
+matrix. The model does not make more mistakes with training. It makes the
+same number of far worse ones.
+
+**Risk is noisy epoch to epoch** -- 1.665, 1.975, 1.809, 1.684 across 5-8 --
+so the single lowest epoch is partly luck. Read it as "minimised around
+epochs 5-8 at roughly 1.7" rather than trusting the argmin.
+
+**What run two should change.** Train about ten epochs rather than thirty:
+same result, a third of the time and cost. And look hard at regularisation
+before reaching for `risk_strength`, because `mixup_alpha` and
+`cutmix_alpha` are declared `0.0` and `losses.SoftTargetRiskLoss` is
+written and **called by nothing** -- a strong regulariser, already in the
+repo, dormant, aimed squarely at the overfitting this curve shows.
