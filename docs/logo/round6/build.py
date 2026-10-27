@@ -53,6 +53,9 @@ def outline(
     stem_bottom: int = 404,
     waist: int = 10,
     brim: int = 16,
+    base_round: int = 0,
+    junction: bool = False,
+    split: bool = False,
     ring: bool = False,
     volva: bool = False,
     gills: int = 0,
@@ -60,8 +63,12 @@ def outline(
     """One mushroom, as a single continuous outline.
 
     `brim` is how far the cap's underside lifts toward the middle -- the
-    overhang that stops a cap reading as a dome sitting on a stick. `waist`
-    pinches the stem inward so it is a stem rather than a rectangle.
+    overhang that stops a cap reading as a dome sitting on a stick. A
+    *negative* brim bulges it downward instead, which is what the round-five
+    drawing did and is a good part of why that one looked generous rather
+    than narrow. `waist` pinches the stem inward; negative values barrel it
+    outward. `base_round` swells the stem's foot into a rounded base rather
+    than closing it with a straight line.
 
     Drawn as one closed path on purpose. Two overlapping paths put a stroke
     inside the mark where nobody wants one, and at small sizes that is the
@@ -91,10 +98,31 @@ def outline(
         f'C {CX + stem_half + waist} {cap_bottom + 40} '
         f'{CX + stem_half + waist} {stem_bottom - 60} '
         f'{CX + stem_half} {stem_bottom} '
-        'Z'
+        + (
+            # A rounded foot, closed as part of the same path so the mark
+            # stays one continuous outline.
+            f'C {CX + stem_half - 4} {stem_bottom + base_round} '
+            f'{CX - stem_half + 4} {stem_bottom + base_round} '
+            f'{CX - stem_half} {stem_bottom} '
+            if base_round else ''
+        )
+        + 'Z'
     )
 
     extra = []
+    if junction:
+        # The cap's underside crossing behind the stem.
+        #
+        # In the two-path drawing this appeared by accident, as the stem's
+        # top edge showing through the cap. It is worth having on purpose:
+        # it is the difference between a cap *sitting on* a stem and one
+        # continuous blob. Separate from the outline so it can be dropped
+        # for the small-size cut, which is the only place it costs anything.
+        extra.append(
+            f'<path d="M {CX - stem_half - 2} {cap_bottom + 4} '
+            f'C {CX - 20} {cap_bottom + 12} {CX + 20} {cap_bottom + 12} '
+            f'{CX + stem_half + 2} {cap_bottom + 4}"/>'
+        )
     if ring:
         y = cap_bottom + 54
         extra.append(f'<path d="M {CX - stem_half - 34} {y} '
@@ -112,6 +140,49 @@ def outline(
             continue
         extra.append(f'<path d="M {x:.0f} {cap_bottom - 6} '
                      f'L {x:.0f} {cap_bottom + 26}"/>')
+
+    if split:
+        # Cap closed across its full width, stem drawn as an open U hung
+        # beneath it.
+        #
+        # This is the construction the original wanted and did not have.
+        # Drawing the cap and the stem as two *closed* shapes puts the
+        # stem's top edge inside the cap, and that buried stroke is what
+        # merged with the cap's underside and blotted at small sizes.
+        # Merging them into one path fixed the blot and cost the shape:
+        # without a full-width underside the cap becomes a shoulder and
+        # the mushroom starts reading as a tree. Leaving the stem's top
+        # edge *undrawn* keeps the silhouette exactly and removes the only
+        # stroke that was ever in the way.
+        h2 = cap_bottom - cap_top
+        cy2 = cap_bottom - h2 * 4 / 3
+        cap = (
+            f'M {CX - cap_half} {cap_bottom} '
+            f'C {CX - cap_half} {cy2} {CX + cap_half} {cy2} '
+            f'{CX + cap_half} {cap_bottom} '
+            f'C {CX + cap_half - 40} {cap_bottom + max(brim, 0) + 8} '
+            f'{CX + 90} {cap_bottom - brim} {CX} {cap_bottom - brim} '
+            f'C {CX - 90} {cap_bottom - brim} {CX - cap_half + 40} '
+            f'{cap_bottom + max(brim, 0) + 8} {CX - cap_half} {cap_bottom} Z'
+        )
+        stem = (
+            f'M {CX - stem_half} {cap_bottom - brim - 6} '
+            f'C {CX - stem_half - waist} {cap_bottom + 50} '
+            f'{CX - stem_half - waist} {stem_bottom - 60} '
+            f'{CX - stem_half} {stem_bottom} '
+            + (f'C {CX - stem_half + 4} {stem_bottom + base_round} '
+               f'{CX + stem_half - 4} {stem_bottom + base_round} '
+               f'{CX + stem_half} {stem_bottom} '
+               if base_round else f'L {CX + stem_half} {stem_bottom} ')
+            + f'C {CX + stem_half + waist} {stem_bottom - 60} '
+            f'{CX + stem_half + waist} {cap_bottom + 50} '
+            f'{CX + stem_half} {cap_bottom - brim - 6}'
+        )
+        return svg(
+            f'<g fill="none" stroke="{INK}" stroke-width="{stroke}" '
+            f'stroke-linejoin="round" stroke-linecap="round">'
+            f'<path d="{cap}"/><path d="{stem}"/>{"".join(extra)}</g>'
+        )
 
     return svg(
         f'<g fill="none" stroke="{INK}" stroke-width="{stroke}" '

@@ -1,0 +1,42 @@
+[
+  [
+    "x0-original",
+    "Round five, as picked",
+    "The drawing itself, unchanged. It has a stroke inside it, where the stem's top edge crosses under the cap -- but at true device pixels that costs nothing visible. My round-five note that this clogs at 29 px was wrong, and wrong because the sheet was rendered at 3x."
+  ],
+  [
+    "x1-faithful",
+    "Merged into one path  \u00b7  a regression",
+    "The same geometry built as a single continuous path. It removes the buried stroke and the cap's full-width underside along with it, so the cap becomes a shoulder and the thing starts reading as a tree. At true 29 px the junction smears. Kept on the sheet because a failed idea is worth being able to see."
+  ],
+  [
+    "x2-light",
+    "Light",
+    "The same at stroke 24. The broad cap carries a lighter line better than round six's narrow one did, so this is more usable than its equivalent there."
+  ],
+  [
+    "x3-bold",
+    "Bold",
+    "Stroke 38. Confident on a dark ground; watch the gap between cap and stem start to close at 16."
+  ],
+  [
+    "x4-small",
+    "Drawn for small",
+    "Stroke 25, stem widened to 64 and the underside bulge eased to 14, so the counters survive. Still unmistakably the same mushroom, which is the whole trick -- a small-size drawing that reads as a different logo has failed."
+  ],
+  [
+    "x7-split",
+    "Split construction  \u00b7  the answer",
+    "Cap closed across its full width, stem drawn as an open U hanging beneath it. The silhouette is your original exactly -- full underside, cap sitting ON the stem -- and the one stroke that caused the blotting, the stem's buried top edge, is simply not drawn. Merging everything into one path had fixed the blot by removing the underside, which cost the shape: a cap without a full underside is a shoulder, and the mushroom starts reading as a tree."
+  ],
+  [
+    "x6-junction",
+    "Rebuild + junction line",
+    "The rebuild with the cap/stem junction drawn back in. That line existed in your original by accident -- it was the stem's top edge showing through the cap -- and it may be part of what you liked: it is the difference between a cap *sitting on* a stem and one continuous shape. Kept separate from the outline so the small-size cut can drop it, which is the only place it costs anything."
+  ],
+  [
+    "x5-ringed",
+    "Ringed",
+    "One line for the annulus. The feature that says Amanita, and the first thing lost when it shrinks."
+  ]
+]
