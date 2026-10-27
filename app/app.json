@@ -8,7 +8,7 @@
     "splash": { "resizeMode": "contain", "backgroundColor": "#f6f3ea" },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.whatsthatmushroom.app",
+      "bundleIdentifier": "uk.co.funga.app",
       "infoPlist": {
         "NSCameraUsageDescription": "Used to photograph mushrooms for identification.",
         "NSPhotoLibraryUsageDescription": "Used to choose an existing photograph of a mushroom.",
@@ -16,7 +16,7 @@
       }
     },
     "android": {
-      "package": "com.whatsthatmushroom.app",
+      "package": "uk.co.funga.app",
       "permissions": ["CAMERA", "ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
     },
     "plugins": ["expo-camera", "expo-image-picker", "expo-location"]

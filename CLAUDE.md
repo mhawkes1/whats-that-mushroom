@@ -418,10 +418,15 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
 - **`slug`, `package.json` name, the bundle identifiers and the dataset
   builder's `USER_AGENT` were deliberately left as `whats-that-mushroom`.**
   They are infrastructure identifiers no user reads, and changing a slug
-  breaks the Expo project link. **The bundle identifiers are the exception
-  worth revisiting before the first release**: `com.whatsthatmushroom.app`
-  is permanent once published to either store, so it is free to change now
-  and impossible to change later.
+  breaks the Expo project link.
+- **The bundle identifiers are `uk.co.funga.app`, and deliberately not
+  `com.funga.*`.** Changed 2026-10-27, which was the last free moment: a
+  bundle id is permanent once published to either store. Reverse-DNS
+  convention says use a domain you control, and `funga.com` belongs to
+  Funga PBC, a US forestry startup -- taking their namespace would be
+  squatting and invites an argument that costs more than a domain.
+  `funga.co.uk` is the one to register, and registering it is what makes
+  this identifier honest rather than merely unused.
 - **The title's typeface is loaded but never awaited.** `useFonts` reports an
   error as well as a loading state, and a front page that will not render
   because a font did not arrive is worse than a title in the platform serif.
