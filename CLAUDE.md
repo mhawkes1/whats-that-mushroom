@@ -960,3 +960,23 @@ commits.
   entry now resolves through `train._data_path` against the repo root;
   `output.dir` deliberately does not, so `runs/baseline` keeps landing in
   `ml/runs/baseline` where the run-book's later steps look for it.
+- **`torch.from_numpy` on an Arrow-backed array warns once per sample.**
+  Martin's first real training log, 2026-10-27, was unreadable: pandas
+  `to_numpy()` handed `FungiDataset` a **read-only** array, and
+  `torch.from_numpy` warns about every read-only buffer it is given --
+  ~75,000 times an epoch, ~2.2 million times over thirty, with the thirty
+  `epoch` lines buried somewhere inside. Same family as the `.unique()`
+  gotcha: pandas backed by Arrow returns arrays that do not behave like the
+  numpy ones the caller assumes. `dataset.py` now `.copy()`s **once at
+  construction**; a copy inside `__getitem__` silences the warning just as
+  well and adds an allocation per sample, which is the version that looks
+  like a fix and is a slow leak. A test pins which one.
+- **The first real run measured 354 s per epoch on a 4090**, so thirty
+  epochs is about **3 hours**, not the 4.6 estimated from an assumed
+  140 img/s. The real figure is nearer 210. `scripts/gpu_cost.py
+  --img-per-sec 210` reprices the exercise; it comes out under £5.
+- **Batch size 32 uses 8.5 GB of a 4090's 24 GB.** Measured mid-run at
+  100% utilisation and 418 W, so the card is working rather than starved --
+  but two thirds of its memory is idle and `train.batch_size` could roughly
+  double before it is tight. Free speed on the next run; not worth
+  restarting a run that is already going.

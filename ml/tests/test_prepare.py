@@ -157,3 +157,36 @@ def test_shuffle_does_not_duplicate_arrow_backed_ids():
 
     capped = filter_classes(manifest, min_images=10, max_images=10_000, seed=11)
     assert capped["observation_id"].nunique() == manifest["observation_id"].nunique()
+
+
+def test_dataset_metadata_is_writable_so_torch_does_not_warn_per_sample():
+    """The metadata array must be a writable copy, not an Arrow-backed view.
+
+    Martin's first real training log, 2026-10-27, was unreadable: pandas
+    handed back a READ-ONLY array from `to_numpy()`, `torch.from_numpy`
+    warned about it once per sample, and at ~75,000 samples an epoch over
+    thirty epochs that is roughly 2.2 million identical warnings with the
+    thirty `epoch` lines somewhere inside them.
+
+    Same family as the `.unique()` gotcha: pandas backed by Arrow returns
+    arrays that do not behave like the numpy ones the caller assumes.
+
+    This reads the source rather than building a dataset, because
+    constructing one needs torch and a manifest on disk. What it pins is
+    that the copy happens at construction -- copying inside `__getitem__`
+    would also silence the warning while adding an allocation per sample,
+    which is the version that looks like a fix and is a slow leak.
+    """
+    source = (Path(__file__).resolve().parents[1]
+              / "fungi_ml" / "data" / "dataset.py").read_text()
+
+    build = next(line for line in source.splitlines()
+                 if "self.metadata =" in line)
+    assert build.rstrip().endswith(".copy()"), (
+        f"metadata is built without a copy: {build.strip()!r}"
+    )
+
+    getitem = source.split("def __getitem__")[1].split("\ndef ")[0]
+    assert ".copy()" not in getitem, (
+        "copy the metadata once at construction, not once per sample"
+    )

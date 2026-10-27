@@ -68,7 +68,23 @@ class FungiDataset(Dataset):
         self.is_train = train if train is not None else (split == "train")
         self.image_size = image_size
         self.transform = build_transforms(image_size, self.is_train)
-        self.metadata = self.frame[METADATA_COLUMNS].to_numpy(dtype=np.float32)
+        # `.copy()` is load-bearing, once, here rather than per item.
+        #
+        # An Arrow-backed frame's `to_numpy()` can hand back a READ-ONLY
+        # array, and `torch.from_numpy` on a read-only buffer warns -- once
+        # per sample, so roughly 75,000 times an epoch and 2.2 million
+        # times over a thirty-epoch run. Found in Martin's first real
+        # training log, 2026-10-27, where the warnings buried every `epoch`
+        # line so thoroughly that `tail` showed nothing else.
+        #
+        # Same family as the `.unique()` gotcha in CLAUDE.md: pandas backed
+        # by Arrow returns arrays that do not behave like the numpy ones
+        # the calling code assumes.
+        #
+        # Copying at construction costs one allocation of a few megabytes.
+        # Copying in `__getitem__` would cost one per sample, which is the
+        # version that looks like a fix and is a slow leak.
+        self.metadata = self.frame[METADATA_COLUMNS].to_numpy(dtype=np.float32).copy()
         self.labels = self.frame["label"].to_numpy(dtype=np.int64)
         self.paths = self.frame["path"].tolist()
 
