@@ -53,12 +53,27 @@ def main() -> int:
     ap.add_argument("--split", default="test", help="held-out by default, on purpose")
     ap.add_argument("--out", default="MODEL_CARD.md")
     ap.add_argument("--report-out", help="also write the raw metrics as JSON")
+    ap.add_argument(
+        "--probs-out",
+        help="write the calibrated predictions as .npz. A few megabytes, and "
+             "it makes every later question about this run answerable with "
+             "no GPU, no dataset and no pod.",
+    )
     ap.add_argument("--batch-size", type=int, default=32)
     ap.add_argument(
         "--max-dangerous-confusions",
         type=int,
         default=0,
         help="exit non-zero above this. 0 is what SAFETY.md asks for.",
+    )
+    ap.add_argument(
+        "--max-silent-dangerous-confusions",
+        type=int,
+        default=0,
+        help="exit non-zero above this. A SILENT confusion is one the safety "
+             "layer would not have warned about, so it is the subset that "
+             "reaches a person. Separate dial, because a documented exception "
+             "on the total should not quietly cover these.",
     )
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -119,8 +134,30 @@ def main() -> int:
         Path(args.report_out).write_text(json.dumps(report, indent=2, default=float))
         log.info("Wrote %s", args.report_out)
 
+    if args.probs_out:
+        # The report is a summary and a summary cannot be re-interrogated.
+        # On the first paid run the deadly probability mass behind every
+        # dangerous confusion was computed here, used, and thrown away: when
+        # we later asked what the app would actually have SHOWN for the worst
+        # of them, nothing on disk could answer, and the pod was gone. Four
+        # megabytes of float16 answers that question and every one like it,
+        # for as long as the file exists.
+        np.savez_compressed(
+            args.probs_out,
+            probs=probs.astype(np.float16),
+            labels=labels.numpy(),
+            classes=np.array(classes),
+            split=args.split,
+            checkpoint=str(args.checkpoint),
+            calibrated=calibration is not None,
+            temperature=float((calibration or {}).get("temperature", 1.0)),
+        )
+        size_mb = Path(args.probs_out).stat().st_size / 1e6
+        log.info("Wrote %s (%.1f MB)", args.probs_out, size_mb)
+
     acc = report["accuracy"]
     n_dangerous = report["dangerous_confusion_count"]
+    n_silent = report["silent_dangerous_confusion_count"]
     print()
     print(f"  top-1              {acc['top1']:.1%}")
     print(f"  top-5              {acc['top5']:.1%}")
@@ -128,16 +165,33 @@ def main() -> int:
     print(f"  risk-weighted err  {report['risk_weighted_error']:.4f}   <- rule 6")
     print(f"  deadly recall      {report['deadly_recall']}")
     print(f"  dangerous confus.  {n_dangerous}")
+    print(f"    of which SILENT  {n_silent}   <- the ones a user would see "
+          f"unwarned")
     print()
 
-    if n_dangerous > args.max_dangerous_confusions:
-        print(
-            f"REFUSING: {n_dangerous} dangerous confusions on the held-out set, "
-            f"above the {args.max_dangerous_confusions} allowed.\n"
-            f"The card is written -- read it. SAFETY.md wants zero, or a "
-            f"documented and bounded exception.",
-            file=sys.stderr,
+    # Two refusals, in the order that matters. The silent count is checked
+    # first because it is the one that reaches a person: the rest were caught
+    # by the safety layer, which is bad and is not the same thing.
+    failures = []
+    if n_silent > args.max_silent_dangerous_confusions:
+        failures.append(
+            f"{n_silent} SILENT dangerous confusions, above the "
+            f"{args.max_silent_dangerous_confusions} allowed. In each one the "
+            f"deadly species held less than "
+            f"{report['deadly_mass_threshold']:.0%} of the mass, so the app "
+            f"shows a harmless name with no warning and no hazard line."
         )
+    if n_dangerous > args.max_dangerous_confusions:
+        failures.append(
+            f"{n_dangerous} dangerous confusions on the held-out set, above "
+            f"the {args.max_dangerous_confusions} allowed. SAFETY.md wants "
+            f"zero, or a documented and bounded exception."
+        )
+    if failures:
+        print("REFUSING:", file=sys.stderr)
+        for line in failures:
+            print(f"  - {line}", file=sys.stderr)
+        print("The card is written -- read it.", file=sys.stderr)
         return 1
     return 0
 

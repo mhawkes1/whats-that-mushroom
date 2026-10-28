@@ -1068,3 +1068,49 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   in the report. The first is how many people the model would have reached;
   the second includes the ones the app caught anyway, which are worth fixing
   and are not the release question.
+- **`report.json` could never have answered it, and that is the real
+  finding.** Asked for the first run's silent count, the obvious move was to
+  get `report.json` off Martin's machine. It does not contain the answer and
+  never did: the deadly probability mass was computed inside `evaluate()`,
+  used for the ranking, and **discarded**. Nothing wrote the predictions.
+  So the question needed the test images and `best.pt` — and both went with
+  the pod. **Run one's silent count is not recoverable.** It gets measured
+  on run two, natively, because the measurement now exists.
+- **`make_model_card.py --probs-out` is the fix, and it is not optional in
+  practice.** ~4 MB of float16 for 9,000 images × 244 species, plus labels,
+  classes, split and the temperature applied. Every later "what would the
+  app have shown" question is then answerable with no GPU, no dataset and no
+  pod. A summary cannot be re-interrogated; a recording can. Same argument
+  as `docs/walkthrough.html` being a recording rather than a
+  reimplementation.
+- **The script now gates on the silent count SEPARATELY from the total.**
+  `--max-silent-dangerous-confusions`, default 0. Run one had 10 dangerous
+  confusions against SAFETY.md's required zero, so passing a pipeline means
+  raising the total — and one dial governing both would have let a raise
+  that admits nine caught-by-the-safety-layer confusions admit a silent one
+  in the same breath. The summary prints both, silent second and labelled.
+- **`manifest.parquet` is the one artefact of a training run that cannot be
+  regenerated, and it was the one not kept.** The run-book listed it under
+  what to take off the box but not under what to commit, and `*.parquet` is
+  gitignored, so there was nowhere for it to go. It went with the pod.
+  Rebuildable is not reproducible: GBIF moves, so rebuilding months later
+  gives a *different* dataset and `prepare` gives a different split at the
+  same seed — which retrospectively made `check_splits.py`'s clean bill of
+  health unverifiable and run two incomparable to run one.
+  `prepare` now always writes `data/processed/splits.csv.gz`: five columns
+  (`species_key`, `observation_id`, `image_url`, `path`, `split`), ~3 MB,
+  committed. It is exactly what `check_splits.py` reads, and that script
+  falls back to it when the parquet is absent, so the leak checks still run
+  from a fresh clone. The parquet is still worth taking; it will never be
+  committable.
+- **A gitignore rule ending in `/` makes every negation under it dead, and
+  this project has now been bitten three times.** `ml/runs/` swallowed
+  MODEL_CARD.md and report.json while the pod billed; `data/processed/`
+  would have swallowed `splits.csv.gz`; `ml/runs/**` without a negation
+  would have swallowed `predictions.npz` that the run-book tells you to
+  commit. The failure is silent in the worst way — `git add <path>` exits
+  **0** having added nothing. Both directories now use `**` plus explicit
+  negations, and `test_the_split_record_is_not_gitignored` shells out to
+  `git check-ignore` to assert the kept files are kept and `best.pt`,
+  `model.onnx` and the parquet are still ignored. **Check `git status` lists
+  them before committing after a run.**

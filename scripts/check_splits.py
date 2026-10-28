@@ -45,7 +45,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--manifest",
-                    default=str(ROOT / "data" / "processed" / "manifest.parquet"))
+                    default=str(ROOT / "data" / "processed" / "manifest.parquet"),
+                    help="manifest.parquet, or the committed splits.csv.gz")
     ap.add_argument("--thin", type=int, default=20,
                     help="flag species with fewer observations than this")
     args = ap.parse_args()
@@ -54,9 +55,22 @@ def main() -> int:
 
     path = pathlib.Path(args.manifest)
     if not path.exists():
-        print(f"no manifest at {path}", file=sys.stderr)
-        return 2
-    m = pd.read_parquet(path)
+        # The parquet lives on whichever machine prepared the dataset and is
+        # gitignored; the split record is committed. Fall back to it so this
+        # check still runs from a fresh clone, months later, against the run
+        # the numbers were actually reported from.
+        fallback = ROOT / "data" / "processed" / "splits.csv.gz"
+        if path == pathlib.Path(ap.get_default("manifest")) and fallback.exists():
+            print(f"no manifest at {path}\n  reading the split record instead: "
+                  f"{fallback}", file=sys.stderr)
+            path = fallback
+        else:
+            print(f"no manifest at {path}", file=sys.stderr)
+            return 2
+    # Both inputs carry the five columns every check below reads. The parquet
+    # also carries forty it does not.
+    m = (pd.read_csv(path) if "".join(path.suffixes).endswith((".csv", ".csv.gz"))
+         else pd.read_parquet(path))
 
     print(f"\n  {len(m):,} images   {m.species_key.nunique()} species   "
           f"{m.observation_id.nunique():,} observations")

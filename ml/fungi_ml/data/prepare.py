@@ -151,6 +151,40 @@ METADATA_COLUMNS = [
 ]
 
 
+# Everything `scripts/check_splits.py` reads, and nothing else. Five columns
+# rather than the manifest's forty: no local paths to a machine that no
+# longer exists, no encoded metadata, no pixel-level anything.
+SPLIT_RECORD_COLUMNS = ["species_key", "observation_id", "image_url", "path", "split"]
+
+
+def write_split_record(manifest: pd.DataFrame, path: str | Path) -> Path:
+    """Write the small, committable record of which image went where.
+
+    `manifest.parquet` is the single most important artefact a training run
+    produces and the only one that cannot be regenerated: GBIF moves, so a
+    rebuild gives a *different* dataset, and the split is what separates a
+    real validation score from a leaked one. On the first paid run it lived
+    on the pod, `*.parquet` was gitignored, and it went with the container --
+    which retrospectively made `check_splits.py`'s clean bill of health
+    unverifiable, and run two incomparable to run one.
+
+    This is the part worth keeping: five columns, gzipped, a few megabytes,
+    enough to re-run every leak check and to say exactly which photographs
+    the reported numbers were measured on. The images are reproducible from
+    `image_url`; the *decision* about them is not reproducible from anything.
+    """
+    path = Path(path)
+    missing = [c for c in SPLIT_RECORD_COLUMNS if c not in manifest.columns]
+    if missing:
+        raise KeyError(f"manifest is missing {missing}, cannot record the split")
+    manifest[SPLIT_RECORD_COLUMNS].to_csv(path, index=False, compression="gzip")
+    log.info(
+        "Wrote the split record: %d rows, %d observations -> %s",
+        len(manifest), manifest["observation_id"].nunique(), path,
+    )
+    return path
+
+
 def prepare(
     raw_manifest: str | Path,
     out_dir: str | Path,
@@ -178,6 +212,7 @@ def prepare(
         json.dumps({"label_map": label_map, "classes": list(label_map)}, indent=2),
         encoding="utf-8",
     )
+    write_split_record(manifest, out_dir / "splits.csv.gz")
     log.info("Prepared %d images, %d classes -> %s", len(manifest), len(label_map), out_dir)
     return manifest, label_map
 

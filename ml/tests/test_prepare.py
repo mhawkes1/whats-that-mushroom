@@ -6,6 +6,8 @@ accuracy number the project reports becomes meaningless.
 
 from __future__ import annotations
 
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -17,10 +19,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from fungi_ml.data.prepare import (  # noqa: E402
     METADATA_COLUMNS,
+    SPLIT_RECORD_COLUMNS,
     build_label_map,
     encode_metadata,
     filter_classes,
     split_by_observation,
+    write_split_record,
 )
 
 
@@ -190,3 +194,106 @@ def test_dataset_metadata_is_writable_so_torch_does_not_warn_per_sample():
     assert ".copy()" not in getitem, (
         "copy the metadata once at construction, not once per sample"
     )
+
+
+# --- The split record ------------------------------------------------------
+#
+# A training run's manifest is the one artefact that cannot be regenerated:
+# GBIF moves, so rebuilding gives a different dataset, and the split is what
+# separates a real validation score from a leaked one. On the first paid run
+# it lived on the pod, `*.parquet` was gitignored, and it went with the
+# container -- which made `check_splits.py`'s clean result unverifiable after
+# the fact and run two incomparable to run one.
+
+
+def test_the_split_record_holds_everything_the_leak_checks_read():
+    """And the leak checks are the reason it exists."""
+    source = (Path(__file__).resolve().parents[2]
+              / "scripts" / "check_splits.py").read_text(encoding="utf-8")
+    for column in ("observation_id", "image_url", "path", "split"):
+        assert f'straddles("{column}")' in source or f'"{column}"' in source
+        assert column in SPLIT_RECORD_COLUMNS, (
+            f"check_splits.py reads {column!r} and the committed record "
+            f"would not carry it"
+        )
+
+
+def test_the_record_round_trips_the_split_exactly(tmp_path):
+    manifest = split_by_observation(make_manifest(), 0.10, 0.10, seed=1337)
+    path = write_split_record(manifest, tmp_path / "splits.csv.gz")
+    back = pd.read_csv(path)
+
+    assert list(back.columns) == SPLIT_RECORD_COLUMNS
+    assert len(back) == len(manifest)
+    before = manifest.set_index("image_url")["split"].to_dict()
+    after = back.set_index("image_url")["split"].to_dict()
+    assert before == after, "the record must reproduce the split, not summarise it"
+
+
+def test_the_record_drops_the_columns_that_describe_a_vanished_machine(tmp_path):
+    """Five columns, not forty. The encoded metadata and the label index are
+    derived; the decision about which photograph went where is not."""
+    manifest = encode_metadata(
+        split_by_observation(make_manifest(), 0.10, 0.10, seed=1337)
+    )
+    back = pd.read_csv(write_split_record(manifest, tmp_path / "splits.csv.gz"))
+    for column in METADATA_COLUMNS:
+        assert column not in back.columns
+
+
+def test_a_missing_column_is_refused_rather_than_written_short(tmp_path):
+    """A record quietly missing `split` is worse than no record: it looks
+    like evidence and cannot answer the question it exists for."""
+    manifest = split_by_observation(make_manifest(), 0.10, 0.10, seed=1337)
+    with pytest.raises(KeyError, match="split"):
+        write_split_record(manifest.drop(columns=["split"]),
+                           tmp_path / "splits.csv.gz")
+
+
+def test_prepare_writes_the_record_beside_the_manifest():
+    """Reads the source: calling `prepare` needs pyarrow and a manifest on
+    disk, and what is being pinned is that nobody has to remember a flag."""
+    source = (Path(__file__).resolve().parents[1]
+              / "fungi_ml" / "data" / "prepare.py").read_text(encoding="utf-8")
+    body = source.split("def prepare(")[1]
+    assert "write_split_record(" in body, (
+        "prepare() must write the split record unconditionally -- an opt-in "
+        "flag is one nobody sets at 2am on a rented GPU"
+    )
+
+
+def test_the_split_record_is_not_gitignored():
+    """The failure that actually happened, in the form it happened in.
+
+    `data/processed/` with a trailing slash stops git descending into the
+    directory at all, so a negation inside it does nothing. The first run
+    lost its manifest to exactly this shape of rule, and `ml/runs/**` exists
+    with its negations because the same rule had already swallowed
+    MODEL_CARD.md and report.json once.
+    """
+    root = Path(__file__).resolve().parents[2]
+    if not (root / ".git").exists() or shutil.which("git") is None:
+        pytest.skip("not a git checkout")
+    kept = subprocess.run(
+        ["git", "check-ignore", "data/processed/splits.csv.gz"],
+        cwd=root, capture_output=True, text=True,
+    )
+    assert kept.returncode == 1, (
+        "splits.csv.gz is gitignored, so the one artefact of a training run "
+        "that cannot be regenerated would again exist only on the machine "
+        "that made it"
+    )
+    # Same for the predictions, which the run-book's step 9 says to commit:
+    # a `git add` of a path the rules still ignore succeeds while adding
+    # nothing, which is how this went wrong the first two times.
+    assert subprocess.run(
+        ["git", "check-ignore", "ml/runs/baseline/predictions.npz"],
+        cwd=root, capture_output=True, text=True,
+    ).returncode == 1, "predictions.npz is gitignored but the run-book commits it"
+    # And the heavy neighbours stay ignored, or the next commit is gigabytes.
+    for ignored in ("data/processed/manifest.parquet", "data/processed/images/x.jpg",
+                    "ml/runs/baseline/best.pt", "ml/runs/baseline/model.onnx"):
+        assert subprocess.run(
+            ["git", "check-ignore", ignored],
+            cwd=root, capture_output=True, text=True,
+        ).returncode == 0, f"{ignored} is no longer ignored"

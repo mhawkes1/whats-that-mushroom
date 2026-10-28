@@ -1,7 +1,17 @@
 # Datasets and model artefacts — never committed, often gigabytes
 data/raw/
-data/processed/
 data/images/
+# The prepared dataset is gigabytes and the manifest is a local-path index
+# of a machine that no longer exists -- but `splits.csv.gz` is five columns
+# saying which photograph went to which split, which is the only artefact of
+# a training run that CANNOT be regenerated (GBIF moves, so a rebuild gives
+# a different dataset). Losing it with the first pod made check_splits.py's
+# clean result unverifiable after the fact. Same `**` + negation shape as
+# ml/runs below, for the same reason: git will not descend into a directory
+# ignored with a trailing slash, so the negations have to sit under `**`.
+data/processed/**
+!data/processed/
+!data/processed/splits.csv.gz
 # Training outputs. The checkpoints are ~330 MB each and GitHub refuses
 # anything over 100 MB, so the directory is ignored by default -- but the
 # run-book's step 9 says to COMMIT the small text artefacts, because they
@@ -19,6 +29,11 @@ ml/runs/**
 !ml/runs/*/labels.json
 !ml/runs/*/config.yaml
 !ml/runs/*/history.json
+# ~4 MB of float16 predictions on the held-out split. Bigger than its
+# neighbours and the reason any later question about a run is answerable at
+# all: the first run's deadly probability masses were computed, used and
+# discarded, and the pod that held them was destroyed.
+!ml/runs/*/predictions.npz
 *.parquet
 *.pt
 *.pth

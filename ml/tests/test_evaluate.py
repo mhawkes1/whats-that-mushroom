@@ -177,3 +177,61 @@ def test_the_report_and_the_card_both_carry_the_silent_count(taxonomy, tmp_path)
     assert "Silent" in card, "the table must name the column"
     assert "Deadly mass" in card
     assert "0.004" in card, "the measured range, not just the count"
+
+
+# --- The release gate ------------------------------------------------------
+#
+# `scripts/make_model_card.py` is the only thing that turns a checkpoint into
+# a document and a decision. These read its source rather than running it,
+# because running it needs torch, a checkpoint and a prepared manifest -- the
+# same reason `test_config.py` reads source.
+
+CARD_SCRIPT = ROOT / "scripts" / "make_model_card.py"
+
+
+def test_the_card_script_gates_on_the_silent_count_separately():
+    """A documented exception on the total must not quietly cover these.
+
+    The first real run had 10 dangerous confusions against SAFETY.md's
+    required zero, so it needed `--max-dangerous-confusions` raised to pass
+    a pipeline. If that one dial also governed the silent subset, raising it
+    to admit nine caught-by-the-safety-layer confusions would have admitted
+    a silent one in the same breath.
+    """
+    source = CARD_SCRIPT.read_text(encoding="utf-8")
+    assert "--max-silent-dangerous-confusions" in source
+    assert "silent_dangerous_confusion_count" in source, (
+        "the script must read the silent count, not re-derive it"
+    )
+    # Both dials default to zero: SAFETY.md's number, not a comfortable one.
+    # `rsplit`, because the module docstring names the first flag too.
+    for flag in ("--max-dangerous-confusions", "--max-silent-dangerous-confusions"):
+        block = source.rsplit(flag, 1)[1].split("    )")[0]
+        assert "default=0" in block.replace(" ", ""), f"{flag} no longer defaults to 0"
+
+
+def test_the_card_script_prints_the_silent_count_in_the_summary():
+    """The terminal summary is what a person reads at 2am on a rented GPU."""
+    source = CARD_SCRIPT.read_text(encoding="utf-8")
+    summary = source.split("acc = report[")[1]
+    assert "n_silent" in summary, "the printed summary omits the silent count"
+
+
+def test_the_card_script_can_save_the_predictions():
+    """Because the first run could not, and the question arrived too late.
+
+    The deadly probability mass behind every dangerous confusion was
+    computed during evaluation, used, and discarded. When we later asked
+    what the app would have SHOWN for the worst one, nothing on disk could
+    answer and the pod had been destroyed. A few megabytes of float16 makes
+    every later question about a run answerable with no GPU and no dataset.
+    """
+    source = CARD_SCRIPT.read_text(encoding="utf-8")
+    assert "--probs-out" in source
+    block = source.split("np.savez_compressed(")[1].split("        )")[0]
+    for key in ("probs=", "labels=", "classes=", "split=", "calibrated="):
+        assert key in block, f"the predictions file omits {key!r}"
+    assert "float16" in block, (
+        "store float16: float32 doubles a file whose whole argument is that "
+        "it is small enough to keep"
+    )

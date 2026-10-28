@@ -262,15 +262,40 @@ python scripts/make_model_card.py \
     --calibration ml/runs/baseline/calibration.json \
     --split test \
     --out ml/runs/baseline/MODEL_CARD.md \
-    --report-out ml/runs/baseline/report.json
+    --report-out ml/runs/baseline/report.json \
+    --probs-out ml/runs/baseline/predictions.npz
 ```
 
 `--split test`: the held-out set, which calibration never touched.
+
+**`--probs-out` is not optional in practice.** It writes the calibrated
+predictions as float16 — about 4 MB for 9,000 test images across 244 species
+— and it is the difference between a run you can still interrogate and one
+you can only quote. The first run omitted it, and a fortnight later the
+obvious question (what would the app actually have *shown* for the worst
+dangerous confusion?) was unanswerable: the number that decides had been
+computed during evaluation, used, and discarded, and the pod was gone.
 
 **It exits non-zero if there is a single dangerous confusion**, because
 `docs/SAFETY.md` asks for zero or a documented, bounded exception. The card is
 written either way — read it before deciding anything. A non-zero exit is the
 script declining to let a bad run pass quietly, not a verdict on the model.
+
+The summary prints two counts and they are not the same question:
+
+```
+  dangerous confus.  10
+    of which SILENT  ?    <- the ones a user would see unwarned
+```
+
+A **silent** confusion is one where the deadly species kept less than 2% of
+the probability mass, so `server/app/safety.py` never raises the lethal
+warning and — since rule 1 renders nothing at all for `NO_RECORDED_TOXICITY`
+— the user is shown a harmless name with no hazard line. The rest were
+caught by the safety layer: bad, worth fixing, not dangerous.
+`--max-silent-dangerous-confusions` is a **separate dial** from the total,
+on purpose, so raising the total to admit the caught ones cannot admit a
+silent one in the same breath.
 
 ---
 
@@ -286,10 +311,22 @@ git add ml/runs/baseline/MODEL_CARD.md \
         ml/runs/baseline/report.json \
         ml/runs/baseline/calibration.json \
         ml/runs/baseline/labels.json \
+        ml/runs/baseline/predictions.npz \
+        data/processed/splits.csv.gz \
         configs/default.yaml          # if the timing check made you change it
 git commit -m "First trained model: <top-1>, <n> dangerous confusions"
 git push
 ```
+
+`predictions.npz` (~4 MB) and `splits.csv.gz` (~3 MB) are both bigger than
+the rest put together and both belong here. The first lets anyone re-ask
+what the app would have said, without a GPU. The second says which
+photograph went to which split, which is what makes `check_splits.py`'s
+clean result checkable months later and run two comparable to run one.
+`.gitignore` un-ignores exactly these two inside otherwise-ignored
+directories — **check `git status` shows them before you commit**, because
+a pattern ending in `/` stops git descending at all and `git add` then
+succeeds while adding nothing. That has already happened twice here.
 
 **Large and binary — do not put these in git.** `best.pt` and `model.onnx`
 are both roughly **350 MB** for ViT-B/16. A repository is the wrong place for
@@ -315,11 +352,23 @@ ml/runs/baseline/labels.json        # tiny, commit
 ml/runs/baseline/calibration.json   # tiny, commit
 ml/runs/baseline/MODEL_CARD.md      # tiny, commit
 ml/runs/baseline/report.json        # tiny, commit
-data/processed/manifest.parquet     # ~20 MB, reproduces every split
+ml/runs/baseline/predictions.npz    # ~4 MB, commit
+data/processed/splits.csv.gz        # ~3 MB, commit -- which image went where
+data/processed/manifest.parquet     # ~20 MB, take it, cannot be committed
 ```
 
-The images do not need to come home. The manifest records every URL, licence
-and rights holder, so the dataset is rebuildable.
+The images do not need to come home: the manifest records every URL, licence
+and rights holder, so the dataset is **rebuildable**.
+
+**Rebuildable is not reproducible, and the difference is the whole reason
+`splits.csv.gz` is on that list.** GBIF moves — occurrences are added,
+licences change, synonymy is revised — so a rebuild months later gives a
+*different* dataset, and re-running `prepare` on it gives a different split
+even at the same seed. The reported accuracy then belongs to a dataset that
+no longer exists. `splits.csv.gz` pins it: five columns, every image URL and
+the split it was assigned to. `manifest.parquet` is the fuller record and is
+worth taking, but `*.parquet` is gitignored and always will be, so it only
+ever lives on machines — which is how the first run's went with the pod.
 
 **Then terminate the pod, rather than stopping it.** A stopped pod still
 bills for its volume, and the GitHub token is sitting in `.git/config` on it.
