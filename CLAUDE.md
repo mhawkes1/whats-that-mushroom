@@ -1464,3 +1464,49 @@ one, on a different model and a different dataset. *Galerina marginata* ->
 mucida*, *Clitocybe rivulosa* -> *Crepidotus cesatii*. No human makes those
 mistakes, so `lookalikes` could never have caught them and the
 `dangerous_group` refusal was blind on all eight.
+
+## Run three, 2026-10-28: mixup was 40% of it, and 60% is still unexplained
+
+Curve in `docs/runs/2026-10-28-nomix.csv`. Identical to run two except
+`mixup_alpha` and `cutmix_alpha` back to 0.0 -- one variable, which is what
+run two should have been. Same dataset, same split, same batch size, same
+10 epochs, 552 s each.
+
+Mean validation risk over epochs 2-9, where the early noise has settled:
+
+| | risk, epochs 2-9 | best | final top-1 |
+| --- | ---: | ---: | ---: |
+| Run one (30ep, batch 32, no mix) | **1.845** | 1.665 | 0.8838 |
+| Run three (10ep, batch 64, no mix) | **2.571** | 1.911 | 0.8926 |
+| Run two (10ep, batch 64, mixup) | **3.047** | 2.372 | 0.8900 |
+
+**Mixup cost +0.477, which is 40% of the gap. The remaining +0.726 -- 60%,
+the larger half -- is still unexplained**, and the two variables I bundled
+with it are untested: `batch_size` 32 -> 64, and the rebuilt dataset.
+Turning mixup off recovered less than half the regression.
+
+**Accuracy is the same in all three runs** from epoch 2 onward, and run
+three ends *highest* at 0.8926. Across every run this week, accuracy has
+been almost invariant to everything tried while risk has moved by 65%.
+That is the project's whole thesis arriving as an experimental result
+rather than an argument: **top-1 is nearly useless as a tuning signal
+here.**
+
+**Risk no longer falls with training, and that is new.** Run one's fell to
+epoch 5 (1.665) before wobbling. Runs two and three both have their minimum
+at **epoch 1** and rise afterwards, so rule 6 selects a barely-trained
+checkpoint in each. Something about the current setup inverts the curve's
+early shape; batch size is the obvious suspect, since 64 halves the
+optimiser steps per epoch (1,169 against 2,338) and moves what "epoch 1"
+means.
+
+**Run four, if it happens, is batch 32 and nothing else changed.** If risk
+returns to ~1.85 it was batch size; if it stays near 2.5 it is the dataset,
+and that is a harder problem because the dataset is also what fixed the
+*Lepiota*.
+
+**And run one cannot be rebuilt.** Its images and split died with its pod,
+so "just ship run one's model" means shipping a checkpoint nobody can
+retrain, re-split or re-measure. That is an argument for landing a good run
+on the current dataset even at a slightly worse risk figure, and it is the
+cost of the thing `splits.csv.gz` now prevents.
