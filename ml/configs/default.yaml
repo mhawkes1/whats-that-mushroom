@@ -43,8 +43,16 @@ model:
   drop_path_rate: 0.2
 
 train:
-  epochs: 30
-  batch_size: 32
+  # Ten, not thirty. Measured on the first real run: risk-weighted error was
+  # minimised around epochs 5-8 at roughly 1.7 and then deteriorated to
+  # 3.113 by epoch 29, while top-1 moved 0.92 of a percentage point across
+  # the whole stretch. Shipping the final epoch would have been 71% more
+  # dangerous for 0.40 of a point LESS accuracy. The extra twenty epochs
+  # bought nothing and cost two hours.
+  epochs: 10
+  # 32 used 8.5 GB of a 4090's 24 at 100% utilisation and 418 W, so the card
+  # was working rather than starved and two thirds of its memory sat idle.
+  batch_size: 64
   grad_accum_steps: 1
   lr: 3.0e-4
   backbone_lr_mult: 0.1      # discriminative fine-tuning
@@ -67,15 +75,28 @@ train:
   # thing this project should ship but is a useful ablation to have.
   risk_strength: 1.0
 
-  # Mixup and CutMix are NOT applied. `losses.SoftTargetRiskLoss` is written
-  # and ready for them, and nothing in `train.py` calls it -- the loop uses
-  # hard targets throughout. These keys sat at 0.2 and 1.0 and did nothing,
-  # which is worse than absent: a reader would reasonably conclude the model
-  # was trained with augmentation it has never seen. Left at 0 and named so
-  # the file tells the truth; wiring them up is a change to make between
-  # runs and measure, not one to smuggle into the first one.
-  mixup_alpha: 0.0
-  cutmix_alpha: 0.0
+  # Mixup and CutMix. WIRED as of 2026-10-28 -- `fungi_ml.mixup.Mixer` runs
+  # on the batch and `losses.SoftTargetRiskLoss` takes over whenever either
+  # alpha is above zero. Both at 0 trains exactly as before, so this is a
+  # decision made here rather than a silent change of objective.
+  #
+  # They are aimed at a specific finding. The first run's accuracy was flat
+  # from epoch 4 to 29 while risk-weighted error nearly doubled: the model
+  # converting "uncertain, spread across the genus" into "confidently the
+  # common one", which is the 1000x cell of the risk matrix when the truth
+  # is a rare deadly species. Mixup trains flatter distributions on inputs
+  # between classes, which is the opposite transformation -- so it is the
+  # first thing to reach for, ahead of raising `risk_strength`.
+  #
+  # Two things to expect. Mixing dilutes the risk multiplier, because a
+  # half death cap carries half the cost; log1p compresses that to about a
+  # tenth rather than a half, and there is a test on the figure. And a
+  # mixup-trained model is usually MORE under-confident, so expect the
+  # fitted temperature to fall further below the 0.8177 of run one. That is
+  # calibration's job, not a reason to avoid it.
+  mixup_alpha: 0.2
+  cutmix_alpha: 1.0
+  mix_prob: 0.5             # chance a given batch is mixed at all
 
 eval:
   # NOTE: nothing here is configurable, and `topk: [1, 3, 5]` used to sit in

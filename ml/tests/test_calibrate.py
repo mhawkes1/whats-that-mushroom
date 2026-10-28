@@ -205,3 +205,97 @@ def test_risk_loss_scale_is_capped(taxonomy):
     loss = criterion(logits, torch.tensor([0]))
     plain = torch.nn.functional.cross_entropy(logits, torch.tensor([0]))
     assert loss <= plain * 20.0 + 1e-3
+
+
+# --- The fit must converge, or say it did not -------------------------------
+#
+# Found on 2026-10-28 by the end-to-end rehearsal, once mixup was wired up.
+# Log-space parameterisation stops LBFGS making the temperature negative. It
+# does not stop it walking to zero, and nothing checked: `fit` logged
+# whatever it reached and the caller wrote it into calibration.json.
+#
+# The served consequence is the exact inverse of what calibration is for.
+# `logits / 0` is infinite, softmax collapses to one-hot, and the app
+# reports **p=1.000** -- on anything, including random pixels. Rule 4 says
+# never show uncalibrated confidence as confidence; a temperature of zero is
+# the purest available form of that.
+#
+# It is not a synthetic-data curiosity. A mixup-trained model is more
+# under-confident than run one's, which fitted 0.8177, so run two's fit
+# moves toward this corner rather than away from it.
+
+
+def test_a_fit_that_runs_to_zero_is_refused():
+    from fungi_ml.calibrate import DegenerateTemperature
+
+    # Perfect predictions with modest logits: NLL falls without limit as the
+    # temperature drops, so there is no interior optimum to find.
+    logits = torch.eye(6).repeat(40, 1) * 0.5
+    labels = torch.arange(6).repeat(40)
+    with pytest.raises(DegenerateTemperature, match="nothing to calibrate|outside"):
+        TemperatureScaler().fit(logits, labels)
+
+
+def test_a_split_with_no_errors_is_refused_by_name():
+    """The underlying condition, reported as itself.
+
+    With no errors there is no over- or under-confidence to measure, and
+    every reduction in temperature improves the objective. Saying
+    "temperature out of range" would describe the symptom; the cause is
+    that the model memorised the split it is being calibrated on.
+    """
+    from fungi_ml.calibrate import DegenerateTemperature
+
+    logits = torch.eye(6).repeat(40, 1)
+    labels = torch.arange(6).repeat(40)
+    with pytest.raises(DegenerateTemperature, match="nothing to calibrate"):
+        TemperatureScaler().fit(logits, labels)
+
+
+def test_an_ordinary_overconfident_set_still_fits():
+    """The guard must not refuse the case it exists to serve.
+
+    A model that is right most of the time and too sure of itself is the
+    normal input here, and it has to come back with a temperature above 1.
+    """
+    torch.manual_seed(0)
+    logits = torch.randn(400, 6) * 3
+    labels = logits.argmax(dim=1).clone()
+    labels[::5] = torch.randint(0, 6, (80,))
+
+    temperature = TemperatureScaler().fit(logits, labels)
+    assert 1.0 < temperature < 10.0
+
+
+def test_the_bounds_are_wide_enough_for_a_real_run():
+    """Run one fitted 0.8177 with no mixing, and a mixup-trained model fits
+    lower. The bounds must not refuse a legitimate result -- a guard that
+    blocks a paid run is worse than the bug it prevents."""
+    from fungi_ml.calibrate import MAX_TEMPERATURE, MIN_TEMPERATURE
+
+    assert MIN_TEMPERATURE <= 0.1, "too tight: a sharpening fit is normal here"
+    assert MAX_TEMPERATURE >= 5.0
+    assert MIN_TEMPERATURE < 0.8177 < MAX_TEMPERATURE, "run one's own fit"
+
+
+def test_the_smoke_test_rehearses_whatever_the_config_will_run():
+    """It hardcoded mixup at 0.0 while default.yaml was about to turn it on.
+
+    The Mixer and SoftTargetRiskLoss path would then have met real data for
+    the first time two hours into a paid run, which is the one thing this
+    script exists to prevent.
+    """
+    source = (Path(__file__).resolve().parents[2]
+              / "scripts" / "smoke_e2e.py").read_text(encoding="utf-8")
+    # Scoped to the config the rehearsal builds. The helper's own fallback
+    # dict legitimately names the keys, so scanning the whole file would
+    # fail on the fix rather than on the fault.
+    train_block = source.split('"train": {')[1].split("},")[0]
+    assert "mixup_alpha" not in train_block, (
+        "the rehearsal's train config hardcodes mixing; it must take "
+        "whatever default.yaml will actually run"
+    )
+    assert "_mixing_from_the_real_config()" in train_block
+    assert "DegenerateTemperature" in source, (
+        "the rehearsal must handle the refusal rather than crashing on it"
+    )

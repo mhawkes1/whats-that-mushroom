@@ -53,18 +53,13 @@ def source() -> str:
 # a reason, and the reason has to be that the *value* is informative even
 # though the code ignores it. Ten keys were dead when this was written; these
 # two are what survived the clear-out.
-DECLARED_BUT_UNREAD = {
-    "train.mixup_alpha": (
-        "Declared 0.0 to state that no mixup is applied. `SoftTargetRiskLoss` "
-        "is written and nothing calls it, so a non-zero value here would be a "
-        "claim about how the model was trained that is not true."
-    ),
-    "train.cutmix_alpha": (
-        "Same reason as mixup_alpha: declared 0.0 so the file states that no "
-        "CutMix is applied, rather than implying augmentation the training "
-        "loop has never performed."
-    ),
-}
+# Empty since 2026-10-28, when mixup and cutmix were wired up and left it
+# so. Both were exempted here for months on the grounds that a 0.0 value
+# was an informative statement about augmentation the loop never performed;
+# `train.py` now reads them, so the exemptions came out in the same commit
+# that made them false. Nothing is exempt today, and that is the state to
+# return to rather than the one to add a line to.
+DECLARED_BUT_UNREAD: dict[str, str] = {}
 
 
 def test_every_config_key_is_read_by_something(config, source):
@@ -131,18 +126,40 @@ def test_risk_strength_is_on(config):
     assert float(config["train.risk_strength"]) > 0
 
 
-def test_mixup_is_declared_off_rather_than_declared_and_ignored(config):
-    """`SoftTargetRiskLoss` exists; nothing calls it.
+def test_the_mixing_alphas_and_the_loop_agree_in_both_directions(config):
+    """The alphas say what the model saw, so they must match the loop.
 
-    Until the training loop applies mixup, a non-zero alpha here is a lie
-    about how the model was trained. If someone wires it up, this test
-    should be deleted in the same commit -- not before.
+    This replaced a test that asserted the alphas were 0.0 *while* nothing
+    read them, with an `if not wired:` guard that was to be deleted when
+    somebody wired it up. Wiring it up made that test pass vacuously
+    instead -- a guard that silently stops guarding is the failure this
+    file exists to catch, so the shape is now unconditional.
     """
     source = (PACKAGE / "train.py").read_text()
-    wired = "mixup" in source.lower()
-    if not wired:
-        assert float(config["train.mixup_alpha"]) == 0.0
-        assert float(config["train.cutmix_alpha"]) == 0.0
+    mixing_declared = (float(config["train.mixup_alpha"]) > 0
+                       or float(config["train.cutmix_alpha"]) > 0)
+    loop_can_mix = "Mixer(" in source and "SoftTargetRiskLoss(" in source
+
+    if mixing_declared:
+        assert loop_can_mix, (
+            "the config declares augmentation the training loop cannot "
+            "perform -- a reader would conclude the model saw it"
+        )
+        assert "mixer(images, labels)" in source, (
+            "a Mixer is built and never applied to a batch"
+        )
+    # And the other way: the loop must still be able to train without it,
+    # because 0.0/0.0 is a legitimate ablation and was the shipping config.
+    assert "RiskWeightedCrossEntropy(" in source, (
+        "the hard-target path was removed; mixing must stay optional"
+    )
+
+
+def test_mix_prob_is_a_probability(config):
+    """It gates how often a batch is mixed at all. Above 1 it silently
+    means `always` and below 0 it means `never`, either of which is a
+    config that does not do what it says."""
+    assert 0.0 <= float(config["train.mix_prob"]) <= 1.0
 
 
 def test_checkpoint_selection_is_on_risk_not_accuracy():

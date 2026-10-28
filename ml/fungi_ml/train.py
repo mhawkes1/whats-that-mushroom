@@ -25,7 +25,9 @@ import yaml
 from torch.utils.data import DataLoader
 
 from .data.dataset import FungiDataset, build_balanced_sampler, load_manifest
-from .losses import RiskWeightedCrossEntropy, build_risk_matrix
+from .losses import (RiskWeightedCrossEntropy, SoftTargetRiskLoss,
+                     build_risk_matrix)
+from .mixup import Mixer
 from .taxonomy import Taxonomy
 
 log = logging.getLogger(__name__)
@@ -186,11 +188,34 @@ def train(config_path: str | Path) -> Path:
     model = build_model(config, num_classes).to(device)
     ema = ModelEMA(model, config["train"]["ema_decay"]) if config["train"]["ema_decay"] else None
 
-    criterion = RiskWeightedCrossEntropy(
-        risk_matrix,
+    # Mixup/CutMix if either alpha is set. The soft-target loss is used
+    # ONLY when they are, so a run with both at 0 trains byte-identically
+    # to how it did before this existed -- the regulariser is a decision
+    # someone makes in the config, not a silent change of objective.
+    mixer = Mixer(
+        num_classes,
+        mixup_alpha=config["train"].get("mixup_alpha", 0.0),
+        cutmix_alpha=config["train"].get("cutmix_alpha", 0.0),
+        prob=config["train"].get("mix_prob", 0.5),
         label_smoothing=config["train"]["label_smoothing"],
-        risk_strength=config["train"].get("risk_strength", 1.0),
-    ).to(device)
+        seed=config["train"]["seed"],
+    )
+    risk_strength = config["train"].get("risk_strength", 1.0)
+    if mixer.enabled:
+        criterion = SoftTargetRiskLoss(
+            risk_matrix, risk_strength=risk_strength
+        ).to(device)
+        log.info(
+            "Mixing ON: mixup_alpha=%.2f cutmix_alpha=%.2f p=%.2f -- "
+            "SoftTargetRiskLoss, smoothing applied in the mixer",
+            mixer.mixup_alpha, mixer.cutmix_alpha, mixer.prob,
+        )
+    else:
+        criterion = RiskWeightedCrossEntropy(
+            risk_matrix,
+            label_smoothing=config["train"]["label_smoothing"],
+            risk_strength=risk_strength,
+        ).to(device)
 
     optimizer = torch.optim.AdamW(
         model.parameter_groups(config["train"]["lr"], config["train"]["backbone_lr_mult"]),
@@ -219,9 +244,17 @@ def train(config_path: str | Path) -> Path:
             metadata = metadata.to(device, non_blocking=True)
             labels = labels.to(device, non_blocking=True)
 
+            # Mixing happens on the batch, before the forward pass. When
+            # it is off, `targets` is `labels` and the branch is the one
+            # that has always run.
+            if mixer.enabled:
+                images, targets = mixer(images, labels)
+            else:
+                targets = labels
+
             with torch.amp.autocast("cuda", enabled=scaler.is_enabled()):
                 logits = model(images, metadata)
-                loss = criterion(logits, labels) / accum
+                loss = criterion(logits, targets) / accum
 
             scaler.scale(loss).backward()
 

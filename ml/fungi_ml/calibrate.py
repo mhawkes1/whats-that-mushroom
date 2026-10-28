@@ -26,6 +26,26 @@ import torch.nn.functional as F
 log = logging.getLogger(__name__)
 
 
+# A fitted temperature outside this range is not a calibration, it is a
+# failed optimisation wearing one. The bounds are deliberately wide: run
+# one fitted 0.8177, and anything an order of magnitude either side of 1
+# means the NLL surface had no interior optimum on the data it was given.
+MIN_TEMPERATURE = 0.05
+MAX_TEMPERATURE = 10.0
+
+
+class DegenerateTemperature(ValueError):
+    """The fit ran off to a bound instead of converging.
+
+    Raised rather than returned, because every caller that wrote the value
+    anyway would be writing a `calibration.json` that reads as fitted. Rule
+    4 is about not showing uncalibrated confidence AS confidence, and a
+    temperature of 0 is the purest form of that failure: `logits / 0` is
+    infinite, softmax collapses to one-hot, and the app reports **p=1.000**
+    -- on anything, including noise.
+    """
+
+
 class TemperatureScaler(nn.Module):
     def __init__(self, initial: float = 1.5):
         super().__init__()
@@ -54,9 +74,51 @@ class TemperatureScaler(nn.Module):
             loss.backward()
             return loss
 
+        # A validation set the model gets entirely right carries NO
+        # calibration signal. NLL is then monotone decreasing in
+        # sharpening -- every reduction in temperature improves it, there
+        # is no interior optimum, and the optimiser walks toward zero
+        # because that is genuinely where the objective leads. The result
+        # is not a temperature the model needs; it is the absence of a
+        # question. Checked before the fit, because the fit cannot tell.
+        accuracy = float((logits.argmax(dim=1) == labels).float().mean())
+        if accuracy >= 1.0:
+            raise DegenerateTemperature(
+                f"The model is {accuracy:.1%} accurate on this set, so there "
+                f"is nothing to calibrate: with no errors, lowering the "
+                f"temperature improves NLL without limit and the fit runs "
+                f"to zero. Calibrate on a held-out split the model has not "
+                f"memorised."
+            )
+
         optimizer.step(closure)
-        log.info("Fitted temperature: %.4f", self.temperature)
-        return self.temperature
+        fitted = self.temperature
+
+        # Log-space stops LBFGS making the temperature negative. It does
+        # NOT stop it walking to zero or to infinity, and until 2026-10-28
+        # nothing checked: the fit logged whatever it reached and the
+        # caller wrote it to calibration.json.
+        #
+        # Found by the end-to-end rehearsal once mixup was wired up. Soft
+        # targets on synthetic noise gave a model with no confidence to
+        # scale, the optimiser drove the temperature to 0.0000, and the
+        # served prediction came back at **p=1.000** on random pixels.
+        # The data was noise but the failure is not: a mixup-trained model
+        # is more under-confident than run one's, so run two's fit moves
+        # in exactly this direction, and a degenerate result is silent.
+        if not np.isfinite(fitted) or not (MIN_TEMPERATURE <= fitted <= MAX_TEMPERATURE):
+            raise DegenerateTemperature(
+                f"Temperature fit returned {fitted:.6g}, outside "
+                f"[{MIN_TEMPERATURE}, {MAX_TEMPERATURE}]. The optimiser ran "
+                f"to a bound rather than converging, which means this "
+                f"validation set carries no confidence signal to scale -- "
+                f"not that the model needs this temperature. Writing it "
+                f"would produce a calibration.json that reads as fitted and "
+                f"serves p=1.000 on anything."
+            )
+
+        log.info("Fitted temperature: %.4f", fitted)
+        return fitted
 
 
 def expected_calibration_error(

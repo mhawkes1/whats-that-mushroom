@@ -53,6 +53,27 @@ SPECIES = [
 ]
 
 
+def _mixing_from_the_real_config() -> dict:
+    """The mixing settings a pod will actually train with.
+
+    Read rather than copied, so this rehearsal exercises whichever path the
+    config selects. If the file cannot be read the smoke test still runs,
+    with mixing off and a warning -- a rehearsal that refuses to start is
+    worse than one that says what it skipped.
+    """
+    default = {"mixup_alpha": 0.0, "cutmix_alpha": 0.0, "mix_prob": 0.5}
+    path = Path(__file__).resolve().parents[1] / "ml" / "configs" / "default.yaml"
+    try:
+        train = yaml.safe_load(path.read_text(encoding="utf-8"))["train"]
+    except (OSError, KeyError, yaml.YAMLError) as exc:
+        log.warning("Could not read %s (%s) -- rehearsing WITHOUT mixing", path, exc)
+        return default
+    chosen = {key: float(train.get(key, default[key])) for key in default}
+    on = chosen["mixup_alpha"] > 0 or chosen["cutmix_alpha"] > 0
+    log.info("Rehearsing with mixing %s: %s", "ON" if on else "OFF", chosen)
+    return chosen
+
+
 def synthesise(work: Path, observations: int, per_observation: int, size: int) -> Path:
     """Write random images and a manifest shaped exactly like the GBIF one.
 
@@ -141,8 +162,13 @@ def write_config(work: Path, processed: Path, image_size: int, epochs: int) -> P
             "weight_decay": 0.05,
             "warmup_epochs": 1,
             "label_smoothing": 0.1,
-            "mixup_alpha": 0.0,
-            "cutmix_alpha": 0.0,
+            # Taken from the real config, NOT hardcoded. These sat at 0.0
+            # here while `ml/configs/default.yaml` was about to run a pod
+            # with mixing ON, which made this a rehearsal of a different
+            # training loop: the Mixer and SoftTargetRiskLoss path would
+            # have met real data for the first time two hours into a paid
+            # run. The point of this script is that it cannot happen.
+            **_mixing_from_the_real_config(),
             "amp": False,
             "ema_decay": 0.9,
             "clip_grad_norm": 1.0,
@@ -219,14 +245,31 @@ def main() -> int:
                  blob["epoch"], blob["metrics"]["risk"])
 
         # 4. Calibrate on the held-out split.
-        calibration = calibrate_checkpoint(
-            checkpoint, processed / "manifest.parquet", split="test"
-        )
-        assert calibration["temperature"] > 0, "non-positive temperature"
-        log.info("calibration ok: T=%.3f, threshold=%.2f, coverage=%.1f%%",
-                 calibration["temperature"],
-                 calibration["confidence_threshold"],
-                 calibration["coverage"] * 100)
+        #
+        # On synthetic noise the model often memorises the whole split, and
+        # a split with no errors carries no calibration signal at all: NLL
+        # then falls without limit as the temperature drops, so the fit
+        # runs to zero and the served prediction comes back at p=1.000 on
+        # random pixels. `TemperatureScaler.fit` refuses that now. Here it
+        # is an expected outcome of training on noise rather than a broken
+        # pipeline, so it is caught and named -- but the refusal is the
+        # behaviour being rehearsed, and a smoke test that quietly wrote a
+        # degenerate temperature is how it went unnoticed in the first
+        # place.
+        from fungi_ml.calibrate import DegenerateTemperature
+
+        calibration = None
+        try:
+            calibration = calibrate_checkpoint(
+                checkpoint, processed / "manifest.parquet", split="test"
+            )
+            assert calibration["temperature"] > 0, "non-positive temperature"
+            log.info("calibration ok: T=%.3f, threshold=%.2f, coverage=%.1f%%",
+                     calibration["temperature"],
+                     calibration["confidence_threshold"],
+                     calibration["coverage"] * 100)
+        except DegenerateTemperature as exc:
+            log.warning("calibration REFUSED, which is correct here: %s", exc)
 
         # 5. Export to ONNX, with the numerical verification enabled.
         onnx_path = export_onnx(checkpoint, verify=True)
@@ -236,10 +279,11 @@ def main() -> int:
         #    classifier and produce a ranked, normalised distribution.
         from app.inference import Classifier
 
+        calibration_path = Path(checkpoint).parent / "calibration.json"
         classifier = Classifier.load(
             onnx_path,
             onnx_path.with_name("labels.json"),
-            Path(checkpoint).parent / "calibration.json",
+            calibration_path if calibration else None,
             image_size=args.image_size,
         )
         probe = Image.fromarray(
@@ -264,7 +308,9 @@ def main() -> int:
         print("  PIPELINE OK")
         print(f"  images     : {len(prepared)}")
         print(f"  classes    : {len(label_map)}")
-        print(f"  temperature: {calibration['temperature']:.3f}")
+        print(f"  temperature: "
+              + (f"{calibration['temperature']:.3f}" if calibration
+                 else "refused -- no errors on the split, so nothing to fit"))
         print(f"  onnx       : {onnx_path.name}")
         print()
         print("  The chain runs. Accuracy is meaningless here -- the data is noise.")

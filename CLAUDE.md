@@ -1241,3 +1241,62 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   the app says every percentage is uncalibrated rather than presenting it as
   confidence, and the disclaimer's conditional statements re-ask by
   construction because the terms genuinely changed.
+
+## Run two's changes, 2026-10-28 (not yet run)
+
+- **Mixup and CutMix are WIRED and ON.** `ml/fungi_ml/mixup.py`; `Mixer`
+  runs on the batch and `losses.SoftTargetRiskLoss` takes over whenever
+  either alpha is above zero, so 0.0/0.0 still trains exactly as run one
+  did. They are aimed at the first run's specific finding -- accuracy flat
+  from epoch 4 to 29 while risk nearly doubled, the model converting
+  "uncertain, spread across the genus" into "confidently the common one".
+  Mixup trains flatter distributions on inputs between classes, which is
+  the opposite transformation, so it beats raising `risk_strength`: it
+  attacks the failure rather than pricing it higher afterwards.
+- **Everything gets mixed, deadly species included.** Excluding them is
+  superficially attractive and would apply *less* regularisation to exactly
+  the classes whose overconfidence costs most. The risk weighting handles
+  the consequence; the mixer does not also make policy.
+- **Mixing dilutes the risk multiplier by about a tenth, not a half.**
+  `soft_targets @ risk` means a half death cap carries half the cost -- 500
+  rather than 1000 -- but the multiplier is
+  `1 + strength * log1p(expected_risk)` and log1p compresses: 6.22 against
+  6.91. A test pins the figure, because a dilution of the one mechanism
+  this project is built on is worth knowing the size of.
+- **The mixer draws its permutation from its OWN generator**, not
+  `torch.randperm`. Drawn from the global torch RNG the pairing would move
+  with every unrelated change to how many random numbers the rest of the
+  loop consumed, so `seed: 1337` would not reproduce a run's mixing -- the
+  one way nobody checks. Self-pairing is normal and means that example was
+  simply not mixed.
+- **`epochs: 10` and `batch_size: 64`.** Risk was minimised around epochs
+  5-8 and deteriorated to 3.113 by 29 while top-1 moved 0.92 of a point;
+  32 used 8.5 GB of a 4090's 24 at full utilisation.
+- **`DECLARED_BUT_UNREAD` in `test_config.py` is now EMPTY**, and the test
+  that guarded the alphas is unconditional. It used to read `if not wired:`
+  and assert they were 0.0 -- so wiring them up made it pass **vacuously**
+  rather than fail. A guard that silently stops guarding is the exact
+  failure that file exists to catch.
+- **The temperature fit had no bounds, and a degenerate fit serves
+  p=1.000.** Log-space stops LBFGS going negative; nothing stopped it
+  walking to zero, and `fit` logged whatever it reached for the caller to
+  write into `calibration.json`. `logits / 0` is infinite, softmax
+  collapses to one-hot, and the app then reports **total confidence on
+  anything, including noise** -- rule 4 broken by the calibrator itself.
+  Found by the rehearsal, which served `p=1.000` on random pixels at
+  T=0.0000. `fit` now refuses outside [0.05, 10] and refuses earlier and by
+  name when the split has **no errors at all**: with nothing wrong there is
+  no over- or under-confidence to measure, NLL falls without limit as the
+  temperature drops, and the optimiser is going where the objective
+  genuinely leads. Not a synthetic-data curiosity -- a mixup-trained model
+  is more under-confident than run one's 0.8177, so run two's fit moves
+  toward this corner.
+- **The smoke test rehearsed the path that was not changing.** It hardcoded
+  `mixup_alpha: 0.0` while `default.yaml` was about to turn mixing on, so
+  the `Mixer`/`SoftTargetRiskLoss` path would have met real data two hours
+  into a paid run -- the one thing that script exists to prevent. It now
+  reads the real config's mixing keys, and catches `DegenerateTemperature`
+  and names it rather than writing a degenerate temperature, which is how
+  this went unnoticed before. `PIPELINE OK` with
+  `temperature: refused -- no errors on the split` is the correct outcome
+  on noise.
