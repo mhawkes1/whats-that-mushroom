@@ -1510,3 +1510,37 @@ so "just ship run one's model" means shipping a checkpoint nobody can
 retrain, re-split or re-measure. That is an argument for landing a good run
 on the current dataset even at a slightly worse risk figure, and it is the
 cost of the thing `splits.csv.gz` now prevents.
+
+### Correction: validation risk badly overstated the gap
+
+I judged run three off **validation** risk and reported it as 39% worse than
+run one (mean 2.571 against 1.845). On the **test** split, which is what
+gates release, it is **2.0% worse with FEWER dangerous confusions**.
+
+| | top-1 | test risk | confusions | silent | *L. brunneoincarnata* | group recall |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Run one | 88.1% | **1.3876** | 10 | -- | 47.1% | 95.3% |
+| Run two (mixup) | 80.1% | 2.0745 | 14 | 1 | 88.2% | 92.6% |
+| **Run three** | 81.5% | **1.4151** | **9** | 2 | **88.2%** | 94.4% |
+
+**The one valid comparison is runs two against three**, which share a test
+split: **mixup cost 0.6594 of test risk, 47%**. One variable, same data.
+Run one's split died with its pod, so every comparison against it is
+indicative only -- and the validation-risk gap I quoted was, on the evidence
+that counts, almost entirely an artefact of comparing across splits.
+
+**Read the test card, not the validation curve.** The validation number is
+for selecting a checkpoint within a run; it is not a figure to compare
+between runs, and I used it as one for most of an afternoon.
+
+**Where run three is genuinely behind: coverage.** Calibration fitted
+T=0.7179 with a 0.74 threshold and **69.5% coverage**, against run one's
+0.8177 / 0.69 / **84.5%**. The app would decline to name a species on about
+one photograph in three rather than one in six, and raw ECE is 0.1172
+against 0.0502. Both follow from the checkpoint being epoch 1: an
+undertrained model is less confident, so fewer predictions clear the bar.
+Coverage is the most user-visible number in the whole card and it is not
+on the terminal summary -- read it off `calibration.json`.
+
+**Two silent confusions**, against run two's one, on the same split.
+SAFETY.md wants zero and `make_model_card.py` refused both runs for it.
