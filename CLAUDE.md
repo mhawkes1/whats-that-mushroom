@@ -1377,3 +1377,90 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   The disclaimer deliberately does **not** mention it: its version is a hash
   of its own text, so adding a line would restate every stored consent for
   an internal detail the user was never told.
+
+## Run two, 2026-10-28: mixup made it MORE dangerous, for no accuracy gain
+
+Curve in `docs/runs/2026-10-28-mixup.csv`. Same 244 species, 93,622 images
+(rebuilt), ViT-B/16 at 384 px, **10 epochs, batch 64, mixup 0.2 / cutmix 1.0
+at p=0.5**, 551 s an epoch on an **A40 at $0.60/hr**.
+
+**Accuracy is the same and risk is not.** Epoch by epoch against run one,
+top-1 is within half a point throughout and ahead from epoch 5 (0.8843 vs
+0.8789, ending 0.8900 vs 0.8838). Risk oscillates around **1.8 in run one
+and 3.0 in run two** -- about a **65% rise, with no accuracy cost at all**.
+Mixup did not make the model worse at identifying mushrooms. It made the
+same number of mistakes land in worse cells of the risk matrix, which is
+precisely the failure run one was diagnosed with and precisely what this
+change was supposed to fix.
+
+**The shipped 80.1% was a SELECTION consequence, not a capability one.**
+Rule 6 picks the lowest-risk epoch; run two's risk never trended down, so
+the argmin landed on **epoch 1** (top-1 0.8046) and dragged every reported
+number with it. Epoch 8 reached 0.8903. Read run two's model card knowing
+the card describes epoch 1.
+
+Test split: top-1 80.1%, top-5 94.9%, genus 85.2%, risk-weighted error
+2.0745 against run one's 1.3876.
+
+- **My explanation for it is wrong, and the measurement says so.** I argued
+  mixing dilutes the risk multiplier because `soft_targets @ risk` halves a
+  death cap's cost, and measured ~10% from log1p compression. Re-measured
+  under run two's actual settings -- sampling lambda from the real Beta
+  mixtures, mix_prob 0.5, partner almost always harmless -- the mean
+  multiplier falls from 7.909 to 7.182: **9.2%**, matching this morning's
+  figure. A 9% dilution cannot produce a 65% rise in risk. **The mechanism
+  is unexplained.** Possibilities not yet separated: smoother decision
+  boundaries moving errors toward different (more dangerous) neighbours;
+  the 10.9% of deadly examples trained at under a tenth of full cost signal
+  mattering more than the mean suggests; or batch size.
+- **Three variables moved at once, which is my methodology error.** Mixup
+  on, epochs 30 -> 10, batch 32 -> 64, and a rebuilt dataset. Run two
+  therefore proves a regression and not its cause. Run three (`run3-nomix`)
+  changes exactly one thing back.
+- **And the two runs are not measured on the same validation split**, because
+  run one's died with the pod. The comparability loss `splits.csv.gz` was
+  built this morning to prevent is already biting, one run later.
+
+### What DID work: the Lepiota data fix
+
+| DEADLY species | Run one recall | Run two recall |
+| --- | ---: | ---: |
+| *Lepiota brunneoincarnata* | **47.1%** | **88.2%** |
+
+70 Danish atlas images on top of 165 from iNaturalist -- the multi-source
+`image_source` list written the same morning, untested against anything but
+fixtures. Nearly doubled recall on the worst deadly species, in a run whose
+other changes all went backwards. **Keep this and the rebuilt dataset.**
+
+*L. subincarnata* reached its 400 from iNaturalist alone, so the second
+source was never queried for it: the ordering rule working as designed, and
+confirmed live rather than only in a test.
+
+**My prediction about *Cortinarius orellanus* was wrong.** I flagged it as
+the thinnest deadly species (37 observations, 65 images) and predicted weak
+recall. It came back at **100%**. Thin is not the same as hard.
+
+### The first silent count ever measured
+
+```
+dangerous confus.  14
+  of which SILENT   1    <- the ones a user would see unwarned
+```
+
+One case in 9,403 test samples where the deadly species held under 2% of
+the mass, so the app names a harmless species with no warning and no hazard
+line. `make_model_card.py` refused the run on it, separately from the total,
+exactly as the two dials were built to.
+
+This number has never existed before. Run one's is **not recoverable** -- it
+needed `predictions.npz`, which run one did not write.
+
+### The confusion graph, on fresh data
+
+`scripts/confusion_graph.py`: 13 dangerous confusions, 8 above the bar, and
+**8 of 13 are NOT field lookalikes** -- the same structural finding as run
+one, on a different model and a different dataset. *Galerina marginata* ->
+*Sarcoscypha austriaca* (scarlet elf cup), *Amanita virosa* -> *Mucidula
+mucida*, *Clitocybe rivulosa* -> *Crepidotus cesatii*. No human makes those
+mistakes, so `lookalikes` could never have caught them and the
+`dangerous_group` refusal was blind on all eight.
