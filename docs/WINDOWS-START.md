@@ -27,20 +27,42 @@ yourself.
 
 ## 3. Get the code
 
-The simplest route, no account and no git:
+**Paste this into your browser's address bar.** It downloads the right
+branch directly, with no dropdown to get wrong:
 
-1. Go to the repository on GitHub and switch the branch dropdown (top left,
-   usually says `main`) to **`claude/mushroom-app-continue-fy5f4m`**.
-2. Green **Code** button → **Download ZIP**.
-3. Save it, then **right-click the .zip → Extract All…** and extract to
-   `C:\funga`.
+```
+https://github.com/mhawkes1/whats-that-mushroom/archive/refs/heads/claude/mushroom-app-continue-fy5f4m.zip
+```
 
-You end up with a folder like `C:\funga\whats-that-mushroom-claude-mushroom-app-continue-fy5f4m`.
+Then **right-click the .zip → Extract All…** and extract to `C:\funga`.
+
+You end up with
+`C:\funga\whats-that-mushroom-claude-mushroom-app-continue-fy5f4m`.
 Rename it to `C:\funga\app` if you like — nothing depends on the name.
 
-> **Extract it.** Windows will happily let you browse inside a .zip as
-> though it were a folder, and then nothing can write to it. If step 6 fails
-> with permission errors, this is why.
+> ### Check the folder name before going further
+>
+> If it ends in **`-main`**, you have the wrong code. The green **Code**
+> button on GitHub always offers whichever branch you are *looking at*, and
+> it opens on `main` — which on this repository is months behind and does
+> not contain `scripts\try_it.py` at all. The error you get is
+> `can't open file ... try_it.py: [Errno 2] No such file or directory`,
+> which reads like a broken download and is not one.
+>
+> The folder must end in **`-claude-mushroom-app-continue-fy5f4m`**.
+
+> ### Two more traps in this step
+>
+> **Extract it.** Windows will let you browse *inside* a .zip as though it
+> were a folder, and then nothing can write to it. If step 6 fails with
+> permission errors, this is why.
+>
+> **Do not put it in OneDrive.** `C:\Users\<you>\OneDrive\Documents\…`
+> looks like the natural home and is the wrong one: step 6 installs
+> `node_modules`, which is hundreds of megabytes across tens of thousands
+> of small files, and OneDrive will try to sync every one of them. It makes
+> the install crawl, and sync can lock files mid-write. `C:\funga` is
+> outside OneDrive, which is the whole reason to use it.
 
 **If you expect to do this more than once,** install GitHub Desktop
 (<https://desktop.github.com>) instead. It is a normal window with buttons:
@@ -117,6 +139,7 @@ release blocker, not a detail.
 | What you see | What it means |
 | --- | --- |
 | `python is not recognised` | Step 1's checkbox was missed. Re-run the Python installer, choose **Modify**, tick "Add python.exe to PATH". Then close and reopen the blue window. |
+| `can't open file ... try_it.py: [Errno 2] No such file or directory` | Almost always the wrong branch — check whether the folder ends `-main`, and see step 3. If the name is right, run `dir` in the blue window: if it lists another folder of the same name, the extract nested one inside the other, so `cd` into it and try again. |
 | `Node is not installed, or not on your PATH` | Step 2. Node's installer needs the terminal closed and reopened afterwards. |
 | `A model is present ... but there is no labels.json` | Step 4 — copy all three files. This refusal is deliberate. |
 | Permission or read-only errors | The ZIP was browsed rather than extracted. See step 3. |
