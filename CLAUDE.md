@@ -1607,3 +1607,21 @@ anywhere in the top five becomes a `dangerous_group` refusal once the graph
 is generated from this run's `predictions.npz`. Generate it before deciding
 whether the exception needs documenting: the count that matters is what
 survives the safety layer, not what the model did.
+- **The confusion graph's threshold was filtering out exactly the silent
+  confusions, which is the one thing it exists to catch.** Found on run
+  four's real output: all three pairs it kept were single occurrences with
+  high deadly mass, and **both silent confusions were dropped**. The rule
+  was `count >= 2 OR max_deadly_mass >= 0.10` -- so it kept what
+  `safety.py`'s 2% mass rule already warns about and discarded what the mass
+  rule cannot see. The graph is the only cover a silent confusion has,
+  because its pair rule fires on **rank** rather than mass.
+  `silent` now short-circuits both thresholds: a confusion the mass rule
+  would miss is kept however rare, and each pair records how many of its
+  occurrences were silent. That is rule 3 applied to this file -- a
+  one-in-nine-thousand chance of a user being shown a harmless name for a
+  deadly mushroom, with no warning and no hazard line, is not noise to
+  threshold away. The false refusal costs a wasted foraging trip; the miss
+  is the reason the project exists. The guard against one error becoming a
+  permanent refusal still applies to everything that is not silent.
+  **Regenerating the graph needs no GPU and no pod** -- `predictions.npz` is
+  committed, which is what committing it was for.

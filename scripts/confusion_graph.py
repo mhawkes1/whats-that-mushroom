@@ -32,10 +32,25 @@ does not match the model it is serving -- a confusion the last model made is
 not evidence about this one. It is never shown to a user as a resemblance,
 because it is not one.
 
-**Why there is a threshold.** A single misclassification out of nine
-thousand should not make the app refuse to name a species forever. `--min-count`
-and `--min-rate` set the bar; the default is any confusion seen more than
-once, OR once with enough deadly mass behind it to matter.
+**Why there is a threshold, and why SILENT confusions ignore it.** A single
+misclassification out of nine thousand should not make the app refuse to
+name a species forever, so `--min-count` and `--min-mass` set a bar.
+
+But a **silent** confusion -- one where the deadly species held under 2% of
+the mass -- is precisely the case `safety.py`'s mass rule does NOT catch,
+and this graph is the only thing that can: its pair rule fires on *rank*,
+not mass. The first version kept a single confusion only if its deadly mass
+cleared `--min-mass`, which meant it kept the ones the mass rule already
+handles and dropped the ones nothing handles. Measured on run four: all
+three pairs it kept were x1 with high mass, and **both silent confusions
+were filtered out**.
+
+So a silent confusion is kept regardless of count. That is rule 3 applied
+to this file -- a one-in-nine-thousand chance that a user is shown a
+harmless name for a deadly mushroom, with no warning and no hazard line, is
+not noise to be thresholded away. The cost of the resulting false refusal is
+a wasted foraging trip; the cost of the miss is the reason this project
+exists.
 """
 
 from __future__ import annotations
@@ -65,6 +80,7 @@ def main() -> int:
     args = ap.parse_args()
 
     import numpy as np
+    from fungi_ml.evaluate import DEADLY_MASS_THRESHOLD
     from fungi_ml.taxonomy import Taxonomy, Toxicity
 
     path = Path(args.predictions)
@@ -90,7 +106,8 @@ def main() -> int:
     predictions = probs.argmax(axis=1)
 
     tally: dict[tuple[str, str], dict] = defaultdict(
-        lambda: {"count": 0, "max_deadly_mass": 0.0, "max_confidence": 0.0})
+        lambda: {"count": 0, "max_deadly_mass": 0.0, "max_confidence": 0.0,
+                 "silent": 0})
     for true_idx, pred_idx, mass, conf in zip(
         labels, predictions, deadly_mass, probs.max(axis=1)
     ):
@@ -108,13 +125,19 @@ def main() -> int:
         entry["count"] += 1
         entry["max_deadly_mass"] = max(entry["max_deadly_mass"], float(mass))
         entry["max_confidence"] = max(entry["max_confidence"], float(conf))
+        if mass < DEADLY_MASS_THRESHOLD:
+            entry["silent"] += 1
 
     known = taxonomy.dangerous_pairs()
     pairs = []
     for (true_key, pred_key), stats in sorted(
         tally.items(), key=lambda kv: (-kv[1]["count"], -kv[1]["max_confidence"])
     ):
-        kept = (stats["count"] >= args.min_count
+        # `silent` first: a confusion the safety layer's mass rule cannot
+        # see is kept however rare, because this graph is its only cover.
+        silent = stats["silent"] > 0
+        kept = (silent
+                or stats["count"] >= args.min_count
                 or stats["max_deadly_mass"] >= args.min_mass)
         if not kept:
             continue
@@ -127,6 +150,9 @@ def main() -> int:
             # Whether the taxonomy already knew. A pair that is in both is
             # not new information; the ones that are not are the point.
             "also_a_field_lookalike": tuple(sorted((true_key, pred_key))) in known,
+            # How many the safety layer's 2% mass rule would NOT have
+            # warned about. These are why the pair belongs here at all.
+            "silent": stats["silent"],
         })
 
     blob_out = {
@@ -152,10 +178,15 @@ def main() -> int:
     print(f"  {len(novel)} of them are NOT field lookalikes -- the ones the")
     print(f"  taxonomy's own graph could never have caught")
     print()
+    n_silent = sum(p["silent"] for p in pairs)
+    print(f"  {n_silent} silent confusion(s) are covered by this graph -- the "
+          f"mass rule\n  cannot see them, so the pair rule is their only cover")
+    print()
     for p in pairs[:15]:
         mark = "    " if p["also_a_field_lookalike"] else "NEW "
+        flag = "  SILENT" if p["silent"] else ""
         print(f"  {mark}{p['deadly']:<28} -> {p['mistaken_for']:<24} "
-              f"x{p['count']:<3} conf {p['max_confidence']:.3f}")
+              f"x{p['count']:<3} conf {p['max_confidence']:.3f}{flag}")
     print()
     print(f"  Wrote {args.out}")
     return 0

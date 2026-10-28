@@ -156,3 +156,43 @@ def test_the_graph_is_not_written_into_the_taxonomy():
     assert CREPIDOTUS not in (by_key[GALERINA].get("lookalikes") or []), (
         "a model confusion has been written into the field-lookalike graph"
     )
+
+
+def test_a_silent_confusion_is_kept_however_rare():
+    """The whole point of the second graph, and it was wrong at first.
+
+    `safety.py` warns when the deadly species hold 2% of the mass. A SILENT
+    confusion is one below that line -- the case the mass rule cannot see,
+    and the one this graph's rank-based pair rule is the only cover for.
+
+    The first version kept a single occurrence only if its deadly mass
+    cleared `--min-mass 0.10`, which keeps what the mass rule already
+    handles and drops what nothing handles. Measured on run four: all three
+    pairs it kept were single high-mass confusions, and **both silent ones
+    were filtered out**.
+
+    Read from source because running it needs numpy, a taxonomy and a
+    predictions file; what is pinned is that `silent` short-circuits the
+    thresholds rather than being one more term they can outvote.
+    """
+    source = (ROOT / "scripts" / "confusion_graph.py").read_text(encoding="utf-8")
+    block = source.split("kept = (")[1].split(")")[0]
+    assert block.strip().startswith("silent"), (
+        "a silent confusion must be kept before any count or mass threshold "
+        "is consulted -- it is the case nothing else catches"
+    )
+    assert "min_count" in block and "min_mass" in block, (
+        "the ordinary thresholds must still apply to non-silent confusions"
+    )
+
+
+def test_the_graph_records_how_many_were_silent():
+    """A reader has to be able to tell which pairs are there because the
+    mass rule would have missed them."""
+    source = (ROOT / "scripts" / "confusion_graph.py").read_text(encoding="utf-8")
+    assert '"silent": stats["silent"]' in source, (
+        "the written graph must carry the silent count per pair"
+    )
+    assert "DEADLY_MASS_THRESHOLD" in source, (
+        "silence must be judged against safety.py's own 2%, not a local copy"
+    )
