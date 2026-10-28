@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
 
+from .confusions import ConfusionGraph
 from .ood import OodDetector
 from .taxonomy_service import TaxonomyService, Toxicity
 
@@ -100,8 +101,15 @@ class SafetyLayer:
         ood_threshold: float = 0.20,
         dangerous_mass_threshold: float = 0.02,
         ood_detector: OodDetector | None = None,
+        confusions: ConfusionGraph | None = None,
     ):
         self.taxonomy = taxonomy
+        # What THIS model gets dangerously wrong, as opposed to what people
+        # confuse in the field. Seven of run one's eight dangerous
+        # confusions were not field lookalikes, so without this the
+        # lethal-pair refusal never fired on them. An empty graph is the
+        # old behaviour exactly.
+        self.confusions = confusions or ConfusionGraph()
         # The energy-based check, when a threshold has been fitted. Without
         # one it reports itself unfitted and we fall back to `ood_threshold`
         # below, which is weak but does not pretend otherwise.
@@ -118,13 +126,17 @@ class SafetyLayer:
 
     @classmethod
     def from_calibration(
-        cls, taxonomy: TaxonomyService, calibration_path: str | Path
+        cls,
+        taxonomy: TaxonomyService,
+        calibration_path: str | Path,
+        confusions: ConfusionGraph | None = None,
     ) -> "SafetyLayer":
         blob = json.loads(Path(calibration_path).read_text(encoding="utf-8"))
         return cls(
             taxonomy,
             confidence_threshold=blob["confidence_threshold"],
             ood_detector=OodDetector.from_calibration(blob),
+            confusions=confusions,
         )
 
     def _to_candidates(self, ranked: list[tuple[str, float]]) -> list[Candidate]:
@@ -167,9 +179,17 @@ class SafetyLayer:
     def straddles_dangerous_pair(
         self, ranked: list[tuple[str, float]], top_n: int = 5
     ) -> tuple[str, str] | None:
-        """Whether the leading candidates include both halves of a lethal pair."""
+        """Whether the leading candidates include both halves of a lethal pair.
+
+        Two sources, deliberately kept apart everywhere but here. The
+        taxonomy's pairs are what people confuse in the field; the
+        confusion graph is what this checkpoint confuses, measured on its
+        own held-out split. The second is usually the larger set and is
+        never mycology -- a user is told the app will not choose between
+        them, never that they resemble each other.
+        """
         top_keys = [k for k, _ in ranked[:top_n]]
-        pairs = self.taxonomy.dangerous_pairs()
+        pairs = self.taxonomy.dangerous_pairs() | self.confusions.as_pairs()
         for i, a in enumerate(top_keys):
             for b in top_keys[i + 1 :]:
                 if tuple(sorted((a, b))) in pairs:
@@ -254,12 +274,7 @@ class SafetyLayer:
             return SafetyAssessment(
                 verdict=Verdict.DANGEROUS_GROUP,
                 headline="I can't safely narrow this down",
-                detail=(
-                    f"The leading candidates include both {self.taxonomy[a].scientific_name} "
-                    f"and {self.taxonomy[b].scientific_name}. These are confused with each "
-                    "other in the field, and one of them can kill. I will not choose between "
-                    "them from a photograph."
-                ),
+                detail=self._pair_detail(a, b),
                 candidates=candidates,
                 warnings=[DEADLY_WARNING, UNIVERSAL_DISCLAIMER],
                 requested_evidence=separators,
@@ -313,6 +328,33 @@ class SafetyLayer:
             warnings=warnings + [UNIVERSAL_DISCLAIMER],
             requested_evidence=self._most_informative_characters(ranked),
             deadly_in_play=deadly_in_play,
+        )
+
+    def _pair_detail(self, a: str, b: str) -> str:
+        """What to say about a pair, which depends on why it is one.
+
+        "These are confused with each other in the field" is true of a
+        taxonomy pair and is a false statement about an empirical one --
+        nobody mistakes a *Crepidotus* for a funeral bell. Saying it anyway
+        would teach a user a resemblance that does not exist, which is the
+        opposite of what this app is for.
+        """
+        name_a = self.taxonomy[a].scientific_name
+        name_b = self.taxonomy[b].scientific_name
+        both = f"both {name_a} and {name_b}"
+        field = tuple(sorted((a, b))) in self.taxonomy.dangerous_pairs()
+
+        if field:
+            return (
+                f"The leading candidates include {both}. These are confused "
+                "with each other in the field, and one of them can kill. I "
+                "will not choose between them from a photograph."
+            )
+        return (
+            f"The leading candidates include {both}, and one of them can "
+            "kill. I have mistaken one for the other before on photographs "
+            "like this -- they are not lookalikes, I am simply unreliable "
+            "here. I will not choose between them."
         )
 
     def _most_informative_characters(

@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     model_path: Path = ROOT / "ml" / "runs" / "baseline" / "model.onnx"
     labels_path: Path = ROOT / "ml" / "runs" / "baseline" / "labels.json"
     calibration_path: Path = ROOT / "ml" / "runs" / "baseline" / "calibration.json"
+    # What THIS checkpoint confuses, from scripts/confusion_graph.py.
+    # Absent is legitimate and means the taxonomy's field lookalikes
+    # alone, which is where the app was before run one was measured.
+    confusions_path: Path = ROOT / "data" / "model-confusions.json"
 
     # Append-only. See docs/INCIDENTS.md for what is done with these.
     incident_log_path: Path = ROOT / "data" / "incidents.jsonl"

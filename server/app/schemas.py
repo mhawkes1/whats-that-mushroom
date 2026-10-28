@@ -120,6 +120,12 @@ class SpeciesOut(BaseModel):
 class HealthOut(BaseModel):
     status: str
     model_loaded: bool
+    # Whether this checkpoint's empirical confusion graph was loaded,
+    # and how many pairs it holds. A model with no dangerous
+    # confusions and a model whose graph was never generated are
+    # different claims, so both are reported rather than one count.
+    confusions_loaded: bool = False
+    confusion_pairs: int = 0
     calibrated: bool
     n_classes: int
     model_version: str = Field(

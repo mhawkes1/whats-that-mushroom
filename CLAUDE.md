@@ -1346,3 +1346,34 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   `evidence_audit.py`'s "nothing is stranded" guarantee breaks. If the safety
   layer should know about empirical confusions, that is a **second graph**,
   built from `predictions.npz`, and a decision for Martin.
+- **The second graph exists: `data/model-confusions.json`.** Built by
+  `scripts/confusion_graph.py` from a run's `predictions.npz`, loaded by
+  `server/app/confusions.py`, and unioned into `straddles_dangerous_pair`
+  alongside the taxonomy's field lookalikes. Run one's worst confusion --
+  *Galerina marginata* called *Crepidotus cesatii* at 0.850 -- now produces
+  `dangerous_group` instead of a confident name.
+  Four properties it is built to keep.
+  **It is not mycology and never says it is.** The pair detail branches:
+  "These are confused with each other in the field" stays for a taxonomy
+  pair and is replaced for an empirical one with "I have mistaken one for
+  the other before on photographs like this -- they are not lookalikes, I am
+  simply unreliable here." Saying the first about *Crepidotus* and a funeral
+  bell would teach a resemblance that does not exist, which is the opposite
+  of the point. A test pins both wordings.
+  **It belongs to ONE checkpoint.** `load` compares the graph's
+  `checkpoint` against the model being served and ignores a mismatch
+  loudly, because a stale graph refuses pairs this model does not confuse
+  while missing the ones it does -- and would read in `/health` as though
+  the protection were live. Compared on file name, so `best.pt` and
+  `model.onnx` from one run are not treated as different models.
+  **Absent and empty are different claims.** `ConfusionGraph.loaded` is
+  separate from `len(pairs)`, and `/health` reports `confusions_loaded` and
+  `confusion_pairs` separately. A model with no dangerous confusions is a
+  result; a graph nobody generated is an absence, and collapsing them would
+  let the second read as a clean bill of health.
+  **A single error does not become a permanent refusal.** `--min-count 2`,
+  or once if the deadly species held `--min-mass 0.10`. One misclassification
+  in nine thousand must not stop the app ever naming a species again.
+  The disclaimer deliberately does **not** mention it: its version is a hash
+  of its own text, so adding a line would restate every stored consent for
+  an internal detail the user was never told.

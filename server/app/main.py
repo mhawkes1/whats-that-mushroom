@@ -35,6 +35,7 @@ from .incidents import EMERGENCY_GUIDANCE, IncidentStore, build_report
 from .inference import Classifier, OnnxBackend
 from .ratelimit import RateLimiter, client_key
 from .interrogation import InterrogationEngine
+from .confusions import ConfusionGraph
 from .safety import SafetyLayer
 from .spore_print import read_from_photograph
 from .characters import CHARACTERS, field_note_characters
@@ -121,10 +122,23 @@ async def lifespan(app: FastAPI):
 
     threshold = settings.confidence_threshold
     calibrated = settings.calibration_path.exists()
+    # Bound to the model being served: a confusion the previous checkpoint
+    # made is not evidence about this one, and a stale graph would refuse
+    # pairs this model does not confuse while missing the ones it does.
+    confusions = ConfusionGraph.load(
+        settings.confusions_path,
+        expected_checkpoint=(
+            str(settings.model_path) if settings.model_path.exists() else None
+        ),
+    )
     safety = (
-        SafetyLayer.from_calibration(taxonomy, settings.calibration_path)
+        SafetyLayer.from_calibration(
+            taxonomy, settings.calibration_path, confusions=confusions
+        )
         if calibrated
-        else SafetyLayer(taxonomy, confidence_threshold=threshold)
+        else SafetyLayer(
+            taxonomy, confidence_threshold=threshold, confusions=confusions
+        )
     )
 
     state.update(
@@ -192,6 +206,8 @@ def health() -> HealthOut:
     return HealthOut(
         status="ok",
         model_loaded=isinstance(state["classifier"].backend, OnnxBackend),
+        confusions_loaded=state["safety"].confusions.loaded,
+        confusion_pairs=len(state["safety"].confusions.pairs),
         calibrated=state["calibrated"],
         n_classes=len(state["classifier"].classes),
         model_version=app.version,
