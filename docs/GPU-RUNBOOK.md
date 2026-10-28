@@ -329,7 +329,30 @@ silent one in the same breath.
 
 ## 9. Get the results off the box
 
-Two routes, because the outputs split cleanly by size.
+**Run this first, before anything else in this step:**
+
+```bash
+python scripts/finish_run.py
+```
+
+It lists every artefact as present or missing, says which of the small ones
+`.gitignore` would silently refuse, prints the `git add` line and the
+`runpodctl send` lines ready to paste, and **exits non-zero while anything
+is missing**. It changes nothing.
+
+The reason it exists: this step used to be the list below, which depended on
+somebody reading it at the end of a long day, on a machine billing by the
+hour, with the interesting part already finished. On the first real run it
+did not survive that. `calibration.json` was never taken and **cannot be
+reconstructed** — temperature scaling is fitted on the validation split, so
+remaking it needs the images and the checkpoint, both of which go with the
+pod. The app has been running at `calibrated=False` ever since, falling back
+to a 0.80 threshold and an unfitted out-of-distribution check, for the sake
+of a few hundred kilobytes.
+
+If it says `DO NOT STOP THE POD YET`, do not stop the pod yet.
+
+Two routes below, because the outputs split cleanly by size.
 
 **Small and text — commit and push them.** These belong in git anyway: they
 are the evidence for the release decision.

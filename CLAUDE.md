@@ -1218,3 +1218,26 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   launcher's own words, and says so plainly when the log is empty or missing
   -- a process that wrote nothing died differently from one that wrote a
   traceback, and the failure path must not itself fail.
+- **Step 9 was a list, and a list is not a check.** The run-book named the
+  seven small artefacts to commit and the three large ones to transfer, and
+  it depended on somebody reading it at the end of a long day, on a machine
+  billing by the hour, with the interesting part already over. It did not
+  survive that. `calibration.json` was never taken off the first real run
+  and **cannot be reconstructed** -- temperature scaling is fitted on the
+  validation split, so remaking it needs the images and the checkpoint, and
+  both went with the pod. The app runs at `calibrated=False` as a result:
+  temperature 1.0 instead of 0.8177, naming threshold 0.80 instead of the
+  fitted 0.69, and `ood.py` back on the weak top-1 rule. A few hundred
+  kilobytes. `scripts/finish_run.py` now reports every artefact as present
+  or missing, asks **git itself** whether each small one is ignored, prints
+  the `git add` and `runpodctl send` lines ready to paste, and exits
+  non-zero while anything is missing -- at the one moment it is still
+  fixable. It changes nothing; it is step 9's first command.
+- **`calibrated=False` is not neutral, and it fails in the cautious
+  direction.** The model measured under-confident, so the fitted T=0.8177
+  *sharpens*; without it probabilities stay flat, fewer candidates clear the
+  threshold and the app declines more often than the model warrants. That is
+  the right way round for a failure and it is still a failure: rule 4 means
+  the app says every percentage is uncalibrated rather than presenting it as
+  confidence, and the disclaimer's conditional statements re-ask by
+  construction because the terms genuinely changed.
