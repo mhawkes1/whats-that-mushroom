@@ -20,6 +20,7 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from fungi_ml.data import sources  # noqa: E402
 from fungi_ml.data.sources import (  # noqa: E402
     CollidingTaxonKeys,
     USER_AGENT,
@@ -38,6 +39,7 @@ from fungi_ml.data.sources import (  # noqa: E402
     fetch_images,
     resolve_species,
     SpeciesQuota,
+    TaxonMatch,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -774,4 +776,143 @@ class TestConnectionPool:
         src = inspect.getsource(fetch_images)
         assert "_session(pool_size=workers)" in src, (
             "fetch_images must size its pool from its own worker count"
+        )
+
+
+# --- Several sources for one species ---------------------------------------
+#
+# Added 2026-10-28 for the Lepiota, after measuring GBIF instead of assuming.
+# *L. brunneoincarnata* is DEADLY and the first run reached 47.1% recall on
+# it, which looked like a quota problem and is not: it has **74**
+# iNaturalist occurrences carrying images against a target of 400. Raising
+# the target does nothing, because 74 is the whole supply.
+
+
+def test_image_source_accepts_a_list_and_keeps_the_order(monkeypatch, tmp_path):
+    """First source first. The order is the determination standard, not a
+    preference: the Danish atlas publishes one and `any` does not."""
+    taxonomy = tmp_path / "t.json"
+    taxonomy.write_text(json.dumps({"species": [
+        {"key": "lepiota-brunneoincarnata", "scientific_name": "Lepiota brunneoincarnata",
+         "toxicity": "DEADLY", "image_source": ["inaturalist", "danish_atlas"]},
+    ]}), encoding="utf-8")
+    monkeypatch.setattr(sources, "resolve_label_space", lambda *a, **k: [
+        TaxonMatch(scientific_name="Lepiota brunneoincarnata", usage_key=2535390,
+                   rank="SPECIES", match_type="EXACT", confidence=100,
+                   accepted=True, reason="ok"),
+    ])
+    quota = sources.load_quotas(taxonomy, 400)[0]
+
+    assert quota.source == "inaturalist"
+    assert quota.dataset_key == INATURALIST_DATASET_KEY
+    assert quota.all_sources == (
+        ("inaturalist", INATURALIST_DATASET_KEY),
+        ("danish_atlas", DANISH_ATLAS_DATASET_KEY),
+    )
+
+
+def test_a_repeated_source_is_refused(monkeypatch, tmp_path):
+    """It would re-page the same dataset and add nothing, while reading in
+    the taxonomy as though it had widened the supply."""
+    taxonomy = tmp_path / "t.json"
+    taxonomy.write_text(json.dumps({"species": [
+        {"key": "x", "scientific_name": "X y", "toxicity": "TOXIC",
+         "image_source": ["inaturalist", "inaturalist"]},
+    ]}), encoding="utf-8")
+    monkeypatch.setattr(sources, "resolve_label_space", lambda *a, **k: [
+        TaxonMatch(scientific_name="X y", usage_key=1, rank="SPECIES",
+                   match_type="EXACT", confidence=100, accepted=True, reason="ok"),
+    ])
+    with pytest.raises(ValueError, match="repeats a source"):
+        sources.load_quotas(taxonomy, 400)
+
+
+def test_the_target_and_the_observation_cap_span_sources(tmp_path, monkeypatch):
+    """Neither restarts when the download moves to the next dataset.
+
+    The target counts images for the SPECIES, and
+    `max_images_per_observation` counts photographs of one fruiting body.
+    Resetting either per source would quietly double both, which is the
+    failure that looks like a bigger dataset and is label noise.
+    """
+    pages = {
+        "ds-one": [{"key": "obs-1", "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+                    "media": [{"identifier": f"http://x/a{i}.jpg"} for i in range(6)]}],
+        "ds-two": [{"key": "obs-1", "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+                    "media": [{"identifier": f"http://x/b{i}.jpg"} for i in range(6)]}],
+    }
+
+    def fake_page(session, gbif_key, offset, page_size, country, dataset_key):
+        if offset:
+            return {"results": [], "endOfRecords": True}
+        return {"results": pages.get(dataset_key, []), "endOfRecords": True}
+
+    monkeypatch.setattr(sources, "_occurrence_page", fake_page)
+    monkeypatch.setattr(sources, "_session", lambda **k: object())
+
+    quota = SpeciesQuota(
+        key="lepiota-brunneoincarnata", scientific_name="Lepiota brunneoincarnata",
+        gbif_key=2535390, target=100,
+        dataset_key="ds-one", source="inaturalist",
+        extra_sources=(("danish_atlas", "ds-two"),),
+    )
+    frame = sources.build_manifest([quota], tmp_path / "m.parquet",
+                                   max_images_per_observation=4,
+                                   sleep_between_pages=0)
+
+    # One observation id across both datasets, so the cap applies ONCE.
+    assert len(frame) == 4, (
+        f"the per-observation cap restarted per source: {len(frame)} images "
+        f"from one fruiting body"
+    )
+    assert frame["observation_id"].nunique() == 1
+
+
+def test_the_second_source_is_only_reached_when_the_first_runs_dry(
+    tmp_path, monkeypatch
+):
+    """Order has to mean something, or putting the curated source first is
+    decoration."""
+    asked: list[str | None] = []
+
+    def fake_page(session, gbif_key, offset, page_size, country, dataset_key):
+        asked.append(dataset_key)
+        if offset or dataset_key != "ds-one":
+            return {"results": [], "endOfRecords": True}
+        return {"results": [
+            {"key": f"obs-{i}",
+             "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+             "media": [{"identifier": f"http://x/{i}.jpg"}]}
+            for i in range(10)
+        ], "endOfRecords": True}
+
+    monkeypatch.setattr(sources, "_occurrence_page", fake_page)
+    monkeypatch.setattr(sources, "_session", lambda **k: object())
+
+    quota = SpeciesQuota(key="k", scientific_name="X y", gbif_key=1, target=5,
+                         dataset_key="ds-one", source="inaturalist",
+                         extra_sources=(("danish_atlas", "ds-two"),))
+    frame = sources.build_manifest([quota], tmp_path / "m.parquet",
+                                   sleep_between_pages=0)
+
+    assert len(frame) == 5
+    assert "ds-two" not in asked, (
+        "the second source was paged although the first met the target"
+    )
+
+
+def test_no_deadly_species_draws_from_an_unnamed_source():
+    """Still true with lists. `any` has no determination standard, and the
+    Lepiota change must not have smuggled one in."""
+    taxonomy = json.loads(
+        (ROOT / "data" / "taxonomy.seed.json").read_text(encoding="utf-8")
+    )
+    for entry in taxonomy["species"]:
+        if entry.get("toxicity") not in ("DEADLY", "SERIOUS"):
+            continue
+        declared = entry.get("image_source", "inaturalist")
+        names = [declared] if isinstance(declared, str) else list(declared)
+        assert "any" not in names, (
+            f"{entry['key']} is {entry['toxicity']} and draws from an "
+            f"unnamed source: {names}"
         )

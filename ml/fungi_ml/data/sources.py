@@ -128,6 +128,26 @@ class SpeciesQuota:
     # can name the source rather than inferring "not iNaturalist" from a
     # null key, which stopped being true once there was a third source.
     source: str = "inaturalist"
+    # Further sources to draw from once the first runs dry, as
+    # (name, dataset_key) pairs. Empty for every species where supply is
+    # not the binding constraint, which is almost all of them.
+    #
+    # Added 2026-10-28 for the Lepiota, after measuring GBIF rather than
+    # assuming. *L. brunneoincarnata* (DEADLY, 47.1% recall on run one) has
+    # **74** iNaturalist occurrences carrying images. The target was 400, so
+    # raising it does nothing: 74 is the entire supply. The Danish atlas
+    # holds another 29 and *L. subincarnata* another 125 -- about 1.4x each,
+    # and unlike `any` the Danish Mycological Society publishes a
+    # determination standard. `any` would give 2.6x and drop that standard
+    # entirely, on a genus where misidentification is routine and the label
+    # is lethal, so it is the wrong trade here even though it is the bigger
+    # number.
+    extra_sources: tuple[tuple[str, str | None], ...] = ()
+
+    @property
+    def all_sources(self) -> tuple[tuple[str, str | None], ...]:
+        """Every source to draw from, the declared one first."""
+        return ((self.source, self.dataset_key),) + tuple(self.extra_sources)
 
 
 # A match below this confidence is not trusted without a human looking at it.
@@ -430,76 +450,32 @@ def build_manifest(
     truncated: dict[str, int] = {}
     for quota in quotas:
         collected = 0
-        offset = 0
         by_observation: dict[str, list[str]] = {}
-        while collected < quota.target:
-            try:
-                page = _occurrence_page(
-                    session, quota.gbif_key, offset, page_size, country,
-                    quota.dataset_key,
-                )
-            except requests.RequestException as exc:
-                log.error(
-                    "GBIF paging gave up for %s at offset %d after %d attempts: %s",
-                    quota.key, offset, PAGE_RETRIES, exc,
-                )
+        used: list[str] = []
+
+        for source_name, dataset_key in quota.all_sources:
+            if collected >= quota.target:
+                break
+            before = collected
+            collected, cut_short = _collect_from_source(
+                session, quota, dataset_key, rows, by_observation, collected,
+                country=country,
+                page_size=page_size,
+                sleep_between_pages=sleep_between_pages,
+                max_images_per_observation=max_images_per_observation,
+            )
+            if collected > before:
+                used.append(f"{source_name}:{collected - before}")
+            if cut_short:
                 truncated[quota.key] = collected
                 break
-
-            results = page.get("results", [])
-            if not results:
-                break
-
-            for occ in results:
-                if not _licence_accepted(occ.get("license")):
-                    continue
-                if not _research_grade(occ):
-                    continue
-                observation_id = str(occ.get("key"))
-
-                for media in occ.get("media", []):
-                    url = media.get("identifier")
-                    if not url:
-                        continue
-                    taken = by_observation.setdefault(observation_id, [])
-                    if len(taken) >= max_images_per_observation:
-                        break
-                    rows.append(
-                        {
-                            "species_key": quota.key,
-                            "scientific_name": quota.scientific_name,
-                            "gbif_key": quota.gbif_key,
-                            "observation_id": observation_id,
-                            "image_url": url,
-                            "dataset_key": occ.get("datasetKey"),
-                            "licence": occ.get("license"),
-                            "rights_holder": _attribution(occ, media),
-                            "latitude": occ.get("decimalLatitude"),
-                            "longitude": occ.get("decimalLongitude"),
-                            "month": occ.get("month"),
-                            "year": occ.get("year"),
-                            "country_code": occ.get("countryCode"),
-                            "identification_verified": occ.get("identificationVerificationStatus"),
-                        }
-                    )
-                    taken.append(url)
-                    collected += 1
-                    if collected >= quota.target:
-                        break
-                if collected >= quota.target:
-                    break
-
-            offset += page_size
-            if page.get("endOfRecords"):
-                break
-            time.sleep(sleep_between_pages)
 
         log.info(
             "%s: %d images across %d observations%s",
             quota.key,
             collected,
             len(by_observation),
-            "" if quota.source == "inaturalist" else f"  [source: {quota.source}]",
+            "" if used == [f"inaturalist:{collected}"] else f"  [{', '.join(used) or 'nothing'}]",
         )
 
     frame = pd.DataFrame(rows)
@@ -558,6 +534,96 @@ def _fetch_one(
     except Exception as exc:  # noqa: BLE001 - one bad image must not stop the run
         log.debug("Failed %s: %s", row["image_url"], exc)
         return row["image_url"], None
+
+
+def _collect_from_source(
+    session: requests.Session,
+    quota: "SpeciesQuota",
+    dataset_key: str | None,
+    rows: list[dict],
+    by_observation: dict[str, list[str]],
+    collected: int,
+    *,
+    country: str | None,
+    page_size: int,
+    sleep_between_pages: float,
+    max_images_per_observation: int,
+) -> tuple[int, bool]:
+    """Page one dataset until the species' target is met or it runs dry.
+
+    Extracted from `fetch_images` so a species can draw from several
+    sources in turn. `collected` and `by_observation` are passed in and
+    returned rather than reset, because the target counts images for the
+    SPECIES and `max_images_per_observation` counts photographs of one
+    fruiting body -- neither of which starts again because the download
+    moved to another dataset.
+
+    Returns the new total and whether GBIF cut this source short.
+    """
+    offset = 0
+    while collected < quota.target:
+        try:
+            page = _occurrence_page(
+                session, quota.gbif_key, offset, page_size, country, dataset_key,
+            )
+        except requests.RequestException as exc:
+            log.error(
+                "GBIF paging gave up for %s at offset %d after %d attempts: %s",
+                quota.key, offset, PAGE_RETRIES, exc,
+            )
+            return collected, True
+
+        results = page.get("results", [])
+        if not results:
+            break
+
+        for occ in results:
+            if not _licence_accepted(occ.get("license")):
+                continue
+            if not _research_grade(occ):
+                continue
+            observation_id = str(occ.get("key"))
+
+            for media in occ.get("media", []):
+                url = media.get("identifier")
+                if not url:
+                    continue
+                taken = by_observation.setdefault(observation_id, [])
+                if len(taken) >= max_images_per_observation:
+                    break
+                rows.append(
+                    {
+                        "species_key": quota.key,
+                        "scientific_name": quota.scientific_name,
+                        "gbif_key": quota.gbif_key,
+                        "observation_id": observation_id,
+                        "image_url": url,
+                        "dataset_key": occ.get("datasetKey"),
+                        "licence": occ.get("license"),
+                        "rights_holder": _attribution(occ, media),
+                        "latitude": occ.get("decimalLatitude"),
+                        "longitude": occ.get("decimalLongitude"),
+                        "month": occ.get("month"),
+                        "year": occ.get("year"),
+                        "country_code": occ.get("countryCode"),
+                        "identification_verified": occ.get(
+                            "identificationVerificationStatus"
+                        ),
+                    }
+                )
+                taken.append(url)
+                collected += 1
+                if collected >= quota.target:
+                    break
+            if collected >= quota.target:
+                break
+
+        offset += page_size
+        if page.get("endOfRecords"):
+            break
+        time.sleep(sleep_between_pages)
+
+    return collected, False
 
 
 def fetch_images(
@@ -746,11 +812,24 @@ def load_quotas(
             refused.append(match)
             continue
         entry = by_name[match.scientific_name]
-        source = entry.get("image_source", "inaturalist")
-        if source not in IMAGE_SOURCES:
+        # A single name, or a list when one source cannot supply the
+        # species. A list is ordered: the first is drawn from until it runs
+        # dry, so put the one with the best determination standard first.
+        declared = entry.get("image_source", "inaturalist")
+        names = [declared] if isinstance(declared, str) else list(declared)
+        if not names:
+            raise ValueError(f"{entry['key']}: image_source is an empty list")
+        for name in names:
+            if name not in IMAGE_SOURCES:
+                raise ValueError(
+                    f"{entry['key']}: image_source {name!r} is not one of "
+                    f"{sorted(IMAGE_SOURCES)}"
+                )
+        if len(set(names)) != len(names):
             raise ValueError(
-                f"{entry['key']}: image_source {source!r} is not one of "
-                f"{sorted(IMAGE_SOURCES)}"
+                f"{entry['key']}: image_source repeats a source {names!r}. "
+                f"The second pass would re-page the same dataset and add "
+                f"nothing, while reading as though it widened the supply."
             )
         quotas.append(
             SpeciesQuota(
@@ -758,8 +837,9 @@ def load_quotas(
                 scientific_name=match.scientific_name,
                 gbif_key=match.usage_key,
                 target=target_per_species,
-                dataset_key=IMAGE_SOURCES[source],
-                source=source,
+                dataset_key=IMAGE_SOURCES[names[0]],
+                source=names[0],
+                extra_sources=tuple((n, IMAGE_SOURCES[n]) for n in names[1:]),
             )
         )
 

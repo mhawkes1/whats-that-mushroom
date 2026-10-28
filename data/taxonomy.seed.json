@@ -5692,7 +5692,11 @@
           "No trees nearby",
           "Mixed broadleaf"
         ]
-      }
+      },
+      "image_source": [
+        "inaturalist",
+        "danish_atlas"
+      ]
     },
     {
       "key": "lepiota-cristata",
@@ -5786,7 +5790,11 @@
           "No trees nearby",
           "Mixed broadleaf"
         ]
-      }
+      },
+      "image_source": [
+        "inaturalist",
+        "danish_atlas"
+      ]
     },
     {
       "key": "lepista-nuda",

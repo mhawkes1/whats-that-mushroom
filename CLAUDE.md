@@ -1300,3 +1300,49 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   this went unnoticed before. `PIPELINE OK` with
   `temperature: refused -- no errors on the split` is the correct outcome
   on noise.
+- **The *Lepiota* problem is supply, not quota, and measuring it changed the
+  plan.** *L. brunneoincarnata* (DEADLY) reached 47.1% recall on run one off
+  165 images from 74 observations, which reads like a quota to raise. It is
+  not: measured on GBIF 2026-10-28, iNaturalist holds **74** occurrences with
+  images for it, full stop, against a `--target` of 400. Raising the target
+  does nothing. The whole world, every source, is 189.
+  | | iNat | Danish atlas | any source |
+  | --- | ---: | ---: | ---: |
+  | *L. brunneoincarnata* | 74 | +29 (1.4x) | 189 (2.6x) |
+  | *L. subincarnata* | 258 | +125 (1.5x) | 603 (2.3x) |
+  `any` is the bigger number and the wrong trade: it drops the determination
+  standard entirely, on a genus where misidentification is routine and the
+  label is lethal. The Danish atlas is 1.4x **with** a published standard, so
+  both species now carry `image_source: ["inaturalist", "danish_atlas"]`.
+- **`image_source` may be a list, drawn in order until the target is met.**
+  `SpeciesQuota.extra_sources` plus `all_sources`; `_collect_from_source` was
+  extracted from `build_manifest` so the paging can run per dataset. The
+  target and `max_images_per_observation` are **shared across sources** and
+  do not reset -- the target counts images for the species and the cap counts
+  photographs of one fruiting body, so resetting either would quietly double
+  both. That is the failure that looks like a bigger dataset and is label
+  noise; a test pins it by giving one observation id six media in each of two
+  datasets and asserting four images survive, not eight. A repeated source is
+  refused, because re-paging one dataset adds nothing while reading in the
+  taxonomy as though it widened the supply.
+- **Seven of the eight dangerous confusions have NO lookalike edge, and that
+  is the finding to act on.** Checked against the taxonomy on 2026-10-28:
+  only *L. brunneoincarnata* -> *Macrolepiota procera* is a registered pair.
+  *Galerina marginata* -> *Crepidotus cesatii* at 0.850 is not, nor
+  *A. virosa* -> *A. citrina*, nor any of the *Lepiota* -> *Agaricus
+  sylvaticus* / *Clavulinopsis* / *Fuscoporia* errors.
+  The reason is structural rather than an oversight: `lookalikes` encodes
+  **what humans confuse in the field**, taken from field guides, and a
+  classifier confuses different things. Nobody picks a *Crepidotus* thinking
+  it is a funeral bell; a network looking at a small brown thing on wood
+  does. So `straddles_dangerous_pair` is blind on 7 of 8 real failures, and
+  the entire protection on those is `deadly_probability_mass >= 2%` -- which
+  is exactly the `silent` metric added this morning. The two findings are the
+  same finding from different ends.
+  **Do not fix this by adding the edges.** `lookalikes` is a mycological
+  claim that a reviewer will read and the ebook renders; writing a model
+  artefact into it makes the data wrong in the one place it is meant to be
+  right, and every new dangerous edge needs both halves described or
+  `evidence_audit.py`'s "nothing is stranded" guarantee breaks. If the safety
+  layer should know about empirical confusions, that is a **second graph**,
+  built from `predictions.npz`, and a decision for Martin.
