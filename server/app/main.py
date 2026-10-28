@@ -82,8 +82,26 @@ async def lifespan(app: FastAPI):
 
     labels_path = settings.labels_path
     if not labels_path.exists():
-        # Fall back to the taxonomy's own key list so the service runs before
-        # a model has been trained.
+        # Deriving the label space is safe for the stub, whose names are
+        # meaningless by construction, and is NEVER safe for a trained
+        # model. The checkpoint's class order is `sorted(species present in
+        # the dataset)`; the taxonomy's is `sorted(all 244)`. Those coincide
+        # only while every species survived the image-count filter, and the
+        # moment one does not, every class after it is named as its
+        # neighbour -- silently, with confident-looking output, and with a
+        # DEADLY species potentially served under a harmless name.
+        if settings.model_path.exists():
+            raise RuntimeError(
+                f"A model is present at {settings.model_path} but there is no "
+                f"labels.json at {labels_path}. Refusing to derive the label "
+                f"order from the taxonomy: it is only the checkpoint's order "
+                f"while no species was filtered out of the dataset, and when "
+                f"it is not, every prediction after the first gap is given "
+                f"its neighbour's name. Copy the labels.json written beside "
+                f"the checkpoint."
+            )
+        # Before a model exists, the stub needs some label space to range
+        # over and the taxonomy's own key list is the honest choice.
         log.warning("No labels at %s -- deriving the label space from the taxonomy.",
                     labels_path)
         import json

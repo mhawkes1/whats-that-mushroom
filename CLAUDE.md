@@ -1131,3 +1131,40 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   — the same omission that left a soft edibility verdict in `disclaimer.py`
   through the September purge, because a test that scans what `assess`
   returns never reads what a script prints.
+- **`labels.json` is the only thing that turns the model's answer into a
+  name, and two places were willing to invent one.** A classifier outputs an
+  *index*. `main.py` fell back to `sorted(taxonomy.species)` whenever
+  `labels.json` was absent -- correct for the stub, whose names are
+  meaningless by construction, and a **guess** for a trained model. The
+  checkpoint's order is `sorted(species that survived --min-images)`; the
+  taxonomy's is `sorted(all 244)`. They coincide only while nothing was
+  filtered out, which is true of run one by luck, and the moment one species
+  is dropped every class after the gap is named as its neighbour -- confident
+  output, plausible names, nothing downstream able to notice, and a DEADLY
+  species potentially served under a harmless one. Same shape as the GBIF
+  genus-key gotcha. It surfaced the day a trained model first had to be
+  installed by copying three files into a directory by hand: two of three is
+  a silent relabelling. `main.py` now **refuses to start** when a model
+  exists and `labels.json` does not, and `OnnxBackend` compares the graph's
+  output width against `len(classes)` and refuses a mismatch -- reporting
+  "unknown" rather than passing when the dimension is symbolic, because an
+  unverifiable check must not read as a passed one.
+  `server/tests/test_label_space.py` exports a real tiny ONNX model and
+  pins both refusals, plus that the stub's fallback survives (removing it
+  breaks every fresh clone and every CI job).
+- **Installing the trained model is a three-file copy into
+  `ml/runs/baseline/`**: `model.onnx`, `labels.json`, `calibration.json`.
+  `config.py` already points there and `main.py` selects `OnnxBackend` when
+  the file exists, so there is no code change and no flag -- `/health` flips
+  `model_loaded` and `calibrated` by itself. It runs on CPU at a second or
+  two per photograph; no GPU and no pod.
+- **`docs/WINDOWS-START.md` is the from-nothing route, and the trick in it is
+  the File Explorer address bar.** Typing `powershell` over the path opens a
+  terminal already in that folder, which removes `cd` from a guide written
+  for someone who has never opened a terminal. The other two traps it names
+  are the Python installer's "Add python.exe to PATH" checkbox (missing it
+  is the `python is not recognised` everyone hits) and browsing a .zip
+  instead of extracting it, which fails later as permission errors. Getting
+  the code is a **Download ZIP**, not a clone: git is one more thing to
+  install and explain, and GitHub Desktop is offered for anyone who will do
+  it twice.

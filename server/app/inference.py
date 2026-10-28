@@ -96,7 +96,42 @@ class OnnxBackend(Backend):
         )
         self.classes = classes
         self.input_names = [i.name for i in self.session.get_inputs()]
-        log.info("Loaded ONNX model with inputs %s", self.input_names)
+
+        # The label list and the model must be the same width, because the
+        # model's output is an INDEX and `classes` is the only thing that
+        # turns it into a name. A list one entry short or long does not
+        # fail: every class after the discrepancy is named as its
+        # neighbour, quietly and consistently, which is how a death cap
+        # gets served as whatever sits next to it alphabetically. Same
+        # family as the GBIF genus-key gotcha -- plausible output, nothing
+        # downstream able to notice.
+        width = self._output_width()
+        if width is not None and width != len(classes):
+            raise ValueError(
+                f"{Path(model_path).name} predicts over {width} classes but "
+                f"labels.json lists {len(classes)}. These must match exactly: "
+                f"a mismatch shifts every name after the discrepancy rather "
+                f"than failing. Use the labels.json written beside this "
+                f"checkpoint, not a list derived from the taxonomy."
+            )
+
+        log.info(
+            "Loaded ONNX model with inputs %s over %d classes",
+            self.input_names, len(classes),
+        )
+
+    def _output_width(self) -> int | None:
+        """The model's class count, or None when the graph does not say.
+
+        An exported dimension can be a symbolic name (`"batch"`) rather than
+        an integer, so this reports "unknown" instead of guessing -- an
+        unverifiable check must not read as a passed one.
+        """
+        shape = self.session.get_outputs()[0].shape
+        if not shape:
+            return None
+        last = shape[-1]
+        return last if isinstance(last, int) else None
 
     def logits(self, image: np.ndarray, metadata: np.ndarray) -> np.ndarray:
         feed = {self.input_names[0]: image}

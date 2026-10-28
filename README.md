@@ -135,6 +135,12 @@ python scripts/try_it.py        # Windows
 python3 scripts/try_it.py       # macOS, Linux
 ```
 
+**Never opened a terminal, on Windows?** `docs/WINDOWS-START.md` is the same
+thing from nothing: what to install, how to get the code without git, where
+to put a trained model, and the one line to paste — including the File
+Explorer address-bar trick that opens a terminal already in the right
+folder, so there is no `cd` to learn.
+
 One command from a fresh clone. It installs what is missing, starts the API
 and the client, and prints a URL. No GPU, no dataset and no trained model —
 Python 3.11 and Node are the whole requirement. Ctrl-C stops it.
