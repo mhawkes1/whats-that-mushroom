@@ -141,7 +141,7 @@ release blocker, not a detail.
 | `python is not recognised` | Step 1's checkbox was missed. Re-run the Python installer, choose **Modify**, tick "Add python.exe to PATH". Then close and reopen the blue window. |
 | `can't open file ... try_it.py: [Errno 2] No such file or directory` | Almost always the wrong branch — check whether the folder ends `-main`, and see step 3. If the name is right, run `dir` in the blue window: if it lists another folder of the same name, the extract nested one inside the other, so `cd` into it and try again. |
 | `Node is not installed, or not on your PATH` | Step 2. Node's installer needs the terminal closed and reopened afterwards. |
-| `A model is present ... but there is no labels.json` | Step 4 — copy all three files. This refusal is deliberate. |
+| `A model is present ... but there is no labels.json` | Step 4 — copy all three files. This refusal is deliberate. If `labels.json` is genuinely lost, `python scripts\recover_labels.py` rebuilds it **only** when the model's own class count proves the order, and refuses otherwise. |
 | Permission or read-only errors | The ZIP was browsed rather than extracted. See step 3. |
 | It installs for ages the first time | Expected. Several hundred megabytes of dependencies, once. |
 | Something else | `.try_it_api.log` and `.try_it_web.log` appear in the folder and hold the real error. |

@@ -153,3 +153,63 @@ def test_the_real_labels_file_matches_the_taxonomy_in_length_today():
     assert classes == keys or len(classes) < len(keys), (
         "the checkpoint carries classes the taxonomy does not"
     )
+
+
+# --- Recovering a lost labels.json -----------------------------------------
+
+
+def _run_recover(model: Path, out: Path, taxonomy: Path | None = None):
+    import subprocess
+
+    cmd = [sys.executable, str(ROOT / "scripts" / "recover_labels.py"),
+           "--model", str(model), "--out", str(out)]
+    if taxonomy:
+        cmd += ["--taxonomy", str(taxonomy)]
+    return subprocess.run(cmd, capture_output=True, text=True)
+
+
+def test_recovery_succeeds_only_when_the_widths_prove_it(model_of_244, tmp_path):
+    """244 classes against 244 species means nothing was filtered out, so
+    the derived order IS the checkpoint's order. That is a proof, not a
+    hunch, and it is the only case the script writes anything in."""
+    out = tmp_path / "labels.json"
+    result = _run_recover(model_of_244, out)
+    assert result.returncode == 0, result.stderr
+    classes = json.loads(out.read_text(encoding="utf-8"))["classes"]
+    taxonomy = json.loads(
+        (ROOT / "data" / "taxonomy.seed.json").read_text(encoding="utf-8")
+    )
+    assert classes == sorted(s["key"] for s in taxonomy["species"])
+
+
+def test_recovery_refuses_when_species_were_filtered_out(tmp_path):
+    """The case the refusal exists for. Which species went is recorded in
+    the manifest, which is exactly what a destroyed pod takes with it."""
+    model = _tiny_onnx(tmp_path / "narrow.onnx", 240)
+    out = tmp_path / "labels.json"
+    result = _run_recover(model, out)
+    assert result.returncode == 1
+    assert not out.exists(), "nothing may be written on the refusing path"
+    assert "REFUSING" in result.stderr
+
+
+def test_recovery_never_overwrites_a_real_labels_file(model_of_244, tmp_path):
+    """A derivation must not replace the thing it is standing in for."""
+    out = tmp_path / "labels.json"
+    out.write_text('{"classes": ["the-real-one"]}', encoding="utf-8")
+    result = _run_recover(model_of_244, out)
+    assert result.returncode == 2
+    assert "the-real-one" in out.read_text(encoding="utf-8")
+
+
+def test_a_recovered_file_satisfies_the_backend_it_was_written_for(
+    model_of_244, tmp_path
+):
+    """End to end: recover, then load. If OnnxBackend still refuses it, the
+    recovery produced something that looks right and is not."""
+    from app.inference import OnnxBackend
+
+    out = tmp_path / "labels.json"
+    assert _run_recover(model_of_244, out).returncode == 0
+    classes = json.loads(out.read_text(encoding="utf-8"))["classes"]
+    assert len(OnnxBackend(model_of_244, classes).classes) == 244

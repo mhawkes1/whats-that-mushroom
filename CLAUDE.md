@@ -1191,3 +1191,30 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   what gets read before deploying. `--epochs` prices any other number. If
   you change one, check the other — this is the second pair of numbers in
   this project that wanted different working directories to agree.
+- **The labels.json refusal fired on the real thing, one day after it was
+  written.** 2026-10-28: Martin copied `model.onnx` onto his laptop without
+  `labels.json`, and the server refused to start instead of naming 244
+  species off a derived order. The file had never been committed -- the
+  run-book's step 9 listed it, the token was unresolved at the time, and the
+  pod that held it has been destroyed. That is the exact scenario the
+  fallback used to paper over.
+- **`scripts/recover_labels.py` rebuilds it only where the model proves the
+  order.** It performs the same derivation the fallback did and then
+  *checks* it: `build_label_map` orders classes as `sorted(species that
+  survived --min-images)`, so the derived order is right **iff** nothing was
+  filtered out -- and the ONNX graph states its own output width. Width ==
+  taxonomy size means nothing was dropped and the two sorted lists are the
+  same list; anything else means species went, which ones is recorded only
+  in the manifest, and the script refuses with no "probably fine" branch. It
+  also refuses to overwrite an existing `labels.json`, because a derivation
+  must not replace the thing it stands in for. Run one is recoverable
+  because all 244 cleared the filter; a run with a stricter `--min-images`
+  will not be. **Commit the real one next time.**
+- **"Look in .try_it_api.log for why" was not help, and the failure proved
+  it.** The launcher pointed at a dotfile and asked someone who has never
+  opened a terminal to read it, at the moment they had no working tools and
+  no reason to trust what had just failed. `tail()` now prints the last 20
+  lines, prefixed with `|` so they read as quoted output rather than as the
+  launcher's own words, and says so plainly when the log is empty or missing
+  -- a process that wrote nothing died differently from one that wrote a
+  traceback, and the failure path must not itself fail.
