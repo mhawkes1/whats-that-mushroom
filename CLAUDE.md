@@ -1168,3 +1168,26 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   the code is a **Download ZIP**, not a clone: git is one more thing to
   install and explain, and GitHub Desktop is offered for anyone who will do
   it twice.
+- **The 16 GB that died with the pod is rebuildable, and the run-book's
+  advice about it was inverted by the real hourly rate.** Nothing
+  irreplaceable went: `build_dataset.py` re-derives the images from the
+  taxonomy and GBIF, and `model.onnx` plus the text artefacts were already
+  down. What is gone for good is the *particular* dataset — GBIF moves, so a
+  rebuild is a different 93,000 images and a different split, which is why
+  `splits.csv.gz` now exists. Cost to rebuild: 2–3 hours, **network-bound,
+  no GPU involved**.
+  That is the part the run-book had backwards. It said building on a cheap
+  CPU box was "optional tidiness rather than real saving", reasoning that at
+  $0.34/hr two idle hours cost 70p. At the **$0.90/hr actually billed**, and
+  with training down from 30 epochs to 10 (~1 hour), the download costs
+  **more than the training run it precedes** — $2.50 against $1.32.
+  `gpu_cost.py` now prints which hours need a 4090 at all and what the split
+  saves; step 5 of the run-book says to build the dataset on a CPU pod
+  against a RunPod **network volume** and attach that volume to the GPU pod
+  for the training hour.
+- **`EPOCHS` in `gpu_cost.py` is 10, and `ml/configs/default.yaml` still
+  says 30.** Deliberate for now: the config is what a run executes and
+  changing it belongs with the regularisation work, while the cost script is
+  what gets read before deploying. `--epochs` prices any other number. If
+  you change one, check the other — this is the second pair of numbers in
+  this project that wanted different working directories to agree.

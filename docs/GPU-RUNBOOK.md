@@ -38,29 +38,45 @@ with a lawyer.
 
 ## 1. Rent
 
-**RunPod Community Cloud, RTX 4090, ~$0.34/hr.** Not Vast.ai for the first
-run — the marketplace floor is lower and a host that dies three hours in
-costs more than the 20p it saved. Lambda does not offer the 4090, and Nebius
-does not rent anything smaller than an L40S, which is four times the price
-for a card this job does not need.
+**RunPod, RTX 4090.** Not Vast.ai for the first run — the marketplace floor
+is lower and a host that dies three hours in costs more than the 20p it
+saved. Lambda does not offer the 4090, and Nebius does not rent anything
+smaller than an L40S, which is four times the price for a card this job does
+not need.
+
+**Read the hourly rate off the pod card before you deploy.** Every pricing
+roundup quotes the Community floor of about $0.34; the first real run, on
+EUR-IS-2, billed **$0.90/hr** — a different tier or region, and nearly three
+times it. The figures below use what was actually billed, because an
+estimate that comes in under the bill is worse than no estimate: it is the
+one people act on. Pass `--usd-per-hour` to `scripts/gpu_cost.py` if yours
+differs.
 
 ### What it costs
 
-`python scripts/gpu_cost.py` prints this and will re-print it with a real
-number once step 4 has measured one; the figures below are its output at an
-**assumed** 140 img/s.
+Measured on the first real run, 2026-10-27: **354 s per epoch**, which is
+about 210 img/s, not the 140 assumed before anyone had run one.
 
-| | GPU hours | Cost |
+| | Hours | At $0.90/hr |
 | --- | --- | --- |
-| One complete run, start to finish | 7.9 | $2.68 · £2.11 |
-| Four attempts before a keeper | 19.9 | $6.77 · £5.34 |
-| Plus 60 GB of volume for three days | — | $0.42 |
-| **The whole exercise** | **19.9** | **$7.19 · £5.66** |
+| Dataset download (network-bound, **no GPU needed**) | ~2–3 | $1.80–2.70 |
+| Training, 10 epochs | ~1.0 | $0.90 |
+| Calibrate, export, model card | ~0.3 | $0.27 |
+| **One complete run on one GPU pod** | **~3.5** | **~$3.15 · £2.50** |
 
-Training is 4.6 of those hours and everything else is rounding. The only
-real uncertainty is throughput: at 100 img/s a run is 9.8 hours and at 180
-it is 6.8, which moves the total between about £4.50 and £7.50. That is why
-step 4 exists, and it is also why none of this is worth optimising.
+**The download now costs more than the training, and that inverts the old
+advice.** Thirty epochs took three hours; ten is the right number (see
+`docs/runs/` — risk was minimised around epochs 5–8 and got steadily worse
+after), so training is down to about an hour while the download has not
+moved. Paying 4090 rates to sit and make HTTP requests is the largest
+avoidable cost in the exercise — see the note under step 5 about building it
+on a cheap CPU pod against a network volume.
+
+Budget **$25 of credit** anyway. It covers several attempts, and budgeting
+tightly is how people end up not running a second attempt because they
+begrudged the first. You will do three or four: one that dies on a config
+detail, one that reveals a data problem, one that is real, one that is the
+keeper.
 
 **Add $25 of credit.** It covers the exercise three times over. Budgeting
 tightly is how people end up not running a second attempt because they
@@ -162,10 +178,22 @@ python scripts/build_dataset.py --target 400 --min-images 40
 
 - **Never pass `--country GB`.** It is the intuitive choice for a British app
   and it wrecks the dataset: zero images for three DEADLY/SERIOUS species.
-- Expect roughly **93,000 images across 244 species** and a couple of hours.
-- It is network-bound, not GPU-bound. If you want to be frugal, build it on a
-  cheap CPU box first and snapshot the volume — though at $0.34/hr two idle
-  hours cost 70p, so this is optional tidiness rather than real saving.
+- Expect roughly **93,000 images across 244 species**, about 16 GB, and a
+  couple of hours.
+- **It is network-bound, not GPU-bound, and at the real billed rate that is
+  worth acting on.** This note used to say building it on a cheap CPU box
+  was "optional tidiness rather than real saving", on the strength of
+  $0.34/hr making two idle hours cost 70p. At the $0.90/hr actually billed,
+  two or three hours of a 4090 waiting on HTTP is **$1.80–2.70 — more than
+  the whole 10-epoch training run.** Build it on a CPU pod against a RunPod
+  **network volume**, then attach that same volume to the GPU pod and train.
+  The GPU is then rented only for the hour it is used. A network volume pins
+  you to its data centre, which is the one constraint it adds.
+- **If the pod has no volume disk, everything here dies when you stop it.**
+  Not just on terminate — RunPod warns "all data will be lost" on a plain
+  stop, because without the 60 GB mounted at `/workspace` from step 1 that
+  path is ordinary container disk. There is then no cheap pause: keep paying
+  the full hourly rate, or lose the 16 GB. That happened on the first run.
 
 That one command does the splits too — it calls `fungi_ml.data.prepare`
 itself and writes `data/processed/`. There is no second step, and running

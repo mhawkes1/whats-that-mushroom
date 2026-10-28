@@ -27,7 +27,11 @@ import argparse
 
 # --- Measured or decided ----------------------------------------------------
 N_IMAGES = 93_000          # run-book, step 3: ~93,000 across 244 species
-EPOCHS = 30                # ml/configs/default.yaml, train.epochs
+# `ml/configs/default.yaml` still says 30, and the first real run says that
+# was 20 epochs of harm: top-1 moved 0.92 of a percentage point across
+# epochs 4-29 while risk-weighted error nearly doubled. Ten is the number to
+# price, and `--epochs` prices any other.
+EPOCHS = 10                # was 30; see docs/runs/2026-10-27-baseline.csv
 VAL_FRACTION = 0.10        # fungi_ml.data.prepare default
 TEST_FRACTION = 0.10
 
@@ -43,6 +47,10 @@ TEST_FRACTION = 0.10
 # Check the hourly rate on the pod card BEFORE deploying and pass
 # --usd-per-hour if it differs.
 USD_PER_HOUR = 0.90        # RunPod, RTX 4090, as actually billed 2026-10-27
+# A CPU pod, for the hours that are network-bound rather than GPU-bound.
+# The download is 2-3 of them and needs no GPU at all; renting a 4090 to
+# make HTTP requests now costs more than the training it precedes.
+CPU_USD_PER_HOUR = 0.10
 USD_PER_GB_MONTH = 0.07    # network volume
 VOLUME_GB = 60
 USD_PER_GBP = 1.27
@@ -61,15 +69,15 @@ IMG_PER_SEC_LOW, IMG_PER_SEC_MID, IMG_PER_SEC_HIGH = 100.0, 210.0, 240.0
 INFERENCE_SPEEDUP = 3.0
 
 
-def train_hours(img_per_sec: float) -> float:
+def train_hours(img_per_sec: float, epochs: int = EPOCHS) -> float:
     """One full run: every epoch over train, plus validation each epoch."""
     train_n = N_IMAGES * (1 - VAL_FRACTION - TEST_FRACTION)
     val_n = N_IMAGES * VAL_FRACTION
     per_epoch = train_n / img_per_sec + val_n / (img_per_sec * INFERENCE_SPEEDUP)
-    return per_epoch * EPOCHS / 3600
+    return per_epoch * epochs / 3600
 
 
-def phases(img_per_sec: float) -> list[tuple[str, float, str]]:
+def phases(img_per_sec: float, epochs: int = EPOCHS) -> list[tuple[str, float, str]]:
     test_n = N_IMAGES * TEST_FRACTION
     val_n = N_IMAGES * VAL_FRACTION
     inf = img_per_sec * INFERENCE_SPEEDUP
@@ -77,9 +85,10 @@ def phases(img_per_sec: float) -> list[tuple[str, float, str]]:
         ("Pod start, pip install ml/requirements", 0.25, "onnxscript included"),
         ("Resolve names to GBIF keys", 0.03, "--resolve-only, read the output"),
         ("Download and prepare the dataset", 2.50, "network-bound, not GPU"),
-        ("Time one epoch (step 4)", train_hours(img_per_sec) / EPOCHS,
+        ("Time one epoch (step 4)", train_hours(img_per_sec, epochs) / epochs,
          "the step people skip"),
-        ("Train 30 epochs", train_hours(img_per_sec), "the only real GPU cost"),
+        (f"Train {epochs} epochs", train_hours(img_per_sec, epochs),
+         "the only real GPU cost"),
         ("Calibrate + fit the energy threshold", val_n / inf / 3600,
          "on val, never test"),
         ("Export to ONNX and verify", 0.08, "do NOT skip to save money"),
@@ -105,38 +114,84 @@ def main() -> int:
                     help="how many attempts before a keeper (run-book says 3-4)")
     ap.add_argument("--days-held", type=float, default=3.0,
                     help="days the volume exists before you terminate")
-    ap.add_argument("--usd-per-hour", type=float, default=USD_PER_HOUR)
+    ap.add_argument("--usd-per-hour", type=float, default=USD_PER_HOUR,
+                    help="read it off the pod card; the advertised rate was "
+                         "a third of what the first run billed")
+    ap.add_argument("--cpu-usd-per-hour", type=float, default=CPU_USD_PER_HOUR)
+    ap.add_argument("--epochs", type=int, default=EPOCHS,
+                    help=f"default {EPOCHS}; the config still says 30 and the "
+                         f"first run says that was 20 epochs of harm")
     args = ap.parse_args()
 
-    measured = args.img_per_sec is not None
-    mid = args.img_per_sec if measured else IMG_PER_SEC_MID
+    # `IMG_PER_SEC_MID` is itself a measurement now -- 354 s an epoch on the
+    # first real run -- so the default is no longer an assumption to flag.
+    # What a passed value means is "measured on YOUR pod", which is the one
+    # worth distinguishing.
+    own = args.img_per_sec is not None
+    mid = args.img_per_sec if own else IMG_PER_SEC_MID
 
     print()
     print("  ONE COMPLETE RUN, start to finish")
-    print(f"  {N_IMAGES:,} images  |  {EPOCHS} epochs  |  "
-          f"{'measured' if measured else 'ASSUMED'} {mid:.0f} img/s")
+    print(f"  {N_IMAGES:,} images  |  {args.epochs} epochs  |  "
+          f"{'measured on your pod' if own else 'measured 2026-10-27'} "
+          f"{mid:.0f} img/s")
     rule()
     total = 0.0
-    for name, hours, note in phases(mid):
+    for name, hours, note in phases(mid, args.epochs):
         total += hours
         print(f"  {name:<40}{hours:>6.2f} h   {note}")
     rule()
     usd, gbp = money(total)
     print(f"  {'':<40}{total:>6.2f} h   ${usd:,.2f}  /  £{gbp:,.2f}")
 
-    if not measured:
+    if not own:
         print()
-        print("  The same run across the plausible throughput range")
+        print("  Sensitivity, if your pod is slower or faster than that one")
         rule()
         for label, ips in (("slow", IMG_PER_SEC_LOW), ("mid", IMG_PER_SEC_MID),
                            ("fast", IMG_PER_SEC_HIGH)):
-            t = sum(h for _, h, _ in phases(ips))
+            t = sum(h for _, h, _ in phases(ips, args.epochs))
             u, g = money(t)
             print(f"  {label:<10}{ips:>6.0f} img/s   {t:>6.2f} h   "
                   f"${u:>6.2f}   £{g:>6.2f}")
         print()
-        print("  Throughput is the whole uncertainty. Step 4 of the run-book")
-        print("  measures it in one epoch; re-run with --img-per-sec then.")
+        print("  Step 4 of the run-book measures yours in one epoch; re-run")
+        print("  with --img-per-sec then. The range matters much less than it")
+        print("  did: with 10 epochs the GPU is a third of the bill.")
+
+    # --- Which hours need a GPU at all -----------------------------------
+    #
+    # This section exists because the advice it prints is the OPPOSITE of
+    # what the run-book said while the rate was believed to be $0.34. At
+    # that price two idle hours cost 70p and splitting the work was
+    # tidiness. At the $0.90 actually billed, and with training down from
+    # 30 epochs to 10, the download costs MORE than the training.
+    gpu_bound = [(n, h) for n, h, _ in phases(mid, args.epochs)
+                 if not n.startswith(("Download", "Resolve", "runpodctl"))]
+    cpu_bound = [(n, h) for n, h, _ in phases(mid, args.epochs)
+                 if n.startswith(("Download", "Resolve", "runpodctl"))]
+    gpu_h = sum(h for _, h in gpu_bound)
+    cpu_h = sum(h for _, h in cpu_bound)
+
+    print()
+    print("  WHICH HOURS ACTUALLY NEED THE GPU")
+    rule()
+    print(f"  {'Needs a 4090':<40}{gpu_h:>6.2f} h   "
+          f"${gpu_h * args.usd_per_hour:>6.2f}")
+    print(f"  {'Network-bound, needs no GPU':<40}{cpu_h:>6.2f} h   "
+          f"${cpu_h * args.usd_per_hour:>6.2f}  on a 4090")
+    print(f"  {'  the same work on a CPU pod':<40}{cpu_h:>6.2f} h   "
+          f"${cpu_h * args.cpu_usd_per_hour:>6.2f}  at "
+          f"${args.cpu_usd_per_hour:.2f}/hr")
+    saving = cpu_h * (args.usd_per_hour - args.cpu_usd_per_hour)
+    rule()
+    print(f"  Saved by building the dataset on a CPU pod against a")
+    print(f"  network volume, then attaching it to the GPU pod:"
+          f"   ${saving:,.2f}  /  £{saving / USD_PER_GBP:,.2f}")
+    if saving > gpu_h * args.usd_per_hour:
+        print()
+        print("  That saving is larger than the entire training run. The")
+        print("  download is the expensive part now, not the GPU.")
 
     # --- The exercise, not the run ---------------------------------------
     # Attempt one dies early; attempt two gets further; the dataset is on the
@@ -144,9 +199,11 @@ def main() -> int:
     print()
     print(f"  THE WHOLE EXERCISE  ({args.runs} attempts before a keeper)")
     rule()
-    one = sum(h for _, h, _ in phases(mid))
-    download = next(h for n, h, _ in phases(mid) if n.startswith("Download"))
-    setup = next(h for n, h, _ in phases(mid) if n.startswith("Pod start"))
+    one = sum(h for _, h, _ in phases(mid, args.epochs))
+    download = next(h for n, h, _ in phases(mid, args.epochs)
+                    if n.startswith("Download"))
+    setup = next(h for n, h, _ in phases(mid, args.epochs)
+                 if n.startswith("Pod start"))
 
     attempts = []
     for i in range(args.runs):
