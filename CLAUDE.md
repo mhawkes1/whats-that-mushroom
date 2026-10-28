@@ -1544,3 +1544,66 @@ on the terminal summary -- read it off `calibration.json`.
 
 **Two silent confusions**, against run two's one, on the same split.
 SAFETY.md wants zero and `make_model_card.py` refused both runs for it.
+
+## Run four, 2026-10-28: THE MODEL. batch 32, no mixup, rebuilt dataset
+
+Curve in `docs/runs/2026-10-28-b32.csv` (epochs 2-9; 0 and 1 scrolled off the
+only record of them, which is itself an argument for `nohup` and a log file).
+Identical to run three except `batch_size` 64 -> 32. 588 s an epoch.
+
+**Best on every axis that matters, against the model that has stood since
+2026-10-27:**
+
+| | Run one | Run three | **Run four** |
+| --- | ---: | ---: | ---: |
+| Risk-weighted error | 1.3876 | 1.4151 | **1.0820** |
+| Dangerous confusions | 10 | 9 | **7** |
+| Silent confusions | unknown | 2 | **2** |
+| Coverage | 84.5% | 69.5% | **85.0%** |
+| *L. brunneoincarnata* | 47.1% | 88.2% | **88.2%** |
+| Deadly group recall | 95.3% | 94.4% | **95.7%** |
+| Top-1 | 88.1% | 81.5% | 87.1% |
+| Genus | 91.9% | 86.3% | 91.1% |
+
+**22% safer than run one, for one point of top-1** -- which is the trade
+rule 6 exists to make, now paid in the direction the rule predicted.
+
+**Batch size was crushing coverage, through checkpoint selection.** At 64
+the risk minimum landed on epoch 1, so rule 6 shipped a barely-trained model
+(top-1 0.8171) that was too unconfident to clear its own threshold: coverage
+69.5%, raw ECE 0.1172. At 32 the minimum moved to **epoch 3** (top-1 0.8768)
+and coverage went to 85.0% with raw ECE 0.0627. The lesson is not "32 is
+better" -- it is that **a hyperparameter can wreck the product through the
+selection rule without touching model quality at all**, and coverage is
+where you see it. Nothing in the terminal summary shows coverage; it is in
+`calibration.json`.
+
+**Decomposition of run two's regression, using only same-split, one-variable
+comparisons (mean validation risk, epochs 2-9):**
+
+```
+run2  3.047   mixup on,  batch 64
+run3  2.571   mixup off, batch 64     mixup          +0.477
+run4  2.361   mixup off, batch 32     batch 64 vs 32 +0.210
+```
+
+Mixup was the larger half and is **not** coming back without a specific
+reason: it cost 0.66 of *test* risk on the one clean comparison available.
+
+**Run one remains +0.516 away on validation and is BEHIND on test**, which
+is the third reminder today that cross-split validation comparisons mislead.
+Run one's split died with its pod; its validation figure is not comparable
+to anything and never will be.
+
+### What is still wrong: 2 silent confusions
+
+SAFETY.md wants zero and `make_model_card.py` refused the run. Two cases in
+9,403 where a deadly species held under 2% of the mass, so the app names a
+harmless species with no warning and no hazard line.
+
+**This is what `data/model-confusions.json` is for.** The empirical pair rule
+fires on *rank*, not mass -- so a silent confusion whose deadly species is
+anywhere in the top five becomes a `dangerous_group` refusal once the graph
+is generated from this run's `predictions.npz`. Generate it before deciding
+whether the exception needs documenting: the count that matters is what
+survives the safety layer, not what the model did.
