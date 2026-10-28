@@ -52,24 +52,70 @@ def risk_weighted_error(
     return float(risk_matrix[labels, probs.argmax(axis=1)].mean())
 
 
+# `server/app/safety.py` warns whenever the deadly species hold at least
+# this much probability mass, wherever they sit in the ranking. It is
+# duplicated here rather than imported because `ml/` and `server/` are
+# separate packages, and `ml/tests/test_evaluate.py` asserts the two stay
+# equal by reading safety.py's source.
+DEADLY_MASS_THRESHOLD = 0.02
+
+
 def dangerous_confusions(
     probs: np.ndarray,
     labels: np.ndarray,
     classes: list[str],
     taxonomy: Taxonomy,
+    deadly_mass_threshold: float = DEADLY_MASS_THRESHOLD,
 ) -> list[dict]:
     """Every case where a deadly species was predicted as something safer.
 
     This is the number that decides whether the model ships. A single
     instance here is worth more scrutiny than a percentage point of top-1.
+
+    **It also records how much mass stayed on the deadly species, which is
+    what decides whether a user ever hears about it.** The count alone
+    measures the *model*; the app is model plus safety layer, and that layer
+    raises the lethal warning whenever the deadly species hold
+    `deadly_mass_threshold` between them -- at any rank, because
+    `deadly_probability_mass` sums the whole distribution rather than the
+    top of it.
+
+    So a confusion splits two ways, and they are not remotely equivalent:
+
+    **Warned.** The argmax was a harmless species, but the deadly mass
+    cleared the threshold, so the user got the full "species that can kill"
+    banner anyway. Bad, worth fixing, not dangerous.
+
+    **Silent.** The deadly mass was below the threshold, so the app named a
+    harmless species and -- since rule 1 renders nothing at all for
+    `NO_RECORDED_TOXICITY` -- showed no hazard line either. That is the
+    `dangerous_miss` the whole project exists to prevent, and until
+    2026-10-28 nothing counted it separately.
+
+    Found while asking what the app would do with the first real run's worst
+    confusion: *Galerina marginata* called *Crepidotus cesatii* at 0.850.
+    The card could not answer, because it never recorded the one number that
+    decides.
     """
     predictions = probs.argmax(axis=1)
     confidences = probs.max(axis=1)
+
+    deadly_cols = [
+        i for i, key in enumerate(classes)
+        if (sp := taxonomy.get(key)) is not None and sp.toxicity is Toxicity.DEADLY
+    ]
+    # Mass on ALL deadly species per sample, which is what the safety layer
+    # actually sums -- not merely the mass on the true one.
+    deadly_mass = probs[:, deadly_cols].sum(axis=1) if deadly_cols else np.zeros(len(probs))
+
     tally: dict[tuple[str, str], dict] = defaultdict(
-        lambda: {"count": 0, "max_confidence": 0.0}
+        lambda: {"count": 0, "max_confidence": 0.0, "silent": 0,
+                 "min_deadly_mass": 1.0, "max_deadly_mass": 0.0}
     )
 
-    for true_idx, pred_idx, conf in zip(labels, predictions, confidences):
+    for true_idx, pred_idx, conf, mass in zip(
+        labels, predictions, confidences, deadly_mass
+    ):
         true_key, pred_key = classes[true_idx], classes[pred_idx]
         if true_key == pred_key:
             continue
@@ -81,6 +127,10 @@ def dangerous_confusions(
             entry = tally[(true_key, pred_key)]
             entry["count"] += 1
             entry["max_confidence"] = max(entry["max_confidence"], float(conf))
+            entry["min_deadly_mass"] = min(entry["min_deadly_mass"], float(mass))
+            entry["max_deadly_mass"] = max(entry["max_deadly_mass"], float(mass))
+            if mass < deadly_mass_threshold:
+                entry["silent"] += 1
 
     rows = [
         {
@@ -88,10 +138,15 @@ def dangerous_confusions(
             "predicted_as": p,
             "count": v["count"],
             "max_confidence": round(v["max_confidence"], 4),
+            # How many of those the user would never have been warned about.
+            "silent": v["silent"],
+            "min_deadly_mass": round(v["min_deadly_mass"], 4),
+            "max_deadly_mass": round(v["max_deadly_mass"], 4),
         }
         for (t, p), v in tally.items()
     ]
-    return sorted(rows, key=lambda r: (-r["count"], -r["max_confidence"]))
+    # Silent ones first: they are the ones that reach a person.
+    return sorted(rows, key=lambda r: (-r["silent"], -r["count"], -r["max_confidence"]))
 
 
 def deadly_recall(
@@ -175,10 +230,23 @@ def evaluate(
     report["dangerous_confusion_count"] = n_dangerous
     report["dangerous_confusion_rate"] = n_dangerous / max(1, len(labels))
 
+    # The subset that reaches a person. The safety layer raises the lethal
+    # warning whenever the deadly species hold DEADLY_MASS_THRESHOLD between
+    # them, so a confusion above that line is caught in the app even though
+    # the model got it wrong. Below it, the user is told a harmless name and
+    # nothing else.
+    n_silent = sum(r["silent"] for r in report["dangerous_confusions"])
+    report["silent_dangerous_confusion_count"] = n_silent
+    report["silent_dangerous_confusion_rate"] = n_silent / max(1, len(labels))
+    report["deadly_mass_threshold"] = DEADLY_MASS_THRESHOLD
+
     if n_dangerous:
         log.warning(
-            "%d dangerous confusions in %d samples (%.3f%%) -- review before release",
+            "%d dangerous confusions in %d samples (%.3f%%), of which %d are "
+            "SILENT (deadly mass < %.0f%%, so no warning reaches the user) "
+            "-- review before release",
             n_dangerous, len(labels), 100 * n_dangerous / len(labels),
+            n_silent, 100 * DEADLY_MASS_THRESHOLD,
         )
     return report
 
@@ -218,17 +286,35 @@ def write_model_card(report: dict, calibration: dict | None, out_path: str | Pat
         f"**{report['dangerous_confusion_count']}** "
         f"({report['dangerous_confusion_rate']:.4%} of samples)",
         "",
+        f"Of those, **{report.get('silent_dangerous_confusion_count', 0)}** are "
+        f"**silent**: the deadly species held less than "
+        f"{report.get('deadly_mass_threshold', 0.02):.0%} of the probability "
+        f"mass, so the app's lethal warning never fires and the user is shown "
+        f"a harmless name with no hazard line. The rest are caught by the "
+        f"safety layer and the user sees the warning regardless. **The silent "
+        f"count is the one that reaches a person.**",
+        "",
     ]
 
     if report["dangerous_confusions"]:
         lines += [
-            "| True species | Predicted as | Count | Max confidence |",
-            "| --- | --- | ---: | ---: |",
+            "`Silent` is the count the app would NOT have warned about. "
+            "`Deadly mass` is how much probability stayed on the deadly "
+            "species across those samples; the safety layer warns from "
+            f"{report.get('deadly_mass_threshold', 0.02):.0%} upward, at any "
+            "rank.",
+            "",
+            "| True species | Predicted as | Count | Silent | Deadly mass "
+            "(min–max) | Max confidence |",
+            "| --- | --- | ---: | ---: | ---: | ---: |",
         ]
         for row in report["dangerous_confusions"][:20]:
             lines.append(
                 f"| _{row['true_species']}_ | _{row['predicted_as']}_ "
-                f"| {row['count']} | {row['max_confidence']:.3f} |"
+                f"| {row['count']} | **{row.get('silent', 0)}** "
+                f"| {row.get('min_deadly_mass', 0):.3f}–"
+                f"{row.get('max_deadly_mass', 0):.3f} "
+                f"| {row['max_confidence']:.3f} |"
             )
         lines.append("")
     else:

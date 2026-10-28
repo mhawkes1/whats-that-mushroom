@@ -1036,3 +1036,35 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   full hourly rate or lose the dataset. Nothing irreplaceable was lost here
   because `model.onnx` and the text artefacts were already down, but the
   16 GB of images and `best.pt` went with the pod.
+- **A dangerous confusion count measures the *model*; the app is model plus
+  safety layer, and until 2026-10-28 nothing measured the join.** Asked what
+  the app would actually show for the first run's worst confusion --
+  *Galerina marginata* called *Crepidotus cesatii* at 0.850 -- neither
+  `report.json` nor the model card could answer, because `dangerous_confusions`
+  recorded `count` and `max_confidence` and not **the deadly probability
+  mass**, which is the only number that decides. `safety.py` warns whenever
+  the deadly species hold `dangerous_mass_threshold` (2%) between them, at
+  **any rank** (`deadly_probability_mass` sums the whole distribution; only
+  `straddles_dangerous_pair` is limited to the top five). Simulated through
+  the real `SafetyLayer` at the fitted 0.69: Galerina at 0.020 shows the full
+  lethal warning beside the species verdict even from rank 6; at 0.019 it
+  shows **nothing** -- a harmless name, and because rule 1 renders nothing
+  for `NO_RECORDED_TOXICITY`, no hazard line either. So a confusion where the
+  deadly species kept 30% and one where it kept 0.4% were tallying
+  identically, and the metric that gates release was blind to the layer that
+  does the protecting. `dangerous_confusions` now records `silent`,
+  `min_deadly_mass` and `max_deadly_mass`, sorts **silent first**, and the
+  report carries `silent_dangerous_confusion_count` / `_rate`. The card
+  states the split in prose and in the table, because present in
+  `report.json` is not the same as visible to a reviewer.
+- **The 2% is duplicated between `evaluate.py` and `safety.py`, and the test
+  reads the source.** `ml/` and `server/` are separate packages with no
+  import path between them, so `DEADLY_MASS_THRESHOLD` is a copy;
+  `ml/tests/test_evaluate.py` greps `safety.py` for the default rather than
+  importing it, because a test that cannot run is not a guard. If the
+  warning trigger moves and the copy does not, the card reports silence
+  against a line the app no longer uses.
+- **Read the silent count before the dangerous-confusion count.** Both are
+  in the report. The first is how many people the model would have reached;
+  the second includes the ones the app caught anyway, which are worth fixing
+  and are not the release question.
