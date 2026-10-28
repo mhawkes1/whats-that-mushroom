@@ -1114,3 +1114,20 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   `git check-ignore` to assert the kept files are kept and `best.pt`,
   `model.onnx` and the parquet are still ignored. **Check `git status` lists
   them before committing after a run.**
+- **Wiring the trained model is a file copy, and that is also what made the
+  launcher lie.** `server/app/config.py` points `model_path` at
+  `ml/runs/baseline/model.onnx` and `main.py` picks `OnnxBackend` when it
+  exists, so dropping `model.onnx`, `labels.json` and `calibration.json`
+  into that directory is the whole of it — no code change, no flag, and
+  `/health` flips `model_loaded` and `calibrated` by itself. But
+  `scripts/try_it.py` printed "the classifier is a stub, so whatever it
+  names is meaningless" **unconditionally**, which is true of the stub and
+  is dangerous advice about a trained model: it tells the reader to
+  disregard a real identification of something that might be lethal. The
+  one step that turns the stub into the real thing was the step that turned
+  the instructions into a lie. `closing_advice(health)` is now a pure
+  function of what `/health` reported, `server/tests/test_try_it.py` pins
+  all three states, and rule 1 is asserted over the launcher's text as well
+  — the same omission that left a soft edibility verdict in `disclaimer.py`
+  through the September purge, because a test that scans what `assess`
+  returns never reads what a script prints.

@@ -37,6 +37,11 @@ WINDOWS = os.name == "nt"
 processes: list[subprocess.Popen] = []
 
 
+# Where server/app/config.py looks for a trained model. Named here so the
+# closing advice can point at an exact path rather than a description of one.
+MODEL_PATH = ROOT / "ml" / "runs" / "baseline" / "model.onnx"
+
+
 def say(text: str) -> None:
     print(f"\n{text}")
 
@@ -84,6 +89,68 @@ def npm_command() -> str:
     """npm is a .cmd shim on Windows, which subprocess will not find bare."""
     found = shutil.which("npm.cmd") if WINDOWS else shutil.which("npm")
     return found or shutil.which("npm") or ""
+
+
+def closing_advice(health: dict) -> str:
+    """What to try, given which backend actually answered /health.
+
+    Step 2 is the reason this is a function. "The classifier is a stub, so
+    whatever it names is meaningless" is true of the stub and is dangerous
+    advice about a trained model -- it tells the reader to disregard a real
+    identification. The launcher already reads /health, so it can simply
+    not say the wrong one.
+    """
+    out = ["  What to do when it loads:", "",
+           "    1. Tick all six boxes and continue. There is no accept-all, "
+           "on purpose."]
+
+    if health["model_loaded"]:
+        out.append(
+            "    2. Add a photograph of a real mushroom as the cap. This is the\n"
+            "       trained model: the name it gives you is a real identification,\n"
+            "       on 244 British species. Then try a photograph of something\n"
+            "       that is NOT a mushroom -- a chair, a pavement, your hand. It\n"
+            "       should decline, and that refusal is a different one from\n"
+            '       "I\'m not sure what this is".'
+        )
+        if not health["calibrated"]:
+            out.append(
+                "       No calibration is loaded, so every percentage on screen is\n"
+                "       an uncalibrated softmax output. Rule 4: the app says so\n"
+                "       rather than presenting it as confidence. Put\n"
+                "       calibration.json beside model.onnx to fix it."
+            )
+    else:
+        out.append(
+            "    2. Add any photograph as the cap -- a real mushroom, a chair,\n"
+            "       anything. The classifier is a stub, so whatever it names is\n"
+            "       meaningless."
+        )
+
+    out.append(
+        "    3. Look at what happens AROUND the name. That is the whole product:\n"
+        "       whether it refuses, what it asks you to check next, and what it\n"
+        "       declines to say about eating anything.\n"
+        "    4. Try the red cross, top right. That screen is hardcoded and works\n"
+        "       offline, and it sits above the consent gate."
+    )
+
+    if health["model_loaded"]:
+        out += ["", '  The verdict worth hunting for is "I can\'t safely narrow '
+                'this down" --\n  a lethal pair in play and the app refusing to '
+                'choose. Anything small\n  and tawny on wood is a good bet.']
+    else:
+        out += ["", "  Different photographs give different (fake) verdicts. Keep "
+                'going until\n  you get "I can\'t safely narrow this down" -- that '
+                "is the one worth\n  seeing, and the one no competitor will ever "
+                "show you."]
+        out += ["", "  No model is loaded. If you have model.onnx from a training "
+                f"run, put\n  it at {MODEL_PATH},\n  with labels.json and "
+                "calibration.json beside it, and run this again --\n  nothing "
+                "else changes."]
+
+    out += ["", "  Press Ctrl-C here to stop both."]
+    return "\n".join(out)
 
 
 def main() -> int:
@@ -155,22 +222,7 @@ def main() -> int:
     # --- Over to you --------------------------------------------------------
     say("3/3  Open this in your browser")
     print(f"\n      http://localhost:{WEB_PORT}\n")
-    print("""  What to do when it loads:
-
-    1. Tick all six boxes and continue. There is no accept-all, on purpose.
-    2. Add any photograph as the cap -- a real mushroom, a chair, anything.
-       The classifier is a stub, so whatever it names is meaningless.
-    3. Look at what happens AROUND the name. That is the whole product:
-       whether it refuses, what it asks you to check next, and what it
-       declines to say about eating anything.
-    4. Try the red cross, top right. That screen is hardcoded and works
-       offline, and it sits above the consent gate.
-
-  Different photographs give different (fake) verdicts. Keep going until you
-  get "I can't safely narrow this down" -- that is the one worth seeing, and
-  the one no competitor will ever show you.
-
-  Press Ctrl-C here to stop both.""")
+    print(closing_advice(health))
 
     try:
         while all(p.poll() is None for p in processes):
