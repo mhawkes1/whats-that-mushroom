@@ -87,3 +87,53 @@ def test_the_launcher_makes_no_edibility_claim(health):
     for phrase in ("edible", "safe to eat", "inedible", "not assessed as safe",
                    "choice edible", "good to eat"):
         assert phrase not in advice, f"the launcher says {phrase!r}"
+
+
+# --- When it fails ---------------------------------------------------------
+
+
+def test_a_failure_prints_the_log_rather_than_pointing_at_it(tmp_path):
+    """"Look in .try_it_api.log for why" is not help.
+
+    This launcher exists for someone who has never opened a terminal. At the
+    moment it fails they have no working tools, no reason to trust the thing
+    that just failed, and are being asked to find a dotfile and know how to
+    read it. The answer is almost always the last line of the traceback, so
+    print it.
+    """
+    from try_it import tail
+
+    log = tmp_path / "api.log"
+    log.write_text(
+        "Traceback (most recent call last):\n"
+        "RuntimeError: A model is present but there is no labels.json\n",
+        encoding="utf-8",
+    )
+    out = tail(log)
+    assert "labels.json" in out, "the actual error must appear"
+    assert all(line.startswith("  | ") for line in out.splitlines()), (
+        "log lines are prefixed so they read as quoted output, not as "
+        "something the launcher is saying itself"
+    )
+
+
+def test_tail_says_so_rather_than_raising_when_there_is_no_log(tmp_path):
+    """The failure path must not fail. An empty or missing log is itself
+    information -- a process that wrote nothing died differently from one
+    that wrote a traceback."""
+    from try_it import tail
+
+    empty = tmp_path / "empty.log"
+    empty.write_text("", encoding="utf-8")
+    assert "empty" in tail(empty)
+    assert "could not read" in tail(tmp_path / "absent.log")
+
+
+def test_the_tail_is_bounded(tmp_path):
+    """A server that logged for ninety seconds must not fill the screen."""
+    from try_it import tail
+
+    log = tmp_path / "noisy.log"
+    log.write_text("\n".join(f"line {i}" for i in range(500)), encoding="utf-8")
+    assert len(tail(log).splitlines()) == 20
+    assert "line 499" in tail(log), "the end is the part that matters"

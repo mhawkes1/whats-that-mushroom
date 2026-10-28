@@ -77,12 +77,30 @@ def reachable(url: str) -> bool:
         return False
 
 
+def tail(log: Path, lines: int = 20) -> str:
+    """The end of a log file, or a sentence saying why there isn't one."""
+    try:
+        text = log.read_text(encoding="utf-8", errors="replace").strip()
+    except OSError as exc:
+        return f"  (could not read {log.name}: {exc})"
+    if not text:
+        return f"  ({log.name} is empty -- the process wrote nothing at all)"
+    return "\n".join(f"  | {line}" for line in text.splitlines()[-lines:])
+
+
 def wait_for(url: str, seconds: int, what: str, log: Path) -> None:
     for _ in range(seconds):
         if reachable(url):
             return
         time.sleep(1)
-    die(f"{what} did not start within {seconds}s. Look in {log.name} for why.")
+    # Print the log rather than pointing at it. This launcher exists for
+    # someone who has never opened a terminal, and "look in .try_it_api.log"
+    # asks them to find a dotfile and know how to read it -- at the exact
+    # moment they have no working tools and no reason to trust the thing
+    # that just failed. The traceback is almost always one line of answer.
+    die(f"{what} did not start within {seconds}s.\n\n"
+        f"The last lines of {log.name}:\n\n{tail(log)}\n\n"
+        f"  The full file is {log} ")
 
 
 def npm_command() -> str:
