@@ -24,57 +24,67 @@ const read = (p: string) => readFileSync(resolve(SRC, p), 'utf8');
 describe('the emergency route', () => {
   it('is offered by the front page', () => {
     const capture = read('screens/CaptureScreen.tsx');
-    expect(capture).toMatch(/onEmergency=\{\(\) =>\s*navigation\.navigate\('Emergency'\)/);
+    expect(capture).toMatch(/navigation\.navigate\('Emergency'\)/);
   });
 
-  it('is a labelled button in the header, not a bare glyph', () => {
-    const header = read('components/AppHeader.tsx');
-    expect(header).toContain('onPress={onEmergency}');
-    expect(header).toContain("accessibilityRole=\"button\"");
-    // A screen reader user in an emergency needs words, not a plus sign.
-    expect(header).toMatch(/accessibilityLabel="[^"]*eaten[^"]*"/i);
+  it('is a labelled button, not a bare glyph', () => {
+    const capture = read('screens/CaptureScreen.tsx');
+    expect(capture).toMatch(/accessibilityLabel="[^"]*eaten[^"]*"/i);
+    // A screen reader user in an emergency needs words, not a symbol.
+    expect(capture).toMatch(/Someone has eaten a wild mushroom/);
   });
 
-  it('does not render as a plus sign', () => {
-    // It was drawn as a heavy greek cross, which is a plus, in the top
-    // right corner, which is where every app puts "add a new one". Martin
-    // read it as exactly that in ordinary use on 2026-10-29 and reached
-    // for it to add a second mushroom.
+  it('is PINNED, so it cannot be scrolled off', () => {
+    // This is the whole guarantee, and the mechanism carrying it changed
+    // on 2026-10-29.
     //
-    // The compounding failure is what makes this a safety bug rather than
-    // a papercut: tap it, get the emergency screen, learn the button is
-    // wrong, and you have been trained away from the one control that has
-    // to work when it matters. Invisible to the accessibility test,
-    // because the label was always right; it was only wrong to look at.
+    // It used to be the compact control in the header -- above the fold by
+    // construction, because the header is the first thing rendered. Martin
+    // dropped that to free the corner for starting another mushroom, which
+    // is what users were already trying to use it for.
+    //
+    // What was left was the full-width button at the END OF THE SCROLL.
+    // That is below the fold on any phone shorter than the content, so
+    // dropping the header control without pinning this one would have
+    // quietly removed the guarantee while leaving a button that looks like
+    // it provides it. The button now sits outside the ScrollView.
+    const capture = read('screens/CaptureScreen.tsx');
+    const closeScroll = capture.indexOf('</ScrollView>');
+    const emergency = capture.indexOf('onPress={() => navigation.navigate(\'Emergency\')}');
+    expect(closeScroll).toBeGreaterThan(-1);
+    expect(emergency).toBeGreaterThan(-1);
+    expect(emergency).toBeGreaterThan(closeScroll);
+  });
+
+  it('does not share the corner with anything that means "add"', () => {
+    // The route was drawn as a heavy greek cross -- a plus -- in the top
+    // right corner, which is where every app puts "add a new one". Martin
+    // read it as exactly that in ordinary use and reached for it to add a
+    // second mushroom.
+    //
+    // The compounding failure is what made it a safety bug: tap it, get
+    // the emergency screen, learn the button is wrong, and you have been
+    // trained away from the one control that has to work. Invisible to
+    // the accessibility test, because the label was always right.
+    //
+    // The corner now does mean "add", and the emergency route is not in
+    // it. What must never return is both at once.
     const header = read('components/AppHeader.tsx');
-    for (const glyph of ['✚', '✛', '➕', '+']) {
+    for (const glyph of ['\u271a', '\u271b', '\u2795', '+']) {
       expect(header.includes(`>${glyph}<`)).toBe(false);
     }
-    // Words, which need no learning at the one moment nobody is learning.
-    expect(header).toMatch(/EATEN/);
+    expect(header).not.toMatch(/Emergency/);
+    expect(header).not.toMatch(/onEmergency/);
   });
 
-  it('is positioned without needing a scroll', () => {
+  it('is never the same colour as the control beside it', () => {
+    // Red is the emergency route's colour throughout. A red button in the
+    // corner that used to hold the emergency route would be the original
+    // confusion with the arguments reversed.
     const header = read('components/AppHeader.tsx');
-    // The header is the first thing the capture screen renders, so the
-    // control is above the fold by construction. Assert it stays there.
+    expect(header).not.toMatch(/backgroundColor: theme\.colour\.danger\b/);
     const capture = read('screens/CaptureScreen.tsx');
-    const firstChild = capture.indexOf('<AppHeader');
-    const anythingElse = capture.indexOf('<View style={styles.header}>');
-    expect(firstChild).toBeGreaterThan(-1);
-    expect(firstChild).toBeLessThan(anythingElse);
-    // And that it is a real target rather than a few pixels of text.
-    // Asserted as the platform minimum in each dimension rather than as a
-    // literal `width: 44`: the control went from a 44x44 circle to a
-    // 64x44 rounded rectangle when the plus-sign glyph was replaced with
-    // words, which is larger, and the old literal would have failed a
-    // change that made the target better.
-    const w = header.match(/min(?:Width|Height): (\d+)/g) ?? [];
-    expect(w.length).toBeGreaterThanOrEqual(2);
-    for (const dim of w) {
-      expect(Number(dim.split(': ')[1])).toBeGreaterThanOrEqual(44);
-    }
-    expect(header).toMatch(/hitSlop/);
+    expect(capture).toMatch(/dangerSurface/);
   });
 
   it('leaves no reference to the removed cover', () => {

@@ -136,8 +136,12 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
   const taken = SLOTS.filter((slot) => photos[slot.key]).length;
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-      <AppHeader onEmergency={() => navigation.navigate('Emergency')} />
+    <View style={styles.screen}>
+      <ScrollView contentContainerStyle={styles.content}>
+      <AppHeader
+        onNewObservation={startAnother}
+        canStartAnother={taken > 0}
+      />
 
       <View style={styles.header}>
         <View style={styles.headerText}>
@@ -204,19 +208,6 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
         </Text>
       </Pressable>
 
-      {taken > 0 ? (
-        <Pressable
-          onPress={startAnother}
-          style={styles.startOver}
-          accessibilityRole="button"
-          accessibilityLabel="Clear these photographs and start a different mushroom"
-        >
-          <Text style={styles.startOverText}>
-            Clear these and start a different mushroom
-          </Text>
-        </Pressable>
-      ) : null}
-
       {photos.top && taken < SLOTS.length ? (
         <Text style={styles.nudge}>
           You can go on with {taken} photo{taken === 1 ? '' : 's'}, but the
@@ -242,25 +233,50 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
         </Text>
       </View>
 
-      {/* Not behind anything. Someone opening the app because a child has
-          eaten something in the garden is not going to go looking. */}
+    </ScrollView>
+
+      {/* PINNED, outside the ScrollView. It used to be the last thing in
+          the scroll, which meant that on any phone shorter than the
+          content it was below the fold -- the header's compact control
+          was what actually satisfied "never needs a scroll".
+
+          Martin dropped that control on 2026-10-29 to free the corner for
+          starting another mushroom. Pinning this is what keeps the
+          guarantee: someone opening the app because a child has eaten
+          something in the garden is not going to scroll, and is not going
+          to go looking. */}
       <Pressable
         style={styles.emergency}
         onPress={() => navigation.navigate('Emergency')}
         accessibilityRole="button"
+        accessibilityLabel="Someone has eaten a wild mushroom. What to do."
       >
         <Text style={styles.emergencyText}>
           Someone has eaten a wild mushroom — what to do
         </Text>
       </Pressable>
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: theme.colour.background },
-  content: { padding: theme.spacing(3), gap: theme.spacing(2.5) },
+  content: {
+    padding: theme.spacing(3),
+    gap: theme.spacing(2.5),
+    // Room for the pinned emergency button to sit over. Without it the
+    // last card is clipped mid-sentence behind the button, which reads
+    // as a rendering fault and is only visible at real phone height --
+    // a tall screenshot viewport hides it completely.
+    paddingBottom: theme.spacing(12),
+  },
+  // Pinned to the bottom of the screen rather than the end of the scroll.
+  // The horizontal padding is its own, because it now sits outside the
+  // scroll's content padding.
   emergency: {
+    marginHorizontal: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(1),
     backgroundColor: theme.colour.dangerSurface,
     borderWidth: 1,
     borderColor: theme.colour.danger,
@@ -332,19 +348,6 @@ const styles = StyleSheet.create({
     fontSize: theme.font.heading,
     fontWeight: '700',
     color: theme.colour.onAccent,
-  },
-  // Quiet on purpose. It is the second most likely thing a user wants and
-  // must not compete with "Next" -- but it has to EXIST, because when it
-  // did not the emergency button was pressed into service instead.
-  startOver: {
-    alignSelf: 'center',
-    paddingVertical: theme.spacing(1.5),
-    paddingHorizontal: theme.spacing(2),
-  },
-  startOverText: {
-    fontSize: theme.font.small,
-    color: theme.colour.textMuted,
-    textDecorationLine: 'underline',
   },
   nudge: {
     fontSize: theme.font.small,

@@ -38,28 +38,25 @@ const TAGLINE = "I'll tell you when I can't tell.";
  * it, and one of them is the reason this component exists rather than the
  * header being inlined:
  *
- * **The emergency route.** The cover pinned it to its top corner because it
- * is the one control that must never need a scroll: somebody whose child
- * has eaten something is not going to hunt for it. It is still pinned, still
- * above the fold, still the same target size and label, and it still sits
- * above the consent gate. Removing the cover must not quietly cost the app
- * the only screen that has to work when everything else has failed.
+ * **The emergency route is NOT here any more.** It was, from the cover
+ * onwards, because it is the one control that must never need a scroll.
+ * Martin dropped it from the header on 2026-10-29, having seen that the
+ * capture screen already carries a full-width emergency button and
+ * wanting this corner for starting another mushroom.
  *
- * **It reads as a word, not a cross, and that was a real defect.** It was
- * drawn as a heavy greek cross glyph, which is a plus sign, in the top
- * right corner, which is where every app in the world puts "add a new
- * one". Martin read it as exactly that on 2026-10-29 -- not in a usability
- * study, in ordinary use -- and the failure compounds: a user taps it
- * expecting to add a mushroom, gets the emergency screen, learns the
- * button is wrong, and has been trained to avoid the one control that has
- * to work when it matters. The accessibility label was always correct, so
- * this was invisible to `accessibility.test.ts` and to every screen
- * reader; it was only ever wrong for people looking at it.
+ * The no-scroll guarantee did not go with it. That button is now PINNED
+ * outside the capture screen's ScrollView, so it is on screen whatever
+ * the user has scrolled to -- which it was not before, on any real phone.
+ * Dropping the header control therefore made the route more reliable
+ * rather than less, but only because the pinning came with it. If a
+ * future change unpins it, the guarantee is gone and nothing in this
+ * component will say so; `emergencyRoute.test.ts` is what holds the line.
  *
- * The deeper cause was that the app had **no** way to start a new
- * observation, so the nearest plus-shaped thing became the affordance for
- * it. That is fixed on the capture screen; this only has to stop
- * impersonating it.
+ * The brief history, because it keeps mattering: the cover pinned it to
+ * its top corner; removing the cover nearly cost the app its panic
+ * button; drawing it as a plus sign in the add-a-new-one corner made
+ * users reach for it to add a mushroom, which is what this corner now
+ * actually does.
  *
  * **A little of the book's identity.** The gold rule and the serif title
  * remain. They used to be reinforcement for a shared name; since the rename
@@ -68,7 +65,17 @@ const TAGLINE = "I'll tell you when I can't tell.";
  * and still never awaited: if Fraunces has not arrived, the title renders in
  * the platform serif rather than not at all.
  */
-export function AppHeader({ onEmergency }: { onEmergency: () => void }) {
+export function AppHeader({
+  onNewObservation,
+  canStartAnother,
+}: {
+  /** Clear the current photographs and begin a different mushroom. */
+  onNewObservation?: () => void;
+  /** Whether there is anything to clear. Hidden rather than disabled: a
+   *  dead control in the corner people already read as "add" is worse
+   *  than no control. */
+  canStartAnother?: boolean;
+}) {
   return (
     <View style={styles.header}>
       <View style={styles.titleBlock}>
@@ -79,17 +86,19 @@ export function AppHeader({ onEmergency }: { onEmergency: () => void }) {
         <Text style={styles.tagline}>{TAGLINE}</Text>
       </View>
 
-      <Pressable
-        onPress={onEmergency}
-        style={styles.sos}
-        hitSlop={12}
-        accessibilityRole="button"
-        accessibilityLabel="Someone has eaten a wild mushroom. What to do."
-      >
-        <Text style={styles.sosLabel} allowFontScaling={false}>
-          EATEN{'\n'}ONE?
-        </Text>
-      </Pressable>
+      {onNewObservation && canStartAnother ? (
+        <Pressable
+          onPress={onNewObservation}
+          style={styles.newObservation}
+          hitSlop={12}
+          accessibilityRole="button"
+          accessibilityLabel="Clear these photographs and start a different mushroom"
+        >
+          <Text style={styles.newObservationLabel} allowFontScaling={false}>
+            NEW{'\n'}MUSHROOM
+          </Text>
+        </Pressable>
+      ) : null}
     </View>
   );
 }
@@ -132,23 +141,25 @@ const styles = StyleSheet.create({
     fontSize: theme.font.small,
     color: theme.colour.textMuted,
   },
-  // Still 44x44 minimum -- the platform touch target -- but a rounded
-  // rectangle rather than a circle, because a red circle with a symbol in
-  // it is the shape of a badge and a rounded rectangle with a word in it
-  // is the shape of a button.
-  sos: {
+  // The corner people were already reading as "add another one", now
+  // doing that. Words rather than a plus for the same reason the
+  // emergency control took words: this sits next to nothing that explains
+  // it, and two short words cannot be misread.
+  //
+  // Deliberately NOT red. Red is the emergency route's colour everywhere
+  // in this app, and a red button in the corner that used to hold the
+  // emergency route would be the old confusion with the arguments
+  // reversed.
+  newObservation: {
     minWidth: 64,
     minHeight: 44,
     borderRadius: theme.radius.md,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: theme.spacing(1),
-    backgroundColor: theme.colour.danger,
+    backgroundColor: theme.colour.accent,
   },
-  // Two short words beat any glyph here. A symbol has to be learned, and
-  // the one moment this control is used is the moment nobody is learning
-  // anything.
-  sosLabel: {
+  newObservationLabel: {
     color: theme.colour.onAccent,
     fontSize: 11,
     lineHeight: 13,
