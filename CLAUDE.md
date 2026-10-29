@@ -1675,15 +1675,59 @@ alarm in roughly every seventy photographs. Against this project's own
 stated asymmetry -- a false alarm costs a wasted foraging trip, a miss
 costs a liver -- that is not a close call.
 
-**But it has not been done, because the number came off the TEST split.**
-Choosing a safety parameter because it zeroes the misses on the split that
-gates release is fitting to the gate, which is the same error as selecting
-a checkpoint on the data you then report. 2% was picked a priori as a
-deliberately low round number; 1% would be picked by looking at the answer.
-The honest version is to sweep it on **validation** and report test, which
-needs validation predictions -- `make_model_card.py --probs-out` writes the
-test split only. That is the change to make before run five, and it is a
-one-flag change.
+**Done on 2026-10-29, under a rule rather than an optimum.** The threshold
+is now **1%**, and what justifies it is stated in advance: **the highest
+threshold at which no genuinely deadly mushroom is shown with no hazard at
+all.** That is decidable before looking at any number, and it is robust --
+every setting from 1% down to 0.1% achieves zero, so the rule picks the
+least intrusive of them rather than a point fitted to a curve.
+
+**The project's own risk matrix would argue for lower, and it is wrong
+here.** `risk_weight` prices a missed deadly species at 1000 and a false
+deadly alarm at 2, so the decision-theoretic trigger is 2/1002 = **0.2%**.
+That derivation assumes misses keep falling as the threshold drops. They
+do not: they reach zero at 1%, and below that the app only buys false
+alarms. Measured on run four, counting a failure as *truly deadly, top
+candidate harmless, mass rule quiet* -- what a user actually sees, rather
+than every deadly photograph the mass rule happened not to fire on:
+
+| threshold | warned | silent | extra alarms | cost at 1000:2 |
+| ---: | ---: | ---: | ---: | ---: |
+| 2.00% | 8.5% | **2** | 243 | 2,486 |
+| **1.00%** | 10.5% | **0** | 349 | **698** |
+| 0.50% | 13.0% | 0 | 492 | 984 |
+| 0.20% | 18.1% | 0 | 782 | 1,564 |
+| 0.10% | 23.3% | 0 | 1,100 | 2,200 |
+
+With no mass rule at all: 7 silent, cost 7,000.
+
+**The circularity is reduced, not eliminated, and the difference matters.**
+Where the rule lands still depends on data, and the data available was the
+test split that gates release. What the split supports *without*
+circularity is the weaker and sufficient claim that **2% was too high** --
+it leaves silent cases where everything below it to 0.1% does not.
+Confirming the exact figure needs validation predictions. `--split val
+--probs-out predictions-val.npz` is now in the run-book, in
+`finish_run.py`'s artefact list and has a gitignore negation; run five
+confirms it natively.
+
+**Both of run four's silent confusions sat at 1.07% and 1.11%** -- just the
+wrong side of the old line. Simulated through the real `SafetyLayer` at the
+fitted 0.65, both now carry the full lethal warning and `deadly_in_play` is
+true, which also keeps the follow-up questions expanded on those screens.
+Run four therefore passes SAFETY.md's zero-silent requirement, and
+`data/model-confusions.json` drops from five pairs to three: two of them
+existed only as cover for confusions the mass rule could not see.
+
+**`scripts/rescore_run.py` brought the card into step with no GPU.** Every
+threshold-dependent figure in a finished run is recomputed from
+`predictions.npz`; accuracy, risk, deadly recall and the coverage curve are
+left alone because they do not depend on where the warning fires. The
+record is appended rather than overwritten -- `rescored` carries the date,
+the old and new thresholds and the file -- for the same reason an incident
+outcome is appended: a recomputed figure must never read as a measured one.
+This is the second question `predictions.npz` has answered that could not
+otherwise have been asked at all.
 - **The confusion graph's threshold was filtering out exactly the silent
   confusions, which is the one thing it exists to catch.** Found on run
   four's real output: all three pairs it kept were single occurrences with

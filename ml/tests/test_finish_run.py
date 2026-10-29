@@ -56,6 +56,10 @@ def complete_run(tmp_path, monkeypatch):
         created.append(run / name)
     np.savez_compressed(run / "predictions.npz", probs=np.zeros((2, 2), np.float16))
     created.append(run / "predictions.npz")
+    # The validation predictions, which a safety threshold may honestly be
+    # tuned on -- unlike the test split, which gates release.
+    np.savez_compressed(run / "predictions-val.npz", probs=np.zeros((2, 2), np.float16))
+    created.append(run / "predictions-val.npz")
     splits = processed / "splits.csv.gz"
     existed = splits.exists()
     if not existed:
@@ -82,7 +86,8 @@ def test_every_small_artefact_appears_in_the_git_add_line(complete_run):
     out = _run(complete_run).stdout
     add = out.split("git add")[1].split("git commit")[0]
     for name in ("MODEL_CARD.md", "report.json", "calibration.json",
-                 "labels.json", "predictions.npz", "config.yaml",
+                 "labels.json", "predictions.npz", "predictions-val.npz",
+                 "config.yaml",
                  "history.json", "splits.csv.gz"):
         assert name in add, f"{name} is not in the command to paste"
 

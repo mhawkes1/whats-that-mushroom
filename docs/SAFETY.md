@@ -63,7 +63,7 @@ down" and tells the user to dig up the stem base.
 
 ### 3. Small probabilities of death are not rounded away
 
-A deadly species holding 2% of the probability mass triggers the full warning.
+A deadly species holding 1% of the probability mass triggers the full warning.
 A one-in-fifty chance of death is not noise. The threshold is deliberately
 low, because the cost of a false alarm is a wasted foraging trip and the cost
 of a miss is a liver transplant.

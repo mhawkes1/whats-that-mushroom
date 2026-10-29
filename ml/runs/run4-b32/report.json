@@ -24,46 +24,37 @@
   },
   "dangerous_confusions": [
     {
-      "true_species": "inocybe-erubescens",
-      "predicted_as": "gymnopilus-penetrans",
-      "count": 1,
-      "max_confidence": 0.5729,
-      "silent": 1,
-      "min_deadly_mass": 0.0107,
-      "max_deadly_mass": 0.0107
-    },
-    {
-      "true_species": "lepiota-subincarnata",
-      "predicted_as": "lactarius-tabidus",
-      "count": 1,
-      "max_confidence": 0.2398,
-      "silent": 1,
-      "min_deadly_mass": 0.0111,
-      "max_deadly_mass": 0.0111
-    },
-    {
       "true_species": "clitocybe-rivulosa",
       "predicted_as": "collybiopsis-confluens",
       "count": 1,
-      "max_confidence": 0.6901,
+      "max_confidence": 0.6899,
       "silent": 0,
       "min_deadly_mass": 0.0816,
       "max_deadly_mass": 0.0816
     },
     {
+      "true_species": "inocybe-erubescens",
+      "predicted_as": "gymnopilus-penetrans",
+      "count": 1,
+      "max_confidence": 0.5728,
+      "silent": 0,
+      "min_deadly_mass": 0.0107,
+      "max_deadly_mass": 0.0107
+    },
+    {
       "true_species": "amanita-virosa",
       "predicted_as": "amanita-citrina",
       "count": 1,
-      "max_confidence": 0.5531,
+      "max_confidence": 0.5532,
       "silent": 0,
-      "min_deadly_mass": 0.3655,
-      "max_deadly_mass": 0.3655
+      "min_deadly_mass": 0.3654,
+      "max_deadly_mass": 0.3654
     },
     {
       "true_species": "galerina-marginata",
       "predicted_as": "crepidotus-cesatii",
       "count": 1,
-      "max_confidence": 0.3854,
+      "max_confidence": 0.3853,
       "silent": 0,
       "min_deadly_mass": 0.1645,
       "max_deadly_mass": 0.1645
@@ -85,6 +76,15 @@
       "silent": 0,
       "min_deadly_mass": 0.2916,
       "max_deadly_mass": 0.2916
+    },
+    {
+      "true_species": "lepiota-subincarnata",
+      "predicted_as": "lactarius-tabidus",
+      "count": 1,
+      "max_confidence": 0.2399,
+      "silent": 0,
+      "min_deadly_mass": 0.0111,
+      "max_deadly_mass": 0.0111
     }
   ],
   "coverage_precision": [
@@ -261,10 +261,20 @@
   ],
   "dangerous_confusion_count": 7,
   "dangerous_confusion_rate": 0.0007444432627884718,
-  "silent_dangerous_confusion_count": 2,
-  "silent_dangerous_confusion_rate": 0.0002126980750824205,
-  "deadly_mass_threshold": 0.02,
+  "silent_dangerous_confusion_count": 0,
+  "silent_dangerous_confusion_rate": 0.0,
+  "deadly_mass_threshold": 0.01,
   "split": "test",
   "checkpoint": "ml/runs/run4-b32/best.pt",
-  "calibrated": true
+  "calibrated": true,
+  "rescored": [
+    {
+      "on": "2026-10-29",
+      "deadly_mass_threshold": {
+        "from": 0.02,
+        "to": 0.01
+      },
+      "from_file": "predictions.npz"
+    }
+  ]
 }

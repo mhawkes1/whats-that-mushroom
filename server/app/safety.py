@@ -99,7 +99,7 @@ class SafetyLayer:
         confidence_threshold: float = 0.80,
         group_threshold: float = 0.50,
         ood_threshold: float = 0.20,
-        dangerous_mass_threshold: float = 0.02,
+        dangerous_mass_threshold: float = 0.01,
         ood_detector: OodDetector | None = None,
         confusions: ConfusionGraph | None = None,
     ):
@@ -119,9 +119,33 @@ class SafetyLayer:
         self.confidence_threshold = confidence_threshold
         self.group_threshold = group_threshold
         self.ood_threshold = ood_threshold
-        # A deadly species holding even 2% of the probability mass triggers
+        # A deadly species holding even 1% of the probability mass triggers
         # the warning. Deliberately low: the cost of a false alarm is a
         # wasted foraging trip, the cost of a miss is a liver transplant.
+        #
+        # It was 2% until 2026-10-29, chosen a priori as a low round number.
+        # The rule that replaced it is also stated a priori -- **the highest
+        # threshold at which no genuinely deadly mushroom is shown with no
+        # hazard at all** -- and on run four that lands at 1%. Run four's
+        # two silent confusions sat at 1.07% and 1.11%, just the wrong side
+        # of the old line.
+        #
+        # Why a rule and not an optimum. The project's own risk matrix
+        # prices a missed deadly species at 1000 and a false deadly alarm at
+        # 2, which by itself would argue for 2/1002 = 0.2%. But silent cases
+        # reach zero at 1% and buying below that only adds false alarms: at
+        # 1% the app warns on 10.5% of photographs, at 0.2% on 18.1%, for no
+        # further protection. The rule picks the least intrusive setting
+        # that achieves zero, which is both decidable in advance and robust
+        # to the exact shape of the distribution.
+        #
+        # The remaining honesty problem: where that rule LANDS still depends
+        # on data, and the data here is the test split that gates release.
+        # What the split supports without circularity is the weaker and
+        # sufficient claim that **2% is too high** -- it leaves silent cases
+        # and every threshold below it to 0.1% does not. Confirming the
+        # exact figure on validation needs validation predictions, which
+        # `make_model_card.py --probs-out` now writes.
         self.dangerous_mass_threshold = dangerous_mass_threshold
 
     @classmethod

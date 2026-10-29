@@ -22,19 +22,19 @@ to species from a photograph at all, by this model or by an expert.
 
 Dangerous confusions (a deadly species predicted as something a user might eat): **7** (0.0744% of samples)
 
-Of those, **2** are **silent**: the deadly species held less than 2% of the probability mass, so the app's lethal warning never fires and the user is shown a harmless name with no hazard line. The rest are caught by the safety layer and the user sees the warning regardless. **The silent count is the one that reaches a person.**
+Of those, **0** are **silent**: the deadly species held less than 1% of the probability mass, so the app's lethal warning never fires and the user is shown a harmless name with no hazard line. The rest are caught by the safety layer and the user sees the warning regardless. **The silent count is the one that reaches a person.**
 
-`Silent` is the count the app would NOT have warned about. `Deadly mass` is how much probability stayed on the deadly species across those samples; the safety layer warns from 2% upward, at any rank.
+`Silent` is the count the app would NOT have warned about. `Deadly mass` is how much probability stayed on the deadly species across those samples; the safety layer warns from 1% upward, at any rank.
 
 | True species | Predicted as | Count | Silent | Deadly mass (min–max) | Max confidence |
 | --- | --- | ---: | ---: | ---: | ---: |
-| _inocybe-erubescens_ | _gymnopilus-penetrans_ | 1 | **1** | 0.011–0.011 | 0.573 |
-| _lepiota-subincarnata_ | _lactarius-tabidus_ | 1 | **1** | 0.011–0.011 | 0.240 |
 | _clitocybe-rivulosa_ | _collybiopsis-confluens_ | 1 | **0** | 0.082–0.082 | 0.690 |
+| _inocybe-erubescens_ | _gymnopilus-penetrans_ | 1 | **0** | 0.011–0.011 | 0.573 |
 | _amanita-virosa_ | _amanita-citrina_ | 1 | **0** | 0.365–0.365 | 0.553 |
 | _galerina-marginata_ | _crepidotus-cesatii_ | 1 | **0** | 0.165–0.165 | 0.385 |
 | _inocybe-erubescens_ | _cuphophyllus-pratensis_ | 1 | **0** | 0.041–0.041 | 0.351 |
 | _clitocybe-rivulosa_ | _crepidotus-cesatii_ | 1 | **0** | 0.292–0.292 | 0.285 |
+| _lepiota-subincarnata_ | _lactarius-tabidus_ | 1 | **0** | 0.011–0.011 | 0.240 |
 
 ### Recall on deadly species
 

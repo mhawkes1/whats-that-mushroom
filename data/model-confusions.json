@@ -8,17 +8,6 @@
   "note": "Empirical confusions of ONE checkpoint, measured on its own held-out split. These are not field lookalikes and must never be shown to a user as resemblances. Regenerate for every model; the server refuses a graph whose checkpoint does not match.",
   "pairs": [
     {
-      "deadly": "inocybe-erubescens",
-      "mistaken_for": "gymnopilus-penetrans",
-      "count": 1,
-      "max_confidence": 0.5728,
-      "max_deadly_mass": 0.0107,
-      "also_a_field_lookalike": false,
-      "silent": 1,
-      "silent_in_reach": 0,
-      "best_silent_rank": 40
-    },
-    {
       "deadly": "amanita-virosa",
       "mistaken_for": "amanita-citrina",
       "count": 1,
@@ -50,17 +39,6 @@
       "silent": 0,
       "silent_in_reach": 0,
       "best_silent_rank": null
-    },
-    {
-      "deadly": "lepiota-subincarnata",
-      "mistaken_for": "lactarius-tabidus",
-      "count": 1,
-      "max_confidence": 0.2399,
-      "max_deadly_mass": 0.0111,
-      "also_a_field_lookalike": false,
-      "silent": 1,
-      "silent_in_reach": 0,
-      "best_silent_rank": 21
     }
   ]
 }

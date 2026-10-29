@@ -92,14 +92,19 @@ def test_the_threshold_matches_the_safety_layers_own_default():
 
 
 def test_a_confusion_above_the_threshold_is_not_silent(taxonomy):
-    probs = np.array([_sample(deadly=0.05)])
+    # Relative to the threshold, not a literal. The trigger moved from 2%
+    # to 1% on 2026-10-29 and the old literals -- 0.05 above, 0.01 below --
+    # put the second one exactly ON the new line, where `mass < threshold`
+    # is false. A fixture that encodes the current value tests the value
+    # rather than the behaviour.
+    probs = np.array([_sample(deadly=DEADLY_MASS_THRESHOLD * 5)])
     rows = dangerous_confusions(probs, np.array([D]), CLASSES, taxonomy)
     assert rows[0]["count"] == 1
-    assert rows[0]["silent"] == 0, "5% clears the 2% trigger; the user is warned"
+    assert rows[0]["silent"] == 0, "well clear of the trigger; the user is warned"
 
 
 def test_a_confusion_below_the_threshold_is_silent(taxonomy):
-    probs = np.array([_sample(deadly=0.01)])
+    probs = np.array([_sample(deadly=DEADLY_MASS_THRESHOLD / 2)])
     rows = dangerous_confusions(probs, np.array([D]), CLASSES, taxonomy)
     assert rows[0]["count"] == 1
     assert rows[0]["silent"] == 1, (
@@ -235,3 +240,39 @@ def test_the_card_script_can_save_the_predictions():
         "store float16: float32 doubles a file whose whole argument is that "
         "it is small enough to keep"
     )
+
+
+def test_rescoring_appends_provenance_rather_than_overwriting_it():
+    """A recomputed figure must never read as a measured one.
+
+    `scripts/rescore_run.py` brings a finished run's card into step with a
+    changed safety threshold, using the committed predictions and no GPU.
+    That is a genuinely useful thing and a genuinely dangerous one: the
+    card is the evidence for a release decision, and a number quietly
+    recomputed under a new rule looks exactly like a number measured under
+    it.
+
+    So the record is appended, for the same reason an incident outcome is:
+    a history that can be edited is one nobody can trust.
+    """
+    source = (ROOT / "scripts" / "rescore_run.py").read_text(encoding="utf-8")
+    assert 'report.setdefault("rescored", []).append(' in source, (
+        "rescoring must append to a list, not replace a field -- a run "
+        "rescored twice has to show both"
+    )
+    assert '"from": was' in source, (
+        "the record must say what the threshold was, not only what it became"
+    )
+
+
+def test_rescoring_leaves_the_threshold_independent_metrics_alone():
+    """Accuracy, risk and the coverage curve do not depend on where the
+    warning fires, so recomputing them would be inventing figures the
+    predictions cannot support any better than the original run did."""
+    source = (ROOT / "scripts" / "rescore_run.py").read_text(encoding="utf-8")
+    for untouched in ("accuracy", "risk_weighted_error", "coverage_precision",
+                      "deadly_recall", "genus_accuracy"):
+        assert f'report["{untouched}"]' not in source, (
+            f"rescoring must not rewrite {untouched}: it does not depend on "
+            f"the deadly-mass threshold"
+        )

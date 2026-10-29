@@ -57,7 +57,7 @@ def risk_weighted_error(
 # duplicated here rather than imported because `ml/` and `server/` are
 # separate packages, and `ml/tests/test_evaluate.py` asserts the two stay
 # equal by reading safety.py's source.
-DEADLY_MASS_THRESHOLD = 0.02
+DEADLY_MASS_THRESHOLD = 0.01
 
 
 def dangerous_confusions(
@@ -288,7 +288,7 @@ def write_model_card(report: dict, calibration: dict | None, out_path: str | Pat
         "",
         f"Of those, **{report.get('silent_dangerous_confusion_count', 0)}** are "
         f"**silent**: the deadly species held less than "
-        f"{report.get('deadly_mass_threshold', 0.02):.0%} of the probability "
+        f"{report.get('deadly_mass_threshold', DEADLY_MASS_THRESHOLD):.0%} of the probability "
         f"mass, so the app's lethal warning never fires and the user is shown "
         f"a harmless name with no hazard line. The rest are caught by the "
         f"safety layer and the user sees the warning regardless. **The silent "
@@ -301,7 +301,7 @@ def write_model_card(report: dict, calibration: dict | None, out_path: str | Pat
             "`Silent` is the count the app would NOT have warned about. "
             "`Deadly mass` is how much probability stayed on the deadly "
             "species across those samples; the safety layer warns from "
-            f"{report.get('deadly_mass_threshold', 0.02):.0%} upward, at any "
+            f"{report.get('deadly_mass_threshold', DEADLY_MASS_THRESHOLD):.0%} upward, at any "
             "rank.",
             "",
             "| True species | Predicted as | Count | Silent | Deadly mass "

@@ -294,7 +294,31 @@ python scripts/make_model_card.py \
     --probs-out ml/runs/baseline/predictions.npz
 ```
 
+Then **run it again on validation**, for the predictions alone:
+
+```bash
+python scripts/make_model_card.py \
+    --checkpoint ml/runs/baseline/best.pt \
+    --manifest data/processed/manifest.parquet \
+    --calibration ml/runs/baseline/calibration.json \
+    --split val \
+    --out /dev/null \
+    --report-out /dev/null \
+    --probs-out ml/runs/baseline/predictions-val.npz
+```
+
 `--split test`: the held-out set, which calibration never touched.
+
+**Why the second run exists.** A safety threshold tuned on the split that
+gates release is fitted to its own gate -- the same error as selecting a
+checkpoint on the data you then report. The deadly-mass trigger moved from
+2% to 1% on 2026-10-29 under a rule stated in advance (the highest
+threshold at which no genuinely deadly mushroom is shown with no hazard at
+all), and the only evidence available for where that rule lands was the
+test split, because run four wrote test predictions only. The claim the
+test split *can* support without circularity is the weaker one that 2% was
+too high. Confirming the figure needs this file, and it costs one extra
+inference pass over images that are already on the box.
 
 **`--probs-out` is not optional in practice.** It writes the calibrated
 predictions as float16 — about 4 MB for 9,000 test images across 244 species

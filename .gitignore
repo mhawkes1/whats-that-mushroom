@@ -34,6 +34,10 @@ ml/runs/**
 # all: the first run's deadly probability masses were computed, used and
 # discarded, and the pod that held them was destroyed.
 !ml/runs/*/predictions.npz
+# And the same on the validation split. A safety threshold tuned on the
+# split that gates release is fitted to its own gate; this is the one
+# it may honestly be tuned on.
+!ml/runs/*/predictions-val.npz
 *.parquet
 *.pt
 *.pth
