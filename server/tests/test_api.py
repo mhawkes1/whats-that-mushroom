@@ -589,3 +589,29 @@ def test_every_accepted_name_matches_the_nomenclature_check():
         if sp.get("accepted_name")
     }
     assert recorded == flagged
+
+
+def test_a_calibration_without_its_model_is_not_calibration(client):
+    """Rule 4, in the case that only appeared once a run was committed.
+
+    `calibrated` was `calibration_path.exists()`. That held while the file
+    only ever arrived beside the model it was fitted for -- both were
+    copied into the run directory together or neither was.
+
+    Committing run four's `calibration.json` as release evidence broke the
+    coupling: every fresh clone now has a temperature fitted on run four's
+    validation split, and no model. The service answered `calibrated:
+    true` while the stub backend served deterministic fakes, so the one
+    flag that tells a user whether a percentage means anything said yes
+    about numbers that mean nothing.
+
+    A temperature belongs to a model. Without that model it calibrates
+    nothing, and the honest answer is the one the app already knows how to
+    give.
+    """
+    body = client.get("/health").json()
+    if not body["model_loaded"]:
+        assert body["calibrated"] is False, (
+            "a calibration file without the model it was fitted for must "
+            "not be reported as calibration -- rule 4"
+        )

@@ -121,7 +121,14 @@ async def lifespan(app: FastAPI):
     )
 
     threshold = settings.confidence_threshold
-    calibrated = settings.calibration_path.exists()
+    # A temperature fitted for a model we are not serving calibrates
+    # nothing. Before run four's calibration.json was committed, the file
+    # only ever existed beside the model it belonged to, so its presence
+    # stood in for both -- and a fresh clone then reported
+    # `calibrated: true` while the stub served deterministic fakes. That is
+    # rule 4 broken by the health endpoint itself, in the direction that
+    # dresses a meaningless number up as a measured one.
+    calibrated = settings.calibration_path.exists() and settings.model_path.exists()
     # Bound to the model being served: a confusion the previous checkpoint
     # made is not evidence about this one, and a stale graph would refuse
     # pairs this model does not confuse while missing the ones it does.

@@ -53,6 +53,18 @@ class ConfusionPair:
     also_a_field_lookalike: bool
 
 
+def _run_of(checkpoint: str) -> str:
+    """Which training run a checkpoint belongs to.
+
+    The directory, because that is what a run owns: `best.pt` and the
+    `model.onnx` exported from it live in it together. Falls back to the
+    file name when there is no directory, so a bare name still compares
+    against itself rather than against every other bare name.
+    """
+    path = Path(checkpoint)
+    return path.parent.name or path.name
+
+
 class ConfusionGraph:
     """Pairs this model confuses, or an empty graph that says it is empty."""
 
@@ -103,8 +115,16 @@ class ConfusionGraph:
         # A graph from another model is worse than none: it would refuse
         # pairs this model does not confuse while missing the ones it does,
         # and it would read in /health as though the protection were live.
+        #
+        # Compared on the RUN, not the file name. A run writes best.pt and
+        # exports model.onnx from it; they are one model and the graph is
+        # evidence about both. This used to compare `Path(...).name`, which
+        # makes them maximally different -- so the first time a real model
+        # was installed the graph was rejected, with every pair the layer
+        # had been given silently withdrawn. The test that was meant to pin
+        # this passed because it compared model.onnx against model.onnx.
         if (expected_checkpoint and checkpoint
-                and Path(checkpoint).name != Path(expected_checkpoint).name):
+                and _run_of(checkpoint) != _run_of(expected_checkpoint)):
             log.error(
                 "Confusion graph at %s was generated from %r but the model "
                 "being served is %r. IGNORING it: a confusion the previous "

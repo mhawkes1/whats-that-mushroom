@@ -253,3 +253,53 @@ def test_the_scripts_rank_window_matches_the_safety_layers():
         f"assumes {copy.group(1)} -- the coverage report is measuring a "
         f"window the app does not use"
     )
+
+
+def test_a_graph_survives_the_export_of_its_own_checkpoint():
+    """best.pt and model.onnx from one run are ONE model.
+
+    A run trains `best.pt` and exports `model.onnx` from it. The graph is
+    generated from the first and the server is handed the second, so a
+    comparison that calls them different models discards the graph exactly
+    when a real model is first installed -- every pair the safety layer had
+    been given withdrawn, logged as if a stale graph had been caught.
+
+    That is what `Path(...).name` did, and the test meant to pin it passed
+    because it compared `model.onnx` against `model.onnx`. Measured on run
+    four before it could happen: loaded=False, pairs=0.
+    """
+    graph = ConfusionGraph.load(
+        ROOT / "data" / "model-confusions.json",
+        expected_checkpoint="ml/runs/run4-b32/model.onnx",
+    )
+    assert graph.loaded, (
+        "the graph was generated from this run's best.pt and must be "
+        "accepted for the model.onnx exported from it"
+    )
+    assert graph.pairs, "a graph that loads with no pairs is not this one"
+
+
+def test_the_served_run_is_the_one_whose_graph_was_generated():
+    """The three installed files and the graph must name one run.
+
+    `config.py` points at a run directory; `data/model-confusions.json`
+    records the checkpoint it was built from. If they drift the graph is
+    refused at startup and `/health` reports `confusions_loaded: false`
+    while everything else looks healthy.
+    """
+    import json as _json
+    import sys as _sys
+
+    _sys.path.insert(0, str(ROOT / "server"))
+    from app.config import Settings
+
+    blob = _json.loads(
+        (ROOT / "data" / "model-confusions.json").read_text(encoding="utf-8")
+    )
+    served = Path(Settings().model_path).parent.name
+    generated = Path(blob["checkpoint"]).parent.name
+    assert served == generated, (
+        f"the server is configured to serve run {served!r} but the confusion "
+        f"graph was generated from run {generated!r} -- regenerate the graph "
+        f"from the served run's predictions.npz, or repoint config.py"
+    )

@@ -1152,12 +1152,21 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   `server/tests/test_label_space.py` exports a real tiny ONNX model and
   pins both refusals, plus that the stub's fallback survives (removing it
   breaks every fresh clone and every CI job).
-- **Installing the trained model is a three-file copy into
-  `ml/runs/baseline/`**: `model.onnx`, `labels.json`, `calibration.json`.
-  `config.py` already points there and `main.py` selects `OnnxBackend` when
-  the file exists, so there is no code change and no flag -- `/health` flips
-  `model_loaded` and `calibrated` by itself. It runs on CPU at a second or
-  two per photograph; no GPU and no pod.
+- **Installing the trained model is a three-file copy into the run's own
+  directory**: `model.onnx`, `labels.json`, `calibration.json`.
+  `config.py` has a single `RUN` constant naming which run is served --
+  `ml/runs/run4-b32` since 2026-10-29 -- and `main.py` selects
+  `OnnxBackend` when the file exists, so there is no code change and no
+  flag beyond repointing that one line. It runs on CPU at a second or two
+  per photograph; no GPU and no pod.
+  **It is the run's own directory rather than a generic `baseline/` for
+  two reasons.** The run's committed evidence already lives there, so the
+  served model sits with the numbers that justify serving it and only
+  `model.onnx` has to be moved. And the confusion graph records the run it
+  was built from, so matching directories makes that check line up instead
+  of needing the graph regenerated against a path no run ever wrote.
+  `baseline` also cost an hour on 2026-10-28, when four runs' artefacts
+  were looked for in a directory holding the second one's.
 - **`docs/WINDOWS-START.md` is the from-nothing route, and the trick in it is
   the File Explorer address bar.** Typing `powershell` over the path opens a
   terminal already in that folder, which removes `cd` from a guide written
@@ -1364,8 +1373,16 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   `checkpoint` against the model being served and ignores a mismatch
   loudly, because a stale graph refuses pairs this model does not confuse
   while missing the ones it does -- and would read in `/health` as though
-  the protection were live. Compared on file name, so `best.pt` and
-  `model.onnx` from one run are not treated as different models.
+  the protection were live. Compared on the **run directory**, so `best.pt`
+  and the `model.onnx` exported from it are one model.
+  **That line used to say "compared on file name", and the code did exactly
+  that -- which makes `best.pt` and `model.onnx` maximally different.** The
+  graph is generated from the checkpoint and the server is handed the
+  export, so the first real installation would have had its graph rejected
+  and all five pairs withdrawn, logged as though a stale graph had been
+  caught. The test meant to pin it passed because it compared `model.onnx`
+  against `model.onnx`. Found 2026-10-29 by running the comparison the
+  install would actually make, before making it.
   **Absent and empty are different claims.** `ConfusionGraph.loaded` is
   separate from `len(pairs)`, and `/health` reports `confusions_loaded` and
   `confusion_pairs` separately. A model with no dangerous confusions is a
