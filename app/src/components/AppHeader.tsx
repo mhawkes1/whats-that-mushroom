@@ -45,6 +45,22 @@ const TAGLINE = "I'll tell you when I can't tell.";
  * above the consent gate. Removing the cover must not quietly cost the app
  * the only screen that has to work when everything else has failed.
  *
+ * **It reads as a word, not a cross, and that was a real defect.** It was
+ * drawn as a heavy greek cross glyph, which is a plus sign, in the top
+ * right corner, which is where every app in the world puts "add a new
+ * one". Martin read it as exactly that on 2026-10-29 -- not in a usability
+ * study, in ordinary use -- and the failure compounds: a user taps it
+ * expecting to add a mushroom, gets the emergency screen, learns the
+ * button is wrong, and has been trained to avoid the one control that has
+ * to work when it matters. The accessibility label was always correct, so
+ * this was invisible to `accessibility.test.ts` and to every screen
+ * reader; it was only ever wrong for people looking at it.
+ *
+ * The deeper cause was that the app had **no** way to start a new
+ * observation, so the nearest plus-shaped thing became the affordance for
+ * it. That is fixed on the capture screen; this only has to stop
+ * impersonating it.
+ *
  * **A little of the book's identity.** The gold rule and the serif title
  * remain. They used to be reinforcement for a shared name; since the rename
  * they are the *only* thread back to the printed guide, which makes them
@@ -70,7 +86,9 @@ export function AppHeader({ onEmergency }: { onEmergency: () => void }) {
         accessibilityRole="button"
         accessibilityLabel="Someone has eaten a wild mushroom. What to do."
       >
-        <Text style={styles.sosGlyph}>✚</Text>
+        <Text style={styles.sosLabel} allowFontScaling={false}>
+          EATEN{'\n'}ONE?
+        </Text>
       </Pressable>
     </View>
   );
@@ -114,13 +132,28 @@ const styles = StyleSheet.create({
     fontSize: theme.font.small,
     color: theme.colour.textMuted,
   },
+  // Still 44x44 minimum -- the platform touch target -- but a rounded
+  // rectangle rather than a circle, because a red circle with a symbol in
+  // it is the shape of a badge and a rounded rectangle with a word in it
+  // is the shape of a button.
   sos: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    minWidth: 64,
+    minHeight: 44,
+    borderRadius: theme.radius.md,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: theme.spacing(1),
     backgroundColor: theme.colour.danger,
   },
-  sosGlyph: { color: theme.colour.onAccent, fontSize: 24, fontWeight: '700', lineHeight: 26 },
+  // Two short words beat any glyph here. A symbol has to be learned, and
+  // the one moment this control is used is the moment nobody is learning
+  // anything.
+  sosLabel: {
+    color: theme.colour.onAccent,
+    fontSize: 11,
+    lineHeight: 13,
+    fontWeight: '700',
+    textAlign: 'center',
+    letterSpacing: 0.3,
+  },
 });

@@ -115,6 +115,24 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
     navigation.navigate('FieldNotes', { views: photos });
   }, [navigation, photos]);
 
+  /**
+   * Start a second mushroom.
+   *
+   * react-navigation keeps this screen mounted when you move forward, so
+   * coming back from a result leaves the previous mushroom's photographs
+   * sitting in state with nothing offering to clear them. There was no
+   * control for "another one" anywhere in the app, which had a consequence
+   * nobody predicted: Martin reached for the nearest plus-shaped thing in
+   * the top right corner, and that was the EMERGENCY button. A missing
+   * affordance does not leave a gap, it recruits the nearest wrong thing.
+   *
+   * Deliberately not automatic on focus. Someone who taps back to add the
+   * underside photograph they forgot must not find the cap gone too.
+   */
+  const startAnother = useCallback(() => {
+    setPhotos({});
+  }, []);
+
   const taken = SLOTS.filter((slot) => photos[slot.key]).length;
 
   return (
@@ -185,6 +203,19 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
           {photos.top ? 'Next — what did you see?' : 'Add the cap photo to start'}
         </Text>
       </Pressable>
+
+      {taken > 0 ? (
+        <Pressable
+          onPress={startAnother}
+          style={styles.startOver}
+          accessibilityRole="button"
+          accessibilityLabel="Clear these photographs and start a different mushroom"
+        >
+          <Text style={styles.startOverText}>
+            Clear these and start a different mushroom
+          </Text>
+        </Pressable>
+      ) : null}
 
       {photos.top && taken < SLOTS.length ? (
         <Text style={styles.nudge}>
@@ -301,6 +332,19 @@ const styles = StyleSheet.create({
     fontSize: theme.font.heading,
     fontWeight: '700',
     color: theme.colour.onAccent,
+  },
+  // Quiet on purpose. It is the second most likely thing a user wants and
+  // must not compete with "Next" -- but it has to EXIST, because when it
+  // did not the emergency button was pressed into service instead.
+  startOver: {
+    alignSelf: 'center',
+    paddingVertical: theme.spacing(1.5),
+    paddingHorizontal: theme.spacing(2),
+  },
+  startOverText: {
+    fontSize: theme.font.small,
+    color: theme.colour.textMuted,
+    textDecorationLine: 'underline',
   },
   nudge: {
     fontSize: theme.font.small,

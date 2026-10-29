@@ -35,6 +35,25 @@ describe('the emergency route', () => {
     expect(header).toMatch(/accessibilityLabel="[^"]*eaten[^"]*"/i);
   });
 
+  it('does not render as a plus sign', () => {
+    // It was drawn as a heavy greek cross, which is a plus, in the top
+    // right corner, which is where every app puts "add a new one". Martin
+    // read it as exactly that in ordinary use on 2026-10-29 and reached
+    // for it to add a second mushroom.
+    //
+    // The compounding failure is what makes this a safety bug rather than
+    // a papercut: tap it, get the emergency screen, learn the button is
+    // wrong, and you have been trained away from the one control that has
+    // to work when it matters. Invisible to the accessibility test,
+    // because the label was always right; it was only wrong to look at.
+    const header = read('components/AppHeader.tsx');
+    for (const glyph of ['✚', '✛', '➕', '+']) {
+      expect(header.includes(`>${glyph}<`)).toBe(false);
+    }
+    // Words, which need no learning at the one moment nobody is learning.
+    expect(header).toMatch(/EATEN/);
+  });
+
   it('is positioned without needing a scroll', () => {
     const header = read('components/AppHeader.tsx');
     // The header is the first thing the capture screen renders, so the
@@ -45,7 +64,16 @@ describe('the emergency route', () => {
     expect(firstChild).toBeGreaterThan(-1);
     expect(firstChild).toBeLessThan(anythingElse);
     // And that it is a real target rather than a few pixels of text.
-    expect(header).toMatch(/width: 44/);
+    // Asserted as the platform minimum in each dimension rather than as a
+    // literal `width: 44`: the control went from a 44x44 circle to a
+    // 64x44 rounded rectangle when the plus-sign glyph was replaced with
+    // words, which is larger, and the old literal would have failed a
+    // change that made the target better.
+    const w = header.match(/min(?:Width|Height): (\d+)/g) ?? [];
+    expect(w.length).toBeGreaterThanOrEqual(2);
+    for (const dim of w) {
+      expect(Number(dim.split(': ')[1])).toBeGreaterThanOrEqual(44);
+    }
     expect(header).toMatch(/hitSlop/);
   });
 
