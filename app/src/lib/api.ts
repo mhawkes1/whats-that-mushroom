@@ -46,6 +46,33 @@ export interface Question {
   expected_information_gain: number;
 }
 
+/**
+ * One character, split into what it can and cannot settle.
+ *
+ * `shared` is rendered rather than hidden. The taxonomy's list-width
+ * convention makes the two sides routinely overlap -- a deadly species
+ * lists its states generously so a contradiction cannot falsely dismiss
+ * it, the safe half of the pair lists them tightly -- so the funeral bell
+ * declares all four ring states and honey fungus declares one. Showing
+ * only the difference would invite a reader to check the ring, see the
+ * firm skirt both can show, and conclude honey fungus.
+ */
+export interface Difference {
+  character: string;
+  label: string;
+  this_only: string[];
+  other_only: string[];
+  shared: string[];
+}
+
+export interface Comparison {
+  species_key: string;
+  scientific_name: string;
+  common_names: string[];
+  toxicity: Toxicity;
+  differences: Difference[];
+}
+
 export interface IdentifyResponse {
   observation_id: string;
   verdict: Verdict;
@@ -55,6 +82,13 @@ export interface IdentifyResponse {
   warnings: string[];
   deadly_in_play: boolean;
   questions: Question[];
+  /**
+   * Empty under any verdict but `species`, and absent entirely from a
+   * server older than 2026-10-29. Optional rather than defaulted, so the
+   * client has to handle "not sent" rather than quietly rendering an empty
+   * panel as though the species had no recorded lookalikes.
+   */
+  how_to_tell_apart?: Comparison[];
   model_version: string;
   calibrated: boolean;
 }

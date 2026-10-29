@@ -36,7 +36,8 @@ from .inference import Classifier, OnnxBackend
 from .ratelimit import RateLimiter, client_key
 from .interrogation import InterrogationEngine
 from .confusions import ConfusionGraph
-from .safety import SafetyLayer
+from .distinguish import comparisons
+from .safety import SafetyLayer, Verdict
 from .spore_print import read_from_photograph
 from .characters import CHARACTERS, field_note_characters
 from .evidence import described_coverage
@@ -53,6 +54,8 @@ from .schemas import (
     IncidentOut,
     IncidentRequest,
     IncidentStatusOut,
+    ComparisonOut,
+    DifferenceOut,
     QuestionOut,
     SpeciesListEntryOut,
     SpeciesListOut,
@@ -180,6 +183,39 @@ app.add_middleware(
 )
 
 
+def _how_to_tell_apart(assessment) -> list[ComparisonOut]:
+    """Only under a species verdict, and only for the species it named.
+
+    Under anything else the app declined to name one, and a "how to tell
+    this from X" panel beside a refusal is the name it just refused to
+    give, printed in a heading. That includes `dangerous_group`, which does
+    name both halves on the result screen -- naming them there is a warning
+    with the refusal beside it, and a comparison panel is a reference entry.
+    """
+    if assessment.verdict is not Verdict.SPECIES or not assessment.candidates:
+        return []
+    taxonomy = state["taxonomy"]
+    return [
+        ComparisonOut(
+            species_key=c.species_key,
+            scientific_name=c.scientific_name,
+            common_names=list(c.common_names),
+            toxicity=c.toxicity,
+            differences=[
+                DifferenceOut(
+                    character=d.character,
+                    label=d.label,
+                    this_only=list(d.this_only),
+                    other_only=list(d.other_only),
+                    shared=list(d.shared),
+                )
+                for d in c.differences
+            ],
+        )
+        for c in comparisons(taxonomy, assessment.candidates[0].species_key)
+    ]
+
+
 def _candidates_out(candidates) -> list[CandidateOut]:
     return [CandidateOut(**c.__dict__) for c in candidates]
 
@@ -199,6 +235,7 @@ def _build_response(
         warnings=assessment.warnings,
         deadly_in_play=assessment.deadly_in_play,
         questions=[QuestionOut(**q.to_dict()) for q in questions],
+        how_to_tell_apart=_how_to_tell_apart(assessment),
         model_version=app.version,
         calibrated=state["calibrated"],
     )

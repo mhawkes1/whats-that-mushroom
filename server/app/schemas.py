@@ -19,6 +19,36 @@ class CandidateOut(BaseModel):
     genus: str
 
 
+class DifferenceOut(BaseModel):
+    character: str
+    label: str
+    this_only: list[str] = Field(
+        description="States only the named species shows. Seeing one rules the lookalike out."
+    )
+    other_only: list[str] = Field(
+        description="States only the lookalike shows. Seeing one rules the named species out."
+    )
+    shared: list[str] = Field(
+        description=(
+            "States BOTH can show. Rendered, not hidden: a feature that cannot "
+            "settle the question is the one a user will otherwise settle it with."
+        )
+    )
+
+
+class ComparisonOut(BaseModel):
+    species_key: str
+    scientific_name: str
+    common_names: list[str]
+    toxicity: str = Field(
+        description=(
+            "Recorded hazard, exactly as on a candidate. NO_RECORDED_TOXICITY "
+            "is never rendered -- this is a comparison, never a recommendation."
+        )
+    )
+    differences: list[DifferenceOut]
+
+
 class QuestionOut(BaseModel):
     key: str
     label: str
@@ -46,6 +76,15 @@ class IdentifyResponse(BaseModel):
     warnings: list[str]
     deadly_in_play: bool
     questions: list[QuestionOut]
+    how_to_tell_apart: list[ComparisonOut] = Field(
+        default_factory=list,
+        description=(
+            "What the named species is confused with in the field, and what "
+            "separates them. Populated only under a 'species' verdict: under "
+            "any other, no species was asserted, and a comparison against a "
+            "name the app declined to give is a name it gave."
+        ),
+    )
     model_version: str
     calibrated: bool
 

@@ -12,7 +12,13 @@ import {
 import { CandidateRow } from '../components/CandidateRow';
 import { QuestionCard } from '../components/QuestionCard';
 import { VerdictCard } from '../components/VerdictCard';
-import { answerQuestion, type IdentifyResponse, type Views } from '../lib/api';
+import {
+  answerQuestion,
+  hazardLabel,
+  type Comparison,
+  type IdentifyResponse,
+  type Views,
+} from '../lib/api';
 import { fromResult, record, type Place } from '../lib/observationLog';
 import { theme } from '../lib/theme';
 
@@ -29,6 +35,78 @@ import { theme } from '../lib/theme';
  * The candidate list is not the headline. Putting a species name and a big
  * percentage at the top is precisely the design that gets people poisoned.
  */
+/**
+ * One lookalike, and what separates it from the species just named.
+ *
+ * Built from the lookalike graph, which is 92% complete across the label
+ * space, and from `character_states`, which was written as a classifier
+ * tiebreaker -- thin as a description and dense as a comparison. This
+ * renders it as the second thing, which is what it is.
+ *
+ * **Shared states are shown, in their own line, last.** A feature both
+ * species can show is the single most important thing on a page headed
+ * "how to tell them apart", because it is the one a user will otherwise
+ * settle it with. The funeral bell and honey fungus both show a firm
+ * skirt-like ring; a panel that printed only the differences would have a
+ * reader check the ring and conclude the wrong one.
+ *
+ * **It never says which is preferable.** The hazard renders exactly as it
+ * does on a candidate row -- `NO_RECORDED_TOXICITY` renders as nothing --
+ * and there is no line anywhere that compares the two on safety, because
+ * the app has no view on that and a comparison is where an edibility claim
+ * would get in wearing something else's clothes.
+ */
+function TellApart({ named, other }: { named: string; other: Comparison }) {
+  const hazard = hazardLabel(other.toxicity);
+  const common = other.common_names[0];
+  return (
+    <View style={styles.tellApart}>
+      <View style={styles.tellApartHead}>
+        <Text style={styles.tellApartName}>
+          {common ?? other.scientific_name}
+        </Text>
+        {common ? (
+          <Text style={styles.tellApartLatin}>{other.scientific_name}</Text>
+        ) : null}
+        {hazard ? <Text style={styles.tellApartHazard}>{hazard}</Text> : null}
+      </View>
+
+      {other.differences.length === 0 ? (
+        <Text style={styles.tellApartNone}>
+          These are confused with each other and nothing recorded here
+          separates them from a photograph. Treat them as one until somebody
+          who knows has looked.
+        </Text>
+      ) : (
+        other.differences.map((d) => (
+          <View key={d.character} style={styles.difference}>
+            <Text style={styles.differenceLabel}>{d.label}</Text>
+            {d.this_only.length ? (
+              <Text style={styles.differenceLine}>
+                <Text style={styles.differenceWho}>{named}: </Text>
+                {d.this_only.join(', ')}
+              </Text>
+            ) : null}
+            {d.other_only.length ? (
+              <Text style={styles.differenceLine}>
+                <Text style={styles.differenceWho}>
+                  {common ?? other.scientific_name}:{' '}
+                </Text>
+                {d.other_only.join(', ')}
+              </Text>
+            ) : null}
+            {d.shared.length ? (
+              <Text style={styles.differenceShared}>
+                Both can show: {d.shared.join(', ')} — so this does not settle it
+              </Text>
+            ) : null}
+          </View>
+        ))
+      )}
+    </View>
+  );
+}
+
 export function ResultScreen({ navigation, route }: { navigation: any; route: any }) {
   const { imageUri, views, fieldNotes, place } = route.params as {
     imageUri?: string;
@@ -126,6 +204,27 @@ export function ResultScreen({ navigation, route }: { navigation: any; route: an
         ))}
       </View>
 
+      {result.how_to_tell_apart?.length ? (
+        <View style={styles.section}>
+          <Text style={styles.sectionHeading}>
+            HOW TO TELL IT FROM WHAT IT IS CONFUSED WITH
+          </Text>
+          {result.how_to_tell_apart.map((other) => (
+            <TellApart
+              key={other.species_key}
+              named={result.candidates[0]?.common_names[0] ??
+                     result.candidates[0]?.scientific_name ?? 'this'}
+              other={other}
+            />
+          ))}
+          <Text style={styles.tellApartFoot}>
+            Recorded field confusions, not a judgement about either of them.
+            Where a feature is listed under both, it cannot settle the
+            question however obvious it looks.
+          </Text>
+        </View>
+      ) : null}
+
       <View style={styles.warnings}>
         {result.warnings.map((warning) => (
           <Text key={warning} style={styles.warning}>
@@ -179,6 +278,62 @@ const styles = StyleSheet.create({
     fontSize: theme.font.tiny,
     color: theme.colour.textFaint,
     textAlign: 'center',
+  },
+  tellApart: {
+    backgroundColor: theme.colour.surface,
+    borderWidth: 1,
+    borderColor: theme.colour.border,
+    borderRadius: theme.radius.md,
+    padding: theme.spacing(2),
+    gap: theme.spacing(1.5),
+  },
+  tellApartHead: { gap: 2 },
+  tellApartName: {
+    fontSize: theme.font.body,
+    fontWeight: '700',
+    color: theme.colour.text,
+  },
+  tellApartLatin: {
+    fontSize: theme.font.small,
+    fontStyle: 'italic',
+    color: theme.colour.textMuted,
+  },
+  tellApartHazard: {
+    fontSize: theme.font.small,
+    fontWeight: '700',
+    color: theme.colour.danger,
+    marginTop: 2,
+  },
+  tellApartNone: {
+    fontSize: theme.font.small,
+    lineHeight: 20,
+    color: theme.colour.text,
+  },
+  tellApartFoot: {
+    fontSize: theme.font.small,
+    lineHeight: 18,
+    color: theme.colour.textMuted,
+  },
+  difference: { gap: 2 },
+  differenceLabel: {
+    fontSize: theme.font.small,
+    fontWeight: '700',
+    color: theme.colour.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.3,
+  },
+  differenceLine: {
+    fontSize: theme.font.small,
+    lineHeight: 20,
+    color: theme.colour.text,
+  },
+  differenceWho: { fontWeight: '700' },
+  // Deliberately not muted into invisibility: a feature that settles
+  // nothing is the one a user will otherwise settle it with.
+  differenceShared: {
+    fontSize: theme.font.small,
+    lineHeight: 20,
+    color: theme.colour.caution,
   },
   warnings: {
     gap: theme.spacing(1.25),
