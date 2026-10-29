@@ -92,6 +92,22 @@ UNIVERSAL_DISCLAIMER = (
 )
 
 
+def _an(word: str) -> str:
+    """"a Russula", but "an Amanita".
+
+    A cosmetic fault with a disproportionate reach: every genus-level
+    refusal in the app, in the companion recording and in the ebook runs
+    through this one line, and roughly a fifth of the label space's genera
+    begin with a vowel -- Amanita, Entoloma, Inocybe, Armillaria. The
+    verdict that says "I will not name the species" should not also be the
+    sentence that reads as though nobody proof-read it.
+
+    Letters, not phonetics. Fungal genera are Latin and regular here, and a
+    pronunciation table would be a bigger claim than the problem.
+    """
+    return ("an " if word[:1].upper() in "AEIOU" else "a ") + word
+
+
 class SafetyLayer:
     def __init__(
         self,
@@ -329,7 +345,7 @@ class SafetyLayer:
         if best_genus_score >= self.group_threshold:
             return SafetyAssessment(
                 verdict=Verdict.GROUP,
-                headline=f"This looks like a {best_genus} species",
+                headline=f"This looks like {_an(best_genus)} species",
                 detail=(
                     f"{GROUP_ONLY_DETAIL} I'm reasonably confident about the genus "
                     f"({best_genus_score:.0%}) but not about which species within it."

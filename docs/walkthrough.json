@@ -1,13 +1,15 @@
 {
-  "captured_at": "2026-10-26T21:19:01.620161+00:00",
+  "captured_at": "2026-10-29T19:26:20.399631+00:00",
   "health": {
     "status": "ok",
     "model_loaded": false,
+    "confusions_loaded": true,
+    "confusion_pairs": 3,
     "calibrated": false,
     "n_classes": 244,
     "model_version": "0.1.0",
     "taxonomy_reviewed": false,
-    "character_states_described": 244
+    "character_states_described": 245
   },
   "disclaimer": {
     "version": "279b0060b6c394d9",
@@ -52,7 +54,7 @@
         "key": "habitat",
         "label": "Surroundings",
         "prompt": "What trees are within about ten metres?",
-        "how": "Many fungi partner with one kind of tree and grow nowhere else, so this narrows the possibilities sharply.",
+        "how": "Many fungi partner with one kind of tree and grow nowhere else, so this narrows the possibilities sharply. What counts is what is within about ten metres, not what dominates the wood: a single birch in a conifer plantation is the birch answer.",
         "options": [
           "Oak",
           "Beech",
@@ -132,7 +134,7 @@
         "key": "ring",
         "label": "Ring on the stem",
         "prompt": "Is there a ring or skirt of tissue on the stem?",
-        "how": "Look partway up the stem for a collar, skirt or a distinct zone of fibres.",
+        "how": "Look at the whole stem, not only where you expect a ring. One can slide down and sit near the base, and on an older mushroom it withers to a faint line or washes off in rain, leaving a smooth band where the stem is a different shade. On a very young one the veil may not have torn yet, so it is still stretched between the cap edge and the stem.",
         "options": [
           "Firm skirt-like ring",
           "Cobwebby fibres",
@@ -183,7 +185,7 @@
     {
       "verdict": "out_of_scope",
       "result": {
-        "observation_id": "772ba04ed8774d75bf1118a707be3af9",
+        "observation_id": "504b34fbaa7446e9a1f37fd58de7f624",
         "verdict": "out_of_scope",
         "headline": "This doesn't match anything I know well",
         "detail": "The photograph does not resemble any species in my range with reasonable confidence. It may be a species I was never trained on, or the photograph may not show enough of the mushroom.",
@@ -195,7 +197,7 @@
               "White Fibrecap",
               "Lilac Fibrecap"
             ],
-            "confidence": 0.0395,
+            "confidence": 0.0583,
             "toxicity": "SERIOUS",
             "genus": "Inocybe"
           },
@@ -205,7 +207,7 @@
             "common_names": [
               "Rooting Shank"
             ],
-            "confidence": 0.0287,
+            "confidence": 0.0389,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Hymenopellis"
           },
@@ -215,7 +217,7 @@
             "common_names": [
               "Chicken of the Woods"
             ],
-            "confidence": 0.0267,
+            "confidence": 0.0355,
             "toxicity": "TOXIC",
             "genus": "Laetiporus"
           },
@@ -225,7 +227,7 @@
             "common_names": [
               "Slimy Waxcap"
             ],
-            "confidence": 0.0261,
+            "confidence": 0.0345,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Gliophorus"
           },
@@ -235,7 +237,7 @@
             "common_names": [
               "St George's Mushroom"
             ],
-            "confidence": 0.025,
+            "confidence": 0.0327,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Calocybe"
           },
@@ -245,7 +247,7 @@
             "common_names": [
               "Coconut Milkcap"
             ],
-            "confidence": 0.0234,
+            "confidence": 0.0301,
             "toxicity": "TOXIC",
             "genus": "Lactarius"
           },
@@ -255,7 +257,7 @@
             "common_names": [
               "Wrinkled Crust"
             ],
-            "confidence": 0.023,
+            "confidence": 0.0294,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Phlebia"
           },
@@ -265,7 +267,7 @@
             "common_names": [
               "Dusky Puffball"
             ],
-            "confidence": 0.0225,
+            "confidence": 0.0287,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Lycoperdon"
           }
@@ -294,7 +296,7 @@
             "requires_photo": false,
             "safety_note": "",
             "rationale": "This is what separates Hymenopellis radicata from Laetiporus sulphureus.",
-            "expected_information_gain": 0.2316
+            "expected_information_gain": 0.2414
           },
           {
             "key": "cap_colour",
@@ -317,7 +319,7 @@
             "requires_photo": true,
             "safety_note": "",
             "rationale": "This is what separates Inocybe geophylla from Hymenopellis radicata.",
-            "expected_information_gain": 0.185
+            "expected_information_gain": 0.1836
           },
           {
             "key": "smell",
@@ -341,20 +343,21 @@
             "requires_photo": false,
             "safety_note": "",
             "rationale": "This would help confirm or rule out Inocybe geophylla.",
-            "expected_information_gain": 0.1765
+            "expected_information_gain": 0.1679
           }
         ],
+        "how_to_tell_apart": [],
         "model_version": "0.1.0",
         "calibrated": false
       }
     },
     {
-      "verdict": "uncertain",
+      "verdict": "group",
       "result": {
-        "observation_id": "045972da81d34a169afc389c3be7c2de",
-        "verdict": "uncertain",
-        "headline": "I'm not sure what this is",
-        "detail": "No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.",
+        "observation_id": "4cabeaa232834e29aca973088c387a2c",
+        "verdict": "group",
+        "headline": "This looks like an Amanita species",
+        "detail": "The candidates cannot be separated from this photograph alone. They differ by characters that are not visible here. I'm reasonably confident about the genus (56%) but not about which species within it.",
         "candidates": [
           {
             "species_key": "amanita-citrina",
@@ -362,7 +365,7 @@
             "common_names": [
               "False Deathcap"
             ],
-            "confidence": 0.3125,
+            "confidence": 0.5532,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Amanita"
           },
@@ -372,7 +375,7 @@
             "common_names": [
               "Stump Puffball"
             ],
-            "confidence": 0.0371,
+            "confidence": 0.0377,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Apioperdon"
           },
@@ -382,7 +385,7 @@
             "common_names": [
               "Root Rot"
             ],
-            "confidence": 0.0273,
+            "confidence": 0.0255,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Heterobasidion"
           },
@@ -392,7 +395,7 @@
             "common_names": [
               "Violet Webcap"
             ],
-            "confidence": 0.0229,
+            "confidence": 0.0204,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Cortinarius"
           },
@@ -402,7 +405,7 @@
             "common_names": [
               "Brown Roll-rim"
             ],
-            "confidence": 0.022,
+            "confidence": 0.0194,
             "toxicity": "SERIOUS",
             "genus": "Paxillus"
           },
@@ -412,7 +415,7 @@
             "common_names": [
               "Red Edge Brittlestem"
             ],
-            "confidence": 0.0162,
+            "confidence": 0.0132,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Psathyrella"
           },
@@ -422,7 +425,7 @@
             "common_names": [
               "Small Stagshorn"
             ],
-            "confidence": 0.015,
+            "confidence": 0.012,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Calocera"
           },
@@ -432,7 +435,7 @@
             "common_names": [
               "Deadly Fibrecap"
             ],
-            "confidence": 0.0146,
+            "confidence": 0.0116,
             "toxicity": "DEADLY",
             "genus": "Inocybe"
           }
@@ -460,7 +463,7 @@
             "requires_photo": false,
             "safety_note": "",
             "rationale": "This is what separates Apioperdon pyriforme from Heterobasidion annosum.",
-            "expected_information_gain": 0.3348
+            "expected_information_gain": 0.2788
           },
           {
             "key": "hymenium_type",
@@ -478,7 +481,7 @@
             "requires_photo": true,
             "safety_note": "",
             "rationale": "This is what separates Apioperdon pyriforme from Heterobasidion annosum.",
-            "expected_information_gain": 0.2737
+            "expected_information_gain": 0.2375
           },
           {
             "key": "growth_form",
@@ -496,101 +499,102 @@
             "requires_photo": true,
             "safety_note": "",
             "rationale": "This is what separates Apioperdon pyriforme from Heterobasidion annosum.",
-            "expected_information_gain": 0.2737
+            "expected_information_gain": 0.2375
           }
         ],
+        "how_to_tell_apart": [],
         "model_version": "0.1.0",
         "calibrated": false
       }
     },
     {
-      "verdict": "group",
+      "verdict": "uncertain",
       "result": {
-        "observation_id": "4aa8fb18a17e4b479a1edbe6fb35111a",
-        "verdict": "group",
-        "headline": "This looks like a Psilocybe species",
-        "detail": "The candidates cannot be separated from this photograph alone. They differ by characters that are not visible here. I'm reasonably confident about the genus (51%) but not about which species within it.",
+        "observation_id": "dd5aa60f761f452ba84efda22603a679",
+        "verdict": "uncertain",
+        "headline": "I'm not sure what this is",
+        "detail": "No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.",
         "candidates": [
           {
-            "species_key": "psilocybe-semilanceata",
-            "scientific_name": "Psilocybe semilanceata",
+            "species_key": "cuphophyllus-virgineus",
+            "scientific_name": "Cuphophyllus virgineus",
             "common_names": [
-              "Liberty Cap"
+              "Snowy Waxcap"
             ],
-            "confidence": 0.5098,
+            "confidence": 0.2373,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Cuphophyllus"
+          },
+          {
+            "species_key": "tricholoma-saponaceum",
+            "scientific_name": "Tricholoma saponaceum",
+            "common_names": [
+              "Soapy Knight"
+            ],
+            "confidence": 0.1952,
             "toxicity": "TOXIC",
-            "genus": "Psilocybe"
-          },
-          {
-            "species_key": "collybiopsis-ramealis",
-            "scientific_name": "Collybiopsis ramealis",
-            "common_names": [
-              "Twig Parachute"
-            ],
-            "confidence": 0.0233,
-            "toxicity": "NO_RECORDED_TOXICITY",
-            "genus": "Collybiopsis"
-          },
-          {
-            "species_key": "coprinellus-disseminatus",
-            "scientific_name": "Coprinellus disseminatus",
-            "common_names": [
-              "Fairy Inkcap"
-            ],
-            "confidence": 0.0227,
-            "toxicity": "NO_RECORDED_TOXICITY",
-            "genus": "Coprinellus"
-          },
-          {
-            "species_key": "byssomerulius-corium",
-            "scientific_name": "Byssomerulius corium",
-            "common_names": [
-              "Netted Crust"
-            ],
-            "confidence": 0.0122,
-            "toxicity": "NO_RECORDED_TOXICITY",
-            "genus": "Byssomerulius"
-          },
-          {
-            "species_key": "amanita-vaginata",
-            "scientific_name": "Amanita vaginata",
-            "common_names": [
-              "Grisette"
-            ],
-            "confidence": 0.0115,
-            "toxicity": "TOXIC",
-            "genus": "Amanita"
-          },
-          {
-            "species_key": "imleria-badia",
-            "scientific_name": "Imleria badia",
-            "common_names": [
-              "Bay Bolete"
-            ],
-            "confidence": 0.0112,
-            "toxicity": "NO_RECORDED_TOXICITY",
-            "genus": "Imleria"
-          },
-          {
-            "species_key": "tricholoma-equestre",
-            "scientific_name": "Tricholoma equestre",
-            "common_names": [
-              "Yellow Knight",
-              "Man on Horseback"
-            ],
-            "confidence": 0.0108,
-            "toxicity": "SERIOUS",
             "genus": "Tricholoma"
           },
           {
-            "species_key": "gymnopus-androsaceus",
-            "scientific_name": "Gymnopus androsaceus",
+            "species_key": "clavulina-rugosa",
+            "scientific_name": "Clavulina rugosa",
             "common_names": [
-              "Horsehair Parachute"
+              "Wrinkled Club"
             ],
-            "confidence": 0.0105,
+            "confidence": 0.0259,
             "toxicity": "NO_RECORDED_TOXICITY",
-            "genus": "Gymnopus"
+            "genus": "Clavulina"
+          },
+          {
+            "species_key": "lactarius-pyrogalus",
+            "scientific_name": "Lactarius pyrogalus",
+            "common_names": [
+              "Fiery Milkcap"
+            ],
+            "confidence": 0.0199,
+            "toxicity": "TOXIC",
+            "genus": "Lactarius"
+          },
+          {
+            "species_key": "entoloma-sericeum",
+            "scientific_name": "Entoloma sericeum",
+            "common_names": [
+              "Silky Pinkgill"
+            ],
+            "confidence": 0.0193,
+            "toxicity": "TOXIC",
+            "genus": "Entoloma"
+          },
+          {
+            "species_key": "jackrogersella-multiformis",
+            "scientific_name": "Jackrogersella multiformis",
+            "common_names": [
+              "Birch Woodwart"
+            ],
+            "confidence": 0.0176,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Jackrogersella"
+          },
+          {
+            "species_key": "fistulina-hepatica",
+            "scientific_name": "Fistulina hepatica",
+            "common_names": [
+              "Beefsteak Fungus"
+            ],
+            "confidence": 0.0169,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Fistulina"
+          },
+          {
+            "species_key": "coprinus-comatus",
+            "scientific_name": "Coprinus comatus",
+            "common_names": [
+              "Shaggy Inkcap",
+              "Lawyer's Wig"
+            ],
+            "confidence": 0.0155,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Coprinus"
           }
         ],
         "warnings": [
@@ -598,6 +602,45 @@
         ],
         "deadly_in_play": false,
         "questions": [
+          {
+            "key": "substrate",
+            "label": "What it is growing on",
+            "prompt": "What is it growing on or out of?",
+            "how": "Look at what the base actually emerges from, not just what is nearby. Buried wood and roots count as wood.",
+            "effort": "instant",
+            "options": [
+              "Soil or leaf litter",
+              "Dead wood or a stump",
+              "A living tree",
+              "Grass or lawn",
+              "Dung",
+              "Moss"
+            ],
+            "requires_photo": false,
+            "safety_note": "",
+            "rationale": "This is what separates Cuphophyllus virgineus from Clavulina rugosa.",
+            "expected_information_gain": 0.2583
+          },
+          {
+            "key": "habitat",
+            "label": "Surroundings",
+            "prompt": "What trees are within about ten metres?",
+            "how": "Many fungi partner with one kind of tree and grow nowhere else, so this narrows the possibilities sharply. What counts is what is within about ten metres, not what dominates the wood: a single birch in a conifer plantation is the birch answer.",
+            "effort": "instant",
+            "options": [
+              "Oak",
+              "Beech",
+              "Birch",
+              "Pine or spruce",
+              "Larch",
+              "Mixed broadleaf",
+              "No trees nearby"
+            ],
+            "requires_photo": false,
+            "safety_note": "",
+            "rationale": "This is what separates Tricholoma saponaceum from Lactarius pyrogalus.",
+            "expected_information_gain": 0.2249
+          },
           {
             "key": "growth_form",
             "label": "Growth habit",
@@ -613,43 +656,202 @@
             ],
             "requires_photo": true,
             "safety_note": "",
-            "rationale": "This is what separates Collybiopsis ramealis from Coprinellus disseminatus.",
-            "expected_information_gain": 0.289
+            "rationale": "This would help confirm or rule out Clavulina rugosa.",
+            "expected_information_gain": 0.182
+          }
+        ],
+        "how_to_tell_apart": [],
+        "model_version": "0.1.0",
+        "calibrated": false
+      }
+    },
+    {
+      "verdict": "species",
+      "result": {
+        "observation_id": "ffd9af9502f543f29866eed0159849f5",
+        "verdict": "species",
+        "headline": "Most likely Marasmius rotula",
+        "detail": "White pleated parachute on a black wiry stem, the gills attached to a collar that stands free of the stem. On twigs and rootlets.",
+        "candidates": [
+          {
+            "species_key": "marasmius-rotula",
+            "scientific_name": "Marasmius rotula",
+            "common_names": [
+              "Collared Parachute"
+            ],
+            "confidence": 0.8575,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Marasmius"
           },
           {
-            "key": "size",
-            "label": "Size",
-            "prompt": "How wide is the cap?",
-            "how": "Measure across the widest point, or photograph it beside a coin.",
+            "species_key": "russula-nigricans",
+            "scientific_name": "Russula nigricans",
+            "common_names": [
+              "Blackening Brittlegill"
+            ],
+            "confidence": 0.0077,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Russula"
+          },
+          {
+            "species_key": "heterobasidion-annosum",
+            "scientific_name": "Heterobasidion annosum",
+            "common_names": [
+              "Root Rot"
+            ],
+            "confidence": 0.0053,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Heterobasidion"
+          },
+          {
+            "species_key": "armillaria-mellea",
+            "scientific_name": "Armillaria mellea",
+            "common_names": [
+              "Honey Fungus"
+            ],
+            "confidence": 0.0053,
+            "toxicity": "TOXIC",
+            "genus": "Armillaria"
+          },
+          {
+            "species_key": "panaeolina-foenisecii",
+            "scientific_name": "Panaeolina foenisecii",
+            "common_names": [
+              "Brown Mottlegill"
+            ],
+            "confidence": 0.0052,
+            "toxicity": "TOXIC",
+            "genus": "Panaeolina"
+          },
+          {
+            "species_key": "cystoderma-amianthinum",
+            "scientific_name": "Cystoderma amianthinum",
+            "common_names": [
+              "Earthy Powdercap"
+            ],
+            "confidence": 0.0051,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Cystoderma"
+          },
+          {
+            "species_key": "ganoderma-adspersum",
+            "scientific_name": "Ganoderma adspersum",
+            "common_names": [
+              "Southern Bracket"
+            ],
+            "confidence": 0.0048,
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "genus": "Ganoderma"
+          },
+          {
+            "species_key": "omphalotus-olearius",
+            "scientific_name": "Omphalotus olearius",
+            "common_names": [
+              "Jack-o'-Lantern"
+            ],
+            "confidence": 0.0047,
+            "toxicity": "TOXIC",
+            "genus": "Omphalotus"
+          }
+        ],
+        "warnings": [
+          "This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."
+        ],
+        "deadly_in_play": false,
+        "questions": [
+          {
+            "key": "cap_surface",
+            "label": "Cap surface",
+            "prompt": "What is the cap surface like?",
+            "how": "Judge it as you found it, and hold it to the light so you can see across the surface rather than straight down at it \u2014 that is how fine radial fibres running from the centre to the edge show up. Run a finger over it: slime is tacky and pulls at the skin, rain is merely wet.",
             "effort": "instant",
             "options": [
-              "Under 2 cm",
-              "2-5 cm",
-              "5-10 cm",
-              "10-20 cm",
-              "Over 20 cm"
+              "Smooth and dry",
+              "Slimy or greasy",
+              "Scaly",
+              "Fibrous",
+              "Velvety",
+              "Pitted or honeycombed",
+              "Brain-like or folded"
+            ],
+            "requires_photo": true,
+            "safety_note": "",
+            "rationale": "This would help confirm or rule out Armillaria mellea.",
+            "expected_information_gain": 0.0544
+          },
+          {
+            "key": "substrate",
+            "label": "What it is growing on",
+            "prompt": "What is it growing on or out of?",
+            "how": "Look at what the base actually emerges from, not just what is nearby. Buried wood and roots count as wood.",
+            "effort": "instant",
+            "options": [
+              "Soil or leaf litter",
+              "Dead wood or a stump",
+              "A living tree",
+              "Grass or lawn",
+              "Dung",
+              "Moss"
             ],
             "requires_photo": false,
             "safety_note": "",
-            "rationale": "This is what separates Collybiopsis ramealis from Coprinellus disseminatus.",
-            "expected_information_gain": 0.2112
+            "rationale": "This is what separates Marasmius rotula from Heterobasidion annosum.",
+            "expected_information_gain": 0.0525
+          }
+        ],
+        "how_to_tell_apart": [
+          {
+            "species_key": "collybiopsis-ramealis",
+            "scientific_name": "Collybiopsis ramealis",
+            "common_names": [
+              "Twig Parachute"
+            ],
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "differences": [
+              {
+                "character": "cap_colour",
+                "label": "Cap colour",
+                "this_only": [],
+                "other_only": [
+                  "Brown"
+                ],
+                "shared": [
+                  "White or cream"
+                ]
+              },
+              {
+                "character": "substrate",
+                "label": "What it is growing on",
+                "this_only": [
+                  "Soil or leaf litter"
+                ],
+                "other_only": [],
+                "shared": [
+                  "Dead wood or a stump"
+                ]
+              }
+            ]
           },
           {
-            "key": "texture",
-            "label": "Texture",
-            "prompt": "What does it feel like?",
-            "how": "Press it between your fingers.",
-            "effort": "instant",
-            "options": [
-              "Gelatinous and rubbery",
-              "Firm and fleshy",
-              "Woody",
-              "Soft and fragile"
+            "species_key": "marasmius-oreades",
+            "scientific_name": "Marasmius oreades",
+            "common_names": [
+              "Fairy Ring Champignon"
             ],
-            "requires_photo": false,
-            "safety_note": "",
-            "rationale": "This is what separates Coprinellus disseminatus from Byssomerulius corium.",
-            "expected_information_gain": 0.1656
+            "toxicity": "NO_RECORDED_TOXICITY",
+            "differences": [
+              {
+                "character": "gill_attachment",
+                "label": "How the gills meet the stem",
+                "this_only": [],
+                "other_only": [
+                  "Notched just before the stem"
+                ],
+                "shared": [
+                  "Free, not touching the stem"
+                ]
+              }
+            ]
           }
         ],
         "model_version": "0.1.0",
@@ -659,7 +861,7 @@
     {
       "verdict": "dangerous_group",
       "result": {
-        "observation_id": "2f64cf76e4474e4ab8ac426d91f3bf4b",
+        "observation_id": "5099265dfd8244feb19b476e4a8a2ad2",
         "verdict": "dangerous_group",
         "headline": "I can't safely narrow this down",
         "detail": "The leading candidates include both Amanita virosa and Amanita pantherina. These are confused with each other in the field, and one of them can kill. I will not choose between them from a photograph.",
@@ -670,7 +872,7 @@
             "common_names": [
               "Destroying Angel"
             ],
-            "confidence": 0.2398,
+            "confidence": 0.4435,
             "toxicity": "DEADLY",
             "genus": "Amanita"
           },
@@ -680,7 +882,7 @@
             "common_names": [
               "Plums and Custard"
             ],
-            "confidence": 0.0376,
+            "confidence": 0.0428,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Tricholomopsis"
           },
@@ -691,7 +893,7 @@
               "Yellow Knight",
               "Man on Horseback"
             ],
-            "confidence": 0.0269,
+            "confidence": 0.028,
             "toxicity": "SERIOUS",
             "genus": "Tricholoma"
           },
@@ -701,7 +903,7 @@
             "common_names": [
               "Scarletina Bolete"
             ],
-            "confidence": 0.0239,
+            "confidence": 0.0242,
             "toxicity": "TOXIC",
             "genus": "Neoboletus"
           },
@@ -711,7 +913,7 @@
             "common_names": [
               "Panther Cap"
             ],
-            "confidence": 0.0237,
+            "confidence": 0.024,
             "toxicity": "SERIOUS",
             "genus": "Amanita"
           },
@@ -721,7 +923,7 @@
             "common_names": [
               "Yellow Stagshorn"
             ],
-            "confidence": 0.0179,
+            "confidence": 0.0167,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Calocera"
           },
@@ -731,7 +933,7 @@
             "common_names": [
               "Wrinkled Crust"
             ],
-            "confidence": 0.0153,
+            "confidence": 0.0138,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Phlebia"
           },
@@ -742,7 +944,7 @@
               "Horn of Plenty",
               "Black Trumpet"
             ],
-            "confidence": 0.0152,
+            "confidence": 0.0136,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Craterellus"
           }
@@ -771,13 +973,13 @@
             "requires_photo": true,
             "safety_note": "Chrome-yellow staining at the base of the stem marks the Yellow Stainer, the commonest cause of mushroom poisoning in Britain.",
             "rationale": "This separates Amanita virosa, which can kill, from Amanita pantherina.",
-            "expected_information_gain": 0.2209
+            "expected_information_gain": 0.1936
           },
           {
             "key": "ring",
             "label": "Ring on the stem",
             "prompt": "Is there a ring or skirt of tissue on the stem?",
-            "how": "Look partway up the stem for a collar, skirt or a distinct zone of fibres.",
+            "how": "Look at the whole stem, not only where you expect a ring. One can slide down and sit near the base, and on an older mushroom it withers to a faint line or washes off in rain, leaving a smooth band where the stem is a different shade. On a very young one the veil may not have torn yet, so it is still stretched between the cap edge and the stem.",
             "effort": "instant",
             "options": [
               "Firm skirt-like ring",
@@ -786,9 +988,9 @@
               "No ring"
             ],
             "requires_photo": false,
-            "safety_note": "",
+            "safety_note": "Two of the deadliest species in Britain have a firm ring and nothing else. Answering \u201ccobwebby fibres\u201d or \u201cno ring\u201d when a ring has withered moves the app away from them. If the stem is damaged, old or you are unsure, skip this rather than guess.",
             "rationale": "This separates Amanita virosa, which can kill, from Amanita pantherina.",
-            "expected_information_gain": 0.0846
+            "expected_information_gain": 0.0887
           },
           {
             "key": "volva",
@@ -805,127 +1007,10 @@
             "requires_photo": true,
             "safety_note": "This is the single most important check in mushroom foraging. The sac at the base is the mark of Amanita, the genus responsible for most fatal poisonings. It is often buried and is routinely cut off and missed.",
             "rationale": "This separates Amanita virosa, which can kill, from Amanita pantherina.",
-            "expected_information_gain": 0.0618
+            "expected_information_gain": 0.0765
           }
         ],
-        "model_version": "0.1.0",
-        "calibrated": false
-      }
-    },
-    {
-      "verdict": "species",
-      "result": {
-        "observation_id": "deb223bc285c4b5091595782dd53a3d2",
-        "verdict": "species",
-        "headline": "Most likely Tricholoma saponaceum",
-        "detail": "Smells of household soap, and the flesh in the stem base turns pink or reddish when cut. Colour is unreliable -- grey, olive, brownish or nearly white on different collections.",
-        "candidates": [
-          {
-            "species_key": "tricholoma-saponaceum",
-            "scientific_name": "Tricholoma saponaceum",
-            "common_names": [
-              "Soapy Knight"
-            ],
-            "confidence": 0.8923,
-            "toxicity": "TOXIC",
-            "genus": "Tricholoma"
-          },
-          {
-            "species_key": "tricholoma-pardinum",
-            "scientific_name": "Tricholoma pardinum",
-            "common_names": [
-              "Leopard Knight"
-            ],
-            "confidence": 0.0064,
-            "toxicity": "SERIOUS",
-            "genus": "Tricholoma"
-          },
-          {
-            "species_key": "coprinopsis-lagopus",
-            "scientific_name": "Coprinopsis lagopus",
-            "common_names": [
-              "Hare'sfoot Inkcap"
-            ],
-            "confidence": 0.0036,
-            "toxicity": "NO_RECORDED_TOXICITY",
-            "genus": "Coprinopsis"
-          },
-          {
-            "species_key": "omphalotus-olearius",
-            "scientific_name": "Omphalotus olearius",
-            "common_names": [
-              "Jack-o'-Lantern"
-            ],
-            "confidence": 0.003,
-            "toxicity": "TOXIC",
-            "genus": "Omphalotus"
-          },
-          {
-            "species_key": "tubaria-furfuracea",
-            "scientific_name": "Tubaria furfuracea",
-            "common_names": [
-              "Scurfy Twiglet"
-            ],
-            "confidence": 0.0027,
-            "toxicity": "NO_RECORDED_TOXICITY",
-            "genus": "Tubaria"
-          },
-          {
-            "species_key": "tricholoma-sulphureum",
-            "scientific_name": "Tricholoma sulphureum",
-            "common_names": [
-              "Sulphur Knight"
-            ],
-            "confidence": 0.0023,
-            "toxicity": "TOXIC",
-            "genus": "Tricholoma"
-          },
-          {
-            "species_key": "hypoxylon-fragiforme",
-            "scientific_name": "Hypoxylon fragiforme",
-            "common_names": [
-              "Beech Woodwart"
-            ],
-            "confidence": 0.0022,
-            "toxicity": "NO_RECORDED_TOXICITY",
-            "genus": "Hypoxylon"
-          },
-          {
-            "species_key": "stereum-hirsutum",
-            "scientific_name": "Stereum hirsutum",
-            "common_names": [
-              "Hairy Curtain Crust"
-            ],
-            "confidence": 0.002,
-            "toxicity": "NO_RECORDED_TOXICITY",
-            "genus": "Stereum"
-          }
-        ],
-        "warnings": [
-          "This app identifies possibilities, not certainties, and never tells you whether something is safe to eat. Never eat a wild mushroom identified only by an app."
-        ],
-        "deadly_in_play": false,
-        "questions": [
-          {
-            "key": "spore_print_colour",
-            "label": "Spore print",
-            "prompt": "What colour is the spore print?",
-            "how": "Cut the cap off and lay it gills-down on paper that is half white and half black, cover it with a bowl, and leave it for two to twelve hours. The colour of the powder that falls is the spore print.",
-            "effort": "hours",
-            "options": [
-              "White or cream",
-              "Pink",
-              "Rust or cinnamon brown",
-              "Chocolate or purple-brown",
-              "Black",
-              "Olive or yellow"
-            ],
-            "requires_photo": true,
-            "safety_note": "",
-            "rationale": "This is what separates Tricholoma pardinum from Coprinopsis lagopus.",
-            "expected_information_gain": 0.0645
-          }
-        ],
+        "how_to_tell_apart": [],
         "model_version": "0.1.0",
         "calibrated": false
       }
@@ -935,7 +1020,7 @@
     {
       "answered": "Yellow, especially at the stem base",
       "result": {
-        "observation_id": "2f64cf76e4474e4ab8ac426d91f3bf4b",
+        "observation_id": "5099265dfd8244feb19b476e4a8a2ad2",
         "verdict": "uncertain",
         "headline": "I'm not sure what this is",
         "detail": "No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.",
@@ -946,7 +1031,7 @@
             "common_names": [
               "Destroying Angel"
             ],
-            "confidence": 0.2608,
+            "confidence": 0.4731,
             "toxicity": "DEADLY",
             "genus": "Amanita"
           },
@@ -956,7 +1041,7 @@
             "common_names": [
               "Plums and Custard"
             ],
-            "confidence": 0.0409,
+            "confidence": 0.0456,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Tricholomopsis"
           },
@@ -967,7 +1052,7 @@
               "Yellow Knight",
               "Man on Horseback"
             ],
-            "confidence": 0.0292,
+            "confidence": 0.0299,
             "toxicity": "SERIOUS",
             "genus": "Tricholoma"
           },
@@ -977,7 +1062,7 @@
             "common_names": [
               "Yellow Stagshorn"
             ],
-            "confidence": 0.0194,
+            "confidence": 0.0179,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Calocera"
           },
@@ -987,7 +1072,7 @@
             "common_names": [
               "Wrinkled Crust"
             ],
-            "confidence": 0.0166,
+            "confidence": 0.0147,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Phlebia"
           },
@@ -998,7 +1083,7 @@
               "Horn of Plenty",
               "Black Trumpet"
             ],
-            "confidence": 0.0165,
+            "confidence": 0.0146,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Craterellus"
           },
@@ -1008,7 +1093,7 @@
             "common_names": [
               "Hairy Curtain Crust"
             ],
-            "confidence": 0.0148,
+            "confidence": 0.0127,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Stereum"
           },
@@ -1018,7 +1103,7 @@
             "common_names": [
               "Sulphur Tuft"
             ],
-            "confidence": 0.0148,
+            "confidence": 0.0127,
             "toxicity": "TOXIC",
             "genus": "Hypholoma"
           }
@@ -1050,7 +1135,7 @@
             "requires_photo": true,
             "safety_note": "",
             "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
-            "expected_information_gain": 0.3659
+            "expected_information_gain": 0.3165
           },
           {
             "key": "substrate",
@@ -1069,27 +1154,30 @@
             "requires_photo": false,
             "safety_note": "",
             "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
-            "expected_information_gain": 0.3537
+            "expected_information_gain": 0.315
           },
           {
-            "key": "hymenium_type",
-            "label": "Spore surface",
-            "prompt": "What carries the spores underneath?",
-            "how": "Photograph the underside close up.",
+            "key": "habitat",
+            "label": "Surroundings",
+            "prompt": "What trees are within about ten metres?",
+            "how": "Many fungi partner with one kind of tree and grow nowhere else, so this narrows the possibilities sharply. What counts is what is within about ten metres, not what dominates the wood: a single birch in a conifer plantation is the birch answer.",
             "effort": "instant",
             "options": [
-              "Gills",
-              "Pores",
-              "Spines",
-              "Smooth surface",
-              "Ridges"
+              "Oak",
+              "Beech",
+              "Birch",
+              "Pine or spruce",
+              "Larch",
+              "Mixed broadleaf",
+              "No trees nearby"
             ],
-            "requires_photo": true,
+            "requires_photo": false,
             "safety_note": "",
-            "rationale": "This would help confirm or rule out Calocera viscosa.",
-            "expected_information_gain": 0.2679
+            "rationale": "This is what separates Tricholomopsis rutilans from Tricholoma equestre.",
+            "expected_information_gain": 0.2234
           }
         ],
+        "how_to_tell_apart": [],
         "model_version": "0.1.0",
         "calibrated": false
       }
@@ -1097,7 +1185,7 @@
     {
       "answered": "Red or pink",
       "result": {
-        "observation_id": "2f64cf76e4474e4ab8ac426d91f3bf4b",
+        "observation_id": "5099265dfd8244feb19b476e4a8a2ad2",
         "verdict": "uncertain",
         "headline": "I'm not sure what this is",
         "detail": "No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.",
@@ -1108,7 +1196,7 @@
             "common_names": [
               "Destroying Angel"
             ],
-            "confidence": 0.2679,
+            "confidence": 0.483,
             "toxicity": "DEADLY",
             "genus": "Amanita"
           },
@@ -1118,7 +1206,7 @@
             "common_names": [
               "Plums and Custard"
             ],
-            "confidence": 0.042,
+            "confidence": 0.0466,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Tricholomopsis"
           },
@@ -1129,7 +1217,7 @@
               "Yellow Knight",
               "Man on Horseback"
             ],
-            "confidence": 0.03,
+            "confidence": 0.0305,
             "toxicity": "SERIOUS",
             "genus": "Tricholoma"
           },
@@ -1139,7 +1227,7 @@
             "common_names": [
               "Yellow Stagshorn"
             ],
-            "confidence": 0.0199,
+            "confidence": 0.0182,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Calocera"
           },
@@ -1149,7 +1237,7 @@
             "common_names": [
               "Wrinkled Crust"
             ],
-            "confidence": 0.0171,
+            "confidence": 0.015,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Phlebia"
           },
@@ -1160,7 +1248,7 @@
               "Horn of Plenty",
               "Black Trumpet"
             ],
-            "confidence": 0.017,
+            "confidence": 0.0149,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Craterellus"
           },
@@ -1170,7 +1258,7 @@
             "common_names": [
               "Hairy Curtain Crust"
             ],
-            "confidence": 0.0152,
+            "confidence": 0.013,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Stereum"
           },
@@ -1180,7 +1268,7 @@
             "common_names": [
               "Sulphur Tuft"
             ],
-            "confidence": 0.0152,
+            "confidence": 0.0129,
             "toxicity": "TOXIC",
             "genus": "Hypholoma"
           }
@@ -1212,7 +1300,7 @@
             "requires_photo": true,
             "safety_note": "",
             "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
-            "expected_information_gain": 0.3659
+            "expected_information_gain": 0.3165
           },
           {
             "key": "substrate",
@@ -1231,27 +1319,30 @@
             "requires_photo": false,
             "safety_note": "",
             "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
-            "expected_information_gain": 0.3537
+            "expected_information_gain": 0.315
           },
           {
-            "key": "hymenium_type",
-            "label": "Spore surface",
-            "prompt": "What carries the spores underneath?",
-            "how": "Photograph the underside close up.",
+            "key": "habitat",
+            "label": "Surroundings",
+            "prompt": "What trees are within about ten metres?",
+            "how": "Many fungi partner with one kind of tree and grow nowhere else, so this narrows the possibilities sharply. What counts is what is within about ten metres, not what dominates the wood: a single birch in a conifer plantation is the birch answer.",
             "effort": "instant",
             "options": [
-              "Gills",
-              "Pores",
-              "Spines",
-              "Smooth surface",
-              "Ridges"
+              "Oak",
+              "Beech",
+              "Birch",
+              "Pine or spruce",
+              "Larch",
+              "Mixed broadleaf",
+              "No trees nearby"
             ],
-            "requires_photo": true,
+            "requires_photo": false,
             "safety_note": "",
-            "rationale": "This would help confirm or rule out Calocera viscosa.",
-            "expected_information_gain": 0.2679
+            "rationale": "This is what separates Tricholomopsis rutilans from Tricholoma equestre.",
+            "expected_information_gain": 0.2234
           }
         ],
+        "how_to_tell_apart": [],
         "model_version": "0.1.0",
         "calibrated": false
       }
@@ -1259,7 +1350,7 @@
     {
       "answered": "Blue",
       "result": {
-        "observation_id": "2f64cf76e4474e4ab8ac426d91f3bf4b",
+        "observation_id": "5099265dfd8244feb19b476e4a8a2ad2",
         "verdict": "uncertain",
         "headline": "I'm not sure what this is",
         "detail": "No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.",
@@ -1270,7 +1361,7 @@
             "common_names": [
               "Destroying Angel"
             ],
-            "confidence": 0.27,
+            "confidence": 0.4856,
             "toxicity": "DEADLY",
             "genus": "Amanita"
           },
@@ -1280,7 +1371,7 @@
             "common_names": [
               "Plums and Custard"
             ],
-            "confidence": 0.0423,
+            "confidence": 0.0469,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Tricholomopsis"
           },
@@ -1291,7 +1382,7 @@
               "Yellow Knight",
               "Man on Horseback"
             ],
-            "confidence": 0.0302,
+            "confidence": 0.0307,
             "toxicity": "SERIOUS",
             "genus": "Tricholoma"
           },
@@ -1301,7 +1392,7 @@
             "common_names": [
               "Yellow Stagshorn"
             ],
-            "confidence": 0.0201,
+            "confidence": 0.0183,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Calocera"
           },
@@ -1311,7 +1402,7 @@
             "common_names": [
               "Wrinkled Crust"
             ],
-            "confidence": 0.0172,
+            "confidence": 0.0151,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Phlebia"
           },
@@ -1322,7 +1413,7 @@
               "Horn of Plenty",
               "Black Trumpet"
             ],
-            "confidence": 0.0171,
+            "confidence": 0.0149,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Craterellus"
           },
@@ -1332,7 +1423,7 @@
             "common_names": [
               "Hairy Curtain Crust"
             ],
-            "confidence": 0.0153,
+            "confidence": 0.013,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Stereum"
           },
@@ -1342,7 +1433,7 @@
             "common_names": [
               "Sulphur Tuft"
             ],
-            "confidence": 0.0153,
+            "confidence": 0.013,
             "toxicity": "TOXIC",
             "genus": "Hypholoma"
           }
@@ -1374,7 +1465,7 @@
             "requires_photo": true,
             "safety_note": "",
             "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
-            "expected_information_gain": 0.3659
+            "expected_information_gain": 0.3165
           },
           {
             "key": "substrate",
@@ -1393,27 +1484,30 @@
             "requires_photo": false,
             "safety_note": "",
             "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
-            "expected_information_gain": 0.3537
+            "expected_information_gain": 0.315
           },
           {
-            "key": "hymenium_type",
-            "label": "Spore surface",
-            "prompt": "What carries the spores underneath?",
-            "how": "Photograph the underside close up.",
+            "key": "habitat",
+            "label": "Surroundings",
+            "prompt": "What trees are within about ten metres?",
+            "how": "Many fungi partner with one kind of tree and grow nowhere else, so this narrows the possibilities sharply. What counts is what is within about ten metres, not what dominates the wood: a single birch in a conifer plantation is the birch answer.",
             "effort": "instant",
             "options": [
-              "Gills",
-              "Pores",
-              "Spines",
-              "Smooth surface",
-              "Ridges"
+              "Oak",
+              "Beech",
+              "Birch",
+              "Pine or spruce",
+              "Larch",
+              "Mixed broadleaf",
+              "No trees nearby"
             ],
-            "requires_photo": true,
+            "requires_photo": false,
             "safety_note": "",
-            "rationale": "This would help confirm or rule out Calocera viscosa.",
-            "expected_information_gain": 0.2679
+            "rationale": "This is what separates Tricholomopsis rutilans from Tricholoma equestre.",
+            "expected_information_gain": 0.2234
           }
         ],
+        "how_to_tell_apart": [],
         "model_version": "0.1.0",
         "calibrated": false
       }
@@ -1421,7 +1515,7 @@
     {
       "answered": "Green",
       "result": {
-        "observation_id": "2f64cf76e4474e4ab8ac426d91f3bf4b",
+        "observation_id": "5099265dfd8244feb19b476e4a8a2ad2",
         "verdict": "uncertain",
         "headline": "I'm not sure what this is",
         "detail": "No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.",
@@ -1432,7 +1526,7 @@
             "common_names": [
               "Destroying Angel"
             ],
-            "confidence": 0.2716,
+            "confidence": 0.4878,
             "toxicity": "DEADLY",
             "genus": "Amanita"
           },
@@ -1442,7 +1536,7 @@
             "common_names": [
               "Plums and Custard"
             ],
-            "confidence": 0.0425,
+            "confidence": 0.0471,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Tricholomopsis"
           },
@@ -1453,7 +1547,7 @@
               "Yellow Knight",
               "Man on Horseback"
             ],
-            "confidence": 0.0304,
+            "confidence": 0.0308,
             "toxicity": "SERIOUS",
             "genus": "Tricholoma"
           },
@@ -1463,7 +1557,7 @@
             "common_names": [
               "Yellow Stagshorn"
             ],
-            "confidence": 0.0202,
+            "confidence": 0.0184,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Calocera"
           },
@@ -1473,7 +1567,7 @@
             "common_names": [
               "Wrinkled Crust"
             ],
-            "confidence": 0.0173,
+            "confidence": 0.0151,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Phlebia"
           },
@@ -1484,7 +1578,7 @@
               "Horn of Plenty",
               "Black Trumpet"
             ],
-            "confidence": 0.0172,
+            "confidence": 0.015,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Craterellus"
           },
@@ -1494,7 +1588,7 @@
             "common_names": [
               "Hairy Curtain Crust"
             ],
-            "confidence": 0.0154,
+            "confidence": 0.0131,
             "toxicity": "NO_RECORDED_TOXICITY",
             "genus": "Stereum"
           },
@@ -1504,7 +1598,7 @@
             "common_names": [
               "Sulphur Tuft"
             ],
-            "confidence": 0.0154,
+            "confidence": 0.0131,
             "toxicity": "TOXIC",
             "genus": "Hypholoma"
           }
@@ -1536,7 +1630,7 @@
             "requires_photo": true,
             "safety_note": "",
             "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
-            "expected_information_gain": 0.3659
+            "expected_information_gain": 0.3165
           },
           {
             "key": "substrate",
@@ -1555,27 +1649,30 @@
             "requires_photo": false,
             "safety_note": "",
             "rationale": "This is what separates Tricholomopsis rutilans from Calocera viscosa.",
-            "expected_information_gain": 0.3537
+            "expected_information_gain": 0.315
           },
           {
-            "key": "hymenium_type",
-            "label": "Spore surface",
-            "prompt": "What carries the spores underneath?",
-            "how": "Photograph the underside close up.",
+            "key": "habitat",
+            "label": "Surroundings",
+            "prompt": "What trees are within about ten metres?",
+            "how": "Many fungi partner with one kind of tree and grow nowhere else, so this narrows the possibilities sharply. What counts is what is within about ten metres, not what dominates the wood: a single birch in a conifer plantation is the birch answer.",
             "effort": "instant",
             "options": [
-              "Gills",
-              "Pores",
-              "Spines",
-              "Smooth surface",
-              "Ridges"
+              "Oak",
+              "Beech",
+              "Birch",
+              "Pine or spruce",
+              "Larch",
+              "Mixed broadleaf",
+              "No trees nearby"
             ],
-            "requires_photo": true,
+            "requires_photo": false,
             "safety_note": "",
-            "rationale": "This would help confirm or rule out Calocera viscosa.",
-            "expected_information_gain": 0.2679
+            "rationale": "This is what separates Tricholomopsis rutilans from Tricholoma equestre.",
+            "expected_information_gain": 0.2234
           }
         ],
+        "how_to_tell_apart": [],
         "model_version": "0.1.0",
         "calibrated": false
       }
