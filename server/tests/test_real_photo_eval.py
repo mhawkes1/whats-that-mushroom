@@ -107,3 +107,44 @@ def test_every_manifest_row_names_a_species_in_the_label_space():
             f"worth more than a score -- whether the app is honest about a "
             f"photograph that does not show the diagnostic feature"
         )
+
+
+def test_photographs_are_stripped_of_location_on_the_way_in():
+    """Every one of the first eight real photographs carried GPS.
+
+    They were never committed -- `eval/photos/` is ignored and git has
+    never held an image -- but Martin asked for them deleted on
+    2026-10-29 anyway, and deleting is a fix that has to be remembered
+    every time. Stripping on ingest does not.
+
+    Read from source because exercising it needs a photograph, and the
+    point is that the repository never holds one.
+    """
+    source = (ROOT / "scripts" / "add_eval_photo.py").read_text(encoding="utf-8")
+    assert "exif_transpose" in source, (
+        "orientation must be applied to the PIXELS before the metadata is "
+        "dropped, or a portrait photograph is served to the model sideways "
+        "and the score is blamed on distribution shift"
+    )
+    assert "clean.paste(upright)" in source, (
+        "the saved image must be a fresh one: PIL writes info['exif'] back "
+        "out, so saving the transposed original can keep what was stripped"
+    )
+    assert "refusing to overwrite" in source, (
+        "a re-added photograph must not silently replace another, or the "
+        "manifest's label stops matching its picture"
+    )
+
+
+def test_the_runner_notices_a_photograph_that_slipped_through():
+    """The strip is a convenience; this is the guard.
+
+    A photograph copied in by hand rather than added by the script keeps
+    its GPS, and nothing else in the pipeline would ever mention it.
+    """
+    source = (ROOT / "scripts" / "real_photo_eval.py").read_text(encoding="utf-8")
+    assert "34853" in source, (
+        "the runner must check for the GPSInfo tag by number -- its name "
+        "varies between Pillow versions"
+    )
+    assert "still carry GPS" in source

@@ -18,7 +18,23 @@ them.
 
 ## Adding a photograph
 
-1. Put the image in `eval/photos/`.
+1. Add it with the script, which strips the metadata:
+
+   ```bash
+   python scripts/add_eval_photo.py ~/Pictures/IMG_4821.jpg
+   ```
+
+   **Every one of the first eight real photographs carried GPS.** They were
+   never committed -- this directory is ignored and git has never held an
+   image -- but "safe because the gitignore is right" is one attached file
+   away from false, and deleting them afterwards is a fix somebody has to
+   remember every time. The script removes location, camera, serial number
+   and timestamp, and **applies the orientation to the pixels first**: a
+   phone stores a portrait photograph as landscape plus a flag, and
+   dropping the flag without rotating hands the model a sideways mushroom.
+
+   The runner also warns about any photograph that still has GPS, for the
+   case where somebody copied a file in by hand.
 2. Add a row to `real-photos.csv`:
 
    | column | meaning |

@@ -63,6 +63,25 @@ NAMING_VERDICTS = {"species"}
 OUT_OF_LABEL_SPACE = "not-in-label-space"
 
 
+def _carries_location(photo: Path) -> bool:
+    """Whether a photograph still has GPS in it.
+
+    Every one of the first eight real photographs did. They were never
+    committed -- eval/photos/ is ignored and git has never held an image
+    -- but a foraging location is not ours to hold by accident either, and
+    "it is safe because the gitignore is right" is one attached file away
+    from false. `scripts/add_eval_photo.py` strips on the way in; this is
+    the check that notices when somebody copied a file instead.
+    """
+    try:
+        from PIL import Image
+
+        with Image.open(photo) as im:
+            return 34853 in im.getexif()  # GPSInfo
+    except Exception:
+        return False
+
+
 def _health(base: str) -> dict:
     import requests
 
@@ -124,12 +143,14 @@ def main() -> int:
         print(f"No photographs listed in {args.manifest}.", file=sys.stderr)
         return 2
 
-    results, missing = [], []
+    results, missing, located = [], [], []
     for row in rows:
         photo = Path(args.photos) / row["filename"]
         if not photo.exists():
             missing.append(row["filename"])
             continue
+        if _carries_location(photo):
+            located.append(row["filename"])
 
         truth_key = row["species_key"]
         unlabelled = truth_key == OUT_OF_LABEL_SPACE
@@ -196,6 +217,14 @@ def main() -> int:
             "misleading": misleading,
             "calibrated": bool(body.get("calibrated")),
         })
+
+    if located:
+        print(f"\n  *** {len(located)} photograph(s) still carry GPS. ***")
+        for name in located[:10]:
+            print(f"      {name}")
+        print("  Add them with `python scripts/add_eval_photo.py <file>`, "
+              "which strips\n  location on the way in and bakes the rotation "
+              "into the pixels first.")
 
     if missing:
         print(f"\n  {len(missing)} listed photograph(s) not found in "
