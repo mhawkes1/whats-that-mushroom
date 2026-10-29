@@ -165,13 +165,67 @@ export function ResultScreen({ navigation, route }: { navigation: any; route: an
 
   const nextQuestion = result.questions[0];
 
+  /**
+   * Whether the questions are asked, or merely offered.
+   *
+   * Martin, 2026-10-29: a wall of questions between the name and the
+   * percentages gets skipped, because the user wants the answer and the
+   * questions are in the way. True, and worth fixing -- but only where
+   * skipping them is a reasonable thing to do.
+   *
+   * It is not reasonable when a deadly species holds mass or when the app
+   * declined to name one. There the questions are not an optional extra:
+   * they are the only mechanism that can resolve the ambiguity, and the
+   * user's instinct to skip to the answer is exactly what you do not want
+   * when there is no safe answer yet. Collapsing them behind a tap would
+   * hide the one thing that could help, from the people it could help
+   * most. Same shape as rule 5, which gates the taste question on whether
+   * a deadly candidate holds mass.
+   */
+  const mustAsk = result.deadly_in_play || result.verdict !== 'species';
+  const [opened, setOpened] = useState(false);
+  const askingNow = mustAsk || opened;
+
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       {imageUri ? <Image source={{ uri: imageUri }} style={styles.photo} /> : null}
 
       <VerdictCard result={result} />
 
-      {nextQuestion ? (
+      {nextQuestion && !askingNow ? (
+        /* The offer, not the question.
+         *
+         * It deliberately does NOT say "to increase the probability".
+         * A consistent answer never boosts in this engine -- evidence
+         * eliminates, and the leading species' share moves as a side
+         * effect of its rivals being contradicted. It can fall: answering
+         * the follow-up on a dangerous pair once moved the destroying
+         * angel UP from 24% to 26%, because its partner was ruled out and
+         * the mass had to go somewhere. A label promising the number will
+         * rise would make that read as a malfunction, when it is the app
+         * learning something.
+         */
+        <Pressable
+          onPress={() => setOpened(true)}
+          style={styles.offer}
+          accessibilityRole="button"
+          accessibilityLabel={
+            `Answer ${result.questions.length} question` +
+            `${result.questions.length === 1 ? '' : 's'} to narrow this down`
+          }
+        >
+          <Text style={styles.offerTitle}>
+            Tell me more and I'll rule things out
+          </Text>
+          <Text style={styles.offerSub}>
+            {result.questions.length} question
+            {result.questions.length === 1 ? '' : 's'} · this can change the
+            answer
+          </Text>
+        </Pressable>
+      ) : null}
+
+      {nextQuestion && askingNow ? (
         <View style={styles.section}>
           <Text style={styles.sectionHeading}>
             {result.deadly_in_play ? 'CHECK THIS BEFORE ANYTHING ELSE' : 'NARROW IT DOWN'}
@@ -286,6 +340,26 @@ const styles = StyleSheet.create({
     fontSize: theme.font.tiny,
     color: theme.colour.textFaint,
     textAlign: 'center',
+  },
+  // An invitation, not an obstruction. Quiet enough that it does not
+  // compete with the verdict above it, present enough that it is clearly
+  // a thing to press.
+  offer: {
+    backgroundColor: theme.colour.surface,
+    borderWidth: 1,
+    borderColor: theme.colour.border,
+    borderRadius: theme.radius.md,
+    padding: theme.spacing(2),
+    gap: 4,
+  },
+  offerTitle: {
+    fontSize: theme.font.body,
+    fontWeight: '700',
+    color: theme.colour.accent,
+  },
+  offerSub: {
+    fontSize: theme.font.small,
+    color: theme.colour.textMuted,
   },
   tellApart: {
     backgroundColor: theme.colour.surface,

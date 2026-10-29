@@ -13,6 +13,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { IdentifyResponse } from '../src/lib/api';
 import type { Observation } from '../src/lib/observationLog';
+import { PhotographsGone, reopen } from '../src/lib/reopen';
 
 const identify = vi.fn();
 const answerQuestion = vi.fn();
@@ -22,7 +23,9 @@ vi.mock('../src/lib/api', () => ({
   answerQuestion: (...args: unknown[]) => answerQuestion(...args),
 }));
 
-const { PhotographsGone, reopen } = await import('../src/lib/reopen');
+// Static import: `vi.mock` is hoisted above it by vitest, and a
+// top-level await here type-checks only under newer module settings
+// than this project uses.
 
 const reply = (id: string): IdentifyResponse =>
   ({ observation_id: id, verdict: 'species', headline: '', detail: '',
