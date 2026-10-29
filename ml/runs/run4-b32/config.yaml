@@ -1,0 +1,118 @@
+# Training configuration for the fungi species classifier.
+#
+# Defaults target a single 24GB GPU (A10G / 3090 / 4090). Reduce batch_size
+# and enable grad_accum_steps to fit smaller cards.
+#
+# Audited against the code on 2026-10-19, before the first paid GPU run.
+# Nine keys were being read by nobody and two the code reads were not
+# declared here at all. `ml/tests/test_config.py` now checks both
+# directions, because a setting that silently does nothing is worse than a
+# missing one: it reads as a decision somebody made.
+
+data:
+  manifest: data/processed/manifest.parquet
+  label_map: data/processed/labels.json
+  # Every path in this block is resolved against the REPO ROOT by
+  # `train._data_path`, not against the shell's working directory. It used
+  # to be `../data/...`, which wanted `ml/` as the cwd while `manifest`
+  # above wanted the repo root -- so no single directory satisfied both and
+  # the documented next command failed from either.
+  taxonomy: data/taxonomy.seed.json
+  image_size: 384
+  num_workers: 8
+
+  # NOTE: class filtering and the train/val/test split are decided in
+  # `python -m fungi_ml.data.prepare`, not here -- it writes the manifest
+  # this file then consumes, and it takes its own `--min-images`,
+  # `--max-images`, `--val-fraction` and `--test-fraction` flags (defaults
+  # 40, 1200, 0.10, 0.10). Those keys used to be duplicated into this file,
+  # where they did nothing. They matched prepare's defaults, so the mirror
+  # was invisible; editing one here would silently have had no effect.
+  #
+  # Splitting is on `observation_id` unconditionally and is not a setting.
+  # The same fruiting body photographed five times must never straddle
+  # train and val, so there is no option to turn it off.
+
+model:
+  # timm identifier. vit_base_patch16_384 and convnext_base are the two that
+  # consistently top the Danish Fungi benchmark; EfficientNet is the choice
+  # when the model must run on-device.
+  backbone: vit_base_patch16_384.augreg_in21k_ft_in1k
+  pretrained: true
+  drop_rate: 0.1
+  drop_path_rate: 0.2
+
+train:
+  # Ten, not thirty. Measured on the first real run: risk-weighted error was
+  # minimised around epochs 5-8 at roughly 1.7 and then deteriorated to
+  # 3.113 by epoch 29, while top-1 moved 0.92 of a percentage point across
+  # the whole stretch. Shipping the final epoch would have been 71% more
+  # dangerous for 0.40 of a point LESS accuracy. The extra twenty epochs
+  # bought nothing and cost two hours.
+  epochs: 10
+  # 32 used 8.5 GB of a 4090's 24 at 100% utilisation and 418 W, so the card
+  # was working rather than starved and two thirds of its memory sat idle.
+  batch_size: 32
+  grad_accum_steps: 1
+  lr: 3.0e-4
+  backbone_lr_mult: 0.1      # discriminative fine-tuning
+  weight_decay: 0.05
+  warmup_epochs: 2
+  label_smoothing: 0.1
+  amp: true
+  ema_decay: 0.9998
+  clip_grad_norm: 1.0
+  # Oversample rare classes so the tail is learned rather than memorised.
+  balanced_sampling: true
+  seed: 1337
+
+  # How hard the risk matrix pulls. This is the single most consequential
+  # number in the file -- it is what makes confusing a death cap for a field
+  # mushroom cost more than confusing two brittlegills -- and until
+  # 2026-10-19 it was not in the file at all: `train.py` read it with a
+  # default of 1.0, so anyone tuning a run never saw it. 0 disables the
+  # weighting entirely and trains an ordinary classifier, which is not a
+  # thing this project should ship but is a useful ablation to have.
+  risk_strength: 1.0
+
+  # Mixup and CutMix. WIRED as of 2026-10-28 -- `fungi_ml.mixup.Mixer` runs
+  # on the batch and `losses.SoftTargetRiskLoss` takes over whenever either
+  # alpha is above zero. Both at 0 trains exactly as before, so this is a
+  # decision made here rather than a silent change of objective.
+  #
+  # They are aimed at a specific finding. The first run's accuracy was flat
+  # from epoch 4 to 29 while risk-weighted error nearly doubled: the model
+  # converting "uncertain, spread across the genus" into "confidently the
+  # common one", which is the 1000x cell of the risk matrix when the truth
+  # is a rare deadly species. Mixup trains flatter distributions on inputs
+  # between classes, which is the opposite transformation -- so it is the
+  # first thing to reach for, ahead of raising `risk_strength`.
+  #
+  # Two things to expect. Mixing dilutes the risk multiplier, because a
+  # half death cap carries half the cost; log1p compresses that to about a
+  # tenth rather than a half, and there is a test on the figure. And a
+  # mixup-trained model is usually MORE under-confident, so expect the
+  # fitted temperature to fall further below the 0.8177 of run one. That is
+  # calibration's job, not a reason to avoid it.
+  mixup_alpha: 0.0
+  cutmix_alpha: 0.0
+  mix_prob: 0.5             # chance a given batch is mixed at all
+
+eval:
+  # NOTE: nothing here is configurable, and `topk: [1, 3, 5]` used to sit in
+  # this block looking as though it were. `evaluate.py` takes `topk` as a
+  # function default of (1, 3, 5) and no caller passes the config value, so
+  # the list matched by coincidence rather than by wiring.
+  #
+  # Genus accuracy and dangerous confusions are reported
+  # unconditionally -- they were flags here too, and turning them off was
+  # never possible. Rule 6 is why: a model card without per-dangerous-pair
+  # counts is not a model card for this project.
+  {}
+
+output:
+  dir: runs/run4-b32
+  # NOTE: checkpointing is not configurable. `train.py` keeps one `best.pt`,
+  # selected on validation **risk** rather than accuracy -- rule 6, and the
+  # reason `save_top_k` has gone: a top-k on the wrong metric is a footgun.
+  # There is no TensorBoard writer either; `tensorboard: true` did nothing.

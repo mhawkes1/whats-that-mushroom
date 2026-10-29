@@ -1,0 +1,77 @@
+{
+  "temperature": 0.7927777767181396,
+  "energy_threshold": -7.627726078033447,
+  "energy_temperature": 1.0,
+  "energy_false_unknown_rate": 0.05,
+  "energy_median_in_distribution": -9.924297332763672,
+  "energy_flagged_in_distribution": 0.050037261790695196,
+  "ece_before": 0.06273193652480348,
+  "ece_after": 0.01285217364245197,
+  "reliability": [
+    {
+      "bin": "0.0-0.1",
+      "count": 2,
+      "mean_confidence": 0.09033463895320892,
+      "observed_accuracy": 0.0
+    },
+    {
+      "bin": "0.1-0.2",
+      "count": 40,
+      "mean_confidence": 0.16321519017219543,
+      "observed_accuracy": 0.225
+    },
+    {
+      "bin": "0.2-0.3",
+      "count": 125,
+      "mean_confidence": 0.25738146901130676,
+      "observed_accuracy": 0.24
+    },
+    {
+      "bin": "0.3-0.4",
+      "count": 225,
+      "mean_confidence": 0.35730618238449097,
+      "observed_accuracy": 0.3288888888888889
+    },
+    {
+      "bin": "0.4-0.5",
+      "count": 322,
+      "mean_confidence": 0.45017120242118835,
+      "observed_accuracy": 0.43167701863354035
+    },
+    {
+      "bin": "0.5-0.6",
+      "count": 483,
+      "mean_confidence": 0.550877034664154,
+      "observed_accuracy": 0.5362318840579711
+    },
+    {
+      "bin": "0.6-0.7",
+      "count": 438,
+      "mean_confidence": 0.6518023610115051,
+      "observed_accuracy": 0.6940639269406392
+    },
+    {
+      "bin": "0.7-0.8",
+      "count": 548,
+      "mean_confidence": 0.7518723607063293,
+      "observed_accuracy": 0.7645985401459854
+    },
+    {
+      "bin": "0.8-0.9",
+      "count": 802,
+      "mean_confidence": 0.855768620967865,
+      "observed_accuracy": 0.8541147132169576
+    },
+    {
+      "bin": "0.9-1.0",
+      "count": 6408,
+      "mean_confidence": 0.9819931983947754,
+      "observed_accuracy": 0.9857990012484394
+    }
+  ],
+  "target_precision": 0.95,
+  "confidence_threshold": 0.6500000000000001,
+  "coverage": 0.8498882146279144,
+  "split": "val",
+  "n_samples": 9393
+}

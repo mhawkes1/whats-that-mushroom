@@ -1,0 +1,270 @@
+{
+  "n_samples": 9403,
+  "n_classes": 244,
+  "accuracy": {
+    "top1": 0.8706795703498883,
+    "top3": 0.9573540359459747,
+    "top5": 0.972668297351909
+  },
+  "genus_accuracy": 0.9107731575029246,
+  "risk_weighted_error": 1.0820482969284058,
+  "expected_calibration_error": 0.008781407420259736,
+  "deadly_recall": {
+    "amanita-phalloides": 0.975,
+    "amanita-virosa": 0.9565217391304348,
+    "clitocybe-rivulosa": 0.925,
+    "cortinarius-orellanus": 1.0,
+    "cortinarius-rubellus": 1.0,
+    "galerina-marginata": 0.9459459459459459,
+    "gyromitra-esculenta": 1.0,
+    "inocybe-erubescens": 0.9090909090909091,
+    "lepiota-brunneoincarnata": 0.8823529411764706,
+    "lepiota-subincarnata": 0.8235294117647058,
+    "_group_level_recall": 0.9567901234567902
+  },
+  "dangerous_confusions": [
+    {
+      "true_species": "inocybe-erubescens",
+      "predicted_as": "gymnopilus-penetrans",
+      "count": 1,
+      "max_confidence": 0.5729,
+      "silent": 1,
+      "min_deadly_mass": 0.0107,
+      "max_deadly_mass": 0.0107
+    },
+    {
+      "true_species": "lepiota-subincarnata",
+      "predicted_as": "lactarius-tabidus",
+      "count": 1,
+      "max_confidence": 0.2398,
+      "silent": 1,
+      "min_deadly_mass": 0.0111,
+      "max_deadly_mass": 0.0111
+    },
+    {
+      "true_species": "clitocybe-rivulosa",
+      "predicted_as": "collybiopsis-confluens",
+      "count": 1,
+      "max_confidence": 0.6901,
+      "silent": 0,
+      "min_deadly_mass": 0.0816,
+      "max_deadly_mass": 0.0816
+    },
+    {
+      "true_species": "amanita-virosa",
+      "predicted_as": "amanita-citrina",
+      "count": 1,
+      "max_confidence": 0.5531,
+      "silent": 0,
+      "min_deadly_mass": 0.3655,
+      "max_deadly_mass": 0.3655
+    },
+    {
+      "true_species": "galerina-marginata",
+      "predicted_as": "crepidotus-cesatii",
+      "count": 1,
+      "max_confidence": 0.3854,
+      "silent": 0,
+      "min_deadly_mass": 0.1645,
+      "max_deadly_mass": 0.1645
+    },
+    {
+      "true_species": "inocybe-erubescens",
+      "predicted_as": "cuphophyllus-pratensis",
+      "count": 1,
+      "max_confidence": 0.3511,
+      "silent": 0,
+      "min_deadly_mass": 0.0408,
+      "max_deadly_mass": 0.0408
+    },
+    {
+      "true_species": "clitocybe-rivulosa",
+      "predicted_as": "crepidotus-cesatii",
+      "count": 1,
+      "max_confidence": 0.2847,
+      "silent": 0,
+      "min_deadly_mass": 0.2916,
+      "max_deadly_mass": 0.2916
+    }
+  ],
+  "coverage_precision": [
+    {
+      "threshold": 0.1,
+      "coverage": 0.9997873019249176,
+      "precision": 0.8708648016168493,
+      "n": 9401
+    },
+    {
+      "threshold": 0.15,
+      "coverage": 0.9987238115495055,
+      "precision": 0.8717921414119902,
+      "n": 9391
+    },
+    {
+      "threshold": 0.2,
+      "coverage": 0.9951079442731043,
+      "precision": 0.874639307470343,
+      "n": 9357
+    },
+    {
+      "threshold": 0.25,
+      "coverage": 0.9903222375837498,
+      "precision": 0.8783290378006873,
+      "n": 9312
+    },
+    {
+      "threshold": 0.3,
+      "coverage": 0.9826651068807827,
+      "precision": 0.8832251082251082,
+      "n": 9240
+    },
+    {
+      "threshold": 0.35,
+      "coverage": 0.9703286185260024,
+      "precision": 0.8903989478298991,
+      "n": 9124
+    },
+    {
+      "threshold": 0.4,
+      "coverage": 0.9572476869084334,
+      "precision": 0.8981224308410176,
+      "n": 9001
+    },
+    {
+      "threshold": 0.45,
+      "coverage": 0.9387429543762629,
+      "precision": 0.906083607114535,
+      "n": 8827
+    },
+    {
+      "threshold": 0.5,
+      "coverage": 0.9186429862809742,
+      "precision": 0.9143320213012271,
+      "n": 8638
+    },
+    {
+      "threshold": 0.55,
+      "coverage": 0.8947144528342018,
+      "precision": 0.9247593010816594,
+      "n": 8413
+    },
+    {
+      "threshold": 0.6,
+      "coverage": 0.872062107837924,
+      "precision": 0.9343902439024391,
+      "n": 8200
+    },
+    {
+      "threshold": 0.65,
+      "coverage": 0.8466446878655748,
+      "precision": 0.9437256626052003,
+      "n": 7961
+    },
+    {
+      "threshold": 0.7,
+      "coverage": 0.819951079442731,
+      "precision": 0.9534370946822309,
+      "n": 7710
+    },
+    {
+      "threshold": 0.75,
+      "coverage": 0.7950654046580878,
+      "precision": 0.9605403959336544,
+      "n": 7476
+    },
+    {
+      "threshold": 0.8,
+      "coverage": 0.7655003722216314,
+      "precision": 0.967907752153376,
+      "n": 7198
+    },
+    {
+      "threshold": 0.85,
+      "coverage": 0.7292353504200787,
+      "precision": 0.9763745078022459,
+      "n": 6857
+    },
+    {
+      "threshold": 0.9,
+      "coverage": 0.6755290864617676,
+      "precision": 0.9834697732997482,
+      "n": 6352
+    },
+    {
+      "threshold": 0.95,
+      "coverage": 0.5876847814527278,
+      "precision": 0.991313789359392,
+      "n": 5526
+    }
+  ],
+  "reliability": [
+    {
+      "bin": "0.0-0.1",
+      "count": 2,
+      "mean_confidence": 0.07696959376335144,
+      "observed_accuracy": 0.0
+    },
+    {
+      "bin": "0.1-0.2",
+      "count": 44,
+      "mean_confidence": 0.16392679512500763,
+      "observed_accuracy": 0.06818181818181818
+    },
+    {
+      "bin": "0.2-0.3",
+      "count": 117,
+      "mean_confidence": 0.25981640815734863,
+      "observed_accuracy": 0.19658119658119658
+    },
+    {
+      "bin": "0.3-0.4",
+      "count": 239,
+      "mean_confidence": 0.3510114848613739,
+      "observed_accuracy": 0.32217573221757323
+    },
+    {
+      "bin": "0.4-0.5",
+      "count": 363,
+      "mean_confidence": 0.45186832547187805,
+      "observed_accuracy": 0.512396694214876
+    },
+    {
+      "bin": "0.5-0.6",
+      "count": 438,
+      "mean_confidence": 0.5494187474250793,
+      "observed_accuracy": 0.5388127853881278
+    },
+    {
+      "bin": "0.6-0.7",
+      "count": 490,
+      "mean_confidence": 0.650382936000824,
+      "observed_accuracy": 0.6346938775510204
+    },
+    {
+      "bin": "0.7-0.8",
+      "count": 512,
+      "mean_confidence": 0.7531819343566895,
+      "observed_accuracy": 0.75
+    },
+    {
+      "bin": "0.8-0.9",
+      "count": 846,
+      "mean_confidence": 0.8563411235809326,
+      "observed_accuracy": 0.851063829787234
+    },
+    {
+      "bin": "0.9-1.0",
+      "count": 6352,
+      "mean_confidence": 0.9813123345375061,
+      "observed_accuracy": 0.9834697732997482
+    }
+  ],
+  "dangerous_confusion_count": 7,
+  "dangerous_confusion_rate": 0.0007444432627884718,
+  "silent_dangerous_confusion_count": 2,
+  "silent_dangerous_confusion_rate": 0.0002126980750824205,
+  "deadly_mass_threshold": 0.02,
+  "split": "test",
+  "checkpoint": "ml/runs/run4-b32/best.pt",
+  "calibrated": true
+}
