@@ -598,17 +598,14 @@ HAND_SET_KEYS = {
     # /species/match falls back to the Fungi KINGDOM -- four authorships,
     # three DOUBTFUL.
     "Helvella crispa": 2554614,
-    # Inocybe lilacina's own synonym usage. GBIF's backbone and Species
-    # Fungorum Plus both make it a synonym of I. geophylla, so judge_match
-    # follows acceptedUsageKey to 3330851 and CollidingTaxonKeys refuses
-    # the build -- both halves are in the label space. Martin asked for
-    # them separate on 2026-10-29, reversing his own 2026-09-23 merge, and
-    # a pin is the documented way to say so.
-    #
-    # The pin is only half of it: 3331644's records sit UNDER 3330851, so
-    # geophylla's pull contains them and the same photographs would land
-    # under both labels. `_determined_elsewhere` is the other half.
-    "Inocybe lilacina": 3331644,
+    # Inocybe lilacina was pinned to 3331644, its own synonym usage, for
+    # a few hours on 2026-10-29, so that both halves of the GBIF synonym
+    # pair could live in the label space. Martin then made the point that
+    # settles it: the white and lilac forms are notoriously hard to
+    # separate visually and want a microscope or sequencing, so a
+    # photograph classifier cannot learn the distinction and no question
+    # the interrogation engine can ask resolves it. Folded back into
+    # I. geophylla the same day, and the pin went with it.
     # Clitocybe dealbata was pinned here for a few hours on 2026-09-23 as
     # well, to keep it separate from C. rivulosa. Martin established that
     # most authorities merge the two, so it was merged away instead and its

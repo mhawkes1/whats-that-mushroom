@@ -5241,7 +5241,7 @@
         "gill_colour"
       ],
       "notes": "Small, silky-fibrous, conical then domed, with a rust-brown spore print and a strong earthy or raw-potato smell. Contains muscarine. Colour ranges from white through cream to distinctly lilac; the lilac form is the one older books call Inocybe lilacina, and it is treated here as part of the same complex.",
-      "internal_note": "Merged 2026-09-23 on Martin's determination that I. lilacina now sits within the I. geophylla complex. GBIF's backbone agrees -- lilacina is a SYNONYM of geophylla -- and following the accepted usage had collided the two, which is what surfaced the question. The earlier decision to keep them separate is reversed. cap_colour is the UNION and therefore now includes Purple: a user holding the lilac form must not contradict a SERIOUS species into oblivion.",
+      "internal_note": "Merged 2026-09-23 on Martin's determination that I. lilacina now sits within the I. geophylla complex. GBIF's backbone agrees -- lilacina is a SYNONYM of geophylla -- and following the accepted usage had collided the two, which is what surfaced the question. The earlier decision to keep them separate is reversed. cap_colour is the UNION and therefore now includes Purple: a user holding the lilac form must not contradict a SERIOUS species into oblivion. Split back out on 2026-10-29 at Martin's request and folded in again the same day, on his point that the white and lilac forms are notoriously difficult to separate visually and want a microscope or sequencing. Measured while deciding: iNaturalist holds 385 image-bearing occurrences under lilacina against 933 under geophylla, so supply was never the obstacle -- 1,318 photographs would simply have been divided between two labels a network cannot tell apart, and the only declared difference is colour, which this entry's cap_colour union already spans. Both halves are SERIOUS, so a user saw the same hazard line either way and the split bought nothing visible. cap_colour therefore stays WIDE, which is now its original reason rather than a holding position.",
       "character_states": {
         "cap_colour": [
           "White or cream",
@@ -5268,62 +5268,6 @@
           "Brown",
           "Grey",
           "Violet or lilac"
-        ]
-      }
-    },
-    {
-      "key": "inocybe-lilacina",
-      "scientific_name": "Inocybe lilacina",
-      "genus": "Inocybe",
-      "common_names": [
-        "Lilac Fibrecap"
-      ],
-      "toxicity": "SERIOUS",
-      "gbif_key": 3331644,
-      "lookalikes": [
-        "inocybe-geophylla",
-        "inocybe-erubescens",
-        "laccaria-amethystina",
-        "mycena-pura"
-      ],
-      "diagnostic_characters": [
-        "cap_colour",
-        "cap_shape",
-        "cap_surface",
-        "spore_print_colour",
-        "smell",
-        "gill_colour"
-      ],
-      "notes": "Small fibrecap flushed violet or lilac over the cap, stem and young gills, fading to buff with age. The cap is silky-fibrous and conical before it domes; the spore print is rust-brown and the smell strongly of raw potato or damp earth. Contains muscarine. The faded ones are hard to tell from the white fibrecap, and the colour alone will not separate it from the amethyst deceiver or the lilac bonnet.",
-      "accepted_name": "Inocybe geophylla",
-      "internal_note": "Added 2026-10-29 at Martin's request, reversing the 2026-09-23 merge recorded on inocybe-geophylla. Three things a reviewer needs to know about this entry. (1) It reverses a determination Martin made himself: the lilac form had been folded into the I. geophylla complex, and geophylla's cap_colour union still carries Purple and Pink to cover it. That union is deliberately LEFT AS IT WAS. Tightening it would be the coherent thing to do if this species were reachable, and it is not yet -- see (3) -- so a user holding a lilac fibrecap must still be able to answer Purple without contradicting the only candidate the model can actually offer. Re-tighten geophylla when, and only when, a model trained on 245 classes is serving. (2) gbif_key is PINNED to 3331644, lilacina's own synonym usage, because judge_match follows acceptedUsageKey and would otherwise resolve this species to 3330851 -- geophylla -- and raise CollidingTaxonKeys. Measured against the live API on 2026-10-29: 3331644 has 9,185 occurrences and 2,846 with images, and every one of them carries speciesKey 3330851, so they are a SUBSET of geophylla's 5,524. Pinning alone would therefore have filed the same photographs under both labels: the exact silent label noise CollidingTaxonKeys exists to refuse, done by hand instead of detected. sources.py now drops any occurrence determined as a different species in the label space, which makes the two pulls disjoint. (3) It cannot be predicted until a retrain. labels.json fixes run4-b32's output at 244 classes in sorted order; this entry makes the taxonomy 245. The server reads names from labels.json, so nothing breaks and nothing changes -- the species is inert until a model is trained on a dataset that includes it.",
-      "character_states": {
-        "cap_colour": [
-          "Purple",
-          "White or cream",
-          "Pink",
-          "Brown"
-        ],
-        "cap_shape": [
-          "Conical",
-          "Domed",
-          "Flat"
-        ],
-        "cap_surface": [
-          "Fibrous",
-          "Smooth and dry"
-        ],
-        "spore_print_colour": [
-          "Rust or cinnamon brown"
-        ],
-        "smell": [
-          "Raw potato or earthy"
-        ],
-        "gill_colour": [
-          "Violet or lilac",
-          "White",
-          "Grey",
-          "Brown"
         ]
       }
     },

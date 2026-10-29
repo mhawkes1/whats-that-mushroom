@@ -87,19 +87,13 @@ def test_a_seed_filled_row_still_says_unreviewed():
     # option would not contradict them, which is Claude's reading of the
     # generous convention rather than anything Martin wrote. They carry the
     # UNREVIEWED flag for the same reason seed fills do.
-    # `claude-lilacina-split` is the same kind of thing: the six rows
-    # written on 2026-10-29 when Inocybe lilacina was split back out of the
-    # I. geophylla complex. The states are read off the taxonomy's own
-    # notes and the standard field description, by Claude, and the species
-    # is SERIOUS -- so they are exactly what a reviewer must look at, and
-    # exactly what must not read as already looked at.
     # `claude-top250-batch` is the 27 species added on 2026-10-29 before run
     # five, from docs/label-space-candidates.csv. 159 rows, every one
     # compiled from standard references by Claude. They are the bulk of what
     # a reviewer now has in front of them, which is exactly why they must
     # not be counted as reviewed.
     NOT_A_REVIEWER = {
-        "unreviewed-seed-fill", "claude-option-widening", "claude-lilacina-split",
+        "unreviewed-seed-fill", "claude-option-widening",
         "claude-top250-batch",
     }
     seeded = [r for r in filled if r["REVIEWER"].strip() in NOT_A_REVIEWER]

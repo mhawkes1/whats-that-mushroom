@@ -58,7 +58,7 @@ characters come from standard references but are unverified.
 
 | Path | What it holds |
 | --- | --- |
-| `data/taxonomy.seed.json` | 272 UK species, lookalike graph, toxicity, diagnostic characters, character states |
+| `data/taxonomy.seed.json` | 271 UK species, lookalike graph, toxicity, diagnostic characters, character states |
 | `ml/fungi_ml/taxonomy.py` | Species model and the asymmetric risk matrix |
 | `ml/fungi_ml/losses.py` | Risk-weighted objective |
 | `ml/fungi_ml/calibrate.py` | Temperature scaling, threshold fitting |
@@ -209,31 +209,53 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   as four species, re-adding two of them is the change — and `frdbi_gap.py`
   ranks *Inocybe lilacina* at 2,883 records, missing, with two dangerous
   species already in its genus.
-- **One of the two was re-added on 2026-10-29, and pinning was again only
-  half of the job.** Martin asked for *Inocybe lilacina* back, reversing
-  his own 2026-09-23 merge. `gbif_key` is pinned to **3331644**, its own
-  synonym usage, because `judge_match` follows `acceptedUsageKey` to
-  3330851 — *I. geophylla* — and `CollidingTaxonKeys` refuses the build
-  while both halves are in the label space. That silences the guard.
-  It does **not** separate the photographs. GBIF's occurrence search is
-  inclusive downward and a synonym sits under its accepted usage, so
-  geophylla's pull contains every record determined as lilacina. Measured
-  live: 3331644 has 9,185 occurrences and **2,846 with images, every one
-  carrying `speciesKey` 3330851** — a subset of geophylla's 5,524. Pinned
-  and left alone, those 2,846 photographs would be filed under *both*
-  labels, which is the label noise the collision guard exists to refuse
-  arriving by the back door; and `drop_duplicates(subset=["image_url"])`
-  would then hand each shared photograph to whichever species was paged
-  first. **This is why the 2026-09-23 pinning, had it survived, would not
-  have worked either** — the entry above calls dropping a side defensible
-  and pinning the alternative, and pinning alone was never an alternative.
-  `_determined_elsewhere` in `sources.py` is the other half: the record's
-  own `taxonKey` is the recorder's determination, `acceptedTaxonKey` is
-  where the backbone sends it, so each species keeps only what was
-  determined as itself and the two pulls come out disjoint. It costs
-  nothing for the ~243 species that share a key with nothing, and it is
-  what makes *C. dealbata* re-addable by the same route if a mycologist
-  asks for it.
+- **One of the two was re-added on 2026-10-29 and folded back in the same
+  day, and the reason it came back out is the one that should have decided
+  it first.** Martin asked for *Inocybe lilacina* separate, reversing his
+  2026-09-23 merge; he then made the point that settles it -- the white and
+  lilac forms of the *geophylla* complex are **notoriously hard to separate
+  visually and want a microscope or sequencing**. A photograph classifier
+  therefore cannot learn the distinction, and no question the interrogation
+  engine can ask resolves it: the only declared difference is colour, and
+  geophylla's `cap_colour` union already spans it. Both halves are SERIOUS,
+  so a user saw the same hazard line either way.
+  Supply was never the obstacle, which is why measuring it did not answer
+  the question: iNaturalist holds **385** image-bearing occurrences under
+  lilacina against **933** under geophylla, both well clear of
+  `--min-images`. The split would simply have divided 1,318 photographs
+  between two labels a network cannot tell apart. `risk_weight` already
+  prices that confusion at **0.5** -- same genus, both hazardous -- which is
+  the file saying it is a nuisance rather than a danger, and a nuisance is
+  not worth half the training data.
+  **The lesson is which fact decides.** The entry below recorded that GBIF
+  and Species Fungorum both call lilacina a synonym, and treated that as a
+  nomenclature question to be worked around with a pin. For a photograph
+  classifier the operational fact is whether the two can be told apart **in
+  a photograph**, and nothing in this file was asking that. Ask it before
+  splitting any pair.
+  `cap_colour` on *I. geophylla* stays WIDE, which is now its original
+  reason again rather than a holding position.
+- **Pinning a key was never the whole fix, and that part survives the
+  reversal.** While both halves were in, `gbif_key` had to be pinned to
+  3331644 or `judge_match` follows `acceptedUsageKey` to 3330851 and
+  `CollidingTaxonKeys` refuses the build. But pinning silences the guard
+  without separating the photographs: GBIF's occurrence search is inclusive
+  downward and a synonym sits under its accepted usage, so geophylla's pull
+  contains every record determined as lilacina -- **2,846 with images, every
+  one carrying `speciesKey` 3330851**, a subset of geophylla's 5,524.
+  Pinned and left alone, those would have been filed under *both* labels,
+  and `drop_duplicates(subset=["image_url"])` would have handed each shared
+  photograph to whichever species was paged first.
+  So **the 2026-09-23 pinning would not have worked either** -- the entry
+  above calls dropping a side defensible and pinning the alternative, and
+  pinning alone was never an alternative. `_determined_elsewhere` in
+  `sources.py` is the other half and is still in the code: the record's own
+  `taxonKey` is the recorder's determination, `acceptedTaxonKey` is where
+  the backbone sends it, so each species keeps only what was determined as
+  itself. It costs nothing for the species that share a key with nothing,
+  and it is what would make *C. dealbata* re-addable **if** a mycologist
+  says the two ivory funnels are separable in a photograph. That question,
+  not the nomenclature, is the one to ask.
 - **A species added to the taxonomy is INERT until a retrain, and that is
   not a reason to skip the entry.** `labels.json` fixes run4-b32 at 244
   classes; the taxonomy is 245. The server reads names from `labels.json`,
@@ -288,7 +310,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   records; their validation score says almost nothing.
 - **Splits are on `observation_id`, never on image.** If accuracy looks too
   good, check this before believing it.
-- **`character_states` is complete for all 272 species and UNREVIEWED
+- **`character_states` is complete for all 271 species and UNREVIEWED
   throughout.** Derived from the taxonomy's own `notes`, not from a
   mycologist, except for the dangerous 21 above. Complete is not reviewed:
   `reviewed_by` is still null and `/health` still reports
@@ -595,8 +617,9 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   prints the per-row tally of what it left blank; that list is the review
   queue, not a bug. Filling it means the worksheet and a mycologist, not code.
 - **Count the lethal pairs too; 135 was never right.** `scripts/species_list.py`
-  reports **272 species, 121 lethal lookalike pairs** as of 2026-10-29 (112
-  before *I. lilacina*, 113 after it, 121 after the batch of 27). The "135
+  reports **271 species, 120 lethal lookalike pairs** as of 2026-10-29 (112
+  before the day started, 113 while *I. lilacina* was briefly separate, 121
+  with the batch of 27, 120 once lilacina was folded back in). The "135
   lethal pairs" below is stale in the same way the 247-species figure was,
   and from the same cause — prose written once and not re-derived. The
   script prints both numbers in a second.
@@ -693,7 +716,9 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   regenerated and now lists the **13** that are left: 7 thin on
   iNaturalist, 3 needing a key pinned by hand, 2 with no iNaturalist
   images at all, 1 thin wherever you look. FRDBI top-250 coverage went
-  **210 -> 237 (95%)**, top-300 **247 of 300**.
+  **210 -> 237 (95%)**, top-300 **247 of 300**. (*I. lilacina* is not among
+  the 13 and never was: it sits at rank 152 of the top 300, and it is in
+  the label space as part of *I. geophylla*.)
   Four things worth knowing about the batch.
   **No DEADLY or SERIOUS species was added**, so the warning graph did not
   change shape -- what grew is the set of ordinary species the model can
@@ -709,12 +734,12 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   **Every one of those eight edges needed a character described on both
   sides**, or `evidence_audit.py`'s "nothing is stranded" guarantee breaks
   and no answer can lift the refusal. Checked rather than assumed: the
-  audit reports **0 stranded** across 121 pairs, and `volva` is doing most
+  audit reports **0 stranded** across 120 pairs, and `volva` is doing most
   of the work -- a green *Russula* answering `Neither` is what separates it
   from a death cap, which is also the check a field guide gives.
   **159 worksheet rows went in under `claude-top250-batch`**, which is in
   `NOT_A_REVIEWER`. The batch is now the bulk of what a mycologist has in
-  front of them (171 of 1,369 rows are Claude's rather than a reviewer's),
+  front of them (165 of 1,363 rows are Claude's rather than a reviewer's),
   which is the argument for getting the review scoped before adding more.
   **One of the 27 is a synonym.** *Mensularia radiata* carries
   `accepted_name: Xanthoporia radiata`, both nomenclators agreeing, making
@@ -1099,10 +1124,10 @@ commits.
   reading the source, because a pool that stops tracking the worker count
   re-creates the bug the moment either is tuned.
 - **Count the file before quoting a number from these notes.** As of
-  2026-10-29 the taxonomy holds **272** species — 179 `NO_RECORDED_TOXICITY`,
-  71 `TOXIC`, 12 `SERIOUS`, 10 `DEADLY`. It held 244 on 2026-10-27, before
-  *I. lilacina* and the batch of 27; **no DEADLY species was added by
-  either**, which is why the deadly count has not moved. Several entries above said 247 and
+  2026-10-29 the taxonomy holds **271** species — 179 `NO_RECORDED_TOXICITY`,
+  71 `TOXIC`, 11 `SERIOUS`, 10 `DEADLY`. It held 244 on 2026-10-27; the
+  batch of 27 is the whole of the difference, and **no DEADLY or SERIOUS
+  species was added**, which is why those two counts have not moved. Several entries above said 247 and
   one said eleven DEADLY; both were stale, and the derived figures around
   them had drifted with them. The counts moved when a species was dropped
   during the October character review (245 → 244 at `b65480c`) and nobody
