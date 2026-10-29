@@ -83,6 +83,14 @@ def main() -> int:
     from fungi_ml.evaluate import DEADLY_MASS_THRESHOLD
     from fungi_ml.taxonomy import Taxonomy, Toxicity
 
+    # `SafetyLayer.straddles_dangerous_pair` inspects `ranked[:5]`. A pair
+    # in this file is only consulted if BOTH halves are in that window, so
+    # a deadly species at rank 21 is recorded here and never reached. Same
+    # duplication as DEADLY_MASS_THRESHOLD and for the same reason: `ml/`
+    # and `server/` are separate packages with no import path between
+    # them. A test greps safety.py for the real default.
+    PAIR_RULE_TOP_N = 5
+
     path = Path(args.predictions)
     if not path.exists():
         print(f"No predictions at {path}.\n"
@@ -107,10 +115,10 @@ def main() -> int:
 
     tally: dict[tuple[str, str], dict] = defaultdict(
         lambda: {"count": 0, "max_deadly_mass": 0.0, "max_confidence": 0.0,
-                 "silent": 0})
-    for true_idx, pred_idx, mass, conf in zip(
+                 "silent": 0, "silent_in_reach": 0, "best_silent_rank": None})
+    for row, (true_idx, pred_idx, mass, conf) in enumerate(zip(
         labels, predictions, deadly_mass, probs.max(axis=1)
-    ):
+    )):
         true_key, pred_key = classes[true_idx], classes[pred_idx]
         if true_key == pred_key:
             continue
@@ -127,6 +135,14 @@ def main() -> int:
         entry["max_confidence"] = max(entry["max_confidence"], float(conf))
         if mass < DEADLY_MASS_THRESHOLD:
             entry["silent"] += 1
+            # Where the deadly species actually sat. The pair rule reads
+            # the top five, so this decides whether recording the pair
+            # protects anybody or only looks like it does.
+            rank = int((probs[row] > probs[row, true_idx]).sum()) + 1
+            if rank <= PAIR_RULE_TOP_N:
+                entry["silent_in_reach"] += 1
+            best = entry["best_silent_rank"]
+            entry["best_silent_rank"] = rank if best is None else min(best, rank)
 
     known = taxonomy.dangerous_pairs()
     pairs = []
@@ -153,6 +169,11 @@ def main() -> int:
             # How many the safety layer's 2% mass rule would NOT have
             # warned about. These are why the pair belongs here at all.
             "silent": stats["silent"],
+            # Of those, how many had the deadly species inside the window
+            # the pair rule reads. `silent` minus this is the number this
+            # file records and does NOT cover.
+            "silent_in_reach": stats["silent_in_reach"],
+            "best_silent_rank": stats["best_silent_rank"],
         })
 
     blob_out = {
@@ -178,9 +199,32 @@ def main() -> int:
     print(f"  {len(novel)} of them are NOT field lookalikes -- the ones the")
     print(f"  taxonomy's own graph could never have caught")
     print()
+    # Recording a silent confusion is not the same as covering it, and
+    # this summary used to say it was. The pair rule reads the top five;
+    # a deadly species below that is written into this file and never
+    # looked at. Report the two separately or the file reads as cover it
+    # does not provide -- the same shape of error as a spreadsheet that
+    # reassures past the warning printed above it.
     n_silent = sum(p["silent"] for p in pairs)
-    print(f"  {n_silent} silent confusion(s) are covered by this graph -- the "
-          f"mass rule\n  cannot see them, so the pair rule is their only cover")
+    n_reached = sum(p["silent_in_reach"] for p in pairs)
+    if n_silent:
+        print(f"  {n_silent} silent confusion(s) recorded -- the mass rule "
+              f"cannot see these")
+        print(f"  {n_reached} of them are COVERED: the deadly species is "
+              f"inside the top {PAIR_RULE_TOP_N},")
+        print(f"  which is the window the pair rule reads")
+        if n_silent - n_reached:
+            print()
+            n_missed = n_silent - n_reached
+            print(f"  *** {n_missed} silent confusion(s): "
+                  f"NOT COVERED BY ANYTHING. ***")
+            for p_ in pairs:
+                missed = p_["silent"] - p_["silent_in_reach"]
+                if missed:
+                    print(f"      {p_['deadly']} -> {p_['mistaken_for']}: "
+                          f"deadly species best rank "
+                          f"{p_['best_silent_rank']}, outside the top "
+                          f"{PAIR_RULE_TOP_N}")
     print()
     for p in pairs[:15]:
         mark = "    " if p["also_a_field_lookalike"] else "NEW "

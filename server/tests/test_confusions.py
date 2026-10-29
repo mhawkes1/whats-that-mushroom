@@ -196,3 +196,60 @@ def test_the_graph_records_how_many_were_silent():
     assert "DEADLY_MASS_THRESHOLD" in source, (
         "silence must be judged against safety.py's own 2%, not a local copy"
     )
+
+
+def test_the_graph_never_claims_cover_it_does_not_provide():
+    """Recording a silent confusion is not the same as covering it.
+
+    `straddles_dangerous_pair` reads `ranked[:5]`. A pair whose deadly
+    species sits below that window is written into the graph and never
+    consulted, so the entry protects nobody.
+
+    The summary used to print "N silent confusion(s) are covered by this
+    graph" from the recorded count alone. On run four that line said 2 and
+    the true figure was **0**: *Inocybe erubescens* was at rank 40 and
+    *Lepiota subincarnata* at rank 21. Simulated through the real
+    `SafetyLayer`, the graph changed neither verdict.
+
+    Same shape as `frdbi_gap.py` printing its intruder warning and then a
+    hardcoded all-clear forty lines later. A report must not reassure past
+    its own warning.
+    """
+    source = (ROOT / "scripts" / "confusion_graph.py").read_text(encoding="utf-8")
+    assert "are covered by this graph" not in source, (
+        "the old unconditional claim is back -- cover must be measured "
+        "against the rank window, not assumed from the recorded count"
+    )
+    assert "silent_in_reach" in source, (
+        "the script must count how many silent confusions are actually "
+        "inside the window the pair rule reads"
+    )
+    assert "NOT COVERED BY ANYTHING" in source, (
+        "a silent confusion outside the rank window is covered by neither "
+        "the mass rule nor the pair rule, and must be reported as such"
+    )
+
+
+def test_the_scripts_rank_window_matches_the_safety_layers():
+    """The pair rule's `top_n` is duplicated in the script, like the 2%.
+
+    `ml/` and `server/` are separate packages with no import path between
+    them, so the script carries its own copy. If `safety.py` widens the
+    window and the copy does not, the graph reports pairs as uncovered that
+    are now reached -- or, worse, the reverse.
+    """
+    import re
+
+    safety = (ROOT / "server" / "app" / "safety.py").read_text(encoding="utf-8")
+    match = re.search(r"def straddles_dangerous_pair\([^)]*top_n: int = (\d+)",
+                      safety, re.S)
+    assert match, "could not find the pair rule's rank window in safety.py"
+
+    script = (ROOT / "scripts" / "confusion_graph.py").read_text(encoding="utf-8")
+    copy = re.search(r"PAIR_RULE_TOP_N = (\d+)", script)
+    assert copy, "the script must name the rank window it is reasoning about"
+    assert int(copy.group(1)) == int(match.group(1)), (
+        f"safety.py reads the top {match.group(1)} but confusion_graph.py "
+        f"assumes {copy.group(1)} -- the coverage report is measuring a "
+        f"window the app does not use"
+    )

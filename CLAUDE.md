@@ -1601,12 +1601,56 @@ SAFETY.md wants zero and `make_model_card.py` refused the run. Two cases in
 9,403 where a deadly species held under 2% of the mass, so the app names a
 harmless species with no warning and no hazard line.
 
-**This is what `data/model-confusions.json` is for.** The empirical pair rule
-fires on *rank*, not mass -- so a silent confusion whose deadly species is
-anywhere in the top five becomes a `dangerous_group` refusal once the graph
-is generated from this run's `predictions.npz`. Generate it before deciding
-whether the exception needs documenting: the count that matters is what
-survives the safety layer, not what the model did.
+**I expected `data/model-confusions.json` to cover them. Measured
+2026-10-29: it covers NEITHER.** The reasoning was that the empirical pair
+rule fires on *rank* rather than mass, so a silent confusion whose deadly
+species is anywhere in the top five becomes a `dangerous_group` refusal.
+The qualifier was doing all the work and I did not check it. Run four's
+two silent confusions put the deadly species at **rank 40** and **rank
+21**, and `straddles_dangerous_pair` reads `ranked[:5]`. Simulated through
+the real `SafetyLayer` with the fitted 0.65 threshold, adding the graph
+changes neither verdict by a single character.
+
+**What the app actually shows is better than the earlier note said, and
+the note was wrong in the reassuring direction.** It claimed these two
+cases "name a harmless species with no warning and no hazard line". They
+do not:
+
+| true species | deadly rank | mass | verdict | headline |
+| --- | ---: | ---: | --- | --- |
+| *Inocybe erubescens* (deadly fibrecap) | 40 | 1.07% | `GROUP` | "This looks like a *Gymnopilus* species" |
+| *Lepiota subincarnata* (fatal dapperling) | 21 | 1.11% | `UNCERTAIN` | "I'm not sure what this is" |
+
+So one is a full refusal -- the app doing exactly its job -- and the other
+names a *genus*, not a species, at 57%. Neither is the confident harmless
+name the note described. The fatal dapperling case needs no exception at
+all. The fibrecap one does: a user told "a *Gymnopilus* species" has been
+given something to act on, and it is wrong.
+
+**The remedy is the mass threshold, not the graph, and it is cheap.** Both
+sat just under the 2% line. Sweeping it on run four's test split:
+
+| threshold | photographs warned | false alarms | deadly left unwarned |
+| ---: | ---: | ---: | ---: |
+| 2.00% (current) | 8.5% | 1 in 20 | **4** |
+| 1.50% | 9.3% | 1 in 17 | 3 |
+| **1.00%** | 10.5% | 1 in 14 | **0** |
+| 0.50% | 13.0% | 1 in 10 | 0 |
+
+One percent takes the unwarned deadly count to zero for one extra false
+alarm in roughly every seventy photographs. Against this project's own
+stated asymmetry -- a false alarm costs a wasted foraging trip, a miss
+costs a liver -- that is not a close call.
+
+**But it has not been done, because the number came off the TEST split.**
+Choosing a safety parameter because it zeroes the misses on the split that
+gates release is fitting to the gate, which is the same error as selecting
+a checkpoint on the data you then report. 2% was picked a priori as a
+deliberately low round number; 1% would be picked by looking at the answer.
+The honest version is to sweep it on **validation** and report test, which
+needs validation predictions -- `make_model_card.py --probs-out` writes the
+test split only. That is the change to make before run five, and it is a
+one-flag change.
 - **The confusion graph's threshold was filtering out exactly the silent
   confusions, which is the one thing it exists to catch.** Found on run
   four's real output: all three pairs it kept were single occurrences with
