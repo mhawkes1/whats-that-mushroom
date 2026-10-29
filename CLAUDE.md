@@ -58,7 +58,7 @@ characters come from standard references but are unverified.
 
 | Path | What it holds |
 | --- | --- |
-| `data/taxonomy.seed.json` | 244 UK species, lookalike graph, toxicity, diagnostic characters, character states |
+| `data/taxonomy.seed.json` | 272 UK species, lookalike graph, toxicity, diagnostic characters, character states |
 | `ml/fungi_ml/taxonomy.py` | Species model and the asymmetric risk matrix |
 | `ml/fungi_ml/losses.py` | Risk-weighted objective |
 | `ml/fungi_ml/calibrate.py` | Temperature scaling, threshold fitting |
@@ -80,9 +80,9 @@ characters come from standard references but are unverified.
 | `scripts/frdbi_gap.py` | Label space vs. how often things are actually found |
 | `scripts/species_list.py` | Generates `docs/SPECIES.md`, the label space for a human to read |
 | `scripts/evidence_audit.py` | Where evidence about a dangerous species works only one way |
-| `docs/evidence-audit.csv` | Its 934 findings, worst first |
+| `docs/evidence-audit.csv` | Its 795 findings, worst first |
 | `docs/frdbi-top-250.csv` | The 250 most-recorded macrofungi, ranked, for review (`frdbi_gap.py --csv`) |
-| `docs/frdbi-top-300.csv` | The same to 300; 219 covered, 81 not |
+| `docs/frdbi-top-300.csv` | The same to 300; 247 covered, 53 not |
 | `data/frdbi-records.csv` | Every FRDBI taxon and its record count, exported 2026-09-22 |
 | `data/frdbi-genera.csv` | Genus → fungus / micro / host / slime-mould / lichen, so the ranking can be filtered |
 
@@ -288,7 +288,7 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   records; their validation score says almost nothing.
 - **Splits are on `observation_id`, never on image.** If accuracy looks too
   good, check this before believing it.
-- **`character_states` is complete for all 244 species and UNREVIEWED
+- **`character_states` is complete for all 272 species and UNREVIEWED
   throughout.** Derived from the taxonomy's own `notes`, not from a
   mycologist, except for the dangerous 21 above. Complete is not reviewed:
   `reviewed_by` is still null and `/health` still reports
@@ -595,10 +595,11 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   prints the per-row tally of what it left blank; that list is the review
   queue, not a bug. Filling it means the worksheet and a mycologist, not code.
 - **Count the lethal pairs too; 135 was never right.** `scripts/species_list.py`
-  reports **245 species, 113 lethal lookalike pairs** as of 2026-10-29 (112
-  before *I. lilacina*). The "135 lethal pairs" below is stale in the same
-  way the 247-species figure was, and from the same cause — prose written
-  once and not re-derived. The script prints both numbers in a second.
+  reports **272 species, 121 lethal lookalike pairs** as of 2026-10-29 (112
+  before *I. lilacina*, 113 after it, 121 after the batch of 27). The "135
+  lethal pairs" below is stale in the same way the 247-species figure was,
+  and from the same cause — prose written once and not re-derived. The
+  script prints both numbers in a second.
 - **The label space holds all 200 of the most-recorded British macrofungi,
   plus the twelve from the top 300 whose genus already held something
   dangerous.** 244 species, 135 lethal pairs. `frdbi_gap.py --top 300` now
@@ -687,6 +688,37 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   over), 2 with **zero** iNaturalist images and thousands elsewhere
   (*Daedalea quercina* 0 against 12,329, *Mycena acicula* 0 against 1,549 --
   the complex pattern again), and 1 thin everywhere.
+- **The batch of 27 landed on 2026-10-29, before run five.** Martin's call,
+  after the sheet above priced it. `docs/label-space-candidates.csv` is
+  regenerated and now lists the **13** that are left: 7 thin on
+  iNaturalist, 3 needing a key pinned by hand, 2 with no iNaturalist
+  images at all, 1 thin wherever you look. FRDBI top-250 coverage went
+  **210 -> 237 (95%)**, top-300 **247 of 300**.
+  Four things worth knowing about the batch.
+  **No DEADLY or SERIOUS species was added**, so the warning graph did not
+  change shape -- what grew is the set of ordinary species the model can
+  name instead of guessing at, which is where coverage comes from. Lethal
+  pairs went 113 -> 121 all the same, because eight of the 27 declare a
+  lookalike edge to something lethal: the wood mushroom and both green
+  brittlegills against the death cap, the bulbous honey fungus and the
+  spectacular rustgill against the funeral bell, the meadow puffball
+  against the destroying angel, the cedarwood waxcap against the ivory
+  funnel, the scurfy deceiver against the white fibrecap. Those edges are
+  the point. **Never add a common species without the dangerous thing it
+  resembles** is the rule they exist to satisfy.
+  **Every one of those eight edges needed a character described on both
+  sides**, or `evidence_audit.py`'s "nothing is stranded" guarantee breaks
+  and no answer can lift the refusal. Checked rather than assumed: the
+  audit reports **0 stranded** across 121 pairs, and `volva` is doing most
+  of the work -- a green *Russula* answering `Neither` is what separates it
+  from a death cap, which is also the check a field guide gives.
+  **159 worksheet rows went in under `claude-top250-batch`**, which is in
+  `NOT_A_REVIEWER`. The batch is now the bulk of what a mycologist has in
+  front of them (171 of 1,369 rows are Claude's rather than a reviewer's),
+  which is the argument for getting the review scoped before adding more.
+  **One of the 27 is a synonym.** *Mensularia radiata* carries
+  `accepted_name: Xanthoporia radiata`, both nomenclators agreeing, making
+  ten rows in `docs/nomenclature-check.csv` rather than nine.
 - **Adding species is cheap and a label space is not.** Each entry is an
   hour of unreviewed mycology and none of it reaches a user until the
   dataset is rebuilt and a model retrained -- `labels.json` fixes what is
@@ -1067,8 +1099,10 @@ commits.
   reading the source, because a pool that stops tracking the worker count
   re-creates the bug the moment either is tuned.
 - **Count the file before quoting a number from these notes.** As of
-  2026-10-27 the taxonomy holds **244** species — 157 `NO_RECORDED_TOXICITY`,
-  66 `TOXIC`, 11 `SERIOUS`, 10 `DEADLY`. Several entries above said 247 and
+  2026-10-29 the taxonomy holds **272** species — 179 `NO_RECORDED_TOXICITY`,
+  71 `TOXIC`, 12 `SERIOUS`, 10 `DEADLY`. It held 244 on 2026-10-27, before
+  *I. lilacina* and the batch of 27; **no DEADLY species was added by
+  either**, which is why the deadly count has not moved. Several entries above said 247 and
   one said eleven DEADLY; both were stale, and the derived figures around
   them had drifted with them. The counts moved when a species was dropped
   during the October character review (245 → 244 at `b65480c`) and nobody

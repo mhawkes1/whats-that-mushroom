@@ -3,7 +3,7 @@
 Every species this app can name, generated from `data/taxonomy.seed.json`
 by `python scripts/species_list.py`. Do not edit it by hand.
 
-**245 species · 113 lethal lookalike pairs.**
+**272 species · 121 lethal lookalike pairs.**
 
 It holds all 200 of the most-recorded British macrofungi (`python scripts/frdbi_gap.py --top 200`) plus the dangerous species each of those is confused with.
 
@@ -53,7 +53,7 @@ Hospital treatment is usual.
 | ***Tricholoma pardinum*** | Leopard Knight | *Tricholoma equestre*, *Calocybe gambosa*, *Clitocybe nebularis* |
 | ***Tricholoma terreum*** | Grey Knight | *Tricholoma pardinum*, *Tricholoma saponaceum*, *Tricholoma equestre* |
 
-## Causes illness — `TOXIC` (66)
+## Causes illness — `TOXIC` (71)
 
 Poisoning is reported.
 
@@ -65,6 +65,7 @@ Poisoning is reported.
 | ***Amanita rubescens*** | The Blusher | *Amanita muscaria*, ***Amanita phalloides*** |
 | ***Amanita vaginata*** | Grisette | ***Amanita phalloides***, ***Amanita virosa***, *Amanita fulva*, *Volvopluteus gloiocephalus* |
 | ***Ampulloclitocybe clavipes*** | Club Foot | *Clitocybe nebularis*, ***Clitocybe rivulosa***, *Infundibulicybe gibba*, *Paralepista flaccida* |
+| ***Armillaria gallica*** | Bulbous Honey Fungus | *Armillaria mellea*, ***Galerina marginata***, *Kuehneromyces mutabilis*, *Hypholoma fasciculare* |
 | ***Armillaria mellea*** | Honey Fungus | ***Galerina marginata***, *Hypholoma fasciculare*, *Kuehneromyces mutabilis* |
 | ***Chalciporus piperatus*** | Peppery Bolete | *Boletus edulis*, *Neoboletus luridiformis*, *Rubroboletus satanas*, *Imleria badia* (+1) |
 | ***Chlorophyllum brunneum*** | Shaggy Parasol | *Macrolepiota procera* |
@@ -78,6 +79,7 @@ Poisoning is reported.
 | ***Entoloma conferendum*** | Star Pinkgill | *Entoloma sinuatum*, *Pluteus cervinus*, *Clitopilus prunulus* |
 | ***Entoloma sericeum*** | Silky Pinkgill | *Entoloma sinuatum*, *Entoloma conferendum*, *Marasmius oreades*, *Clitopilus prunulus* |
 | ***Galerina hypnorum*** | Moss Bell | ***Galerina marginata*** |
+| ***Gymnopilus junonius*** | Spectacular Rustgill | *Gymnopilus penetrans*, *Armillaria mellea*, ***Galerina marginata***, *Pholiota squarrosa* |
 | ***Hebeloma crustuliniforme*** | Poison Pie | ***Clitocybe rivulosa***, *Agaricus campestris*, *Entoloma sinuatum*, *Inocybe geophylla* |
 | ***Helvella crispa*** | White Saddle | ***Gyromitra esculenta***, *Morchella esculenta*, *Verpa bohemica* |
 | ***Hygrocybe conica*** | Blackening Waxcap | *Gliophorus psittacinus*, *Cuphophyllus pratensis* |
@@ -87,10 +89,12 @@ Poisoning is reported.
 | ***Infundibulicybe gibba*** | Common Funnel | ***Clitocybe rivulosa***, *Paralepista flaccida*, *Clitocybe fragrans* |
 | ***Lactarius blennius*** | Beech Milkcap | *Lactarius torminosus*, *Lactarius deliciosus*, *Lactarius quietus* |
 | ***Lactarius glyciosmus*** | Coconut Milkcap | *Lactarius torminosus*, *Lactarius deliciosus*, *Lactarius quietus* |
+| ***Lactarius pubescens*** | Downy Milkcap | *Lactarius torminosus*, *Lactarius deliciosus*, *Lactarius glyciosmus* |
 | ***Lactarius pyrogalus*** | Fiery Milkcap | *Lactarius torminosus*, *Lactarius deliciosus*, *Lactarius quietus* |
 | ***Lactarius rufus*** | Rufous Milkcap | *Lactarius torminosus*, *Lactarius deliciosus*, *Lactarius quietus* |
 | ***Lactarius torminosus*** | Woolly Milkcap | *Lactarius deliciosus* |
 | ***Lactarius turpis*** | Ugly Milkcap | *Lactarius torminosus*, *Lactarius deliciosus*, *Lactarius quietus* |
+| ***Lactifluus vellereus*** | Fleecy Milkcap | *Lactarius torminosus*, *Lactarius blennius*, *Russula nigricans* |
 | ***Laetiporus sulphureus*** | Chicken of the Woods | — |
 | ***Leotia lubrica*** | Jellybaby | *Clavulinopsis helvola* |
 | ***Lepiota cristata*** | Stinking Dapperling | ***Lepiota brunneoincarnata***, ***Lepiota subincarnata***, *Macrolepiota procera* |
@@ -116,6 +120,7 @@ Poisoning is reported.
 | ***Russula fellea*** | Geranium Brittlegill | *Russula cyanoxantha*, *Russula emetica*, *Russula nobilis*, *Russula ochroleuca* |
 | ***Russula fragilis*** | Fragile Brittlegill | *Russula cyanoxantha*, *Russula emetica*, *Russula nobilis*, *Russula ochroleuca* |
 | ***Russula nobilis*** | Beechwood Sickener | *Russula emetica*, *Russula cyanoxantha*, *Russula ochroleuca* |
+| ***Russula sardonia*** | Primrose Brittlegill | *Russula atropurpurea*, *Russula fragilis*, *Russula emetica*, *Russula ochroleuca* |
 | ***Scleroderma citrinum*** | Common Earthball | *Lycoperdon perlatum*, *Calvatia gigantea* |
 | ***Scleroderma verrucosum*** | Scaly Earthball | *Scleroderma citrinum*, *Lycoperdon perlatum*, ***Amanita virosa***, *Calvatia gigantea* |
 | ***Stropharia semiglobata*** † | Dung Roundhead | *Panaeolus papilionaceus*, *Bolbitius titubans*, *Psilocybe semilanceata* |
@@ -126,7 +131,7 @@ Poisoning is reported.
 | ***Verpa bohemica*** | Early Morel, Thimble Morel | *Morchella esculenta*, ***Gyromitra esculenta*** |
 | ***Volvopluteus gloiocephalus*** | Stubble Rosegill | ***Amanita phalloides***, ***Amanita virosa***, *Agaricus arvensis* |
 
-## No recorded toxicity — `NO_RECORDED_TOXICITY` (157)
+## No recorded toxicity — `NO_RECORDED_TOXICITY` (179)
 
 The references used record no toxicity for these. That is a statement about records, not about a meal: the app makes no edibility claim and shows no label at all for this group.
 
@@ -135,12 +140,17 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Agaricus arvensis*** | Horse Mushroom | ***Amanita virosa***, ***Amanita phalloides***, *Agaricus xanthodermus* |
 | ***Agaricus campestris*** | Field Mushroom | ***Amanita phalloides***, ***Amanita virosa***, *Agaricus xanthodermus* |
 | ***Agaricus sylvaticus*** | Blushing Wood Mushroom | *Agaricus campestris*, *Agaricus arvensis*, *Agaricus xanthodermus*, ***Amanita phalloides*** (+1) |
+| ***Agaricus sylvicola*** | Wood Mushroom | *Agaricus arvensis*, *Agaricus xanthodermus*, *Agaricus sylvaticus*, ***Amanita phalloides*** (+1) |
+| ***Aleuria aurantia*** | Orange Peel Fungus | *Sarcoscypha austriaca*, *Scutellinia scutellata*, *Chlorociboria aeruginascens* |
 | ***Amanita citrina*** | False Deathcap | ***Amanita phalloides***, ***Amanita virosa***, *Amanita rubescens* |
 | ***Amanita excelsa*** | Grey Spotted Amanita | *Amanita pantherina*, *Amanita rubescens*, ***Amanita phalloides*** |
 | ***Apioperdon pyriforme*** | Stump Puffball | *Lycoperdon perlatum*, *Scleroderma citrinum*, *Calvatia gigantea* |
 | ***Ascocoryne sarcoides*** | Purple Jellydisc | *Chlorociboria aeruginascens*, *Bulgaria inquinans* |
 | ***Atheniella flavoalba*** | Ivory Bonnet | — |
 | ***Auricularia auricula-judae*** | Jelly Ear, Wood Ear | — |
+| ***Auricularia mesenterica*** | Tripe Fungus | *Auricularia auricula-judae*, *Phlebia tremellosa*, *Chondrostereum purpureum*, *Stereum hirsutum* |
+| ***Baeospora myosura*** | Conifercone Cap | *Mycena leptocephala*, *Collybiopsis ramealis*, *Gymnopus androsaceus*, *Mycena vitilis* |
+| ***Biscogniauxia nummularia*** | Beech Tarcrust | *Kretzschmaria deusta*, *Hypoxylon fragiforme*, *Daldinia concentrica* |
 | ***Bjerkandera adusta*** | Smoky Bracket | *Trametes versicolor*, *Daedaleopsis confragosa* |
 | ***Bolbitius titubans*** | Yellow Fieldcap | *Stropharia semiglobata*, *Panaeolus papilionaceus* |
 | ***Boletus edulis*** | Penny Bun, Cep, Porcini | *Tylopilus felleus*, *Rubroboletus satanas* |
@@ -174,6 +184,7 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Crepidotus mollis*** | Peeling Oysterling | *Pleurotus ostreatus* |
 | ***Crepidotus variabilis*** | Variable Oysterling | *Crepidotus mollis*, *Crepidotus cesatii*, *Panellus stipticus* |
 | ***Cuphophyllus pratensis*** | Meadow Waxcap | ***Clitocybe rivulosa***, *Cuphophyllus virgineus* |
+| ***Cuphophyllus russocoriaceus*** | Cedarwood Waxcap | *Cuphophyllus virgineus*, *Cuphophyllus pratensis*, ***Clitocybe rivulosa***, *Marasmius oreades* |
 | ***Cuphophyllus virgineus*** | Snowy Waxcap | ***Clitocybe rivulosa***, *Marasmius oreades*, ***Amanita virosa*** |
 | ***Cystoderma amianthinum*** | Earthy Powdercap | *Lepiota cristata*, ***Lepiota brunneoincarnata***, *Macrolepiota procera* |
 | ***Dacrymyces stillatus*** | Common Jellyspot | *Tremella mesenterica*, *Calocera viscosa* |
@@ -212,26 +223,33 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Hypoxylon fragiforme*** | Beech Woodwart | *Hypoxylon fuscum*, *Daldinia concentrica* |
 | ***Hypoxylon fuscum*** | Hazel Woodwart | *Hypoxylon fragiforme*, *Jackrogersella multiformis* |
 | ***Imleria badia*** | Bay Bolete | *Boletus edulis*, *Neoboletus luridiformis*, *Rubroboletus satanas*, *Tylopilus felleus* (+1) |
+| ***Inonotus hispidus*** | Shaggy Bracket | *Mensularia radiata*, *Phaeolus schweinitzii*, *Laetiporus sulphureus*, *Fomes fomentarius* |
 | ***Jackrogersella multiformis*** | Birch Woodwart | *Hypoxylon fragiforme*, *Daldinia concentrica* |
 | ***Kretzschmaria deusta*** | Brittle Cinder | *Xylaria polymorpha*, *Daldinia concentrica* |
 | ***Kuehneromyces mutabilis*** | Sheathed Woodtuft | ***Galerina marginata***, *Hypholoma fasciculare*, *Armillaria mellea* |
 | ***Laccaria amethystina*** | Amethyst Deceiver | *Lepista nuda*, *Cortinarius violaceus* |
 | ***Laccaria laccata*** | Deceiver | *Laccaria amethystina*, *Inocybe geophylla*, *Marasmius oreades* |
+| ***Laccaria proxima*** | Scurfy Deceiver | *Laccaria laccata*, *Laccaria amethystina*, *Inocybe geophylla* |
 | ***Lacrymaria lacrymabunda*** | Weeping Widow | *Psathyrella candolleana*, *Panaeolina foenisecii*, *Agaricus campestris* |
+| ***Lactarius camphoratus*** | Curry Milkcap | *Lactarius subdulcis*, *Lactarius rufus*, *Lactarius tabidus*, *Lactarius quietus* |
 | ***Lactarius deliciosus*** | Saffron Milkcap | *Lactarius torminosus*, *Paxillus involutus* |
 | ***Lactarius quietus*** | Oakbug Milkcap | *Lactarius torminosus*, *Lactarius deliciosus*, *Lactarius tabidus* |
 | ***Lactarius subdulcis*** | Mild Milkcap | *Lactarius torminosus*, *Lactarius deliciosus*, *Lactarius quietus* |
 | ***Lactarius tabidus*** | Birch Milkcap | *Lactarius quietus*, *Lactarius torminosus*, *Lactarius deliciosus* |
 | ***Leccinum scabrum*** | Brown Birch Bolete | *Boletus edulis*, *Tylopilus felleus* |
+| ***Leccinum versipelle*** | Orange Birch Bolete | *Leccinum scabrum*, *Boletus edulis*, *Tylopilus felleus* |
 | ***Lycoperdon excipuliforme*** | Pestle Puffball | *Lycoperdon perlatum*, *Lycoperdon nigrescens*, *Calvatia gigantea*, *Scleroderma citrinum* (+1) |
 | ***Lycoperdon nigrescens*** | Dusky Puffball | *Lycoperdon perlatum*, *Scleroderma citrinum*, ***Amanita virosa***, *Lycoperdon excipuliforme* |
 | ***Lycoperdon perlatum*** | Common Puffball | *Scleroderma citrinum*, ***Amanita virosa*** |
+| ***Lycoperdon pratense*** | Meadow Puffball | *Lycoperdon perlatum*, *Lycoperdon excipuliforme*, *Calvatia gigantea*, *Scleroderma verrucosum* (+1) |
 | ***Macrolepiota procera*** | Parasol Mushroom | *Chlorophyllum brunneum*, ***Amanita phalloides*** |
 | ***Marasmius oreades*** | Fairy Ring Champignon | ***Clitocybe rivulosa*** |
 | ***Marasmius rotula*** | Collared Parachute | *Collybiopsis ramealis*, *Marasmius oreades* |
+| ***Mensularia radiata*** † | Alder Bracket | *Inonotus hispidus*, *Fomitopsis betulina*, *Daedaleopsis confragosa* |
 | ***Meripilus giganteus*** | Giant Polypore | *Laetiporus sulphureus*, *Ganoderma adspersum* |
 | ***Morchella esculenta*** | Morel | ***Gyromitra esculenta***, *Verpa bohemica* |
 | ***Mucidula mucida*** | Porcelain Fungus | *Hymenopellis radicata*, *Megacollybia platyphylla*, *Pleurotus ostreatus* |
+| ***Mutinus caninus*** | Dog Stinkhorn | *Phallus impudicus* |
 | ***Mycena arcangeliana*** | Angel's Bonnet | ***Galerina marginata*** |
 | ***Mycena epipterygia*** | Yellowleg Bonnet | ***Galerina marginata*** |
 | ***Mycena filopes*** | Iodine Bonnet | ***Galerina marginata*** |
@@ -246,6 +264,8 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Mycena vitilis*** | Snapping Bonnet | ***Galerina marginata*** |
 | ***Parasola plicatilis*** | Pleated Inkcap | *Coprinellus disseminatus*, *Coprinopsis lagopus*, *Panaeolina foenisecii* |
 | ***Peniophora quercina*** | Oak Curtain Crust | — |
+| ***Phaeolus schweinitzii*** | Dyer's Mazegill | *Inonotus hispidus*, *Meripilus giganteus*, *Laetiporus sulphureus* |
+| ***Phaeotremella foliacea*** | Leafy Brain | *Tremella mesenterica*, *Exidia glandulosa*, *Auricularia auricula-judae* |
 | ***Phallus impudicus*** | Stinkhorn, Common Stinkhorn | *Lycoperdon perlatum* |
 | ***Phlebia radiata*** | Wrinkled Crust | — |
 | ***Phlebia tremellosa*** | Jelly Rot | *Phlebia radiata* |
@@ -253,16 +273,21 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Pleurotus ostreatus*** | Oyster Mushroom | *Omphalotus olearius*, *Crepidotus mollis* |
 | ***Pluteus cervinus*** | Deer Shield | *Volvopluteus gloiocephalus*, *Entoloma sinuatum*, ***Amanita phalloides*** |
 | ***Polyporus leptocephalus*** † | Blackfoot Polypore | *Cerioporus squamosus*, *Trametes versicolor* |
+| ***Porpolomopsis calyptriformis*** | Pink Waxcap, Ballerina Waxcap | *Hygrocybe punicea*, *Hygrocybe coccinea*, *Cuphophyllus pratensis* |
 | ***Postia caesia*** † | Conifer Blueing Bracket | *Trametes versicolor* |
 | ***Psathyrella candolleana*** † | Pale Brittlestem | ***Galerina marginata***, *Psathyrella piluliformis*, *Hypholoma fasciculare*, *Coprinellus micaceus* |
 | ***Psathyrella corrugis*** | Red Edge Brittlestem | *Psathyrella candolleana*, *Psathyrella piluliformis*, ***Galerina marginata*** |
 | ***Psathyrella piluliformis*** | Common Stump Brittlestem | ***Galerina marginata***, *Psathyrella candolleana*, *Hypholoma fasciculare*, *Kuehneromyces mutabilis* |
 | ***Rhodocollybia butyracea*** | Butter Cap | *Gymnopus dryophilus*, *Marasmius oreades*, *Clitocybe nebularis* |
 | ***Rickenella fibula*** | Orange Mosscap | — |
+| ***Rickenella swartzii*** | Collared Mosscap | *Rickenella fibula*, *Atheniella flavoalba*, *Mycena tenerrima* |
+| ***Russula aeruginea*** | Green Brittlegill | *Russula cyanoxantha*, *Russula parazurea*, ***Amanita phalloides*** |
 | ***Russula atropurpurea*** | Purple Brittlegill | *Russula cyanoxantha*, *Russula emetica*, *Russula nobilis* |
+| ***Russula claroflava*** | Yellow Swamp Brittlegill | *Russula ochroleuca*, *Russula fellea*, *Russula aeruginea* |
 | ***Russula cyanoxantha*** | Charcoal Burner | ***Amanita phalloides***, *Russula emetica* |
 | ***Russula nigricans*** † | Blackening Brittlegill | *Russula cyanoxantha*, *Russula nobilis*, *Russula emetica* |
 | ***Russula ochroleuca*** | Ochre Brittlegill | *Tricholoma equestre*, *Russula cyanoxantha* |
+| ***Russula parazurea*** | Powdery Brittlegill | *Russula cyanoxantha*, *Russula aeruginea*, *Russula vesca*, ***Amanita phalloides*** |
 | ***Russula vesca*** | The Flirt | *Russula cyanoxantha*, *Russula emetica*, *Russula nobilis*, *Russula ochroleuca* |
 | ***Sarcoscypha austriaca*** | Scarlet Elfcup | — |
 | ***Schizopora paradoxa*** | Split Porecrust | — |
@@ -271,6 +296,7 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Stereum gausapatum*** | Bleeding Oak Crust | *Stereum rugosum*, *Stereum hirsutum* |
 | ***Stereum hirsutum*** | Hairy Curtain Crust | *Trametes versicolor* |
 | ***Stereum rugosum*** | Bleeding Broadleaf Crust | *Stereum hirsutum*, *Trametes versicolor* |
+| ***Stereum sanguinolentum*** | Bleeding Conifer Crust | *Stereum rugosum*, *Stereum gausapatum*, *Stereum hirsutum*, *Chondrostereum purpureum* |
 | ***Suillus bovinus*** | Bovine Bolete | *Suillus luteus*, *Suillus granulatus*, *Suillus grevillei*, *Boletus edulis* (+1) |
 | ***Suillus granulatus*** | Weeping Bolete | *Suillus luteus* |
 | ***Suillus grevillei*** | Larch Bolete | *Suillus luteus*, *Suillus granulatus*, *Suillus bovinus*, *Boletus edulis* (+1) |
@@ -287,6 +313,7 @@ The references used record no toxicity for these. That is a statement about reco
 | ***Xerocomus subtomentosus*** | Suede Bolete | *Boletus edulis*, *Neoboletus luridiformis*, *Rubroboletus satanas*, *Imleria badia* (+2) |
 | ***Xylaria carpophila*** | Beechmast Candlesnuff | *Xylaria hypoxylon* |
 | ***Xylaria hypoxylon*** | Candlesnuff Fungus | *Daldinia concentrica* |
+| ***Xylaria longipes*** | Dead Moll's Fingers | *Xylaria polymorpha*, *Xylaria hypoxylon*, *Xylaria carpophila* |
 | ***Xylaria polymorpha*** | Dead Man's Fingers | *Xylaria hypoxylon*, *Kretzschmaria deusta* |
 | ***Xylodon sambuci*** † | Elder Whitewash | — |
 
@@ -314,6 +341,7 @@ downloads the accepted taxon.
 | *Stropharia semiglobata* | *Protostropharia semiglobata* | Causes illness |
 | *Datronia mollis* | *Podofomes mollis* | — |
 | *Exidia nucleata* | *Myxarium nucleatum* | — |
+| *Mensularia radiata* | *Xanthoporia radiata* | — |
 | *Polyporus leptocephalus* | *Cerioporus leptocephalus* | — |
 | *Postia caesia* | *Cyanosporus caesius* | — |
 | *Psathyrella candolleana* | *Candolleomyces candolleanus* | — |

@@ -135,6 +135,61 @@
       }
     },
     {
+      "key": "agaricus-sylvicola",
+      "scientific_name": "Agaricus sylvicola",
+      "genus": "Agaricus",
+      "common_names": [
+        "Wood Mushroom"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "agaricus-arvensis",
+        "agaricus-xanthodermus",
+        "agaricus-sylvaticus",
+        "amanita-phalloides",
+        "amanita-virosa"
+      ],
+      "diagnostic_characters": [
+        "smell",
+        "bruising_reaction",
+        "ring",
+        "volva",
+        "spore_print_colour",
+        "cap_colour",
+        "habitat"
+      ],
+      "notes": "Tall slender white mushroom of woodland, smelling of aniseed, with a pendulous ring and a chocolate-brown spore print. It yellows slowly when handled. The checks that matter are the absence of a volva, the spore print colour, and whether the stem base stains chrome yellow and smells of ink.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "smell": [
+          "Aniseed or almond"
+        ],
+        "bruising_reaction": [
+          "Yellow, especially at the stem base",
+          "No change"
+        ],
+        "ring": [
+          "Firm skirt-like ring"
+        ],
+        "volva": [
+          "Neither"
+        ],
+        "spore_print_colour": [
+          "Chocolate or purple-brown"
+        ],
+        "cap_colour": [
+          "White or cream",
+          "Yellow"
+        ],
+        "habitat": [
+          "Mixed broadleaf",
+          "Beech",
+          "Pine or spruce"
+        ]
+      }
+    },
+    {
       "key": "agaricus-xanthodermus",
       "scientific_name": "Agaricus xanthodermus",
       "genus": "Agaricus",
@@ -163,6 +218,52 @@
         "stipe_base": [
           "Abruptly bulbous",
           "Even"
+        ]
+      }
+    },
+    {
+      "key": "aleuria-aurantia",
+      "scientific_name": "Aleuria aurantia",
+      "genus": "Aleuria",
+      "common_names": [
+        "Orange Peel Fungus"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "sarcoscypha-austriaca",
+        "scutellinia-scutellata",
+        "chlorociboria-aeruginascens"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "cap_colour",
+        "substrate",
+        "stipe_presence",
+        "texture",
+        "growth_form"
+      ],
+      "notes": "Brilliant orange cups, often split and contorted like discarded peel, on bare compacted ground and track edges. No stem, and the outer surface is paler and whitish-downy.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "cap_colour": [
+          "Orange"
+        ],
+        "substrate": [
+          "Soil or leaf litter"
+        ],
+        "stipe_presence": [
+          "No stem"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ],
+        "growth_form": [
+          "In a tight cluster",
+          "Scattered"
         ]
       }
     },
@@ -633,6 +734,54 @@
       }
     },
     {
+      "key": "armillaria-gallica",
+      "scientific_name": "Armillaria gallica",
+      "genus": "Armillaria",
+      "common_names": [
+        "Bulbous Honey Fungus"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "armillaria-mellea",
+        "galerina-marginata",
+        "kuehneromyces-mutabilis",
+        "hypholoma-fasciculare"
+      ],
+      "diagnostic_characters": [
+        "spore_print_colour",
+        "ring",
+        "stipe_base",
+        "substrate",
+        "growth_form"
+      ],
+      "notes": "Honey-brown cap on a stem that swells towards the base, with a yellowish cobwebby veil zone rather than the firm skirt of the honey fungus. Scattered or in loose groups on buried wood and litter, often with no stump in sight. White spore print.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "ring": [
+          "Faint zone only",
+          "Cobwebby fibres",
+          "No ring"
+        ],
+        "stipe_base": [
+          "Abruptly bulbous"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "Soil or leaf litter",
+          "A living tree"
+        ],
+        "growth_form": [
+          "Scattered",
+          "Singly",
+          "In a tight cluster"
+        ]
+      }
+    },
+    {
       "key": "armillaria-mellea",
       "scientific_name": "Armillaria mellea",
       "genus": "Armillaria",
@@ -771,6 +920,156 @@
         "growth_form": [
           "As a bracket",
           "In a tight cluster"
+        ]
+      }
+    },
+    {
+      "key": "auricularia-mesenterica",
+      "scientific_name": "Auricularia mesenterica",
+      "genus": "Auricularia",
+      "common_names": [
+        "Tripe Fungus"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "auricularia-auricula-judae",
+        "phlebia-tremellosa",
+        "chondrostereum-purpureum",
+        "stereum-hirsutum"
+      ],
+      "diagnostic_characters": [
+        "texture",
+        "hymenium_type",
+        "substrate",
+        "cap_surface",
+        "growth_form",
+        "cap_colour"
+      ],
+      "notes": "Tiers of rubbery brackets on dead elm and other broadleaf wood, grey and hairy above in zones, the underside wrinkled, veined and purplish. Bracket-shaped, where the jelly ear is cup-shaped.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "cap_surface": [
+          "Velvety",
+          "Fibrous"
+        ],
+        "growth_form": [
+          "As a bracket",
+          "In a tight cluster"
+        ],
+        "cap_colour": [
+          "Grey",
+          "Purple",
+          "Brown"
+        ]
+      }
+    },
+    {
+      "key": "baeospora-myosura",
+      "scientific_name": "Baeospora myosura",
+      "genus": "Baeospora",
+      "common_names": [
+        "Conifercone Cap"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "mycena-leptocephala",
+        "collybiopsis-ramealis",
+        "gymnopus-androsaceus",
+        "mycena-vitilis"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "habitat",
+        "gill_spacing",
+        "spore_print_colour",
+        "stipe_base",
+        "size"
+      ],
+      "notes": "Small pale buff cap on a long rooting stem growing directly out of a buried spruce or pine cone. Gills very crowded and narrow; white spore print. Always on a cone, which is what names it.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "cap_colour": [
+          "Brown",
+          "White or cream"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Dead wood or a stump"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ],
+        "gill_spacing": [
+          "Crowded"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "stipe_base": [
+          "Rooting deeply",
+          "Tapering"
+        ],
+        "size": [
+          "Under 2 cm",
+          "2-5 cm"
+        ]
+      }
+    },
+    {
+      "key": "biscogniauxia-nummularia",
+      "scientific_name": "Biscogniauxia nummularia",
+      "genus": "Biscogniauxia",
+      "common_names": [
+        "Beech Tarcrust"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "kretzschmaria-deusta",
+        "hypoxylon-fragiforme",
+        "daldinia-concentrica"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "cap_colour",
+        "substrate",
+        "habitat",
+        "texture",
+        "growth_form"
+      ],
+      "notes": "Flat black patches like spilled tar on fallen beech, with a slightly raised rim and a brittle crust. Stays flat against the wood rather than forming cushions.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "cap_colour": [
+          "Black"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "habitat": [
+          "Beech"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "growth_form": [
+          "As a bracket",
+          "Scattered"
         ]
       }
     },
@@ -2600,6 +2899,58 @@
       }
     },
     {
+      "key": "cuphophyllus-russocoriaceus",
+      "scientific_name": "Cuphophyllus russocoriaceus",
+      "genus": "Cuphophyllus",
+      "common_names": [
+        "Cedarwood Waxcap"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "cuphophyllus-virgineus",
+        "cuphophyllus-pratensis",
+        "clitocybe-rivulosa",
+        "marasmius-oreades"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_attachment",
+        "gill_texture",
+        "spore_print_colour",
+        "substrate",
+        "smell",
+        "size"
+      ],
+      "notes": "Small pure white waxcap of old grassland, smelling strongly of pencil shavings or sandalwood, with thick waxy gills running down the stem and a white spore print. It shares its ground with the deadly white funnels, which are not waxy and do not smell of cedar.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "cap_colour": [
+          "White or cream"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "gill_texture": [
+          "Flexible and greasy"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "smell": [
+          "Coconut",
+          "Aniseed or almond"
+        ],
+        "size": [
+          "2-5 cm",
+          "Under 2 cm"
+        ]
+      }
+    },
+    {
       "key": "cuphophyllus-virgineus",
       "scientific_name": "Cuphophyllus virgineus",
       "genus": "Cuphophyllus",
@@ -3681,6 +4032,56 @@
         ],
         "gill_texture": [
           "Flexible and greasy"
+        ]
+      }
+    },
+    {
+      "key": "gymnopilus-junonius",
+      "scientific_name": "Gymnopilus junonius",
+      "genus": "Gymnopilus",
+      "common_names": [
+        "Spectacular Rustgill"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "gymnopilus-penetrans",
+        "armillaria-mellea",
+        "galerina-marginata",
+        "pholiota-squarrosa"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "spore_print_colour",
+        "substrate",
+        "ring",
+        "growth_form",
+        "taste"
+      ],
+      "notes": "Big golden-tawny tufts at the foot of broadleaf stumps, with a firm ring and a rust-brown spore print. Much larger than the funeral bell, and intensely bitter.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "cap_colour": [
+          "Orange",
+          "Yellow",
+          "Brown"
+        ],
+        "spore_print_colour": [
+          "Rust or cinnamon brown"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "A living tree"
+        ],
+        "ring": [
+          "Firm skirt-like ring",
+          "Faint zone only"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "taste": [
+          "Bitter"
         ]
       }
     },
@@ -4927,6 +5328,57 @@
       }
     },
     {
+      "key": "inonotus-hispidus",
+      "scientific_name": "Inonotus hispidus",
+      "genus": "Inonotus",
+      "common_names": [
+        "Shaggy Bracket"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "mensularia-radiata",
+        "phaeolus-schweinitzii",
+        "laetiporus-sulphureus",
+        "fomes-fomentarius"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "cap_surface",
+        "substrate",
+        "growth_form",
+        "pore_colour",
+        "bruising_reaction"
+      ],
+      "notes": "Large soft shaggy bracket high on living ash and apple, rusty orange when fresh, soaking wet and heavy, blackening and falling as a hard lump in winter. The pore surface bruises brown.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "hymenium_type": [
+          "Pores"
+        ],
+        "cap_surface": [
+          "Fibrous",
+          "Velvety"
+        ],
+        "substrate": [
+          "A living tree",
+          "Dead wood or a stump"
+        ],
+        "growth_form": [
+          "As a bracket",
+          "Singly"
+        ],
+        "pore_colour": [
+          "Yellow",
+          "Cinnamon or brown",
+          "White or cream"
+        ],
+        "bruising_reaction": [
+          "Brown"
+        ]
+      }
+    },
+    {
       "key": "jackrogersella-multiformis",
       "scientific_name": "Jackrogersella multiformis",
       "genus": "Jackrogersella",
@@ -5133,6 +5585,54 @@
       }
     },
     {
+      "key": "laccaria-proxima",
+      "scientific_name": "Laccaria proxima",
+      "genus": "Laccaria",
+      "common_names": [
+        "Scurfy Deceiver"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "laccaria-laccata",
+        "laccaria-amethystina",
+        "inocybe-geophylla"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_colour",
+        "gill_spacing",
+        "spore_print_colour",
+        "cap_surface",
+        "stipe_surface"
+      ],
+      "notes": "Larger and coarser than the deceiver, with a scurfy brick-brown cap and a markedly fibrous stem, on wet heath and among sphagnum. Thick, well-spaced flesh-pink gills and a white spore print.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "cap_colour": [
+          "Brown",
+          "Orange"
+        ],
+        "gill_colour": [
+          "Pink",
+          "White"
+        ],
+        "gill_spacing": [
+          "Well spaced"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "cap_surface": [
+          "Fibrous",
+          "Scaly"
+        ],
+        "stipe_surface": [
+          "Fibrous"
+        ]
+      }
+    },
+    {
       "key": "lacrymaria-lacrymabunda",
       "scientific_name": "Lacrymaria lacrymabunda",
       "genus": "Lacrymaria",
@@ -5228,6 +5728,57 @@
       }
     },
     {
+      "key": "lactarius-camphoratus",
+      "scientific_name": "Lactarius camphoratus",
+      "genus": "Lactarius",
+      "common_names": [
+        "Curry Milkcap"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "lactarius-subdulcis",
+        "lactarius-rufus",
+        "lactarius-tabidus",
+        "lactarius-quietus"
+      ],
+      "diagnostic_characters": [
+        "latex_colour",
+        "cap_colour",
+        "smell",
+        "gill_colour",
+        "habitat",
+        "size"
+      ],
+      "notes": "Small dark red-brown milkcap with watery white milk and a strong smell of curry or fenugreek, strongest in a drying specimen. Under conifers and on damp acid ground.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "latex_colour": [
+          "White"
+        ],
+        "cap_colour": [
+          "Brown",
+          "Red"
+        ],
+        "smell": [
+          "Soap",
+          "Nothing much"
+        ],
+        "gill_colour": [
+          "Brown",
+          "Pink"
+        ],
+        "habitat": [
+          "Pine or spruce",
+          "Mixed broadleaf"
+        ],
+        "size": [
+          "2-5 cm",
+          "Under 2 cm"
+        ]
+      }
+    },
+    {
       "key": "lactarius-deliciosus",
       "scientific_name": "Lactarius deliciosus",
       "genus": "Lactarius",
@@ -5302,6 +5853,49 @@
         ],
         "smell": [
           "Coconut"
+        ]
+      }
+    },
+    {
+      "key": "lactarius-pubescens",
+      "scientific_name": "Lactarius pubescens",
+      "genus": "Lactarius",
+      "common_names": [
+        "Downy Milkcap"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "lactarius-torminosus",
+        "lactarius-deliciosus",
+        "lactarius-glyciosmus"
+      ],
+      "diagnostic_characters": [
+        "latex_colour",
+        "cap_margin",
+        "cap_colour",
+        "habitat",
+        "taste"
+      ],
+      "notes": "Pale cream to faintly pink cap with a shaggy woolly inrolled margin, with birch, often on disturbed ground. White acrid milk. Paler and less obviously zoned than the woolly milkcap.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "latex_colour": [
+          "White"
+        ],
+        "cap_margin": [
+          "Shaggy or woolly",
+          "Strongly inrolled"
+        ],
+        "cap_colour": [
+          "White or cream",
+          "Pink"
+        ],
+        "habitat": [
+          "Birch"
+        ],
+        "taste": [
+          "Burning or peppery"
         ]
       }
     },
@@ -5602,6 +6196,52 @@
       }
     },
     {
+      "key": "lactifluus-vellereus",
+      "scientific_name": "Lactifluus vellereus",
+      "genus": "Lactifluus",
+      "common_names": [
+        "Fleecy Milkcap"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "lactarius-torminosus",
+        "lactarius-blennius",
+        "russula-nigricans"
+      ],
+      "diagnostic_characters": [
+        "latex_colour",
+        "cap_colour",
+        "cap_surface",
+        "cap_margin",
+        "taste",
+        "size"
+      ],
+      "notes": "Big hard white milkcap with a felted, finely velvety cap and a short stout stem, in broadleaf woods. Copious white milk and fiercely acrid flesh. Often found half-buried, lifting the leaf litter.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "latex_colour": [
+          "White"
+        ],
+        "cap_colour": [
+          "White or cream"
+        ],
+        "cap_surface": [
+          "Velvety"
+        ],
+        "cap_margin": [
+          "Strongly inrolled"
+        ],
+        "taste": [
+          "Burning or peppery"
+        ],
+        "size": [
+          "10-20 cm",
+          "5-10 cm"
+        ]
+      }
+    },
+    {
       "key": "laetiporus-sulphureus",
       "scientific_name": "Laetiporus sulphureus",
       "genus": "Laetiporus",
@@ -5660,6 +6300,54 @@
         ],
         "habitat": [
           "Birch"
+        ]
+      }
+    },
+    {
+      "key": "leccinum-versipelle",
+      "scientific_name": "Leccinum versipelle",
+      "genus": "Leccinum",
+      "common_names": [
+        "Orange Birch Bolete"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "leccinum-scabrum",
+        "boletus-edulis",
+        "tylopilus-felleus"
+      ],
+      "diagnostic_characters": [
+        "stipe_surface",
+        "pore_colour",
+        "cap_colour",
+        "habitat",
+        "bruising_reaction",
+        "hymenium_type"
+      ],
+      "notes": "Tall bolete with a bright orange-brown cap and a pale stem covered in blackish scales, with birch. The cut flesh darkens to grey and finally near-black.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "stipe_surface": [
+          "Scaly or shaggy"
+        ],
+        "pore_colour": [
+          "White or cream",
+          "Olive"
+        ],
+        "cap_colour": [
+          "Orange",
+          "Brown"
+        ],
+        "habitat": [
+          "Birch"
+        ],
+        "bruising_reaction": [
+          "Black",
+          "Brown"
+        ],
+        "hymenium_type": [
+          "Pores"
         ]
       }
     },
@@ -6004,6 +6692,50 @@
       }
     },
     {
+      "key": "lycoperdon-pratense",
+      "scientific_name": "Lycoperdon pratense",
+      "genus": "Lycoperdon",
+      "common_names": [
+        "Meadow Puffball"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "lycoperdon-perlatum",
+        "lycoperdon-excipuliforme",
+        "calvatia-gigantea",
+        "scleroderma-verrucosum",
+        "amanita-virosa"
+      ],
+      "diagnostic_characters": [
+        "interior_structure",
+        "skin_thickness",
+        "substrate",
+        "cap_colour",
+        "spore_print_colour"
+      ],
+      "notes": "Squat white puffball in short grass, flattened on top with a narrow sterile base. Interior uniformly pure white when young. Any trace of a developing cap and gills means an Amanita button, not a puffball; any dark interior means an earthball or an over-mature specimen.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "interior_structure": [
+          "Solid and pure white"
+        ],
+        "skin_thickness": [
+          "Thin, like paper"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "cap_colour": [
+          "White or cream",
+          "Brown"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
       "key": "macrolepiota-procera",
       "scientific_name": "Macrolepiota procera",
       "genus": "Macrolepiota",
@@ -6164,6 +6896,51 @@
       }
     },
     {
+      "key": "mensularia-radiata",
+      "scientific_name": "Mensularia radiata",
+      "genus": "Mensularia",
+      "common_names": [
+        "Alder Bracket"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "inonotus-hispidus",
+        "fomitopsis-betulina",
+        "daedaleopsis-confragosa"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "growth_form",
+        "substrate",
+        "texture",
+        "pore_colour"
+      ],
+      "notes": "Tiers of small rust-brown brackets on dead and dying alder, the upper surface finely velvety and becoming almost black with age, the pore surface greyish and shining when tilted to the light.",
+      "accepted_name": "Xanthoporia radiata",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it. Both nomenclators make this a synonym of Xanthoporia radiata; FRDBI and the British field guides use Mensularia radiata, so that is what is displayed and the accepted name is recorded beside it, as with the other nine. Not dangerous, so this is data honesty rather than safety.",
+      "character_states": {
+        "hymenium_type": [
+          "Pores"
+        ],
+        "growth_form": [
+          "As a bracket",
+          "In a tight cluster"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "A living tree"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "pore_colour": [
+          "Cinnamon or brown",
+          "White or cream"
+        ]
+      }
+    },
+    {
       "key": "meripilus-giganteus",
       "scientific_name": "Meripilus giganteus",
       "genus": "Meripilus",
@@ -6288,6 +7065,53 @@
         ],
         "habitat": [
           "Beech"
+        ]
+      }
+    },
+    {
+      "key": "mutinus-caninus",
+      "scientific_name": "Mutinus caninus",
+      "genus": "Mutinus",
+      "common_names": [
+        "Dog Stinkhorn"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "phallus-impudicus"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "stipe_presence",
+        "substrate",
+        "smell",
+        "texture",
+        "size"
+      ],
+      "notes": "Slender orange-tipped column rising from a small white egg in leaf litter, the tip coated in olive spore slime that flies carry away. Far smaller and more delicate than the common stinkhorn, and only faintly smelly.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "cap_colour": [
+          "Orange",
+          "Olive or greenish"
+        ],
+        "stipe_presence": [
+          "Central stem"
+        ],
+        "substrate": [
+          "Soil or leaf litter",
+          "Dead wood or a stump"
+        ],
+        "smell": [
+          "Rotting or foul",
+          "Nothing much"
+        ],
+        "texture": [
+          "Soft and fragile"
+        ],
+        "size": [
+          "5-10 cm",
+          "2-5 cm"
         ]
       }
     },
@@ -7341,6 +8165,102 @@
       }
     },
     {
+      "key": "phaeolus-schweinitzii",
+      "scientific_name": "Phaeolus schweinitzii",
+      "genus": "Phaeolus",
+      "common_names": [
+        "Dyer's Mazegill"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "inonotus-hispidus",
+        "meripilus-giganteus",
+        "laetiporus-sulphureus"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "cap_surface",
+        "habitat",
+        "pore_colour",
+        "growth_form",
+        "bruising_reaction"
+      ],
+      "notes": "Large soft bracket at the foot of conifers, rusty brown with a broad sulphur-yellow growing margin, often on the ground from a buried root. Velvety above, with a yellowish pore surface bruising dark brown. Goes hard and black with age.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "hymenium_type": [
+          "Pores"
+        ],
+        "cap_surface": [
+          "Velvety"
+        ],
+        "habitat": [
+          "Pine or spruce",
+          "Larch"
+        ],
+        "pore_colour": [
+          "Yellow",
+          "Olive",
+          "Cinnamon or brown"
+        ],
+        "growth_form": [
+          "As a bracket",
+          "Singly"
+        ],
+        "bruising_reaction": [
+          "Brown"
+        ]
+      }
+    },
+    {
+      "key": "phaeotremella-foliacea",
+      "scientific_name": "Phaeotremella foliacea",
+      "genus": "Phaeotremella",
+      "common_names": [
+        "Leafy Brain"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "tremella-mesenterica",
+        "exidia-glandulosa",
+        "auricularia-auricula-judae"
+      ],
+      "diagnostic_characters": [
+        "texture",
+        "hymenium_type",
+        "substrate",
+        "cap_colour",
+        "growth_form",
+        "stipe_presence"
+      ],
+      "notes": "Loose rosette of thin brown gelatinous leaves on conifer wood, like a drowned lettuce, shrinking to a dark crust in dry weather and swelling again when it rains.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "texture": [
+          "Gelatinous and rubbery"
+        ],
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Dead wood or a stump",
+          "A living tree"
+        ],
+        "cap_colour": [
+          "Brown",
+          "Purple"
+        ],
+        "growth_form": [
+          "In a tight cluster"
+        ],
+        "stipe_presence": [
+          "No stem"
+        ]
+      }
+    },
+    {
       "key": "phallus-impudicus",
       "scientific_name": "Phallus impudicus",
       "genus": "Phallus",
@@ -7745,6 +8665,54 @@
         ]
       },
       "accepted_name": "Cerioporus leptocephalus"
+    },
+    {
+      "key": "porpolomopsis-calyptriformis",
+      "scientific_name": "Porpolomopsis calyptriformis",
+      "genus": "Porpolomopsis",
+      "common_names": [
+        "Pink Waxcap",
+        "Ballerina Waxcap"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "hygrocybe-punicea",
+        "hygrocybe-coccinea",
+        "cuphophyllus-pratensis"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_shape",
+        "gill_texture",
+        "spore_print_colour",
+        "substrate",
+        "cap_margin"
+      ],
+      "notes": "Unmistakable pink to lilac-rose cap that splits upwards into a pointed cone, like a skirt caught mid-turn, in old unimproved grassland. Waxy gills, white spore print. An indicator of grassland that has never been fertilised.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "cap_colour": [
+          "Pink",
+          "Purple"
+        ],
+        "cap_shape": [
+          "Conical"
+        ],
+        "gill_texture": [
+          "Flexible and greasy"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "substrate": [
+          "Grass or lawn"
+        ],
+        "cap_margin": [
+          "Upturned",
+          "Straight"
+        ]
+      }
     },
     {
       "key": "postia-caesia",
@@ -8153,6 +9121,49 @@
       }
     },
     {
+      "key": "rickenella-swartzii",
+      "scientific_name": "Rickenella swartzii",
+      "genus": "Rickenella",
+      "common_names": [
+        "Collared Mosscap"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "rickenella-fibula",
+        "atheniella-flavoalba",
+        "mycena-tenerrima"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "substrate",
+        "size",
+        "gill_attachment",
+        "spore_print_colour"
+      ],
+      "notes": "Pinhead mushroom among moss with a dark violet-brown centre to the cap and a violet flush to the top of the thread-like stem. Gills run far down the stem. The orange mosscap in the same moss has neither dark centre nor violet stem.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "cap_colour": [
+          "Brown",
+          "Purple",
+          "Grey"
+        ],
+        "substrate": [
+          "Moss"
+        ],
+        "size": [
+          "Under 2 cm"
+        ],
+        "gill_attachment": [
+          "Running down the stem"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
       "key": "rubroboletus-satanas",
       "scientific_name": "Rubroboletus satanas",
       "genus": "Rubroboletus",
@@ -8179,6 +9190,52 @@
         ],
         "stipe_surface": [
           "Netted or with a raised mesh"
+        ]
+      }
+    },
+    {
+      "key": "russula-aeruginea",
+      "scientific_name": "Russula aeruginea",
+      "genus": "Russula",
+      "common_names": [
+        "Green Brittlegill"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "russula-cyanoxantha",
+        "russula-parazurea",
+        "amanita-phalloides"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "volva",
+        "ring",
+        "spore_print_colour",
+        "habitat"
+      ],
+      "notes": "Grass-green to olive cap, usually with rust spots on the gill edges, with birch. Gills shatter like chalk and the stem snaps cleanly. Green-capped brittlegills have been fatally confused with the death cap: the decisive check is the absence of a volva and of a ring.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "cap_colour": [
+          "Olive or greenish",
+          "Yellow"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "volva": [
+          "Neither"
+        ],
+        "ring": [
+          "No ring"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ],
+        "habitat": [
+          "Birch"
         ]
       }
     },
@@ -8259,6 +9316,52 @@
         ],
         "taste": [
           "Burning or peppery"
+        ]
+      }
+    },
+    {
+      "key": "russula-claroflava",
+      "scientific_name": "Russula claroflava",
+      "genus": "Russula",
+      "common_names": [
+        "Yellow Swamp Brittlegill"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "russula-ochroleuca",
+        "russula-fellea",
+        "russula-aeruginea"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_texture",
+        "bruising_reaction",
+        "habitat",
+        "taste",
+        "spore_print_colour"
+      ],
+      "notes": "Clear bright yellow cap with birch in wet ground and sphagnum. Flesh and gills turn grey on handling and in age, which separates it from the other yellow brittlegills. Mild, with a pale ochre spore print.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "cap_colour": [
+          "Yellow"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "bruising_reaction": [
+          "Brown",
+          "Black"
+        ],
+        "habitat": [
+          "Birch"
+        ],
+        "taste": [
+          "Mild"
+        ],
+        "spore_print_colour": [
+          "White or cream"
         ]
       }
     },
@@ -8527,6 +9630,99 @@
         "taste": [
           "Mild",
           "Bitter",
+          "Burning or peppery"
+        ]
+      }
+    },
+    {
+      "key": "russula-parazurea",
+      "scientific_name": "Russula parazurea",
+      "genus": "Russula",
+      "common_names": [
+        "Powdery Brittlegill"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "russula-cyanoxantha",
+        "russula-aeruginea",
+        "russula-vesca",
+        "amanita-phalloides"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "cap_surface",
+        "gill_texture",
+        "volva",
+        "ring",
+        "spore_print_colour"
+      ],
+      "notes": "Blue-grey to olive cap with a distinct bloom, as though dusted with flour, with oak on dry ground. Gills shatter like chalk and there is no volva and no ring -- the two checks that separate any green-capped brittlegill from a death cap.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "cap_colour": [
+          "Grey",
+          "Olive or greenish",
+          "Purple"
+        ],
+        "cap_surface": [
+          "Smooth and dry"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "volva": [
+          "Neither"
+        ],
+        "ring": [
+          "No ring"
+        ],
+        "spore_print_colour": [
+          "White or cream"
+        ]
+      }
+    },
+    {
+      "key": "russula-sardonia",
+      "scientific_name": "Russula sardonia",
+      "genus": "Russula",
+      "common_names": [
+        "Primrose Brittlegill"
+      ],
+      "toxicity": "TOXIC",
+      "gbif_key": null,
+      "lookalikes": [
+        "russula-atropurpurea",
+        "russula-fragilis",
+        "russula-emetica",
+        "russula-ochroleuca"
+      ],
+      "diagnostic_characters": [
+        "cap_colour",
+        "gill_colour",
+        "gill_texture",
+        "habitat",
+        "taste"
+      ],
+      "notes": "Dark purple to wine-red cap over a stem flushed the same colour, and primrose-yellow gills -- the combination is unusual in the genus. Strictly with pine. The flesh is fiercely hot.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "cap_colour": [
+          "Purple",
+          "Red",
+          "Brown"
+        ],
+        "gill_colour": [
+          "Yellow or green",
+          "White"
+        ],
+        "gill_texture": [
+          "Brittle, shattering like chalk"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ],
+        "taste": [
           "Burning or peppery"
         ]
       }
@@ -8915,6 +10111,53 @@
         "cap_colour": [
           "White or cream",
           "Brown"
+        ]
+      }
+    },
+    {
+      "key": "stereum-sanguinolentum",
+      "scientific_name": "Stereum sanguinolentum",
+      "genus": "Stereum",
+      "common_names": [
+        "Bleeding Conifer Crust"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "stereum-rugosum",
+        "stereum-gausapatum",
+        "stereum-hirsutum",
+        "chondrostereum-purpureum"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "substrate",
+        "habitat",
+        "bruising_reaction",
+        "texture",
+        "growth_form"
+      ],
+      "notes": "Thin grey-buff crust with a narrow wavy edge on fallen conifer wood. The smooth underside bleeds red when it is scratched while fresh, which is what names it.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "habitat": [
+          "Pine or spruce"
+        ],
+        "bruising_reaction": [
+          "Red or pink"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "growth_form": [
+          "As a bracket",
+          "Scattered"
         ]
       }
     },
@@ -9981,6 +11224,53 @@
         ],
         "stipe_presence": [
           "Central stem"
+        ]
+      }
+    },
+    {
+      "key": "xylaria-longipes",
+      "scientific_name": "Xylaria longipes",
+      "genus": "Xylaria",
+      "common_names": [
+        "Dead Moll's Fingers"
+      ],
+      "toxicity": "NO_RECORDED_TOXICITY",
+      "gbif_key": null,
+      "lookalikes": [
+        "xylaria-polymorpha",
+        "xylaria-hypoxylon",
+        "xylaria-carpophila"
+      ],
+      "diagnostic_characters": [
+        "hymenium_type",
+        "cap_colour",
+        "substrate",
+        "texture",
+        "growth_form",
+        "interior_structure"
+      ],
+      "notes": "Slender black clubs on a distinct stalk, on fallen sycamore and maple. More finger-like and far narrower than dead man's fingers, with a finely roughened surface and white flesh inside.",
+      "internal_note": "Added 2026-10-29 in the pre-run-five batch of 27, from docs/label-space-candidates.csv -- the species missing from FRDBI's top 250 that GBIF resolves cleanly and holds enough photographs of. Toxicity, lookalikes, diagnostic characters and notes are compiled from standard references by Claude and are UNREVIEWED, like the rest of the file. The species is inert until a model is trained on a dataset that includes it.",
+      "character_states": {
+        "hymenium_type": [
+          "Smooth surface"
+        ],
+        "cap_colour": [
+          "Black",
+          "Brown"
+        ],
+        "substrate": [
+          "Dead wood or a stump"
+        ],
+        "texture": [
+          "Woody"
+        ],
+        "growth_form": [
+          "In a tight cluster",
+          "Scattered"
+        ],
+        "interior_structure": [
+          "Solid and pure white"
         ]
       }
     },
