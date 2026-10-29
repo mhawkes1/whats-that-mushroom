@@ -24,14 +24,27 @@ them.
    | column | meaning |
    | --- | --- |
    | `filename` | the file in `eval/photos/` |
-   | `species_key` | the true species, as keyed in `data/taxonomy.seed.json` |
+   | `species_key` | the true species, as keyed in `data/taxonomy.seed.json`, or `not-in-label-space` |
+   | `confirmed_by` | who checked the label. **Blank means nobody has.** |
    | `visible` | what the photograph actually shows: `cap`, `gills`, `stem`, `base`, `bruising`, `spore-print` |
    | `source` | whose camera, or where it came from |
    | `notes` | anything about the photograph worth knowing later |
 
-**Only add a row you are sure of.** A wrong label here is worse than a
-missing one: it reports the app as failing where it was right, and the point
-of the set is to be believed.
+**Only add a row you are sure of**, and record in `confirmed_by` who
+decided. A wrong label here is worse than a missing one: it reports the app
+as failing where it was right, and the point of the set is to be believed.
+The runner prints a warning and marks every unconfirmed row with `?`,
+because a guess and a determination are not the same evidence.
+
+**A photograph of something outside the 244 is a row, not a problem.** Use
+`not-in-label-space` as the key and name the species in `notes`. The right
+answer for those is a refusal, and naming anything is the failure, so the
+runner scores them that way. The first eight real photographs produced one
+immediately -- *Craterellus tubaeformis*, the yellowfoot, an ordinary
+British species that is simply not among the 244 -- so this is not an edge
+case to handle later. Dropping such a row would hide a gap in the label
+space; labelling it with the nearest species in the label space would be a
+lie about what is in the picture.
 
 `visible` is the column that will earn its keep. The interesting question is
 not the overall score, it is whether the app is honest about photographs

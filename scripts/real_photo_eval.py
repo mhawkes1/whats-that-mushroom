@@ -51,6 +51,17 @@ sys.path.insert(0, str(ROOT / "ml"))
 # of declining, which is the product working rather than failing.
 NAMING_VERDICTS = {"species"}
 
+#: A photograph of something the label space does not contain. The first
+#: eight real photographs produced one immediately -- *Craterellus
+#: tubaeformis*, the yellowfoot, which is an ordinary British species and
+#: not among the 244 -- so this is not an edge case to add later.
+#:
+#: For these rows the RIGHT answer is a refusal, and naming anything is the
+#: failure. Without the sentinel the only options were to drop the
+#: photograph, which hides the gap, or to label it with the nearest species
+#: in the label space, which is a lie about what is in the picture.
+OUT_OF_LABEL_SPACE = "not-in-label-space"
+
 
 def _health(base: str) -> dict:
     import requests
@@ -121,8 +132,9 @@ def main() -> int:
             continue
 
         truth_key = row["species_key"]
-        truth = taxonomy.get(truth_key)
-        if truth is None:
+        unlabelled = truth_key == OUT_OF_LABEL_SPACE
+        truth = None if unlabelled else taxonomy.get(truth_key)
+        if truth is None and not unlabelled:
             print(f"  {row['filename']}: {truth_key!r} is not in the label "
                   f"space -- skipped", file=sys.stderr)
             continue
@@ -149,6 +161,7 @@ def main() -> int:
         )
         misleading = (
             named
+            and truth is not None
             and truth.toxicity >= Toxicity.TOXIC
             and top is not None
             and top["species_key"] != truth_key
@@ -158,7 +171,9 @@ def main() -> int:
         results.append({
             "filename": row["filename"],
             "truth": truth_key,
-            "truth_toxicity": truth.toxicity.name,
+            "in_label_space": not unlabelled,
+            "confirmed_by": row.get("confirmed_by", "") or None,
+            "truth_toxicity": truth.toxicity.name if truth else None,
             "visible": row.get("visible", ""),
             "verdict": body["verdict"],
             "headline": body["headline"],
@@ -166,9 +181,12 @@ def main() -> int:
             "top": top["species_key"] if top else None,
             "top_confidence": round(top["confidence"], 4) if top else None,
             "top_toxicity": top["toxicity"] if top else None,
-            "correct": bool(top and top["species_key"] == truth_key),
+            # For a photograph of something the app cannot name, declining
+            # IS the right answer, and naming anything is the failure.
+            "correct": (not named) if unlabelled
+                       else bool(top and top["species_key"] == truth_key),
             "genus_correct": bool(
-                top and taxonomy.get(top["species_key"])
+                truth and top and taxonomy.get(top["species_key"])
                 and taxonomy.get(top["species_key"]).genus == truth.genus
             ),
             "truth_rank": rank,
@@ -190,14 +208,27 @@ def main() -> int:
         return 2
 
     n = len(results)
+    unconfirmed = [r for r in results if not r["confirmed_by"]]
+    if unconfirmed:
+        print(f"\n  *** {len(unconfirmed)} of {n} labels are NOT CONFIRMED by a "
+              f"person. ***")
+        print("  The set is only worth anything if it is believed, and a label "
+              "nobody\n  checked reports the app as failing where it was right. "
+              "Fill in\n  `confirmed_by` in the manifest before quoting any "
+              "number from this run.")
     named = [r for r in results if r["named"]]
     correct_named = [r for r in named if r["correct"]]
     misleading = [r for r in results if r["misleading"]]
 
     print(f"\n  {n} photograph(s), model {health.get('model_version')}, "
           f"calibrated={health.get('calibrated')}\n")
+    out_of_space = [r for r in results if not r["in_label_space"]]
     print(f"  named a species         {len(named):>3}/{n}  "
           f"({100*len(named)/n:.0f}% coverage)")
+    if out_of_space:
+        declined = sum(1 for r in out_of_space if not r["named"])
+        print(f"  outside the label space {len(out_of_space):>3}  "
+              f"of which correctly declined: {declined}")
     if named:
         print(f"  correct when named      {len(correct_named):>3}/{len(named)}  "
               f"({100*len(correct_named)/len(named):.0f}%)")
@@ -219,7 +250,8 @@ def main() -> int:
     print("\n  per photograph:")
     for r in results:
         mark = "ok " if r["correct"] else ("   " if not r["named"] else "XX ")
-        print(f"   {mark}{r['filename']:<38} {r['verdict']:<16} "
+        flag = "" if r["confirmed_by"] else " ?"
+        print(f"   {mark}{r['filename']:<8}{flag:<3} {r['verdict']:<16} "
               f"-> {str(r['top']):<30} "
               f"{r['top_confidence'] if r['top_confidence'] else 0:.2f}  "
               f"(truth rank {r['truth_rank']})")
@@ -236,7 +268,14 @@ def main() -> int:
         "misleading_count": len(misleading),
         "results": results,
     }, indent=2) + "\n", encoding="utf-8")
-    print(f"\n  Wrote {out.relative_to(ROOT)}\n")
+    # `--out` may point anywhere, and the run is already written by the
+    # time this line runs. Second time today a bare relative_to() turned a
+    # finished job into a traceback.
+    try:
+        shown = out.resolve().relative_to(ROOT)
+    except ValueError:
+        shown = out
+    print(f"\n  Wrote {shown}\n")
     return 0
 
 

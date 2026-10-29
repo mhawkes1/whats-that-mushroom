@@ -1,2 +1,9 @@
-filename,species_key,visible,source,notes
-agaricus-xanthodermus-01.jpg,agaricus-xanthodermus,"cap,stem,base,bruising",martin-phone,"Picked and laid on leaf litter. Chrome-yellow staining on the cap margin clearly visible. Gills obscured."
+filename,species_key,confirmed_by,visible,source,notes
+01.jpg,lactarius-deliciosus,,"cap,gills,stem",martin-phone,"Claude's reading, UNCONFIRMED. Orange zoned cap, orange latex scrobicules on the stem, orange gills. Saffron milkcap group; L. deterrimus is the spruce one and is not in the label space, so a mycologist might split this."
+02.jpg,not-in-label-space,,"cap,gills,stem",martin-phone,"Claude's reading, UNCONFIRMED: Craterellus tubaeformis, yellowfoot. NOT one of the 244, so the app should decline rather than name anything."
+03.jpg,craterellus-cornucopioides,,"cap,stem",martin-phone,"Claude's reading, UNCONFIRMED. Grey-brown hollow funnel, wavy margin. Horn of plenty."
+04.jpg,amanita-muscaria,,"cap,stem,ring",martin-phone,"Claude's reading, UNCONFIRMED. In situ, red cap with white warts. The easiest case in the set."
+05.jpg,mycena-rosea,,"cap,gills,stem",martin-phone,"Claude's reading, LOW CONFIDENCE. Pink bonnet. M. rosea or M. pura -- both in the label space, both TOXIC, and I cannot separate them from this photograph. Needs Martin's call, and is the most interesting row in the set for exactly that reason."
+06.jpg,boletus-edulis,,"cap,stem",martin-phone,"Claude's reading, UNCONFIRMED. Netted white stem, brown cap. Penny bun."
+07.jpg,xerocomellus-chrysenteron,,"cap,stem",martin-phone,"Claude's reading, LOW CONFIDENCE. Small bolete, dark red-brown cap, yellow stem in moss. Could be Imleria badia or a Neoboletus; the cap colour and size lean Xerocomellus."
+08.jpg,chlorociboria-aeruginascens,,"fruiting-bodies,substrate",martin-phone,"Claude's reading, UNCONFIRMED. Blue-green cups on a fallen stick. Green elfcup."

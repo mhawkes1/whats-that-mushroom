@@ -82,9 +82,25 @@ def test_every_manifest_row_names_a_species_in_the_label_space():
     assert rows, "the manifest must not be empty"
 
     for row in rows:
+        if row["species_key"] == "not-in-label-space":
+            # A photograph of something the 244 do not contain. The first
+            # eight real photographs produced one -- Craterellus
+            # tubaeformis, the yellowfoot, an ordinary British species --
+            # and for these the right answer is a refusal. Dropping the
+            # row would hide the gap; labelling it with the nearest
+            # species in the label space would be a lie about the picture.
+            assert row.get("notes"), (
+                f"{row['filename']}: an out-of-label-space row must name "
+                f"what it actually is in `notes`, or nobody can check it"
+            )
+            continue
         assert taxonomy.get(row["species_key"]) is not None, (
             f"{row['filename']}: {row['species_key']!r} is not in the label "
             f"space -- check the key against data/taxonomy.seed.json"
+        )
+        assert "confirmed_by" in row, (
+            f"{row['filename']}: the manifest must record WHO confirmed the "
+            f"label. A guess and a determination are not the same evidence."
         )
         assert row.get("visible"), (
             f"{row['filename']}: 'visible' is the column that makes this set "
