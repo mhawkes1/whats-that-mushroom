@@ -13,14 +13,25 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { IdentifyResponse } from '../src/lib/api';
 import type { Observation } from '../src/lib/observationLog';
-import { PhotographsGone, reopen } from '../src/lib/reopen';
+import {
+  ObservationGone,
+  PhotographsGone,
+  answerPastObservation,
+  reopen,
+} from '../src/lib/reopen';
 
 const identify = vi.fn();
 const answerQuestion = vi.fn();
+const readLog = vi.fn(async () => [] as Observation[]);
 
 vi.mock('../src/lib/api', () => ({
   identify: (...args: unknown[]) => identify(...args),
   answerQuestion: (...args: unknown[]) => answerQuestion(...args),
+}));
+
+vi.mock('../src/lib/observationLog', async (orig) => ({
+  ...(await orig<Record<string, unknown>>()),
+  readLog: (...args: unknown[]) => readLog(...args),
 }));
 
 // Static import: `vi.mock` is hoisted above it by vitest, and a
@@ -55,6 +66,7 @@ const entry = (over: Partial<Observation> = {}): Observation =>
 beforeEach(() => {
   identify.mockReset();
   answerQuestion.mockReset();
+  readLog.mockReset();
 });
 
 describe('reopen', () => {
@@ -115,5 +127,63 @@ describe('reopen', () => {
     answerQuestion.mockResolvedValue(reply('new-1'));
     await reopen(entry({ answers: { ring: '', volva: 'Clear cup or sac' } }));
     expect(answerQuestion).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('answering an observation the server has forgotten', () => {
+  // What makes the spore print deliverable. It asks the user to wait two
+  // to twelve hours, so it is almost never started and finished in one
+  // session -- and the server's record is a dictionary entry in memory
+  // that does not survive a restart, let alone an afternoon.
+  const stored: Observation[] = [];
+
+  beforeEach(() => {
+    stored.length = 0;
+    readLog.mockImplementation(async () => [...stored]);
+  });
+
+  it('rebuilds the observation, then applies the answer to it', async () => {
+    stored.push(entry());
+    identify.mockResolvedValue(reply('live-1'));
+    answerQuestion.mockResolvedValue(reply('live-1'));
+
+    const { result } = await answerPastObservation(
+      'old-1',
+      'spore_print_colour',
+      'White or cream',
+    );
+
+    expect(identify).toHaveBeenCalledTimes(1);
+    // Two replayed answers, then the new one.
+    const last = answerQuestion.mock.calls.at(-1);
+    expect(last?.[1]).toBe('spore_print_colour');
+    expect(last?.[2]).toBe('White or cream');
+    expect(result.observation_id).toBe('live-1');
+  });
+
+  it('returns the entry with the new answer folded in', async () => {
+    stored.push(entry());
+    identify.mockResolvedValue(reply('live-1'));
+    answerQuestion.mockResolvedValue(reply('live-1'));
+
+    const { entry: updated } = await answerPastObservation(
+      'old-1',
+      'spore_print_colour',
+      'White or cream',
+    );
+    // Keeps its identity, so it replaces the record rather than becoming
+    // a second find of the same mushroom.
+    expect(updated.observationId).toBe('old-1');
+    expect(updated.recordedAt).toBe(1_000);
+    expect(updated.answers.spore_print_colour).toBe('White or cream');
+    expect(updated.answers.ring).toBe('No ring');
+  });
+
+  it('says so by name when the record has been deleted meanwhile', async () => {
+    // Twelve hours is long enough to clear the log.
+    await expect(
+      answerPastObservation('gone', 'spore_print_colour', 'White or cream'),
+    ).rejects.toBeInstanceOf(ObservationGone);
+    expect(identify).not.toHaveBeenCalled();
   });
 });

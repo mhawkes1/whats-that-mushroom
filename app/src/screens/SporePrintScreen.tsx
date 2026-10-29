@@ -23,6 +23,11 @@ import {
   waitStatus,
   type WaitStatus,
 } from '../lib/sporePrintTimer';
+import {
+  ObservationGone,
+  PhotographsGone,
+  answerPastObservation,
+} from '../lib/reopen';
 import { theme } from '../lib/theme';
 
 /**
@@ -54,9 +59,17 @@ const DEPOSIT_REGION: Region = { x: 0.08, y: 0.3, width: 0.32, height: 0.4 };
 const CARD_REGION: Region = { x: 0.6, y: 0.3, width: 0.32, height: 0.4 };
 
 export function SporePrintScreen({ navigation, route }: { navigation: any; route: any }) {
-  const { observationId, onMatched } = route.params as {
+  const { observationId } = route.params as {
+    /**
+     * The LOG entry's id, not a live session's.
+     *
+     * It used to be the server's `observation_id`, which is an entry in an
+     * in-memory dictionary that does not survive a restart -- and this
+     * screen asks the user to come back in two to twelve hours. The id was
+     * therefore worthless at exactly the moment it was needed, which made
+     * a spore print startable and not finishable.
+     */
     observationId: string;
-    onMatched?: (option: string) => void;
   };
 
   const [phase, setPhase] = useState<Phase>('setup');
@@ -129,13 +142,52 @@ export function SporePrintScreen({ navigation, route }: { navigation: any; route
     }
   }, [photo, swapped]);
 
+  /**
+   * Apply the colour the user picked, hours later, to an observation the
+   * server has long since forgotten.
+   *
+   * One path, used by every spore print including one started and
+   * finished in the same minute. A fast path for the live case would be a
+   * second arrangement for applying an answer, kept in step by hand, and
+   * the one that matters here is the one almost never exercised during
+   * development.
+   *
+   * The timer is cleared only once the answer has landed. Clearing first
+   * would lose a twelve-hour wait to a dropped connection.
+   */
   const accept = useCallback(
     async (option: string) => {
-      await clearTimer();
-      onMatched?.(option);
-      navigation.goBack();
+      setBusy(true);
+      try {
+        const { result, entry } = await answerPastObservation(
+          observationId,
+          'spore_print_colour',
+          option,
+        );
+        await clearTimer();
+        navigation.navigate('Result', {
+          result,
+          views: entry.photos,
+          place: entry.place,
+          fieldNotes: entry.fieldNotes,
+          identity: {
+            observationId: entry.observationId,
+            recordedAt: entry.recordedAt,
+          },
+        });
+      } catch (error) {
+        Alert.alert(
+          'Could not add the spore print',
+          error instanceof PhotographsGone || error instanceof ObservationGone
+            ? error.message
+            : 'That did not work. Check your connection and try again — the ' +
+              'print is still here.',
+        );
+      } finally {
+        setBusy(false);
+      }
     },
-    [navigation, onMatched],
+    [navigation, observationId],
   );
 
   // --- Setup -----------------------------------------------------------------

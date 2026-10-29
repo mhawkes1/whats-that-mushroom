@@ -1,5 +1,5 @@
 import { identify, answerQuestion, type IdentifyResponse } from './api';
-import { photoUri, type Observation } from './observationLog';
+import { photoUri, readLog, type Observation } from './observationLog';
 
 /**
  * Open an observation from the history again, so more can be added to it.
@@ -80,4 +80,48 @@ export async function reopen(entry: Observation): Promise<IdentifyResponse> {
   }
 
   return result;
+}
+
+/**
+ * Add one answer to an observation that is no longer a live session.
+ *
+ * This is what makes the spore print deliverable. That flow asks a user
+ * to wait two to twelve hours, and the server's record of the observation
+ * is an in-memory dictionary entry that does not survive a restart, let
+ * alone an afternoon -- so the id the timer used to carry was worthless by
+ * the time it was needed. It now carries the LOG entry's id, which is
+ * durable, and the answer is applied by rebuilding the observation first.
+ *
+ * Used by every spore print, including one started and finished in the
+ * same session. A fast path for the live case would be a second
+ * arrangement for applying an answer, kept in step by hand, and the one
+ * that matters is the one that is almost never exercised during
+ * development.
+ */
+export async function answerPastObservation(
+  logId: string,
+  characterKey: string,
+  answer: string,
+): Promise<{ result: IdentifyResponse; entry: Observation }> {
+  const log = await readLog();
+  const entry = log.find((e) => e.observationId === logId);
+  if (!entry) throw new ObservationGone();
+
+  const reopened = await reopen(entry);
+  const result = await answerQuestion(
+    reopened.observation_id,
+    characterKey,
+    answer,
+  );
+  return {
+    result,
+    entry: { ...entry, answers: { ...entry.answers, [characterKey]: answer } },
+  };
+}
+
+export class ObservationGone extends Error {
+  constructor() {
+    super('That observation is no longer in your log on this phone.');
+    this.name = 'ObservationGone';
+  }
 }

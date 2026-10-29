@@ -241,9 +241,10 @@ export function ResultScreen({ navigation, route }: { navigation: any; route: an
               nextQuestion.key === 'spore_print_colour'
                 ? () =>
                     navigation.navigate('SporePrint', {
-                      observationId: result.observation_id,
-                      onMatched: (option: string) =>
-                        onAnswer('spore_print_colour', option),
+                      // The LOG id, which survives the two to twelve hours
+                      // this takes. The server's session id does not.
+                      observationId:
+                        identity?.observationId ?? result.observation_id,
                     })
                 : undefined
             }

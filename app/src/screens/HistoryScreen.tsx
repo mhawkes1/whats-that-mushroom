@@ -264,6 +264,25 @@ export function HistoryScreen({ navigation }: { navigation: any }) {
                     observation lives in memory and does not survive a
                     restart -- nor the two to twelve hours a spore print
                     takes. See `lib/reopen.ts`. */}
+                {/* The flow this repairs. A spore print takes two to
+                    twelve hours, so it is almost never started and
+                    finished in one sitting -- which until now meant the
+                    server had forgotten the observation by the time the
+                    answer existed. The timer carries the LOG id, so the
+                    print can be started from a record weeks old. */}
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate('SporePrint', {
+                      observationId: entry.observationId,
+                    })
+                  }
+                  style={styles.reopen}
+                  accessibilityRole="button"
+                  accessibilityLabel="Take a spore print for this observation"
+                >
+                  <Text style={styles.reopenText}>Take a spore print</Text>
+                </Pressable>
+
                 <Pressable
                   onPress={() => void reopenEntry(entry)}
                   disabled={reopening === entry.observationId}

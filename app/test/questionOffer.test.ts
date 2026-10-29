@@ -70,3 +70,46 @@ describe('the question offer', () => {
     expect(screen).toMatch(/spore_print_colour[\s\S]{0,400}navigate\('SporePrint'/);
   });
 });
+
+describe('the spore print, which takes hours', () => {
+  it('carries the log id, not a live session id', () => {
+    // The server's `observation_id` is an entry in an in-memory dict that
+    // does not survive a restart. This screen asks the user to come back
+    // in two to twelve hours, so that id was worthless at exactly the
+    // moment it was needed -- a print could be started and never finished.
+    const result = read('screens/ResultScreen.tsx');
+    expect(result).toMatch(
+      /navigate\('SporePrint'[\s\S]{0,300}identity\?\.observationId \?\? result\.observation_id/,
+    );
+    const history = read('screens/HistoryScreen.tsx');
+    expect(history).toMatch(
+      /navigate\('SporePrint'[\s\S]{0,200}entry\.observationId/,
+    );
+  });
+
+  it('can be started from a record weeks old', () => {
+    const history = read('screens/HistoryScreen.tsx');
+    expect(history).toMatch(/Take a spore print/);
+  });
+
+  it('clears the timer only after the answer has landed', () => {
+    // Clearing first loses a twelve-hour wait to a dropped connection.
+    const screen = read('screens/SporePrintScreen.tsx');
+    // A fixed window rather than a brace split: the first `  );` in this
+    // block closes the answerPastObservation call, not the callback.
+    const accept = screen
+      .split('const accept = useCallback(')[1]
+      .slice(0, 1200);
+    expect(accept.indexOf('answerPastObservation')).toBeLessThan(
+      accept.indexOf('clearTimer'),
+    );
+  });
+
+  it('has one path for applying the answer, not a live fast path', () => {
+    // Two arrangements for applying an answer would be kept in step by
+    // hand, and the one that matters here is the one almost never
+    // exercised during development.
+    const screen = read('screens/SporePrintScreen.tsx');
+    expect(screen).not.toMatch(/onMatched/);
+  });
+});
