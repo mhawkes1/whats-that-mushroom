@@ -136,8 +136,7 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
   const taken = SLOTS.filter((slot) => photos[slot.key]).length;
 
   return (
-    <View style={styles.screen}>
-      <ScrollView contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <AppHeader
         onNewObservation={startAnother}
         canStartAnother={taken > 0}
@@ -234,28 +233,6 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
       </View>
 
     </ScrollView>
-
-      {/* PINNED, outside the ScrollView. It used to be the last thing in
-          the scroll, which meant that on any phone shorter than the
-          content it was below the fold -- the header's compact control
-          was what actually satisfied "never needs a scroll".
-
-          Martin dropped that control on 2026-10-29 to free the corner for
-          starting another mushroom. Pinning this is what keeps the
-          guarantee: someone opening the app because a child has eaten
-          something in the garden is not going to scroll, and is not going
-          to go looking. */}
-      <Pressable
-        style={styles.emergency}
-        onPress={() => navigation.navigate('Emergency')}
-        accessibilityRole="button"
-        accessibilityLabel="Someone has eaten a wild mushroom. What to do."
-      >
-        <Text style={styles.emergencyText}>
-          Someone has eaten a wild mushroom — what to do
-        </Text>
-      </Pressable>
-    </View>
   );
 }
 
@@ -264,30 +241,6 @@ const styles = StyleSheet.create({
   content: {
     padding: theme.spacing(3),
     gap: theme.spacing(2.5),
-    // Room for the pinned emergency button to sit over. Without it the
-    // last card is clipped mid-sentence behind the button, which reads
-    // as a rendering fault and is only visible at real phone height --
-    // a tall screenshot viewport hides it completely.
-    paddingBottom: theme.spacing(12),
-  },
-  // Pinned to the bottom of the screen rather than the end of the scroll.
-  // The horizontal padding is its own, because it now sits outside the
-  // scroll's content padding.
-  emergency: {
-    marginHorizontal: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    marginTop: theme.spacing(1),
-    backgroundColor: theme.colour.dangerSurface,
-    borderWidth: 1,
-    borderColor: theme.colour.danger,
-    borderRadius: theme.radius.md,
-    padding: theme.spacing(1.5),
-  },
-  emergencyText: {
-    fontSize: theme.font.small,
-    fontWeight: '700',
-    color: theme.colour.danger,
-    textAlign: 'center',
   },
   header: { flexDirection: 'row', alignItems: 'center', gap: theme.spacing(1.5) },
   headerText: { flex: 1 },

@@ -157,6 +157,32 @@ someone opening the app because a child has eaten something in the garden is
 not going to work through an onboarding flow first, and a safety gate standing
 between a frightened person and the words "call 999" is not a safety gate.
 
+**It is no longer offered from the capture screen, and that is a decision
+rather than an oversight.** Martin's call, 2026-10-29: *"I don't want the app
+to seem alarming from the off. And it looks as if something is wrong."*
+
+The argument for keeping it, made twice and lost on the merits: this app's
+whole differentiation is honesty about being wrong, so a route for the
+moment it was wrong is the tagline made operational, and the screen carries
+the one fact that matters most and almost nobody knows -- amatoxin poisoning
+has a six to twenty-four hour latent period, so somebody who feels fine may
+already need treatment.
+
+The argument that won: the realistic number of users who ever press it is
+close to zero, while every user sees it in the first three seconds and reads
+it as *this app thinks something has gone wrong*. A front page that frightens
+people is a front page fewer people use, and an app nobody uses protects
+nobody. Neither iNaturalist nor the PictureMushroom-class apps carry one.
+
+What is NOT given up: the screen itself, its hardcoding, its position above
+the consent gate, and more than one route into it -- from the consent screen
+and from the incident report flow, which turns into emergency guidance on a
+yes to "has anyone eaten it". `app/test/emergencyRoute.test.ts` asserts the
+removal AND the remaining routes, so putting it back on the front page means
+coming here and reading why it left.
+
+The obvious home for a quiet route is the "Me" tab, when the tab bar lands.
+
 **The report form refuses to be a triage channel.** Its first two questions
 are whether anyone ate it and whether anyone is unwell. A yes to either turns
 the screen into the emergency guidance before anything is submitted — the
