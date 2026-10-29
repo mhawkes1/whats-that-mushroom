@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
 } from 'react-native';
 import * as Location from 'expo-location';
 
@@ -19,7 +18,6 @@ import {
   type FieldNotes,
   type Views,
 } from '../lib/api';
-import { artFor } from '../lib/characterArt';
 import { theme } from '../lib/theme';
 
 /**
@@ -154,31 +152,14 @@ export function FieldNotesScreen({ navigation, route }: { navigation: any; route
           <View style={styles.options}>
             {field.options.map((option) => {
               const chosen = notes[field.key] === option;
-              const art = artFor(field.key, option);
               return (
                 <Pressable
                   key={option}
                   onPress={() => toggle(field.key, option)}
-                  style={[
-                    styles.chip,
-                    art ? styles.chipWithArt : null,
-                    chosen && styles.chipChosen,
-                  ]}
+                  style={[styles.chip, chosen && styles.chipChosen]}
                   accessibilityRole="button"
                   accessibilityState={{ selected: chosen }}
                 >
-                  {art ? (
-                    // Decorative: the word below it is the label, and a
-                    // screen reader announcing "image" twice per option
-                    // makes six options into twelve things to listen to.
-                    <Image
-                      source={art}
-                      style={styles.chipArt}
-                      resizeMode="contain"
-                      accessibilityElementsHidden
-                      importantForAccessibility="no"
-                    />
-                  ) : null}
                   <Text style={[styles.chipText, chosen && styles.chipTextChosen]}>
                     {option}
                   </Text>
@@ -244,11 +225,6 @@ const styles = StyleSheet.create({
   effort: { fontSize: theme.font.tiny, color: theme.colour.textFaint },
   prompt: { fontSize: theme.font.body, color: theme.colour.text, lineHeight: 22 },
   options: { flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing(1) },
-  // An illustrated option becomes a tile: drawing above, word below. The
-  // word stays, because the drawing labels the word rather than replacing
-  // it -- a picture nobody can name is not an answer anybody can give.
-  chipWithArt: { flexDirection: 'column', alignItems: 'center', width: 96 },
-  chipArt: { width: 64, height: 56, marginBottom: theme.spacing(0.5) },
   chip: {
     backgroundColor: theme.colour.surface,
     borderRadius: theme.radius.md,
