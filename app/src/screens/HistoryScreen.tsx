@@ -25,6 +25,7 @@ import {
   type Observation,
   type Tone,
 } from '../lib/observationLog';
+import { PhotographsGone, reopen } from '../lib/reopen';
 import { theme } from '../lib/theme';
 
 /**
@@ -60,6 +61,46 @@ function asCandidate(logged: LoggedCandidate): Candidate {
 
 export function HistoryScreen({ navigation }: { navigation: any }) {
   const [entries, setEntries] = useState<Observation[] | null>(null);
+  const [reopening, setReopening] = useState<string | null>(null);
+
+  /**
+   * Put the user back on the result screen for an old find.
+   *
+   * The failure that matters is the photographs having been evicted by the
+   * OS, which the thumbnails here already cope with. It is fatal for this
+   * and must say so in those words rather than surface a request error
+   * from a form that was sent empty.
+   */
+  const reopenEntry = useCallback(
+    async (entry: Observation) => {
+      setReopening(entry.observationId);
+      try {
+        const result = await reopen(entry);
+        navigation.navigate('Result', {
+          result,
+          views: entry.photos,
+          place: entry.place,
+          fieldNotes: entry.fieldNotes,
+          // Logged under the id and time it was FIRST recorded under, so
+          // this replaces the entry rather than appearing as a new find.
+          identity: {
+            observationId: entry.observationId,
+            recordedAt: entry.recordedAt,
+          },
+        });
+      } catch (error) {
+        Alert.alert(
+          'Cannot open this one again',
+          error instanceof PhotographsGone
+            ? error.message
+            : 'That did not work. Check your connection and try again.',
+        );
+      } finally {
+        setReopening(null);
+      }
+    },
+    [navigation],
+  );
   const [current, setCurrent] = useState<{
     modelVersion: string;
     calibrated: boolean;
@@ -217,6 +258,25 @@ export function HistoryScreen({ navigation }: { navigation: any }) {
                     {warning}
                   </Text>
                 ))}
+
+                {/* Reopening re-identifies from the stored photographs and
+                    replays every answer, because the server's copy of an
+                    observation lives in memory and does not survive a
+                    restart -- nor the two to twelve hours a spore print
+                    takes. See `lib/reopen.ts`. */}
+                <Pressable
+                  onPress={() => void reopenEntry(entry)}
+                  disabled={reopening === entry.observationId}
+                  style={styles.reopen}
+                  accessibilityRole="button"
+                  accessibilityLabel="Open this observation again to add more detail"
+                >
+                  <Text style={styles.reopenText}>
+                    {reopening === entry.observationId
+                      ? 'Working…'
+                      : 'Add more detail'}
+                  </Text>
+                </Pressable>
 
                 <Pressable
                   onPress={() =>
@@ -404,6 +464,18 @@ const styles = StyleSheet.create({
   warning: { fontSize: theme.font.small, color: theme.colour.textMuted, lineHeight: 21 },
 
   controls: { gap: theme.spacing(1), marginTop: theme.spacing(2) },
+  // The constructive sibling of "this one was wrong", and deliberately
+  // the quieter of the two: adding detail is the common case, disputing
+  // the result is the one that must never be hard to find.
+  reopen: {
+    alignSelf: 'flex-start',
+    paddingVertical: theme.spacing(1),
+  },
+  reopenText: {
+    fontSize: theme.font.small,
+    fontWeight: '700',
+    color: theme.colour.accent,
+  },
   destructive: {
     borderWidth: 1,
     borderColor: theme.colour.border,

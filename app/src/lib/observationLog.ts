@@ -105,12 +105,23 @@ export function fromResult(
     fieldNotes?: Record<string, string>;
     answers?: Record<string, string>;
     now?: number;
+    /**
+     * Keep an existing entry's identity instead of taking the server's.
+     *
+     * A reopened observation is re-identified from the stored photographs,
+     * which gets a FRESH `observation_id` from the server -- that id is the
+     * live session, used for answering questions. The log entry is the
+     * user's record of a mushroom they found on a Tuesday, and must keep
+     * its own id and time or reopening it appears in the history as a
+     * second find, today, of the same mushroom.
+     */
+    identity?: { observationId: string; recordedAt: number };
   } = {},
 ): Observation {
   return {
     version: ENTRY_VERSION,
-    observationId: result.observation_id,
-    recordedAt: extras.now ?? Date.now(),
+    observationId: extras.identity?.observationId ?? result.observation_id,
+    recordedAt: extras.identity?.recordedAt ?? extras.now ?? Date.now(),
     photos: { ...(extras.photos ?? {}) },
     place: extras.place ?? null,
     fieldNotes: { ...(extras.fieldNotes ?? {}) },

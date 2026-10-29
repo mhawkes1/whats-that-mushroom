@@ -23,19 +23,6 @@ import { fromResult, record, type Place } from '../lib/observationLog';
 import { theme } from '../lib/theme';
 
 /**
- * Result screen.
- *
- * Ordering is deliberate and is the opposite of the competition's:
- *
- *   1. the verdict, including a refusal when that is the honest answer
- *   2. the next diagnostic question, so the user can actually resolve it
- *   3. the candidate list, with a hazard on the rows that have one
- *   4. warnings
- *
- * The candidate list is not the headline. Putting a species name and a big
- * percentage at the top is precisely the design that gets people poisoned.
- */
-/**
  * One lookalike, and what separates it from the species just named.
  *
  * Built from the lookalike graph, which is 92% complete across the label
@@ -107,12 +94,32 @@ function TellApart({ named, other }: { named: string; other: Comparison }) {
   );
 }
 
+/**
+ * Result screen.
+ *
+ * Ordering is deliberate and is the opposite of the competition's:
+ *
+ *   1. the verdict, including a refusal when that is the honest answer
+ *   2. the next diagnostic question, so the user can actually resolve it
+ *   3. the candidate list, with a hazard on the rows that have one
+ *   4. warnings
+ *
+ * The candidate list is not the headline. Putting a species name and a big
+ * percentage at the top is precisely the design that gets people poisoned.
+ */
 export function ResultScreen({ navigation, route }: { navigation: any; route: any }) {
-  const { imageUri, views, fieldNotes, place } = route.params as {
+  const { imageUri, views, fieldNotes, place, identity } = route.params as {
     imageUri?: string;
     views?: Views;
     fieldNotes?: Record<string, string>;
     place?: Place | null;
+    /**
+     * Set when this screen is showing a REOPENED observation. The server
+     * has issued a fresh id for the live session; the log entry keeps the
+     * one it was first recorded under, or reopening a find appears in the
+     * history as a second find, today, of the same mushroom.
+     */
+    identity?: { observationId: string; recordedAt: number };
   };
   const [result, setResult] = useState<IdentifyResponse>(route.params.result);
   const [busy, setBusy] = useState(false);
@@ -135,9 +142,10 @@ export function ResultScreen({ navigation, route }: { navigation: any; route: an
         place: place ?? null,
         fieldNotes,
         answers: answers.current,
+        identity,
       }),
     );
-  }, [result, views, imageUri, place, fieldNotes]);
+  }, [result, views, imageUri, place, fieldNotes, identity]);
 
   const onAnswer = useCallback(
     async (characterKey: string, answer: string) => {

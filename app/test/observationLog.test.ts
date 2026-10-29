@@ -449,3 +449,70 @@ describe('the home screen tally', () => {
     expect(counts.species + counts.declined).toBe(counts.observations);
   });
 });
+
+describe('reopening an old observation', () => {
+  const response = (id: string, verdict: Verdict = 'species'): IdentifyResponse =>
+    ({
+      observation_id: id,
+      verdict,
+      headline: 'Most likely Boletus edulis',
+      detail: '',
+      candidates: [
+        { species_key: 'boletus-edulis', scientific_name: 'Boletus edulis',
+          common_names: ['Penny Bun'], confidence: 0.9,
+          toxicity: 'NO_RECORDED_TOXICITY', genus: 'Boletus' },
+      ],
+      warnings: [],
+      deadly_in_play: false,
+      questions: [],
+      how_to_tell_apart: [],
+      model_version: '0.1.0',
+      calibrated: true,
+    }) as IdentifyResponse;
+
+  it('keeps the original id and time, not the new session s', () => {
+    // Reopening re-identifies from the stored photographs, which gets a
+    // FRESH observation_id from the server -- that id is the live session
+    // used for answering questions. If the log took it, reopening a find
+    // would appear in the history as a second find, today, of the same
+    // mushroom, and would inflate the home screen tally with it.
+    const first = fromResult(response('server-id-1'), { now: 1_000 });
+    const again = fromResult(response('server-id-2'), {
+      now: 9_999_999,
+      identity: { observationId: first.observationId, recordedAt: first.recordedAt },
+    });
+
+    expect(again.observationId).toBe('server-id-1');
+    expect(again.recordedAt).toBe(1_000);
+    expect(merge([first], again)).toHaveLength(1);
+  });
+
+  it('takes the NEW assessment, not the old one', () => {
+    // The point of reopening is that more evidence changes the answer. The
+    // entry keeps its identity and nothing else.
+    const first = fromResult(response('a', 'uncertain'), { now: 1_000 });
+    const again = fromResult(response('b', 'species'), {
+      identity: { observationId: first.observationId, recordedAt: first.recordedAt },
+    });
+    expect(again.verdict).toBe('species');
+    expect(merge([first], again)[0].verdict).toBe('species');
+  });
+
+  it('is a plain new entry when no identity is passed', () => {
+    // The live flow must be untouched: it has no original to preserve.
+    const entry = fromResult(response('fresh'), { now: 4_242 });
+    expect(entry.observationId).toBe('fresh');
+    expect(entry.recordedAt).toBe(4_242);
+  });
+
+  it('cannot inflate the tally by reopening the same find', () => {
+    // The property that ties this to the home screen: reopening is an
+    // edit, not a discovery.
+    const first = fromResult(response('x'), { now: 10 });
+    const again = fromResult(response('y'), {
+      identity: { observationId: first.observationId, recordedAt: first.recordedAt },
+    });
+    const log = merge([first], again);
+    expect(tally(log)).toEqual({ observations: 1, species: 1, declined: 0 });
+  });
+});
