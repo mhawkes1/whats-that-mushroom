@@ -1,0 +1,41 @@
+scientific_name,frdbi_records,gbif_key,gbif_rank,gbif_status,resolution,inaturalist_images,images_any_source,dangerous_in_genus,possible_renaming_of,verdict
+Lactarius vietus,2211,9171835,SPECIES,ACCEPTED,accepted,78,948,,,thin on iNaturalist
+Armillaria gallica,2208,2536847,SPECIES,ACCEPTED,accepted,2236,2593,,,ordinary addition
+Postia subcaesia,2208,10700083,SPECIES,SYNONYM,accepted,73,260,,,thin on iNaturalist
+Russula sardonia,2204,2551274,SPECIES,ACCEPTED,accepted,659,2236,,,ordinary addition
+Collybia odora,2170,,,,GBIF has no match for this name,,,,,needs a key by hand
+Lycoperdon pratense,2170,5243244,SPECIES,ACCEPTED,accepted,1527,2737,,,ordinary addition
+Postia stiptica,2161,10792755,SPECIES,SYNONYM,accepted,135,743,,,thin on iNaturalist
+Russula aeruginea,2143,2551173,SPECIES,ACCEPTED,accepted,671,1455,,,ordinary addition
+Mensularia radiata,2135,7442237,SPECIES,SYNONYM,accepted,1388,4043,,Phlebia radiata,ordinary addition
+Phaeolus schweinitzii,2118,2542126,SPECIES,ACCEPTED,accepted,6464,34098,,,ordinary addition
+Stereum sanguinolentum,2117,2553068,SPECIES,ACCEPTED,accepted,415,2168,,,ordinary addition
+Hydnoporia corrugata,2107,10824936,SPECIES,ACCEPTED,accepted,131,442,,,thin on iNaturalist
+Polyporus badius,2103,,CLASS,ACCEPTED,"matched at rank 'CLASS', not SPECIES -- that key would fetch the whole class",,,,,needs a key by hand
+Aleuria aurantia,2100,5258678,SPECIES,ACCEPTED,accepted,7816,13726,,,ordinary addition
+Xylaria longipes,2098,5255093,SPECIES,ACCEPTED,accepted,1119,3040,,,ordinary addition
+Skeletocutis semipileata,2082,10136541,SPECIES,ACCEPTED,accepted,47,102,,,thin everywhere
+Daedalea quercina,2073,8879395,SPECIES,ACCEPTED,accepted,0,12329,,Peniophora quercina,none on iNaturalist -- needs a named second source
+Cantharellus tubaeformis,2072,,GENUS,ACCEPTED,"matched at rank 'GENUS', not SPECIES -- that key would fetch the whole genus",,,,,needs a key by hand
+Mycena acicula,2072,2526861,SPECIES,ACCEPTED,accepted,0,1549,,,none on iNaturalist -- needs a named second source
+Laccaria proxima,2068,2530966,SPECIES,ACCEPTED,accepted,363,1898,,,ordinary addition
+Gymnopilus junonius,2035,2533674,SPECIES,ACCEPTED,accepted,6616,11189,,,ordinary addition
+Leccinum versipelle,1998,2524490,SPECIES,ACCEPTED,accepted,2002,3986,,,ordinary addition
+Porpolomopsis calyptriformis,1997,5955209,SPECIES,ACCEPTED,accepted,1034,1181,,,ordinary addition
+Melanoleuca polioleuca,1951,5242194,SPECIES,ACCEPTED,accepted,30,461,,,thin on iNaturalist
+Mutinus caninus,1917,5239473,SPECIES,ACCEPTED,accepted,1038,3941,,,ordinary addition
+Biscogniauxia nummularia,1910,9115053,SPECIES,ACCEPTED,accepted,486,1549,,,ordinary addition
+Peniophora lycii,1906,2552195,SPECIES,ACCEPTED,accepted,40,305,,,thin on iNaturalist
+Lactarius camphoratus,1900,8813286,SPECIES,ACCEPTED,accepted,408,1642,,,ordinary addition
+Auricularia mesenterica,1880,5249297,SPECIES,ACCEPTED,accepted,4810,11983,,Tremella mesenterica,ordinary addition
+Rickenella swartzii,1873,2523487,SPECIES,ACCEPTED,accepted,452,1825,,,ordinary addition
+Russula claroflava,1867,2551299,SPECIES,ACCEPTED,accepted,861,3491,,,ordinary addition
+Agaricus sylvicola,1818,8365581,SPECIES,ACCEPTED,accepted,552,2026,,,ordinary addition
+Cuphophyllus russocoriaceus,1806,2538571,SPECIES,ACCEPTED,accepted,477,1093,,,ordinary addition
+Lactifluus vellereus,1789,2551071,SPECIES,ACCEPTED,accepted,395,1472,,,ordinary addition
+Inonotus hispidus,1780,2521208,SPECIES,ACCEPTED,accepted,1912,3289,,,ordinary addition
+Mycena aetites,1773,4911747,SPECIES,ACCEPTED,accepted,30,467,,,thin on iNaturalist
+Russula parazurea,1753,2551458,SPECIES,ACCEPTED,accepted,268,1938,,,ordinary addition
+Phaeotremella foliacea,1751,9645698,SPECIES,ACCEPTED,accepted,1309,2671,,,ordinary addition
+Lactarius pubescens,1738,5248664,SPECIES,ACCEPTED,accepted,1054,3006,,,ordinary addition
+Baeospora myosura,1728,2537958,SPECIES,ACCEPTED,accepted,1441,4016,,,ordinary addition

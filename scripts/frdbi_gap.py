@@ -109,7 +109,40 @@ SYNONYMS = {
     "Mucidula mucida": "Oudemansiella mucida",
     "Atheniella adonis": "Mycena adonis",
     "Phloeomana speirea": "Mycena speirea",
+    # FRDBI has adopted the Collybia recircumscription; GBIF's backbone has
+    # not, and returns only the genus for this binomial. Without the line
+    # below this report listed the IVORY FUNNEL -- DEADLY, and in the label
+    # space since the beginning -- as a species to add, which is the one
+    # error a gap report must not make: acting on it would have put the
+    # same fungus in under two names and merged their photographs.
+    "Collybia rivulosa": "Clitocybe rivulosa",
 }
+
+
+def possible_renaming(name: str, known: dict) -> str | None:
+    """A missing name that looks like a species we already hold, moved.
+
+    This report matches on strings, so a species whose genus has been
+    reshuffled reads as a gap. SYNONYMS above is the fix for each one, and
+    the problem with a hand-kept map is the entry nobody has added yet.
+    Generic reshuffling in the agarics is not finished and FRDBI tracks it
+    faster than GBIF's backbone does, so there will be more.
+
+    Matching the epithet is crude and deliberately so: it is a prompt to
+    look, not a claim. It catches a genuine move (Clitocybe rivulosa ->
+    Collybia rivulosa) alongside coincidences (Daedalea quercina against
+    Peniophora quercina), and a false prompt costs a reader ten seconds
+    while a missed one costs a duplicated species.
+    """
+    parts = name.split()
+    if len(parts) < 2:
+        return None
+    genus, epithet = parts[0], parts[1]
+    for other in known:
+        bits = other.split()
+        if len(bits) >= 2 and bits[1] == epithet and bits[0] != genus:
+            return other
+    return None
 
 # What a photograph of this is most likely to be confused with, where the
 # danger is not obvious from the genus alone. Compiled from the same
@@ -270,6 +303,22 @@ def main() -> int:
     print("─" * 76)
     for name, count in missing:
         genus = name.split()[0]
+        moved = possible_renaming(name, known)
+        if moved:
+            print(f"    {count:>7,}  {name}")
+            print(f"           ?? SAME EPITHET as {moved}, which IS in the "
+                  f"label space.")
+            print(f"              Check whether this is a renaming before "
+                  f"adding it; if it is,")
+            print(f"              put it in SYNONYMS in this script rather "
+                  f"than in the taxonomy.")
+            siblings = [s for s in known.values() if s.genus == genus]
+            dangerous = [s for s in siblings
+                         if s.toxicity in (Toxicity.DEADLY, Toxicity.SERIOUS)]
+            if dangerous:
+                print("           dangerous in genus: "
+                      + ", ".join(sorted(s.scientific_name for s in dangerous)))
+            continue
         siblings = [s for s in known.values() if s.genus == genus]
         dangerous = [s for s in siblings
                      if s.toxicity in (Toxicity.DEADLY, Toxicity.SERIOUS)]

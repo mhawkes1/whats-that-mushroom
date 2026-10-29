@@ -661,6 +661,39 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   stinkhorn, beech tarcrust, leafy brain, conifercone cap). The test passed
   throughout. A guard shallower than the working depth reports on somewhere
   nobody is standing.
+- **The gap report listed a DEADLY species we already hold.** FRDBI has
+  adopted the *Collybia* recircumscription of the ivory funnels and GBIF's
+  backbone has not -- `/species/match` on *Collybia rivulosa* returns the
+  **genus**, confidence 95 -- so `frdbi_gap.py`, which matches on strings,
+  reported *Clitocybe rivulosa* as a species to add. Acting on that would
+  have put one fungus in under two names and merged its photographs under
+  both labels: the failure `CollidingTaxonKeys` exists to refuse, reached
+  through the one report whose job is to say what to add. `SYNONYMS` now
+  carries it, `possible_renaming` prints a prompt whenever a missing name
+  shares an epithet with something already held, and a test refuses a label
+  space species appearing in the missing list. Generic reshuffling in the
+  agarics is not finished and FRDBI tracks it faster than GBIF does, so
+  expect more. Coverage at the top 250 is **210 of 250**, not 209.
+- **`scripts/label_space_candidates.py` prices the gap before anyone fills
+  it.** `frdbi_gap.py` says which species are missing; it cannot say whether
+  any of them could be *learned*, which is the question that decides the
+  work -- the *Lepiota* lesson, where the obvious reading was a quota to
+  raise and the measurement said iNaturalist held 74 occurrences in total.
+  `docs/label-space-candidates.csv`, measured 2026-10-29 over the 40 missing
+  from the top 250: **27 ordinary additions**, 7 thin on iNaturalist, 3 that
+  `judge_match` refuses and need a key pinned by hand (*Collybia odora*,
+  *Polyporus badius*, *Cantharellus tubaeformis* -- the last two resolve to
+  a GENUS and a CLASS at confidence 99, the *Helvella crispa* case twice
+  over), 2 with **zero** iNaturalist images and thousands elsewhere
+  (*Daedalea quercina* 0 against 12,329, *Mycena acicula* 0 against 1,549 --
+  the complex pattern again), and 1 thin everywhere.
+- **Adding species is cheap and a label space is not.** Each entry is an
+  hour of unreviewed mycology and none of it reaches a user until the
+  dataset is rebuilt and a model retrained -- `labels.json` fixes what is
+  served, so an unseen class is inert rather than broken. The retrain also
+  ends comparability with run four, which is the one model whose evidence is
+  committed. So the batch wants doing **once, immediately before run five**,
+  not species by species.
 - **The top 250 says what to add; the danger graph says what cannot be
   dropped.** 208 of the label space's 244 are in FRDBI's top 250; the other
   36 are too rarely recorded to reach it, and **9 of the 10 DEADLY species

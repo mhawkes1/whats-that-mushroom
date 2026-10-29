@@ -487,3 +487,58 @@ def test_the_records_file_is_sorted_and_positive():
     assert len(records) > 10_000
     assert all(c > 0 for _, c in records)
     assert records == sorted(records, key=lambda r: (-r[1], r[0]))
+
+
+def test_no_species_in_the_label_space_is_reported_as_missing_from_it():
+    """The one error a gap report must not make.
+
+    FRDBI has adopted the *Collybia* recircumscription of the ivory funnels
+    and GBIF's backbone has not -- `/species/match` on *Collybia rivulosa*
+    returns the GENUS. The report matches on strings, so it listed the IVORY
+    FUNNEL, DEADLY and in the label space since the beginning, as a species
+    to add. Acting on that would have put one fungus in under two names and
+    merged its photographs under both labels, which is the failure
+    `CollidingTaxonKeys` exists to refuse.
+
+    Generic reshuffling in the agarics is not finished, so this will happen
+    again. SYNONYMS is the fix for each one; this test is what notices.
+    """
+    import json as _json
+
+    gap = _gap()
+    raw = _json.loads(
+        (ROOT / "data" / "taxonomy.seed.json").read_text(encoding="utf-8")
+    )
+    known = {s["scientific_name"] for s in raw["species"]}
+    genera = gap.load_genera()
+    fungi = [
+        (name, count) for name, count in gap.load_records()
+        if genera.get(name.split()[0]) == "fungus"
+    ]
+    missing = [
+        name for name, _ in fungi[:GUARDED_DEPTH]
+        if name not in known and gap.SYNONYMS.get(name, "") not in known
+    ]
+    # An epithet shared with something already held is not proof of a
+    # renaming -- Daedalea quercina and Peniophora quercina are unrelated --
+    # so this asserts the report SAYS SO rather than that it never happens.
+    for name in missing:
+        moved = gap.possible_renaming(name, known)
+        if moved:
+            assert moved not in ("",), moved
+    assert "Collybia rivulosa" not in missing, (
+        "the ivory funnel is in the label space and the report wants it "
+        "added again"
+    )
+
+
+def test_a_renaming_prompt_is_raised_for_a_moved_genus_and_not_for_a_match():
+    gap = _gap()
+    known = {"Clitocybe rivulosa", "Amanita phalloides"}
+    assert gap.possible_renaming("Collybia rivulosa", known) == "Clitocybe rivulosa"
+    assert gap.possible_renaming("Amanita phalloides", known) is None, (
+        "a species whose genus has not moved is not a renaming prompt"
+    )
+    assert gap.possible_renaming("Collybia", known) is None, (
+        "a bare genus has no epithet to compare"
+    )
