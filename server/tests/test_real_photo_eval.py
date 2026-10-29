@@ -82,6 +82,22 @@ def test_every_manifest_row_names_a_species_in_the_label_space():
     assert rows, "the manifest must not be empty"
 
     for row in rows:
+        if row["species_key"] == "not-determined":
+            # Held, not measured: nobody has identified it yet. The two
+            # rows this exists for are a possible Tricholoma and a
+            # possible Cortinarius, and a genus with two deadly members is
+            # the last place to write down a guess as though it were a
+            # determination. It still has to say what was seen, or there
+            # is nothing for a person to work from.
+            assert not row["confirmed_by"].strip(), (
+                f"{row['filename']}: confirmed_by on an undetermined row -- "
+                f"if somebody determined it, give it the species key"
+            )
+            assert row.get("notes"), (
+                f"{row['filename']}: an undetermined row must describe what "
+                f"is in the photograph, or it cannot be determined later"
+            )
+            continue
         if row["species_key"] == "not-in-label-space":
             # A photograph of something the 244 do not contain. The first
             # eight real photographs produced one -- Craterellus
@@ -148,3 +164,19 @@ def test_the_runner_notices_a_photograph_that_slipped_through():
         "varies between Pillow versions"
     )
     assert "still carry GPS" in source
+
+
+def test_the_runner_holds_an_undetermined_row_rather_than_dropping_it():
+    """And says so. A set that quietly skips what it cannot grade looks
+    smaller and cleaner than it is, which is the same shape as the report
+    that printed a warning and then reassured past it forty lines later."""
+    source = (ROOT / "scripts" / "real_photo_eval.py").read_text(
+        encoding="utf-8")
+    assert 'NOT_DETERMINED = "not-determined"' in source
+    assert "undetermined.append(" in source, (
+        "an undetermined row must be collected, not merely skipped"
+    )
+    assert "HELD, not measured" in source, (
+        "the summary must report how many photographs are waiting on a "
+        "determination"
+    )

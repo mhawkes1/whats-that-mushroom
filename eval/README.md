@@ -24,7 +24,8 @@ them.
    python scripts/add_eval_photo.py ~/Pictures/IMG_4821.jpg
    ```
 
-   **Every one of the first eight real photographs carried GPS.** They were
+   **Every one of the first eight real photographs carried GPS, and
+nineteen of the next twenty did.** They were
    never committed -- this directory is ignored and git has never held an
    image -- but "safe because the gitignore is right" is one attached file
    away from false, and deleting them afterwards is a fix somebody has to
@@ -40,7 +41,7 @@ them.
    | column | meaning |
    | --- | --- |
    | `filename` | the file in `eval/photos/` |
-   | `species_key` | the true species, as keyed in `data/taxonomy.seed.json`, or `not-in-label-space` |
+   | `species_key` | the true species, as keyed in `data/taxonomy.seed.json`, or `not-in-label-space`, or `not-determined` |
    | `confirmed_by` | who checked the label. **Blank means nobody has.** |
    | `visible` | what the photograph actually shows: `cap`, `gills`, `stem`, `base`, `bruising`, `spore-print` |
    | `source` | whose camera, or where it came from |
@@ -61,6 +62,15 @@ British species that is simply not among the 244 -- so this is not an edge
 case to handle later. Dropping such a row would hide a gap in the label
 space; labelling it with the nearest species in the label space would be a
 lie about what is in the picture.
+
+**A photograph nobody can identify is also a row.** Use `not-determined`.
+That is an admission rather than a claim: `not-in-label-space` says *this
+is a real species and it is not one of ours*, which somebody has to be
+sure of, while `not-determined` says only that nobody has decided yet. The
+row is held, counted in the summary and measured against nothing until a
+key is put in. The two rows it was added for are a possible *Tricholoma*
+and a possible *Cortinarius* -- a genus with two deadly members, and the
+last place to write a guess down as though it were a determination.
 
 `visible` is the column that will earn its keep. The interesting question is
 not the overall score, it is whether the app is honest about photographs

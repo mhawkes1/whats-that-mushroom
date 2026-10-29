@@ -62,6 +62,24 @@ NAMING_VERDICTS = {"species"}
 #: in the label space, which is a lie about what is in the picture.
 OUT_OF_LABEL_SPACE = "not-in-label-space"
 
+#: A photograph nobody has identified yet. Distinct from the sentinel above,
+#: which is a claim: *this is a real species and it is not one of ours*.
+#: This one is an admission -- Claude looked at it and could not say, and
+#: Martin has not been asked yet.
+#:
+#: It exists because the alternative was worse in both directions. Guessing
+#: a key writes a mycological claim nobody made into the file that grades
+#: the model, and the two rows it was wanted for are a possible *Tricholoma*
+#: and a possible *Cortinarius* -- a genus with two deadly members, where a
+#: wrong label would poison the one comparison this set is for. Dropping the
+#: photograph instead loses the only hard cases anybody collected.
+#:
+#: A row marked this way is held, not measured, and the summary says how
+#: many are waiting. Silently skipping them would make the set look smaller
+#: and cleaner than it is, which is the shape of mistake this project keeps
+#: finding in its own reports.
+NOT_DETERMINED = "not-determined"
+
 
 def _carries_location(photo: Path) -> bool:
     """Whether a photograph still has GPS in it.
@@ -143,7 +161,7 @@ def main() -> int:
         print(f"No photographs listed in {args.manifest}.", file=sys.stderr)
         return 2
 
-    results, missing, located = [], [], []
+    results, missing, located, undetermined = [], [], [], []
     for row in rows:
         photo = Path(args.photos) / row["filename"]
         if not photo.exists():
@@ -153,6 +171,9 @@ def main() -> int:
             located.append(row["filename"])
 
         truth_key = row["species_key"]
+        if truth_key == NOT_DETERMINED:
+            undetermined.append(row["filename"])
+            continue
         unlabelled = truth_key == OUT_OF_LABEL_SPACE
         truth = None if unlabelled else taxonomy.get(truth_key)
         if truth is None and not unlabelled:
@@ -217,6 +238,13 @@ def main() -> int:
             "misleading": misleading,
             "calibrated": bool(body.get("calibrated")),
         })
+
+    if undetermined:
+        print(f"\n  {len(undetermined)} photograph(s) are HELD, not measured: "
+              f"nobody has determined them yet.")
+        print("  They are in the set and they count against nothing. Put a "
+              "species key\n  in the manifest to bring one in: "
+              + ", ".join(undetermined[:10]))
 
     if located:
         print(f"\n  *** {len(located)} photograph(s) still carry GPS. ***")
