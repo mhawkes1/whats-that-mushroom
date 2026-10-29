@@ -64,7 +64,21 @@ CHARACTERS: dict[str, Character] = {
         key="ring",
         label="Ring on the stem",
         prompt="Is there a ring or skirt of tissue on the stem?",
-        how="Look partway up the stem for a collar, skirt or a distinct zone of fibres.",
+        how=(
+            "Look at the whole stem, not only where you expect a ring. One can "
+            "slide down and sit near the base, and on an older mushroom it "
+            "withers to a faint line or washes off in rain, leaving a smooth "
+            "band where the stem is a different shade. On a very young one the "
+            "veil may not have torn yet, so it is still stretched between the "
+            "cap edge and the stem."
+        ),
+        safety_note=(
+            "Two of the deadliest species in Britain have a firm ring and "
+            "nothing else. Answering \u201ccobwebby fibres\u201d or "
+            "\u201cno ring\u201d when a ring has withered moves the app away "
+            "from them. If the stem is damaged, old or you are unsure, skip "
+            "this rather than guess."
+        ),
         options=("Firm skirt-like ring", "Cobwebby fibres", "Faint zone only", "No ring"),
     ),
     "spore_print_colour": Character(
@@ -178,8 +192,17 @@ CHARACTERS: dict[str, Character] = {
         label="Surroundings",
         prompt="What trees are within about ten metres?",
         how=(
-            "Many fungi partner with one kind of tree and grow nowhere else, so this "
-            "narrows the possibilities sharply."
+            "Many fungi partner with one kind of tree and grow nowhere else, so "
+            "this narrows the possibilities sharply. What counts is what is "
+            "within about ten metres, not what dominates the wood: a single "
+            "birch in a conifer plantation is the birch answer."
+        ),
+        safety_note=(
+            "Where several kinds of tree are around, \u201cmixed broadleaf\u201d "
+            "is the honest answer. Naming one of them narrows the app away from "
+            "three deadly species that grow in grass and parkland, and from one "
+            "webcap or the other depending on which tree you pick. If you do not "
+            "know the trees, skip this."
         ),
         options=(
             "Oak", "Beech", "Birch", "Pine or spruce", "Larch",
@@ -213,7 +236,19 @@ CHARACTERS: dict[str, Character] = {
         key="cap_surface",
         label="Cap surface",
         prompt="What is the cap surface like?",
-        how="Photograph the cap from directly above in even light.",
+        how=(
+            "Judge it as you found it, and hold it to the light so you can see "
+            "across the surface rather than straight down at it \u2014 that is "
+            "how fine radial fibres running from the centre to the edge show "
+            "up. Run a finger over it: slime is tacky and pulls at the skin, "
+            "rain is merely wet."
+        ),
+        safety_note=(
+            "Weather is the trap here. A dry cap looks greasy in the rain and "
+            "a slimy one dries smooth within the hour, and \u201cslimy or "
+            "greasy\u201d contradicts four of the deadly species at once. If "
+            "it has been raining, skip this."
+        ),
         options=(
             "Smooth and dry", "Slimy or greasy", "Scaly", "Fibrous",
             "Velvety", "Pitted or honeycombed", "Brain-like or folded",

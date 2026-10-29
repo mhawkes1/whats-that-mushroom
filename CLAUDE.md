@@ -343,6 +343,47 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   contradiction channel against *Clitocybe rivulosa* — DEADLY, listed
   `Crowded` — for no identification gain. *Lactarius pyrogalus*'s row stays
   blank instead.
+- **How much guidance a character carries is a safety property, and it was
+  distributed backwards.** A consistent answer never boosts, so a wrong
+  option does not merely fail to help -- it contradicts every species that
+  does not list it, and if one of those is deadly a guess has moved mass
+  away from something lethal. Measured 2026-10-29 against what each
+  character actually gates: `volva` had 216 characters of `how` and a
+  safety note for **2** deadly species, while `ring` had 74 and no note for
+  **5**, `cap_surface` 53 for **5**, and `habitat` 106 for **5**.
+  All three now have both, written from what the deadly species actually
+  declare rather than from general field advice -- which makes the traps
+  specific:
+  **`ring`.** *A. phalloides* lists only `Firm skirt-like ring`, *A.
+  virosa* that plus `Faint zone only`, and both *Lepiota* firm/faint/none.
+  So `Cobwebby fibres` contradicts **four** deadly species at once and
+  `No ring` contradicts two -- and a ring withers to a faint line or
+  washes off in rain, which is exactly when a beginner answers `No ring`.
+  **`cap_surface`.** *C. rivulosa* lists only `Smooth and dry`, *I.
+  erubescens* only `Fibrous`, both *Lepiota* scaly/fibrous/smooth. So
+  `Slimy or greasy` contradicts four at once -- and a dry cap looks greasy
+  in the rain. Weather is the trap, and the note says so.
+  **`habitat`.** Three deadly species list only `No trees nearby` and
+  `Mixed broadleaf`; the two webcaps split conifer against broadleaf. So a
+  user in mixed woodland who names the nearest single tree contradicts
+  three of them, and `Mixed broadleaf` is the honest answer when several
+  kinds are around.
+  **No new option was added**, and that was the first instinct. `QuestionCard`
+  already carries "I can't tell / skip this" on every question -- its own
+  comment calls it "the control that keeps a user from guessing" -- so an
+  in-list `Can't tell` would be a second route to the same thing. The three
+  notes end by pointing at it instead, and a test asserts both that they do
+  and that it is still there.
+  **The notes do not make ordinary questions alarming**, because
+  `interrogation.py` already sends `safety_note` only when the question
+  `resolves_dangerous_pair`. Checked rather than assumed: `habitat` asked
+  about a pair of boletes arrives with an empty note.
+  `test_character_guidance.py` names the three characters still without a
+  note -- `gill_type`, `cap_colour`, `size`, two deadly species each -- in
+  an allowlist rather than lowering the bar past them, with a second test
+  that fails when the allowlist stops naming anything real. `cap_colour` is
+  the one to do next: colour is the least reliable character in the
+  catalogue, it shifts with age and wet, and the death cap depends on it.
 - **Some answer options are non-observations, not states.** `volva`'s "I cut
   it off" and `cortina`'s "Can't tell" are in `uninformative_options` and get
   a likelihood of 1.0. Without that, the commonest field mistake — cutting the
