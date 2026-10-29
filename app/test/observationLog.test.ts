@@ -24,6 +24,7 @@ import {
   recencyLabel,
   record,
   summarise,
+  tally,
   type Observation,
 } from '../src/lib/observationLog';
 import { control } from './asyncStorageDouble';
@@ -378,5 +379,73 @@ describe('concurrent writes', () => {
     control.failWrites = false;
     await expect(record(entry({ observationId: 'kept' }))).resolves.toBe(true);
     expect((await readLog()).map((e) => e.observationId)).toEqual(['kept']);
+  });
+});
+
+describe('the home screen tally', () => {
+  const entry = (over: Partial<Observation>): Observation =>
+    ({
+      version: 1,
+      observationId: Math.random().toString(),
+      recordedAt: Date.now(),
+      photos: {},
+      place: null,
+      fieldNotes: {},
+      answers: {},
+      verdict: 'species',
+      headline: '',
+      detail: '',
+      candidates: [],
+      warnings: [],
+      deadlyInPlay: false,
+      modelVersion: '0.1.0',
+      calibrated: true,
+      ...over,
+    }) as Observation;
+
+  const named = (key: string) =>
+    entry({
+      verdict: 'species',
+      candidates: [{ speciesKey: key, scientificName: key, commonNames: [],
+                     confidence: 0.9, toxicity: 'TOXIC', genus: 'x' } as any],
+    });
+
+  it('counts a species only where the app was willing to name one', () => {
+    // The same rule `summarise` follows. A dangerous_group DOES name both
+    // halves on the result screen -- it is a warning with the refusal
+    // beside it -- but counting it as a find turns two guesses into one
+    // recorded piece of knowledge, on a number the user reads as their
+    // score.
+    const counts = tally([
+      named('amanita-muscaria'),
+      entry({ verdict: 'dangerous_group', candidates: [
+        { speciesKey: 'amanita-phalloides' } as any,
+        { speciesKey: 'agaricus-campestris' } as any] }),
+      entry({ verdict: 'uncertain', candidates: [{ speciesKey: 'x' } as any] }),
+      entry({ verdict: 'out_of_scope', candidates: [] }),
+    ]);
+    expect(counts.species).toBe(1);
+    expect(counts.observations).toBe(4);
+    expect(counts.declined).toBe(3);
+  });
+
+  it('counts a species once however often it is found', () => {
+    const counts = tally([named('boletus-edulis'), named('boletus-edulis')]);
+    expect(counts.species).toBe(1);
+    expect(counts.observations).toBe(2);
+  });
+
+  it('reports zero rather than throwing on an empty log', () => {
+    expect(tally([])).toEqual({ observations: 0, species: 0, declined: 0 });
+  });
+
+  it('never lets the species count exceed the observation count', () => {
+    // The property that matters: a tally that can drift above what the app
+    // actually said is a tally that flatters.
+    const entries = [named('a'), named('b'),
+                     entry({ verdict: 'uncertain', candidates: [] })];
+    const counts = tally(entries);
+    expect(counts.species).toBeLessThanOrEqual(counts.observations);
+    expect(counts.species + counts.declined).toBe(counts.observations);
   });
 });

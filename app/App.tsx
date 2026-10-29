@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import {
@@ -15,6 +17,7 @@ import { ConsentScreen } from './src/screens/ConsentScreen';
 import { EmergencyScreen } from './src/screens/EmergencyScreen';
 import { FieldNotesScreen } from './src/screens/FieldNotesScreen';
 import { HistoryScreen } from './src/screens/HistoryScreen';
+import { HomeScreen } from './src/screens/HomeScreen';
 import { ReportScreen } from './src/screens/ReportScreen';
 import { ResultScreen } from './src/screens/ResultScreen';
 import { SporePrintScreen } from './src/screens/SporePrintScreen';
@@ -23,6 +26,71 @@ import { gate, readConsent, type Gate } from './src/lib/consent';
 import { theme } from './src/lib/theme';
 
 const Stack = createNativeStackNavigator();
+const Tabs = createBottomTabNavigator();
+
+/**
+ * Home, Observe, Me.
+ *
+ * Martin's structure, 2026-10-29, after looking at what other mushroom
+ * apps do. It solved something the single-stack arrangement had been
+ * fudging: the app had no screen that said what it was for, so the saying
+ * had to happen in the corners of the screen people use to work -- which
+ * is how the emergency route came to be a red button on the front page and
+ * why a corner people read as "add" had to be argued about twice.
+ *
+ * Each tab now states its own job in a word, and two of the three problems
+ * went with it. "Observe" says "another mushroom" more plainly than any
+ * corner button; "Me" is where your finds live; Home holds the honesty and
+ * a quiet route to the emergency screen.
+ *
+ * **It opens on Observe, not Home.** People open this app holding a
+ * mushroom. Home is one tap to the left for anyone who wants to know what
+ * the app refuses to do, and nobody has to tap past a dashboard to do the
+ * thing they came for.
+ *
+ * The flow screens -- notes, result, spore print, report, emergency -- stay
+ * on the ROOT stack above the tabs rather than inside a tab. A result that
+ * left the tab bar on screen would invite a tap to Observe in the middle of
+ * reading a lethal-pair refusal, and the back gesture would then land
+ * somewhere nobody intended.
+ */
+function MainTabs() {
+  return (
+    <Tabs.Navigator
+      initialRouteName="Observe"
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarActiveTintColor: theme.colour.accent,
+        tabBarInactiveTintColor: theme.colour.textMuted,
+        tabBarStyle: {
+          backgroundColor: theme.colour.surface,
+          borderTopColor: theme.colour.border,
+        },
+        tabBarIcon: ({ color, size }) => {
+          const name =
+            route.name === 'Home'
+              ? 'home-outline'
+              : route.name === 'Observe'
+                ? 'camera-outline'
+                : 'person-outline';
+          return <Ionicons name={name} size={size} color={color} />;
+        },
+      })}
+    >
+      <Tabs.Screen name="Home" component={HomeScreen} />
+      <Tabs.Screen
+        name="Observe"
+        component={CaptureScreen}
+        options={{ tabBarLabel: 'Observe' }}
+      />
+      <Tabs.Screen
+        name="Me"
+        component={HistoryScreen}
+        options={{ tabBarLabel: 'Me' }}
+      />
+    </Tabs.Navigator>
+  );
+}
 
 const navTheme = {
   ...DefaultTheme,
@@ -105,7 +173,7 @@ export default function App() {
       <StatusBar style="dark" />
       <NavigationContainer theme={navTheme}>
         <Stack.Navigator
-          initialRouteName={decision === 'allow' ? 'Capture' : 'Consent'}
+          initialRouteName={decision === 'allow' ? 'Main' : 'Consent'}
           screenOptions={{
             headerStyle: { backgroundColor: theme.colour.surface },
             headerTintColor: theme.colour.text,
@@ -118,8 +186,8 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Capture"
-            component={CaptureScreen}
+            name="Main"
+            component={MainTabs}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -131,11 +199,6 @@ export default function App() {
             name="Result"
             component={ResultScreen}
             options={{ title: 'What I can tell you' }}
-          />
-          <Stack.Screen
-            name="History"
-            component={HistoryScreen}
-            options={{ title: 'Your observations' }}
           />
           <Stack.Screen
             name="Report"

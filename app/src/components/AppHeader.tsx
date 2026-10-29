@@ -38,6 +38,19 @@ const TAGLINE = "I'll tell you when I can't tell.";
  * it, and one of them is the reason this component exists rather than the
  * header being inlined:
  *
+ * **This now lives on the Home tab, and carries nothing but the name.**
+ * The tab bar landed on 2026-10-29 and took both of its old passengers
+ * with it: the emergency route went to Home as a plain button, and
+ * starting another mushroom became the Observe tab, which states it more
+ * plainly than any corner button could.
+ *
+ * What is left is the masthead, and it is deliberately NOT on the working
+ * screen. Most apps do not put their name on the screen you use, because
+ * you tapped the icon four seconds ago. The cost here was specific:
+ * "Funga" tells a beginner nothing about mushrooms, and the tagline was
+ * written to carry exactly that. On Home, "what is this app" is the
+ * question being asked, so the masthead earns its space.
+ *
  * **The emergency route is NOT here any more.** It was, from the cover
  * onwards, because it is the one control that must never need a scroll.
  * Martin dropped it from the header on 2026-10-29, having seen that the
@@ -65,17 +78,7 @@ const TAGLINE = "I'll tell you when I can't tell.";
  * and still never awaited: if Fraunces has not arrived, the title renders in
  * the platform serif rather than not at all.
  */
-export function AppHeader({
-  onNewObservation,
-  canStartAnother,
-}: {
-  /** Clear the current photographs and begin a different mushroom. */
-  onNewObservation?: () => void;
-  /** Whether there is anything to clear. Hidden rather than disabled: a
-   *  dead control in the corner people already read as "add" is worse
-   *  than no control. */
-  canStartAnother?: boolean;
-}) {
+export function AppHeader() {
   return (
     <View style={styles.header}>
       <View style={styles.titleBlock}>
@@ -86,19 +89,6 @@ export function AppHeader({
         <Text style={styles.tagline}>{TAGLINE}</Text>
       </View>
 
-      {onNewObservation && canStartAnother ? (
-        <Pressable
-          onPress={onNewObservation}
-          style={styles.newObservation}
-          hitSlop={12}
-          accessibilityRole="button"
-          accessibilityLabel="Clear these photographs and start a different mushroom"
-        >
-          <Text style={styles.newObservationLabel} allowFontScaling={false}>
-            NEW{'\n'}MUSHROOM
-          </Text>
-        </Pressable>
-      ) : null}
     </View>
   );
 }
@@ -140,31 +130,5 @@ const styles = StyleSheet.create({
   tagline: {
     fontSize: theme.font.small,
     color: theme.colour.textMuted,
-  },
-  // The corner people were already reading as "add another one", now
-  // doing that. Words rather than a plus for the same reason the
-  // emergency control took words: this sits next to nothing that explains
-  // it, and two short words cannot be misread.
-  //
-  // Deliberately NOT red. Red is the emergency route's colour everywhere
-  // in this app, and a red button in the corner that used to hold the
-  // emergency route would be the old confusion with the arguments
-  // reversed.
-  newObservation: {
-    minWidth: 64,
-    minHeight: 44,
-    borderRadius: theme.radius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: theme.spacing(1),
-    backgroundColor: theme.colour.accent,
-  },
-  newObservationLabel: {
-    color: theme.colour.onAccent,
-    fontSize: 11,
-    lineHeight: 13,
-    fontWeight: '700',
-    textAlign: 'center',
-    letterSpacing: 0.3,
   },
 });

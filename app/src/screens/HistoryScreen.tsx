@@ -120,7 +120,7 @@ export function HistoryScreen({ navigation }: { navigation: any }) {
         </Text>
         <Pressable
           style={styles.primary}
-          onPress={() => navigation.navigate('Capture')}
+          onPress={() => navigation.navigate('Observe')}
           accessibilityRole="button"
         >
           <Text style={styles.primaryText}>Photograph something</Text>

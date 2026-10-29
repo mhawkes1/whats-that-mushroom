@@ -66,7 +66,7 @@ export function ConsentScreen({ navigation }: { navigation: any }) {
       );
       return;
     }
-    navigation.reset({ index: 0, routes: [{ name: 'Capture' }] });
+    navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
   }, [disclaimer, navigation]);
 
   const emergency = (

@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
 import {
   Alert,
   Image,
@@ -12,8 +11,6 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-import { AppHeader } from '../components/AppHeader';
-import { readLog } from '../lib/observationLog';
 import { theme } from '../lib/theme';
 
 /**
@@ -55,13 +52,6 @@ const SLOTS: { key: Slot; label: string; hint: string; required: boolean }[] = [
 
 export function CaptureScreen({ navigation }: { navigation: any }) {
   const [photos, setPhotos] = useState<Partial<Record<Slot, string>>>({});
-  const [logged, setLogged] = useState(0);
-
-  useFocusEffect(
-    useCallback(() => {
-      readLog().then((entries) => setLogged(entries.length));
-    }, []),
-  );
 
   const capture = useCallback(async (slot: Slot, fromLibrary: boolean) => {
     if (!fromLibrary) {
@@ -115,53 +105,22 @@ export function CaptureScreen({ navigation }: { navigation: any }) {
     navigation.navigate('FieldNotes', { views: photos });
   }, [navigation, photos]);
 
-  /**
-   * Start a second mushroom.
-   *
-   * react-navigation keeps this screen mounted when you move forward, so
-   * coming back from a result leaves the previous mushroom's photographs
-   * sitting in state with nothing offering to clear them. There was no
-   * control for "another one" anywhere in the app, which had a consequence
-   * nobody predicted: Martin reached for the nearest plus-shaped thing in
-   * the top right corner, and that was the EMERGENCY button. A missing
-   * affordance does not leave a gap, it recruits the nearest wrong thing.
-   *
-   * Deliberately not automatic on focus. Someone who taps back to add the
-   * underside photograph they forgot must not find the cap gone too.
-   */
-  const startAnother = useCallback(() => {
-    setPhotos({});
-  }, []);
-
   const taken = SLOTS.filter((slot) => photos[slot.key]).length;
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-      <AppHeader
-        onNewObservation={startAnother}
-        canStartAnother={taken > 0}
-      />
-
       <View style={styles.header}>
         <View style={styles.headerText}>
-          {/* The header carries the tagline now that the cover is gone, so
-              this says the next thing rather than repeating it. */}
+          {/* The whole screen is one job now. The masthead moved to Home
+              with the tab bar, the emergency route went with it, and the
+              shortcut to the log is the Me tab -- a second route to a tab
+              that is permanently on screen is clutter, and it is the same
+              duplication the start-over link had. */}
           <Text style={styles.subtitle}>
             Photograph the same mushroom from a few angles.
           </Text>
         </View>
 
-        {logged > 0 ? (
-          <Pressable
-            onPress={() => navigation.navigate('History')}
-            style={styles.logLink}
-            accessibilityRole="button"
-            accessibilityLabel={`Your observations. ${logged} recorded.`}
-          >
-            <Text style={styles.logLinkCount}>{logged}</Text>
-            <Text style={styles.logLinkLabel}>logged</Text>
-          </Pressable>
-        ) : null}
       </View>
 
       <View style={styles.slots}>
@@ -242,26 +201,12 @@ const styles = StyleSheet.create({
     padding: theme.spacing(3),
     gap: theme.spacing(2.5),
   },
-  header: { flexDirection: 'row', alignItems: 'center', gap: theme.spacing(1.5) },
+  header: { gap: theme.spacing(1.5) },
   headerText: { flex: 1 },
-  logLink: {
-    alignItems: 'center',
-    backgroundColor: theme.colour.surface,
-    borderRadius: theme.radius.md,
-    paddingVertical: theme.spacing(1),
-    paddingHorizontal: theme.spacing(1.5),
-  },
-  logLinkCount: {
-    fontSize: theme.font.heading,
-    fontWeight: '800',
-    color: theme.colour.text,
-    fontVariant: ['tabular-nums'],
-  },
-  logLinkLabel: { fontSize: theme.font.tiny, color: theme.colour.textFaint },
   subtitle: {
     fontSize: theme.font.body,
-    color: theme.colour.textMuted,
-    lineHeight: 23,
+    lineHeight: 22,
+    color: theme.colour.text,
   },
   slots: { gap: theme.spacing(1.5) },
   slot: {

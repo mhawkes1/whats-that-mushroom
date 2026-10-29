@@ -366,3 +366,37 @@ export async function forgetPlaces(): Promise<boolean> {
     return write(entries.map((e) => (e.place ? { ...e, place: null } : e)));
   });
 }
+
+export interface Tally {
+  /** Every observation recorded on this device. */
+  observations: number;
+  /** Distinct species the app was willing to NAME. */
+  species: number;
+  /** Observations where it declined to name one. */
+  declined: number;
+}
+
+/**
+ * The counts the home screen shows.
+ *
+ * Only a `species` verdict contributes a species, for the same reason
+ * `summarise` only names one there: everything else is the app declining,
+ * and a `dangerous_group` counted as a find would be two guesses recorded
+ * as knowledge. A user's tally must not be able to drift above what the app
+ * was actually willing to say.
+ *
+ * `declined` is counted and shown on purpose. In an app whose whole claim is
+ * that it admits when it does not know, the number of times it refused is a
+ * feature of the product rather than a failure of it, and hiding it would be
+ * the same flattery as a dangerous_group row that names a species.
+ */
+export function tally(entries: Observation[]): Tally {
+  const named = new Set<string>();
+  let declined = 0;
+  for (const entry of entries) {
+    const top = entry.verdict === 'species' ? entry.candidates[0] : undefined;
+    if (top?.speciesKey) named.add(top.speciesKey);
+    else declined += 1;
+  }
+  return { observations: entries.length, species: named.size, declined };
+}

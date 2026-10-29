@@ -74,3 +74,44 @@ describe('the emergency route', () => {
     }
   });
 });
+
+describe('the tab structure', () => {
+  it('opens on Observe, not Home', () => {
+    // People open this app holding a mushroom. Home is one tap left for
+    // anyone who wants to know what the app refuses to do; nobody has to
+    // tap past a dashboard to do the thing they came for.
+    const app = readFileSync(resolve(__dirname, '..', 'App.tsx'), 'utf8');
+    expect(app).toMatch(/initialRouteName="Observe"/);
+  });
+
+  it('keeps the flow screens above the tabs, not inside them', () => {
+    // A result with the tab bar still on screen invites a tap to Observe
+    // in the middle of reading a lethal-pair refusal, and the back gesture
+    // then lands somewhere nobody intended.
+    const app = readFileSync(resolve(__dirname, '..', 'App.tsx'), 'utf8');
+    for (const screen of ['Result', 'FieldNotes', 'Emergency', 'SporePrint']) {
+      const inTabs = new RegExp(`<Tabs.Screen[^>]*name="${screen}"`);
+      expect(app).not.toMatch(inTabs);
+      expect(app).toMatch(new RegExp(`<Stack.Screen\\s+name="${screen}"`));
+    }
+  });
+
+  it('offers the emergency route from Home', () => {
+    // Off the working screen, onto the tab whose job is saying what the
+    // app is for. Still one tap from a bar that is always on screen.
+    const home = read('screens/HomeScreen.tsx');
+    expect(home).toMatch(/navigate\('Emergency'\)/);
+  });
+
+  it('does not put the masthead on the working screen', () => {
+    // Most apps do not name themselves on the screen you use. The cost
+    // here was that the TAGLINE went with the name, so both moved to Home
+    // rather than being dropped.
+    const capture = read('screens/CaptureScreen.tsx');
+    expect(capture).not.toMatch(/AppHeader/);
+    const home = read('screens/HomeScreen.tsx');
+    expect(home).toMatch(/AppHeader/);
+    const header = read('components/AppHeader.tsx');
+    expect(header).toMatch(/I'll tell you when I can't tell/);
+  });
+});
