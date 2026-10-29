@@ -65,3 +65,9 @@ data/incidents*.jsonl
 # scripts/try_it.sh keeps its service logs here
 .try_it_api.log
 .try_it_web.log
+
+# Real photographs: the manifest and results are kept, the images are not.
+# They are large, personal, and phone photographs carry location metadata.
+eval/photos/**
+!eval/photos/
+!eval/photos/.gitkeep
