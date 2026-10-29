@@ -140,6 +140,23 @@ class OnnxBackend(Backend):
         return np.asarray(self.session.run(None, feed)[0])
 
 
+def _near_misses(model_path: str | Path | None) -> list[Path]:
+    """Files that look like the model but are not named like it.
+
+    Only ever used to make a silent fallback loud: a near miss is still a
+    stub, and the one thing that must not happen is this function deciding
+    to load something the operator did not name.
+    """
+    if not model_path:
+        return []
+    target = Path(model_path)
+    try:
+        siblings = sorted(target.parent.glob("*.onnx"))
+    except OSError:
+        return []
+    return [p for p in siblings if p.name != target.name]
+
+
 class StubBackend(Backend):
     """Deterministic fake predictions for development and testing.
 
@@ -218,6 +235,20 @@ class Classifier:
             backend: Backend = OnnxBackend(model_path, classes)
         else:
             log.warning("No model at %s -- using the stub backend.", model_path)
+            for near in _near_misses(model_path):
+                # A browser that downloads the same file twice renames the
+                # second one. Windows writes "model (2).onnx"; Chrome and
+                # Firefox do the same on every platform. The server then
+                # serves deterministic fakes from a directory that looks,
+                # to anyone glancing at it, exactly right -- which happened
+                # on 2026-10-29, cost an hour, and produced a confident
+                # discussion of a classifier that had never run.
+                log.error(
+                    "Found %s beside it. If that is the model you meant to "
+                    "install, rename it to %s -- the name must match exactly "
+                    "or the stub is served instead.",
+                    near.name, Path(model_path).name,
+                )
             backend = StubBackend(classes)
 
         return cls(backend, temperature=temperature, image_size=image_size)

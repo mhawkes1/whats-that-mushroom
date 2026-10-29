@@ -1167,6 +1167,22 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   of needing the graph regenerated against a path no run ever wrote.
   `baseline` also cost an hour on 2026-10-28, when four runs' artefacts
   were looked for in a directory holding the second one's.
+- **A browser renames a second download, and the server then serves the
+  stub from a directory that looks right.** 2026-10-29, the first real
+  installation: `model (2).onnx`, 337 MB, sitting beside the `model.onnx`
+  the server was looking for. `model_path.exists()` was false, the stub
+  backend took over, and the app ran for an hour producing deterministic
+  fakes -- including an *Agaricus xanthodermus* result I analysed at length
+  before noticing. Every visible sign was healthy: the app loaded, it
+  returned verdicts, the run directory held nine files.
+  The one honest signal was the disclaimer's own line, *"This model has not
+  been calibrated"* -- and it was only there because `calibrated` had been
+  coupled to `model_path.exists()` the same morning. Before that change the
+  failure would have had **no symptom at all**.
+  `_near_misses` now logs an ERROR naming any `*.onnx` in the run directory
+  that is not the file being loaded. It never loads one: the operator said
+  which file to serve, and a directory scan that decides otherwise is the
+  `labels.json` fault in a new place. Two tests, one for each half.
 - **`docs/WINDOWS-START.md` is the from-nothing route, and the trick in it is
   the File Explorer address bar.** Typing `powershell` over the path opens a
   terminal already in that folder, which removes `cd` from a guide written

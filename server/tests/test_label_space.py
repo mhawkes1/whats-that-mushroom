@@ -213,3 +213,60 @@ def test_a_recovered_file_satisfies_the_backend_it_was_written_for(
     assert _run_recover(model_of_244, out).returncode == 0
     classes = json.loads(out.read_text(encoding="utf-8"))["classes"]
     assert len(OnnxBackend(model_of_244, classes).classes) == 244
+
+
+def test_a_browser_renamed_model_is_named_in_the_log(tmp_path, caplog):
+    """The quietest way this app can fail, found on the real thing.
+
+    A browser that downloads the same file twice renames the second one:
+    `model (2).onnx`. The directory then holds the model under a name the
+    server does not look for, so it falls back to deterministic fakes --
+    and the run directory looks, at a glance, exactly right.
+
+    That happened on 2026-10-29, on the first installation of a real
+    model. It cost an hour and produced a confident discussion of an
+    Agaricus result that a random number generator had produced. The
+    stub fallback itself is correct and must stay (every fresh clone and
+    every CI job depends on it); what was missing is that it said nothing
+    about the 337 MB file sitting beside the name it wanted.
+    """
+    import json as _json
+    import logging as _logging
+
+    (tmp_path / "model (2).onnx").write_bytes(b"not a real graph")
+    (tmp_path / "labels.json").write_text(_json.dumps({"classes": ["a", "b"]}))
+
+    with caplog.at_level(_logging.ERROR):
+        from app.inference import Classifier
+
+        Classifier.load(
+            str(tmp_path / "model.onnx"), str(tmp_path / "labels.json"), None, 384
+        )
+
+    assert any("model (2).onnx" in r.getMessage() for r in caplog.records), (
+        "a file that looks like the model but is not named like it must be "
+        "named in the log -- the fallback is silent otherwise"
+    )
+
+
+def test_a_near_miss_is_never_loaded_in_place_of_the_model(tmp_path):
+    """Naming the near miss must not become loading it.
+
+    The operator said which file to serve. A directory scan that decides
+    otherwise is how the wrong model gets served under the right name,
+    which is the same class of fault as deriving labels.json.
+    """
+    import json as _json
+
+    (tmp_path / "model (2).onnx").write_bytes(b"not a real graph")
+    (tmp_path / "labels.json").write_text(_json.dumps({"classes": ["a", "b"]}))
+
+    from app.inference import Classifier
+
+    clf = Classifier.load(
+        str(tmp_path / "model.onnx"), str(tmp_path / "labels.json"), None, 384
+    )
+    assert type(clf.backend).__name__ == "StubBackend", (
+        "a near miss must still be the stub -- the server loads the file it "
+        "was told to load, or nothing"
+    )
