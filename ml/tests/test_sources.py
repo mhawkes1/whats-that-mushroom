@@ -598,13 +598,21 @@ HAND_SET_KEYS = {
     # /species/match falls back to the Fungi KINGDOM -- four authorships,
     # three DOUBTFUL.
     "Helvella crispa": 2554614,
-    # Clitocybe dealbata and Inocybe lilacina were pinned here for a few
-    # hours on 2026-09-23, to keep them separate from the taxa GBIF treats
-    # them as synonyms of. Martin then established that most authorities
-    # merge C. dealbata into C. rivulosa, and that I. lilacina now sits
-    # within the I. geophylla complex, so both were merged away instead and
-    # their pins went with them. The CollidingTaxonKeys guard was what
-    # raised the question in the first place.
+    # Inocybe lilacina's own synonym usage. GBIF's backbone and Species
+    # Fungorum Plus both make it a synonym of I. geophylla, so judge_match
+    # follows acceptedUsageKey to 3330851 and CollidingTaxonKeys refuses
+    # the build -- both halves are in the label space. Martin asked for
+    # them separate on 2026-10-29, reversing his own 2026-09-23 merge, and
+    # a pin is the documented way to say so.
+    #
+    # The pin is only half of it: 3331644's records sit UNDER 3330851, so
+    # geophylla's pull contains them and the same photographs would land
+    # under both labels. `_determined_elsewhere` is the other half.
+    "Inocybe lilacina": 3331644,
+    # Clitocybe dealbata was pinned here for a few hours on 2026-09-23 as
+    # well, to keep it separate from C. rivulosa. Martin established that
+    # most authorities merge the two, so it was merged away instead and its
+    # pin went with it. The CollidingTaxonKeys guard raised both questions.
 }
 
 
@@ -916,3 +924,93 @@ def test_no_deadly_species_draws_from_an_unnamed_source():
             f"{entry['key']} is {entry['toxicity']} and draws from an "
             f"unnamed source: {names}"
         )
+
+
+def test_a_synonym_pair_does_not_file_the_same_photograph_under_both_labels(
+    tmp_path, monkeypatch
+):
+    """The half of the *Inocybe lilacina* split that pinning cannot do.
+
+    GBIF's occurrence search is inclusive downward and a synonym sits under
+    its accepted usage, so *I. geophylla* (3330851) returns every record
+    determined as *I. lilacina* (3331644) as well as its own. Pinning
+    lilacina's key stops `CollidingTaxonKeys` firing -- the keys differ now
+    -- without stopping the images overlapping, and 2,846 of geophylla's
+    5,524 image-bearing occurrences were determined as lilacina when this
+    was measured.
+
+    Filing those under both labels is label noise the risk-weighted
+    objective cannot see, in a genus holding a DEADLY species. The record's
+    own `taxonKey` settles which label it belongs to.
+    """
+    LICENCE = "http://creativecommons.org/licenses/by/4.0/legalcode"
+    GEOPHYLLA, LILACINA = 3330851, 3331644
+
+    def record(obs: str, taxon_key: int) -> dict:
+        return {"key": obs, "license": LICENCE, "taxonKey": taxon_key,
+                "acceptedTaxonKey": GEOPHYLLA,
+                "media": [{"identifier": f"http://x/{obs}.jpg"}]}
+
+    # What GBIF really returns: the accepted key's page carries both
+    # determinations, the synonym's page carries only its own.
+    both = [record("g-1", GEOPHYLLA), record("l-1", LILACINA),
+            record("g-2", GEOPHYLLA), record("l-2", LILACINA)]
+
+    def fake_page(session, gbif_key, offset, page_size, country, dataset_key):
+        if offset:
+            return {"results": [], "endOfRecords": True}
+        if gbif_key == GEOPHYLLA:
+            return {"results": both, "endOfRecords": True}
+        return {"results": [r for r in both if r["taxonKey"] == LILACINA],
+                "endOfRecords": True}
+
+    monkeypatch.setattr(sources, "_occurrence_page", fake_page)
+    monkeypatch.setattr(sources, "_session", lambda **k: object())
+
+    quotas = [
+        SpeciesQuota(key="inocybe-geophylla", scientific_name="Inocybe geophylla",
+                     gbif_key=GEOPHYLLA, target=100),
+        SpeciesQuota(key="inocybe-lilacina", scientific_name="Inocybe lilacina",
+                     gbif_key=LILACINA, target=100),
+    ]
+    frame = sources.build_manifest(quotas, tmp_path / "m.parquet",
+                                   sleep_between_pages=0)
+
+    by_species = frame.groupby("species_key")["observation_id"].apply(set)
+    assert by_species["inocybe-geophylla"] == {"g-1", "g-2"}, (
+        "the accepted taxon kept records somebody determined as its synonym"
+    )
+    assert by_species["inocybe-lilacina"] == {"l-1", "l-2"}
+    assert not (by_species["inocybe-geophylla"] & by_species["inocybe-lilacina"])
+
+
+def test_a_species_sharing_no_key_loses_nothing_to_the_filter(
+    tmp_path, monkeypatch
+):
+    """The ~240 species with no synonym twin must not pay for this.
+
+    A record whose determination is simply not another label -- including
+    one GBIF reports no `taxonKey` for at all -- is kept.
+    """
+    LICENCE = "http://creativecommons.org/licenses/by/4.0/legalcode"
+
+    def fake_page(session, gbif_key, offset, page_size, country, dataset_key):
+        if offset:
+            return {"results": [], "endOfRecords": True}
+        return {"results": [
+            {"key": "obs-1", "license": LICENCE, "taxonKey": 99,
+             "media": [{"identifier": "http://x/1.jpg"}]},
+            {"key": "obs-2", "license": LICENCE,
+             "media": [{"identifier": "http://x/2.jpg"}]},
+        ], "endOfRecords": True}
+
+    monkeypatch.setattr(sources, "_occurrence_page", fake_page)
+    monkeypatch.setattr(sources, "_session", lambda **k: object())
+
+    quotas = [
+        SpeciesQuota(key="a", scientific_name="A a", gbif_key=1, target=10),
+        SpeciesQuota(key="b", scientific_name="B b", gbif_key=2, target=0),
+    ]
+    frame = sources.build_manifest(quotas, tmp_path / "m.parquet",
+                                   sleep_between_pages=0)
+    assert set(frame["observation_id"]) == {"obs-1", "obs-2"}

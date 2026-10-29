@@ -3,7 +3,7 @@
 Every species this app can name, generated from `data/taxonomy.seed.json`
 by `python scripts/species_list.py`. Do not edit it by hand.
 
-**244 species · 112 lethal lookalike pairs.**
+**245 species · 113 lethal lookalike pairs.**
 
 It holds all 200 of the most-recorded British macrofungi (`python scripts/frdbi_gap.py --top 200`) plus the dangerous species each of those is confused with.
 
@@ -34,7 +34,7 @@ Eating this can be fatal.
 | ***Lepiota brunneoincarnata*** | Deadly Dapperling | *Marasmius oreades*, *Agaricus campestris*, *Macrolepiota procera* |
 | ***Lepiota subincarnata*** | Fatal Dapperling | ***Lepiota brunneoincarnata***, *Lepiota cristata*, *Marasmius oreades*, *Agaricus campestris* |
 
-## Causes serious illness — `SERIOUS` (11)
+## Causes serious illness — `SERIOUS` (12)
 
 Hospital treatment is usual.
 
@@ -44,6 +44,7 @@ Hospital treatment is usual.
 | ***Entoloma rhodopolium*** | Wood Pinkgill | *Entoloma sinuatum*, *Entoloma sericeum*, *Clitopilus prunulus*, *Clitocybe nebularis* |
 | ***Entoloma sinuatum*** | Livid Pinkgill, Livid Entoloma | *Clitopilus prunulus*, *Calocybe gambosa*, *Agaricus arvensis* |
 | ***Inocybe geophylla*** | White Fibrecap, Lilac Fibrecap | ***Inocybe erubescens***, ***Clitocybe rivulosa***, ***Amanita virosa***, *Marasmius oreades* (+2) |
+| ***Inocybe lilacina*** † | Lilac Fibrecap | *Inocybe geophylla*, ***Inocybe erubescens***, *Laccaria amethystina*, *Mycena pura* |
 | ***Paxillus involutus*** | Brown Roll-rim | *Lactarius deliciosus*, ***Clitocybe rivulosa*** |
 | ***Pleurocybella porrigens*** | Angel's Wings | *Pleurotus ostreatus*, *Crepidotus mollis* |
 | ***Pseudosperma rimosum*** | Split Fibrecap | ***Inocybe erubescens***, *Inocybe geophylla*, *Hebeloma crustuliniforme*, *Agaricus campestris* (+1) |
@@ -309,6 +310,7 @@ downloads the accepted taxon.
 | Displayed | Accepted | Hazard |
 | --- | --- | --- |
 | *Inocybe erubescens* | *Inosperma erubescens* | Can kill |
+| *Inocybe lilacina* | *Inocybe geophylla* | Causes serious illness |
 | *Stropharia semiglobata* | *Protostropharia semiglobata* | Causes illness |
 | *Datronia mollis* | *Podofomes mollis* | — |
 | *Exidia nucleata* | *Myxarium nucleatum* | — |

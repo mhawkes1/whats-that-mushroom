@@ -87,7 +87,15 @@ def test_a_seed_filled_row_still_says_unreviewed():
     # option would not contradict them, which is Claude's reading of the
     # generous convention rather than anything Martin wrote. They carry the
     # UNREVIEWED flag for the same reason seed fills do.
-    NOT_A_REVIEWER = {"unreviewed-seed-fill", "claude-option-widening"}
+    # `claude-lilacina-split` is the same kind of thing: the six rows
+    # written on 2026-10-29 when Inocybe lilacina was split back out of the
+    # I. geophylla complex. The states are read off the taxonomy's own
+    # notes and the standard field description, by Claude, and the species
+    # is SERIOUS -- so they are exactly what a reviewer must look at, and
+    # exactly what must not read as already looked at.
+    NOT_A_REVIEWER = {
+        "unreviewed-seed-fill", "claude-option-widening", "claude-lilacina-split",
+    }
     seeded = [r for r in filled if r["REVIEWER"].strip() in NOT_A_REVIEWER]
     unflagged = [r["species_key"] for r in seeded if "UNREVIEWED" not in r["REVIEW_notes"]]
     assert not unflagged, f"seed-filled rows not flagged UNREVIEWED: {unflagged[:5]}"

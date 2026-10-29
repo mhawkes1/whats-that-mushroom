@@ -52,7 +52,26 @@ def _tiny_onnx(path: Path, n_classes: int) -> Path:
 
 @pytest.fixture(scope="module")
 def model_of_244(tmp_path_factory) -> Path:
+    """A fixed, arbitrary width, for the tests that only compare two numbers."""
     return _tiny_onnx(tmp_path_factory.mktemp("onnx") / "model.onnx", 244)
+
+
+@pytest.fixture(scope="module")
+def model_of_the_label_space(tmp_path_factory) -> Path:
+    """As wide as the taxonomy is *today*.
+
+    Recovery succeeds only when the two widths are equal, so this fixture
+    has to follow the taxonomy rather than restate a number. It said 244
+    until Inocybe lilacina was added on 2026-10-29, at which point the two
+    recovery tests failed -- correctly, because a 244-class model against
+    245 species is precisely the case the script refuses. A test that
+    hardcodes the label space's size tests the size.
+    """
+    taxonomy = json.loads(
+        (ROOT / "data" / "taxonomy.seed.json").read_text(encoding="utf-8")
+    )
+    path = tmp_path_factory.mktemp("onnx-label-space") / "model.onnx"
+    return _tiny_onnx(path, len(taxonomy["species"]))
 
 
 def test_a_matching_label_list_loads(model_of_244):
@@ -168,12 +187,14 @@ def _run_recover(model: Path, out: Path, taxonomy: Path | None = None):
     return subprocess.run(cmd, capture_output=True, text=True)
 
 
-def test_recovery_succeeds_only_when_the_widths_prove_it(model_of_244, tmp_path):
-    """244 classes against 244 species means nothing was filtered out, so
-    the derived order IS the checkpoint's order. That is a proof, not a
-    hunch, and it is the only case the script writes anything in."""
+def test_recovery_succeeds_only_when_the_widths_prove_it(
+    model_of_the_label_space, tmp_path
+):
+    """As many classes as species means nothing was filtered out, so the
+    derived order IS the checkpoint's order. That is a proof, not a hunch,
+    and it is the only case the script writes anything in."""
     out = tmp_path / "labels.json"
-    result = _run_recover(model_of_244, out)
+    result = _run_recover(model_of_the_label_space, out)
     assert result.returncode == 0, result.stderr
     classes = json.loads(out.read_text(encoding="utf-8"))["classes"]
     taxonomy = json.loads(
@@ -203,16 +224,17 @@ def test_recovery_never_overwrites_a_real_labels_file(model_of_244, tmp_path):
 
 
 def test_a_recovered_file_satisfies_the_backend_it_was_written_for(
-    model_of_244, tmp_path
+    model_of_the_label_space, tmp_path
 ):
     """End to end: recover, then load. If OnnxBackend still refuses it, the
     recovery produced something that looks right and is not."""
     from app.inference import OnnxBackend
 
+    model = model_of_the_label_space
     out = tmp_path / "labels.json"
-    assert _run_recover(model_of_244, out).returncode == 0
+    assert _run_recover(model, out).returncode == 0
     classes = json.loads(out.read_text(encoding="utf-8"))["classes"]
-    assert len(OnnxBackend(model_of_244, classes).classes) == 244
+    assert OnnxBackend(model, classes).classes == classes
 
 
 def test_a_browser_renamed_model_is_named_in_the_log(tmp_path, caplog):

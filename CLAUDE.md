@@ -209,6 +209,45 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   as four species, re-adding two of them is the change — and `frdbi_gap.py`
   ranks *Inocybe lilacina* at 2,883 records, missing, with two dangerous
   species already in its genus.
+- **One of the two was re-added on 2026-10-29, and pinning was again only
+  half of the job.** Martin asked for *Inocybe lilacina* back, reversing
+  his own 2026-09-23 merge. `gbif_key` is pinned to **3331644**, its own
+  synonym usage, because `judge_match` follows `acceptedUsageKey` to
+  3330851 — *I. geophylla* — and `CollidingTaxonKeys` refuses the build
+  while both halves are in the label space. That silences the guard.
+  It does **not** separate the photographs. GBIF's occurrence search is
+  inclusive downward and a synonym sits under its accepted usage, so
+  geophylla's pull contains every record determined as lilacina. Measured
+  live: 3331644 has 9,185 occurrences and **2,846 with images, every one
+  carrying `speciesKey` 3330851** — a subset of geophylla's 5,524. Pinned
+  and left alone, those 2,846 photographs would be filed under *both*
+  labels, which is the label noise the collision guard exists to refuse
+  arriving by the back door; and `drop_duplicates(subset=["image_url"])`
+  would then hand each shared photograph to whichever species was paged
+  first. **This is why the 2026-09-23 pinning, had it survived, would not
+  have worked either** — the entry above calls dropping a side defensible
+  and pinning the alternative, and pinning alone was never an alternative.
+  `_determined_elsewhere` in `sources.py` is the other half: the record's
+  own `taxonKey` is the recorder's determination, `acceptedTaxonKey` is
+  where the backbone sends it, so each species keeps only what was
+  determined as itself and the two pulls come out disjoint. It costs
+  nothing for the ~243 species that share a key with nothing, and it is
+  what makes *C. dealbata* re-addable by the same route if a mycologist
+  asks for it.
+- **A species added to the taxonomy is INERT until a retrain, and that is
+  not a reason to skip the entry.** `labels.json` fixes run4-b32 at 244
+  classes; the taxonomy is 245. The server reads names from `labels.json`,
+  so nothing breaks and nothing changes — the classifier simply has no
+  index that means *I. lilacina* and can never offer it as a candidate.
+  Two consequences. *I. geophylla*'s `cap_colour` union still carries
+  `Purple` and `Pink` and was deliberately **left wide**: tightening it is
+  the coherent move once lilacina is reachable, and doing it now would let
+  a user holding a lilac fibrecap contradict the only candidate the model
+  can actually produce. And `scripts/recover_labels.py` now refuses run
+  four's width, correctly — 244 against 245 is exactly the "species were
+  filtered out" case. `test_label_space.py` sizes its fixture from the
+  taxonomy rather than restating 244; a test that hardcodes the label
+  space's size tests the size.
 - **Six species have ZERO iNaturalist images, and it is not a key problem.**
   *Lepista nuda* (6,773 images elsewhere), *Amanita vaginata* (2,354),
   *Exidia thuretiana* (645), *Clitocybe rivulosa* (1,068), *C. dealbata*
@@ -555,6 +594,11 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   as a field guide — so `habitat`, `season` and `smell` are thin. The run
   prints the per-row tally of what it left blank; that list is the review
   queue, not a bug. Filling it means the worksheet and a mycologist, not code.
+- **Count the lethal pairs too; 135 was never right.** `scripts/species_list.py`
+  reports **245 species, 113 lethal lookalike pairs** as of 2026-10-29 (112
+  before *I. lilacina*). The "135 lethal pairs" below is stale in the same
+  way the 247-species figure was, and from the same cause — prose written
+  once and not re-derived. The script prints both numbers in a second.
 - **The label space holds all 200 of the most-recorded British macrofungi,
   plus the twelve from the top 300 whose genus already held something
   dangerous.** 244 species, 135 lethal pairs. `frdbi_gap.py --top 300` now

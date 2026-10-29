@@ -448,10 +448,15 @@ def build_manifest(
 
     rows: list[dict] = []
     truncated: dict[str, int] = {}
+    foreign: dict[str, int] = {}
+    # Every key in this build, so each species can refuse a photograph that
+    # somebody determined as one of the others. See `_determined_elsewhere`.
+    in_play = {q.gbif_key for q in quotas}
     for quota in quotas:
         collected = 0
         by_observation: dict[str, list[str]] = {}
         used: list[str] = []
+        others = frozenset(in_play - {quota.gbif_key})
 
         for source_name, dataset_key in quota.all_sources:
             if collected >= quota.target:
@@ -463,6 +468,8 @@ def build_manifest(
                 page_size=page_size,
                 sleep_between_pages=sleep_between_pages,
                 max_images_per_observation=max_images_per_observation,
+                determined_elsewhere=others,
+                foreign=foreign,
             )
             if collected > before:
                 used.append(f"{source_name}:{collected - before}")
@@ -481,6 +488,14 @@ def build_manifest(
     frame = pd.DataFrame(rows)
     if frame.empty:
         raise RuntimeError("Manifest is empty -- check taxon keys and network access.")
+
+    if foreign:
+        log.info(
+            "Dropped %d occurrence(s) determined as another species in this "
+            "label space: %s",
+            sum(foreign.values()),
+            ", ".join(f"{k} ({n})" for k, n in sorted(foreign.items())),
+        )
 
     if truncated:
         log.error(
@@ -536,6 +551,34 @@ def _fetch_one(
         return row["image_url"], None
 
 
+def _determined_elsewhere(occ: dict, other_keys: frozenset[int]) -> bool:
+    """True when this record was identified as a *different* species we label.
+
+    GBIF's occurrence search on a taxon key is inclusive of everything below
+    it, and a synonym sits below its accepted usage. So when both halves of
+    a synonym pair are in the label space -- *Inocybe lilacina* pinned to
+    3331644 and *I. geophylla* resolving to 3330851, which is what the
+    lilacina key accepts to -- the accepted taxon's pull contains every one
+    of the synonym's records. Measured live on 2026-10-29: 2,846 of
+    geophylla's 5,524 image-bearing occurrences are determined as lilacina.
+
+    Filing those photographs under both labels is the silent label noise
+    `CollidingTaxonKeys` refuses, arriving by the back door: pinning a key
+    by hand stops the keys colliding without stopping the images from
+    doing so, and `drop_duplicates(subset=["image_url"])` would then hand
+    each shared photograph to whichever species was paged first.
+
+    The record itself settles it. `taxonKey` is what the recorder's
+    determination resolved to; `acceptedTaxonKey` is where the backbone
+    sends it. Keeping only the records whose own determination is this
+    species makes the two pulls disjoint, and costs nothing for the ~240
+    species that share a key with nothing.
+    """
+    if not other_keys:
+        return False
+    return occ.get("taxonKey") in other_keys
+
+
 def _collect_from_source(
     session: requests.Session,
     quota: "SpeciesQuota",
@@ -548,6 +591,8 @@ def _collect_from_source(
     page_size: int,
     sleep_between_pages: float,
     max_images_per_observation: int,
+    determined_elsewhere: frozenset[int] = frozenset(),
+    foreign: dict[str, int] | None = None,
 ) -> tuple[int, bool]:
     """Page one dataset until the species' target is met or it runs dry.
 
@@ -578,6 +623,10 @@ def _collect_from_source(
             break
 
         for occ in results:
+            if _determined_elsewhere(occ, determined_elsewhere):
+                if foreign is not None:
+                    foreign[quota.key] = foreign.get(quota.key, 0) + 1
+                continue
             if not _licence_accepted(occ.get("license")):
                 continue
             if not _research_grade(occ):

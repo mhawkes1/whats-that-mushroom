@@ -31,7 +31,7 @@ vi.mock('../src/lib/api', () => ({
 
 vi.mock('../src/lib/observationLog', async (orig) => ({
   ...(await orig<Record<string, unknown>>()),
-  readLog: (...args: unknown[]) => readLog(...args),
+  readLog: () => readLog(),
 }));
 
 // Static import: `vi.mock` is hoisted above it by vitest, and a
