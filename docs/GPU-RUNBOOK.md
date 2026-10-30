@@ -442,9 +442,21 @@ runpodctl send ml/runs/baseline/model.onnx
 runpodctl send ml/runs/baseline/best.pt
 ```
 
-That prints a one-time code; run `runpodctl receive <code>` on your own
-machine. `runpodctl` is already on the pod. If you would rather not, the
-Jupyter file browser will download them over HTTP, slowly.
+That prints a one-time code and then **waits**, holding the file open,
+until a receiver connects. It is not uploading and there is no progress
+bar: run `runpodctl receive <code>` on your own machine and the transfer
+starts then. Run five lost its first `manifest.parquet` send to a Ctrl+C
+pressed because nothing seemed to be happening.
+
+`runpodctl` is on the pod. It is **not** on Windows, and there is no
+`winget` or `choco` package for it, so on Windows the Jupyter file browser
+is the faster route rather than the fallback: open
+`https://<pod-id>-8888.proxy.runpod.net/lab` (the pod id is the first part
+of the web terminal's own hostname), right-click the file, Download. 330 MB
+came down in a couple of minutes that way on 2026-10-30. **Check the
+filename afterwards** -- a browser silently renames a second download to
+`model (1).onnx`, which is the fault that served the stub backend for an
+hour on 2026-10-29.
 
 Take **`model.onnx`** if you take nothing else — it is what the server
 loads. `best.pt` is the thing you would need to resume or re-export from, so
@@ -459,7 +471,7 @@ ml/runs/baseline/MODEL_CARD.md      # tiny, commit
 ml/runs/baseline/report.json        # tiny, commit
 ml/runs/baseline/predictions.npz    # ~4 MB, commit
 data/processed/splits.csv.gz        # ~3 MB, commit -- which image went where
-data/processed/manifest.parquet     # ~20 MB, take it, cannot be committed
+data/processed/manifest.parquet     # ~7 MB, take it, cannot be committed
 ```
 
 The images do not need to come home: the manifest records every URL, licence

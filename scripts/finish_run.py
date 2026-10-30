@@ -56,7 +56,7 @@ SMALL = [
 LARGE = [
     ("{run}/model.onnx", "~350 MB", "what the server loads"),
     ("{run}/best.pt", "~350 MB", "resume or re-export from this"),
-    ("data/processed/manifest.parquet", "~20 MB",
+    ("data/processed/manifest.parquet", "~7 MB",
      "the full index; never committable, still worth taking"),
 ]
 
@@ -117,8 +117,15 @@ def main() -> int:
         print("    git push")
 
     print()
-    print("  Take the large ones (runpodctl prints a code; run")
-    print("  `runpodctl receive <code>` on your own machine):")
+    print("  Take the large ones. `runpodctl send` does NOT upload: it")
+    print("  prints a code and then WAITS, holding the file open, until a")
+    print("  receiver connects. Nothing appears to happen because nothing")
+    print("  is happening yet. Run `runpodctl receive <code>` on your own")
+    print("  machine -- and note that runpodctl is on the pod but is NOT")
+    print("  installed on Windows, so on Windows use the Jupyter file")
+    print("  browser instead (https://<pod-id>-8888.proxy.runpod.net/lab,")
+    print("  right-click the file, Download). That is the faster route")
+    print("  there, not the fallback.")
     print()
     for template, _, _ in LARGE:
         rel = template.format(run=run)

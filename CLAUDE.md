@@ -1940,3 +1940,136 @@ otherwise have been asked at all.
   permanent refusal still applies to everything that is not silent.
   **Regenerating the graph needs no GPU and no pod** -- `predictions.npz` is
   committed, which is what committing it was for.
+
+## Run five, 2026-10-30: zero silent confusions, and a label space that broke every comparison
+
+Curve in `ml/runs/run5/train.log`, which exists because the run was started
+under `nohup` -- the first run whose epochs 0 and 1 survive. 271 species,
+104,413 images (83,461 train / 10,490 val / 10,462 test), ViT-B/16 at
+384 px, 10 epochs, 662 s each on an **A40 at $0.60/hr**. About £2.30.
+
+**The headline is `silent_dangerous_confusion_count: 0`, on test AND on
+validation.** It has never been zero before. Run one's was never
+measurable, run two's was 1, runs three and four were 2 each, and run
+four's only reached zero by `rescore_run.py` after the mass threshold
+moved. This one is zero natively, at the 1% threshold, on 10,462 test
+samples and again on 10,490 validation samples.
+
+**That second number is the one that matters beyond this run.** The 1%
+threshold was chosen on run four's *test* split -- the split that gates
+release -- and the note recording it said so: "the circularity is reduced,
+not eliminated", with `--split val --probs-out predictions-val.npz` put in
+the run-book to confirm it natively. **`predictions-val.npz` is committed
+and it confirms it.** The threshold is no longer fitted to its own gate.
+
+### Do not compare run five to run four. The label space changed.
+
+| | Run four | Run five |
+| --- | ---: | ---: |
+| classes | 244 | **271** |
+| top-1 | 87.1% | 83.3% |
+| test risk | 1.0820 | 2.0766 |
+| dangerous confusions | 7 | 18 |
+| **silent** | 2 (0 rescored) | **0** |
+| coverage | 85.0% | 72.6% |
+| deadly group recall | 95.7% | 93.3% |
+
+Every row of that table is across **different label spaces, different
+datasets and different splits**, which makes it the fourth time this week
+the project has been tempted by a comparison it cannot make. The first
+three were across splits; this one is worse, because 27 extra classes make
+top-1 a harder question and risk a bigger sum. The table is a record, not
+a result. **The only sound evidence from run five is internal to run
+five**, and that is the curve.
+
+### What the curve says: rule 6 picked out of a noise band
+
+```
+epoch 0 | top1 0.6504 | risk 2.244
+epoch 1 | top1 0.8296 | risk 1.683   <- selected, and shipped
+epoch 2 | top1 0.8583 | risk 1.961
+epoch 3 | top1 0.8688 | risk 1.816
+epoch 4 | top1 0.8726 | risk 1.802
+epoch 5 | top1 0.8754 | risk 2.208
+epoch 9 | top1 0.8838 | risk 2.010
+```
+
+Risk across epochs 1-4 is 1.683 / 1.961 / 1.816 / 1.802 -- a **spread of
+0.278 with no trend**, the same noise band run one showed at 1.665 / 1.975
+/ 1.809 / 1.684 and which that run's note explicitly warned against
+trusting the argmin of. Over the same four epochs top-1 climbs **4.3
+points**. So epoch 4 is 4.3 points more accurate for 0.119 more risk, which
+is inside the noise.
+
+**Coverage is what paid for it: 72.6%, against run four's 85.0%.** Same
+mechanism as run three -- an under-trained checkpoint is less confident, so
+fewer predictions clear the fitted threshold and the app declines to name a
+species on more than one photograph in four. Temperature came out 0.7603
+with a 0.74 threshold. Calibration itself is excellent (val ECE 0.0892 ->
+**0.0102**, test 0.0184), so this is not a calibration failure; it is a
+well-calibrated under-trained model honestly reporting that it is unsure.
+
+**Epoch 4's weights do not exist.** `output.save_top_k` was removed
+deliberately -- "a top-k selected on the wrong metric is a footgun" -- so
+there is one `best.pt` and it is epoch 1. Nothing on the pod could have
+produced epoch 4, and the pod is stopped.
+
+**This is rule 6 working as written and costing more than it saved**, which
+is a different thing from rule 6 being wrong. The rule exists because run
+one would otherwise have shipped a checkpoint 71% more dangerous for 0.40
+of a point less accuracy, and it earned its keep there. What run five adds
+is that **the rule has no notion of a tie**: it takes the argmin of a noisy
+quantity, and when the minimum sits inside a band the metric cannot resolve
+it discards real accuracy and real coverage for a difference that is not
+there. Any fix is a change to the project's central safety mechanism and
+wants deciding deliberately, not patched. The honest framings are a
+tolerance ("lowest risk, then most accurate among epochs within X of it")
+or keeping the few checkpoints the band contains so the choice is
+reviewable afterwards -- which is `save_top_k` again, and the objection to
+it was selection on the wrong metric, not retention.
+
+**`Lepiota brunneoincarnata` fell to 73.9%**, from 88.2% in runs two
+through four, with the same multi-source `image_source` fix in place. The
+likely cause is the epoch-1 checkpoint rather than the data, and that is a
+prediction to check rather than a conclusion -- the thinnest deadly species
+is where an under-trained model should show first. Three deadly species
+still came back at 100% (*A. phalloides*, *C. orellanus*, *G. esculenta*),
+and *C. orellanus* has now done so twice, which retires the "thin means
+weak recall" prediction for good.
+
+### Operational findings from the night
+
+- **`nohup ... > train.log` is not optional, and the log goes in git.** 2.5
+  KB for ten epochs, and it holds epochs 0 and 1, which scroll off the only
+  terminal that ever shows them -- run four's are gone. The shape of the
+  first epochs is exactly what rule 6 turns on, so losing them loses the
+  ability to tell a trend from a noise band after the fact.
+- **A fourth gitignore rule swallowed a paid run's artefact.** Not
+  `ml/runs/**` this time: the bare `*.log` in the Node/Expo section, which
+  sits **after** the run negations, and the last matching pattern wins. The
+  negation therefore has to go after `*.log`, not with its siblings.
+  Caught only because `git status` named it -- `git add` exits 0 having
+  added nothing, which is how the previous three got through.
+- **A test can pass on the strength of a file not existing.**
+  `test_the_irrecoverable_ones_are_marked_as_such` searched the whole of
+  `finish_run.py`'s output for the last line mentioning `splits.csv.gz`.
+  That worked only while the file was absent from the checkout; run five
+  committed it, so it reports `ok`, never reaches the REFUSING block, and
+  the search walked past the table and asserted against `git commit -m
+  "Run: ..."`. The test started failing the moment the project did the
+  thing the file exists to make possible.
+- **`runpodctl send` does not upload. It waits.** It prints a code and then
+  holds the file open until a receiver connects -- no progress bar, no
+  activity, nothing to see. Run five's first `manifest.parquet` send was
+  Ctrl+C'd for looking stalled.
+- **`runpodctl` is not on Windows**, and there is no winget or choco
+  package. On Windows the **Jupyter file browser is the faster route, not
+  the fallback**: `https://<pod-id>-8888.proxy.runpod.net/lab`, where the
+  pod id is the first part of the web terminal's own hostname. 330 MB came
+  down in a couple of minutes. The run-book had it the other way round.
+- **`manifest.parquet` is ~7 MB, not the ~20 the run-book claimed.**
+- **A token pasted at a hidden prompt that does not take it lands on
+  screen**, in shell history, and in any screenshot. Martin's fine-grained
+  PAT did exactly that and was revoked within minutes. Prefer
+  `git remote set-url origin https://<user>:<token>@github.com/...` on a
+  pod that is about to be destroyed, and never on a machine that is not.
