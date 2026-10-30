@@ -38,9 +38,33 @@
       "reason": "exact match"
     },
     {
+      "scientific_name": "Agaricus sylvicola",
+      "usage_key": 8365581,
+      "matched_name": "Agaricus sylvicola",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 99,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
       "scientific_name": "Agaricus xanthodermus",
       "usage_key": 5243412,
       "matched_name": "Agaricus xanthodermus",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Aleuria aurantia",
+      "usage_key": 5258678,
+      "matched_name": "Aleuria aurantia",
       "rank": "SPECIES",
       "match_type": "EXACT",
       "confidence": 100,
@@ -182,6 +206,18 @@
       "reason": "exact match"
     },
     {
+      "scientific_name": "Armillaria gallica",
+      "usage_key": 2536847,
+      "matched_name": "Armillaria gallica",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
       "scientific_name": "Armillaria mellea",
       "usage_key": 2536891,
       "matched_name": "Armillaria mellea",
@@ -224,6 +260,42 @@
       "rank": "SPECIES",
       "match_type": "EXACT",
       "confidence": 99,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Auricularia mesenterica",
+      "usage_key": 5249297,
+      "matched_name": "Auricularia mesenterica",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 99,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Baeospora myosura",
+      "usage_key": 2537958,
+      "matched_name": "Baeospora myosura",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Biscogniauxia nummularia",
+      "usage_key": 9115053,
+      "matched_name": "Biscogniauxia nummularia",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
       "status": "ACCEPTED",
       "synonym": false,
       "accepted": true,
@@ -770,6 +842,18 @@
       "reason": "exact match"
     },
     {
+      "scientific_name": "Cuphophyllus russocoriaceus",
+      "usage_key": 2538571,
+      "matched_name": "Cuphophyllus russocoriaceus",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
       "scientific_name": "Cuphophyllus virgineus",
       "usage_key": 3345381,
       "matched_name": "Cuphophyllus virgineus",
@@ -1073,6 +1157,18 @@
       "scientific_name": "Gliophorus psittacinus",
       "usage_key": 3345400,
       "matched_name": "Gliophorus psittacinus",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Gymnopilus junonius",
+      "usage_key": 2533674,
+      "matched_name": "Gymnopilus junonius",
       "rank": "SPECIES",
       "match_type": "EXACT",
       "confidence": 100,
@@ -1418,6 +1514,18 @@
       "reason": "exact match"
     },
     {
+      "scientific_name": "Inonotus hispidus",
+      "usage_key": 2521208,
+      "matched_name": "Inonotus hispidus",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
       "scientific_name": "Jackrogersella multiformis",
       "usage_key": 9397402,
       "matched_name": "Jackrogersella multiformis",
@@ -1478,6 +1586,18 @@
       "reason": "exact match"
     },
     {
+      "scientific_name": "Laccaria proxima",
+      "usage_key": 2530966,
+      "matched_name": "Laccaria proxima",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
       "scientific_name": "Lacrymaria lacrymabunda",
       "usage_key": 5242798,
       "matched_name": "Lacrymaria lacrymabunda",
@@ -1502,6 +1622,18 @@
       "reason": "exact match"
     },
     {
+      "scientific_name": "Lactarius camphoratus",
+      "usage_key": 8813286,
+      "matched_name": "Lactarius camphoratus",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
       "scientific_name": "Lactarius deliciosus",
       "usage_key": 5248629,
       "matched_name": "Lactarius deliciosus",
@@ -1517,6 +1649,18 @@
       "scientific_name": "Lactarius glyciosmus",
       "usage_key": 5248706,
       "matched_name": "Lactarius glyciosmus",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Lactarius pubescens",
+      "usage_key": 5248664,
+      "matched_name": "Lactarius pubescens",
       "rank": "SPECIES",
       "match_type": "EXACT",
       "confidence": 100,
@@ -1610,6 +1754,18 @@
       "reason": "exact match"
     },
     {
+      "scientific_name": "Lactifluus vellereus",
+      "usage_key": 2551071,
+      "matched_name": "Lactifluus vellereus",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
       "scientific_name": "Laetiporus sulphureus",
       "usage_key": 9072021,
       "matched_name": "Laetiporus sulphureus",
@@ -1625,6 +1781,18 @@
       "scientific_name": "Leccinum scabrum",
       "usage_key": 9141390,
       "matched_name": "Leccinum scabrum",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Leccinum versipelle",
+      "usage_key": 2524490,
+      "matched_name": "Leccinum versipelle",
       "rank": "SPECIES",
       "match_type": "EXACT",
       "confidence": 100,
@@ -1730,6 +1898,18 @@
       "reason": "exact match"
     },
     {
+      "scientific_name": "Lycoperdon pratense",
+      "usage_key": 5243244,
+      "matched_name": "Lycoperdon pratense",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
       "scientific_name": "Macrolepiota procera",
       "usage_key": 8914748,
       "matched_name": "Macrolepiota procera",
@@ -1778,6 +1958,18 @@
       "reason": "exact match"
     },
     {
+      "scientific_name": "Mensularia radiata",
+      "usage_key": 7442237,
+      "matched_name": "Mensularia radiata",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "SYNONYM",
+      "synonym": true,
+      "accepted": true,
+      "reason": "Mensularia radiata is a SYNONYM in the GBIF backbone; following acceptedUsageKey 7442237 (Xanthoporia), because occurrences are indexed against the accepted usage"
+    },
+    {
       "scientific_name": "Meripilus giganteus",
       "usage_key": 2540761,
       "matched_name": "Meripilus giganteus",
@@ -1805,6 +1997,18 @@
       "scientific_name": "Mucidula mucida",
       "usage_key": 2537081,
       "matched_name": "Mucidula mucida",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Mutinus caninus",
+      "usage_key": 5239473,
+      "matched_name": "Mutinus caninus",
       "rank": "SPECIES",
       "match_type": "EXACT",
       "confidence": 100,
@@ -2126,6 +2330,30 @@
       "reason": "exact match"
     },
     {
+      "scientific_name": "Phaeolus schweinitzii",
+      "usage_key": 2542126,
+      "matched_name": "Phaeolus schweinitzii",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Phaeotremella foliacea",
+      "usage_key": 9645698,
+      "matched_name": "Phaeotremella foliacea",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
       "scientific_name": "Phallus impudicus",
       "usage_key": 3314876,
       "matched_name": "Phallus impudicus",
@@ -2246,6 +2474,18 @@
       "reason": "Polyporus leptocephalus is a SYNONYM in the GBIF backbone; following acceptedUsageKey 9284704 (Cerioporus), because occurrences are indexed against the accepted usage"
     },
     {
+      "scientific_name": "Porpolomopsis calyptriformis",
+      "usage_key": 5955209,
+      "matched_name": "Porpolomopsis calyptriformis",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
       "scientific_name": "Postia caesia",
       "usage_key": 2542912,
       "matched_name": "Postia caesia",
@@ -2354,12 +2594,36 @@
       "reason": "exact match"
     },
     {
+      "scientific_name": "Rickenella swartzii",
+      "usage_key": 2523487,
+      "matched_name": "Rickenella swartzii",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 99,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
       "scientific_name": "Rubroboletus satanas",
       "usage_key": 7722553,
       "matched_name": "Rubroboletus satanas",
       "rank": "SPECIES",
       "match_type": "EXACT",
       "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Russula aeruginea",
+      "usage_key": 2551173,
+      "matched_name": "Russula aeruginea",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 99,
       "status": "ACCEPTED",
       "synonym": false,
       "accepted": true,
@@ -2381,6 +2645,18 @@
       "scientific_name": "Russula betularum",
       "usage_key": 2551413,
       "matched_name": "Russula betularum",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Russula claroflava",
+      "usage_key": 2551299,
+      "matched_name": "Russula claroflava",
       "rank": "SPECIES",
       "match_type": "EXACT",
       "confidence": 100,
@@ -2468,6 +2744,30 @@
       "rank": "SPECIES",
       "match_type": "EXACT",
       "confidence": 99,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Russula parazurea",
+      "usage_key": 2551458,
+      "matched_name": "Russula parazurea",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Russula sardonia",
+      "usage_key": 2551274,
+      "matched_name": "Russula sardonia",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
       "status": "ACCEPTED",
       "synonym": false,
       "accepted": true,
@@ -2588,6 +2888,18 @@
       "rank": "SPECIES",
       "match_type": "EXACT",
       "confidence": 99,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Stereum sanguinolentum",
+      "usage_key": 2553068,
+      "matched_name": "Stereum sanguinolentum",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
       "status": "ACCEPTED",
       "synonym": false,
       "accepted": true,
@@ -2897,6 +3209,18 @@
       "scientific_name": "Xylaria hypoxylon",
       "usage_key": 5255147,
       "matched_name": "Xylaria hypoxylon",
+      "rank": "SPECIES",
+      "match_type": "EXACT",
+      "confidence": 100,
+      "status": "ACCEPTED",
+      "synonym": false,
+      "accepted": true,
+      "reason": "exact match"
+    },
+    {
+      "scientific_name": "Xylaria longipes",
+      "usage_key": 5255093,
+      "matched_name": "Xylaria longipes",
       "rank": "SPECIES",
       "match_type": "EXACT",
       "confidence": 100,

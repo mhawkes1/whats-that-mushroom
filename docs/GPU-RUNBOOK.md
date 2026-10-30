@@ -168,7 +168,12 @@ python scripts/build_dataset.py --resolve-only
 ```
 
 **Read `data/gbif-keys.json` before continuing.** Every match and every
-refusal, with reasons. A refusal on a DEADLY species stops the build, which
+refusal, with reasons. The committed copy is regenerated whenever the label
+space moves -- 2026-10-30, 271 of 271, no refusals -- so a run that produces
+fewer than it has entries has found something new. Note that
+`resolved: N of N` is a stronger statement than it looks: `judge_match`
+refuses any rank but SPECIES, any FUZZY match and anything under confidence
+95, so a full count means every name cleared all three. A refusal on a DEADLY species stops the build, which
 is correct — a species the model cannot name is one the app cannot warn
 about.
 
@@ -178,8 +183,10 @@ python scripts/build_dataset.py --target 400 --min-images 40
 
 - **Never pass `--country GB`.** It is the intuitive choice for a British app
   and it wrecks the dataset: zero images for three DEADLY/SERIOUS species.
-- Expect roughly **93,000 images across 244 species**, about 16 GB, and a
-  couple of hours.
+- Expect roughly **103,000 images across 271 species**, about 18 GB, and a
+  couple of hours. (244 species and 93,000 images up to 2026-10-29; the
+  batch of 27 landed before run five. Scale the estimate with the label
+  space rather than trusting this line -- it has been stale once already.)
 - **It is network-bound, not GPU-bound, and at the real billed rate that is
   worth acting on.** This note used to say building it on a cheap CPU box
   was "optional tidiness rather than real saving", on the strength of
