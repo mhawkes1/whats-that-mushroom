@@ -50,9 +50,22 @@ train:
   # dangerous for 0.40 of a point LESS accuracy. The extra twenty epochs
   # bought nothing and cost two hours.
   epochs: 10
-  # 32 used 8.5 GB of a 4090's 24 at 100% utilisation and 418 W, so the card
-  # was working rather than starved and two thirds of its memory sat idle.
-  batch_size: 64
+  # 32, and this is not about memory. 32 uses 8.5 GB of a 4090's 24 at
+  # 100% utilisation, so two thirds of the card sits idle and 64 is free
+  # speed -- which is exactly the argument that set this to 64 for runs
+  # two and three, and it was wrong.
+  #
+  # At 64 the validation-risk minimum lands on **epoch 1**, so rule 6 ships
+  # a barely-trained checkpoint: top-1 0.8171, raw ECE 0.1172, and coverage
+  # **69.5%** -- the app declining to name a species on one photograph in
+  # three. At 32 the minimum moves to epoch 3 (top-1 0.8768) and coverage
+  # goes to **85.0%**. Same data, same everything else.
+  #
+  # The lesson is worth more than the number: a hyperparameter can wreck
+  # the product through the SELECTION RULE without touching model quality
+  # at all, and coverage is where you see it. Coverage is not in the
+  # terminal summary; it is in calibration.json.
+  batch_size: 32
   grad_accum_steps: 1
   lr: 3.0e-4
   backbone_lr_mult: 0.1      # discriminative fine-tuning
@@ -94,8 +107,22 @@ train:
   # mixup-trained model is usually MORE under-confident, so expect the
   # fitted temperature to fall further below the 0.8177 of run one. That is
   # calibration's job, not a reason to avoid it.
-  mixup_alpha: 0.2
-  cutmix_alpha: 1.0
+  #
+  # MEASURED, AND OFF. Run two turned these on and run three turned them
+  # back off with nothing else changed -- the one clean, same-split,
+  # one-variable comparison available. Mixing cost **0.6594 of test risk,
+  # 47%**, for no accuracy gain at all: top-1 was within half a point
+  # throughout. It did not make the model worse at identifying mushrooms;
+  # it made the same number of mistakes land in worse cells of the risk
+  # matrix, which is precisely the failure it was meant to fix.
+  #
+  # The mechanism is still unexplained. The dilution argument above
+  # measures at 9.2% and cannot produce a 47% rise, so the reasoning in
+  # this comment is NOT why it failed -- it is kept because it is the
+  # argument somebody will make again. Do not turn these back on without
+  # a specific hypothesis and a one-variable run to test it.
+  mixup_alpha: 0.0
+  cutmix_alpha: 0.0
   mix_prob: 0.5             # chance a given batch is mixed at all
 
 eval:
@@ -111,7 +138,13 @@ eval:
   {}
 
 output:
-  dir: runs/baseline
+  # Named for the run rather than generic. The run's committed evidence
+  # lands beside the checkpoint that justifies it, and data/model-confusions
+  # .json records the run directory it was built from -- so a generic
+  # `baseline/` makes that check fail to line up and costs an hour of
+  # looking for four runs' artefacts in a directory holding one of them.
+  # That happened on 2026-10-28.
+  dir: runs/run5
   # NOTE: checkpointing is not configurable. `train.py` keeps one `best.pt`,
   # selected on validation **risk** rather than accuracy -- rule 6, and the
   # reason `save_top_k` has gone: a top-k on the wrong metric is a footgun.

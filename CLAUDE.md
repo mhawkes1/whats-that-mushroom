@@ -1387,12 +1387,23 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   saves; step 5 of the run-book says to build the dataset on a CPU pod
   against a RunPod **network volume** and attach that volume to the GPU pod
   for the training hour.
-- **`EPOCHS` in `gpu_cost.py` is 10, and `ml/configs/default.yaml` still
-  says 30.** Deliberate for now: the config is what a run executes and
-  changing it belongs with the regularisation work, while the cost script is
-  what gets read before deploying. `--epochs` prices any other number. If
-  you change one, check the other — this is the second pair of numbers in
-  this project that wanted different working directories to agree.
+- **That note said `default.yaml` still says 30 epochs. It says 10, and had
+  for days** -- the stale half of a pair written to stop a pair going stale.
+  `gpu_cost.py` and the config agree at 10. `--epochs` prices any other
+  number.
+- **The committed config was run TWO's, and run two is the worst of the
+  four.** Found 2026-10-30, with Martin about to deploy: `batch_size: 64`,
+  `mixup_alpha: 0.2`, `cutmix_alpha: 1.0` -- the exact settings that cost
+  0.66 of test risk and put the risk minimum on epoch 1, which crushed
+  coverage to 69.5%. Runs three and four changed those on the box and
+  nothing wrote the winners back, so the file quietly reverted to the
+  regression every time anybody read it. It is now run four's: **batch 32,
+  no mixing, `dir: runs/run5`**, each with the measurement in the comment
+  rather than the reasoning that produced the wrong value.
+  The general fault is worth more than this instance: **a parameter changed
+  on a rented box dies with the box.** If a run's settings are worth
+  keeping, they belong in the config before the next deploy, not in
+  somebody's memory of what they typed at 2am.
 - **The labels.json refusal fired on the real thing, one day after it was
   written.** 2026-10-28: Martin copied `model.onnx` onto his laptop without
   `labels.json`, and the server refused to start instead of naming 244
