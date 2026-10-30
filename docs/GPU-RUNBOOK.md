@@ -100,11 +100,34 @@ than a click-by-click that will be wrong by spring.
 | Field | Value | Why |
 | --- | --- | --- |
 | Cloud type | **Community** | Half the price of Secure. Fine for a job you can restart |
-| GPU | **RTX 4090**, 1× | 24 GB, which is what `configs/default.yaml` targets |
+| GPU | **RTX 4090**, 1× — or see below | The 4090 is what the timings here were measured on, **not a requirement** |
 | Template | **RunPod PyTorch 2.x** (CUDA 12.x) | Saves installing torch. Any recent PyTorch image works |
 | Container disk | **30 GB** | Code, wheels, checkpoints |
 | Volume disk | **60 GB**, mounted at `/workspace` | The dataset is ~16 GB of images; this is the part that survives a restart, so **work in `/workspace`** |
 | Region | Any | Unless you are attaching a network volume, which pins you to its data centre |
+
+### If there is no 4090 free
+
+There often is not, and it does not matter. **`batch_size: 32` uses 8.5 GB**,
+measured on the first real run at 100% utilisation — so the 24 GB in the
+table above is headroom, not a requirement. Anything from 16 GB up will
+train this.
+
+| Card | VRAM | Notes |
+| --- | --- | --- |
+| **A40** | 48 GB | **The first alternative to reach for.** Run two ran on one at $0.60/hr, cheaper than the 4090 and proven on this code |
+| RTX A5000 | 24 GB | Cheap, plenty |
+| RTX 3090 | 24 GB | Fine; roughly 30–40% slower per epoch |
+| L40 / L40S | 48 GB | Fast, costs more |
+| A6000 | 48 GB | Fine |
+| 4090, Secure Cloud | 24 GB | Same card, about double. Only if nothing above is free |
+
+**Not** an A100 or H100: they work, and you would be paying several times
+over for a job that uses 8.5 GB of one.
+
+Whatever you take, **step 4 below stops being optional**. The epoch timings
+in this document are a 4090's. On a different card the only honest number is
+the one you measure.
 
 Then **Deploy**, wait for the pod to go green, and use **Connect → Web
 Terminal** (or SSH, if you have added a key).

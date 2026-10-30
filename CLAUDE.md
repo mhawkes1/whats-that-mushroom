@@ -1159,11 +1159,17 @@ commits.
   epochs is about **3 hours**, not the 4.6 estimated from an assumed
   140 img/s. The real figure is nearer 210. `scripts/gpu_cost.py
   --img-per-sec 210` reprices the exercise; it comes out under £5.
-- **Batch size 32 uses 8.5 GB of a 4090's 24 GB.** Measured mid-run at
-  100% utilisation and 418 W, so the card is working rather than starved --
-  but two thirds of its memory is idle and `train.batch_size` could roughly
-  double before it is tight. Free speed on the next run; not worth
-  restarting a run that is already going.
+- **Batch size 32 uses 8.5 GB of a 4090's 24 GB**, measured mid-run at 100%
+  utilisation and 418 W -- so the card is working rather than starved, and
+  two thirds of its memory sits idle. That observation was read once as
+  "64 is free speed", which is how runs two and three got batch 64 and the
+  coverage collapse that came with it. Read it the other way instead:
+  **the 24 GB is headroom, not a requirement, and no 4090 free is not a
+  blocker.** Anything from 16 GB up trains this. The A40 is the first
+  alternative to reach for -- run two ran on one at $0.60/hr, cheaper than
+  the 4090 and already proven on this code -- and the run-book now carries
+  the list. What changes on another card is the epoch time, which is what
+  the one-epoch timing step exists to measure.
 ## The first real training run, 2026-10-27
 
 Curve in `docs/runs/2026-10-27-baseline.csv`. 244 species, 93,534 images,
