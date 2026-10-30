@@ -16,9 +16,21 @@ ROOT = Path(__file__).resolve().parents[2]
 # sits with the numbers that justify serving it, and the confusion graph's
 # run check lines up without anything being copied about.
 #
-# Run four, 2026-10-28: risk-weighted error 1.0820, coverage 85.0%,
-# 7 dangerous confusions. See ml/runs/run4-b32/MODEL_CARD.md.
-RUN = ROOT / "ml" / "runs" / "run4-b32"
+# Run five, 2026-10-30: 271 species, risk-weighted error 2.0766, coverage
+# 72.6%, 18 dangerous confusions and **0 silent** -- the first run to reach
+# zero natively, on test and on validation both. See ml/runs/run5/MODEL_CARD.md.
+#
+# It is NOT straightforwardly better than run four (244 species, risk
+# 1.0820, coverage 85.0%), and those figures are not comparable anyway:
+# different label space, different dataset, different split. What is sound
+# is run five's own curve, which shows rule 6 selecting epoch 1 out of a
+# flat noise band -- so the coverage is a selection artefact rather than a
+# capability one, and that question is open.
+#
+# Pointed here so the 271-species model can be looked at. Reverting to
+# `run4-b32` is this one line plus regenerating data/model-confusions.json
+# from that run's predictions.npz.
+RUN = ROOT / "ml" / "runs" / "run5"
 
 
 class Settings(BaseSettings):

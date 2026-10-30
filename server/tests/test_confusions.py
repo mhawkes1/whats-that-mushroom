@@ -267,10 +267,18 @@ def test_a_graph_survives_the_export_of_its_own_checkpoint():
     That is what `Path(...).name` did, and the test meant to pin it passed
     because it compared `model.onnx` against `model.onnx`. Measured on run
     four before it could happen: loaded=False, pairs=0.
+
+    The served run is read from `config.py` rather than written here. It
+    was hardcoded as `run4-b32`, so pointing the server at run five failed
+    this test while the guard it covers was working perfectly -- the same
+    fault as a test that hardcodes the label space's size and thereby
+    tests the size.
     """
+    from app.config import RUN
+
     graph = ConfusionGraph.load(
         ROOT / "data" / "model-confusions.json",
-        expected_checkpoint="ml/runs/run4-b32/model.onnx",
+        expected_checkpoint=f"{RUN.relative_to(ROOT).as_posix()}/model.onnx",
     )
     assert graph.loaded, (
         "the graph was generated from this run's best.pt and must be "
