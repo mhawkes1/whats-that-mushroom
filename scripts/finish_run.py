@@ -49,6 +49,7 @@ SMALL = [
      "no"),
     ("{run}/config.yaml", "what was actually run", "yes, if unchanged"),
     ("{run}/history.json", "the per-epoch curve behind rule 6", "no"),
+    ("{run}/train.log", "the early epochs, which scroll off a terminal", "no"),
     ("data/processed/splits.csv.gz", "which image went to which split", "NO"),
 ]
 

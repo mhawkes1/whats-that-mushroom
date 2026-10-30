@@ -290,6 +290,21 @@ def test_the_split_record_is_not_gitignored():
         ["git", "check-ignore", "ml/runs/baseline/predictions.npz"],
         cwd=root, capture_output=True, text=True,
     ).returncode == 1, "predictions.npz is gitignored but the run-book commits it"
+    # And the training log, which is caught by the bare `*.log` rule rather
+    # than by `ml/runs/**` -- a different rule, further down the file, so the
+    # negation has to come after it. Run five needed `git add -f` for this.
+    assert subprocess.run(
+        ["git", "check-ignore", "ml/runs/baseline/train.log"],
+        cwd=root, capture_output=True, text=True,
+    ).returncode == 1, (
+        "train.log is gitignored; it is the only record of the epochs that "
+        "scroll off the terminal, and rule 6 selects on exactly those"
+    )
+    # The node/expo logs it was written for stay ignored.
+    assert subprocess.run(
+        ["git", "check-ignore", "app/npm-debug.log"],
+        cwd=root, capture_output=True, text=True,
+    ).returncode == 0, "the bare *.log rule has stopped working"
     # And the heavy neighbours stay ignored, or the next commit is gigabytes.
     for ignored in ("data/processed/manifest.parquet", "data/processed/images/x.jpg",
                     "ml/runs/baseline/best.pt", "ml/runs/baseline/model.onnx"):

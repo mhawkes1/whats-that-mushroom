@@ -51,7 +51,7 @@ def complete_run(tmp_path, monkeypatch):
     processed.mkdir(parents=True, exist_ok=True)
     created = []
     for name in ("MODEL_CARD.md", "report.json", "calibration.json",
-                 "labels.json", "config.yaml", "history.json"):
+                 "labels.json", "config.yaml", "history.json", "train.log"):
         (run / name).write_text("{}", encoding="utf-8")
         created.append(run / name)
     np.savez_compressed(run / "predictions.npz", probs=np.zeros((2, 2), np.float16))
@@ -88,7 +88,7 @@ def test_every_small_artefact_appears_in_the_git_add_line(complete_run):
     for name in ("MODEL_CARD.md", "report.json", "calibration.json",
                  "labels.json", "predictions.npz", "predictions-val.npz",
                  "config.yaml",
-                 "history.json", "splits.csv.gz"):
+                 "history.json", "train.log", "splits.csv.gz"):
         assert name in add, f"{name} is not in the command to paste"
 
 
@@ -101,8 +101,19 @@ def test_a_missing_artefact_refuses_and_says_not_to_stop_the_pod():
 def test_the_irrecoverable_ones_are_marked_as_such():
     """calibration.json and splits.csv.gz are the two that cannot be made
     again from what survives a destroyed pod. Saying "rebuildable: no" where
-    it is actually "no, ever" is the difference between a shrug and a stop."""
+    it is actually "no, ever" is the difference between a shrug and a stop.
+
+    The search is confined to the REFUSING block. It used to run over the
+    whole output and take the LAST line mentioning each artefact, which
+    worked only while `splits.csv.gz` was absent from the checkout: once
+    run five committed it the file reports `ok`, never reaches the refusal,
+    and the search walked past the table into the `git add` block and
+    asserted against `git commit -m "Run: ..."`. So the test was passing on
+    the strength of a file not existing, and started failing the moment the
+    project did the thing the file exists to make possible.
+    """
     out = _run("ml/runs/_does_not_exist").stdout
+    refusal = out.split("REFUSING")[1]
 
     def reason(artefact: str) -> str:
         """The two indented lines the refusal prints under an artefact.
@@ -111,13 +122,28 @@ def test_the_irrecoverable_ones_are_marked_as_such():
         the reason itself ("NO -- needs the val images") and silently cut
         the assertion's evidence off before the part being asserted.
         """
-        lines = out.splitlines()
-        i = max(n for n, line in enumerate(lines) if artefact in line)
-        return "\n".join(lines[i + 1:i + 3])
+        lines = refusal.splitlines()
+        hits = [n for n, line in enumerate(lines) if artefact in line]
+        assert hits, f"{artefact} is not named in the refusal:\n{refusal}"
+        return "\n".join(lines[hits[-1] + 1:hits[-1] + 3])
 
     calibration = reason("calibration.json")
     assert "NO" in calibration and "val images" in calibration, calibration
-    assert "NO" in reason("splits.csv.gz")
+
+    # `splits.csv.gz` lives in the repo, so a checkout always has it and it
+    # never reaches the refusal. Its marking is asserted on the table the
+    # refusal renders from instead -- which is the thing that would be wrong.
+    small = dict((entry[0], entry[2]) for entry in _finish_run().SMALL)
+    assert small["data/processed/splits.csv.gz"].startswith("NO")
+
+
+def _finish_run():
+    """The script, imported, so its artefact table can be read directly."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("_finish_run", SCRIPT)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def test_the_large_files_are_listed_but_never_offered_to_git(complete_run):

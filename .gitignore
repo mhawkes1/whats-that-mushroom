@@ -57,6 +57,17 @@ node_modules/
 .expo/
 dist/
 *.log
+# ...except a run's training log. `nohup ... > train.log` is the only record
+# of the early epochs: run four's 0 and 1 scrolled off the one terminal that
+# ever held them, and the shape of those first epochs is exactly what rule
+# 6's checkpoint selection turns on. 2.5 KB.
+#
+# This negation has to sit AFTER the `*.log` above rather than with the
+# ml/runs negations, because the LAST matching pattern wins -- placed
+# earlier it is overridden and `git add` exits 0 having added nothing.
+# That is the fourth time a gitignore rule has silently swallowed an
+# artefact of a paid run; this one was caught by `git status` on the pod.
+!ml/runs/*/train.log
 
 # Secrets
 .env
