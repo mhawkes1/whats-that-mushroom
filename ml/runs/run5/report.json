@@ -1,0 +1,324 @@
+{
+  "n_samples": 10462,
+  "n_classes": 271,
+  "accuracy": {
+    "top1": 0.832823551902122,
+    "top3": 0.9381571401261709,
+    "top5": 0.9620531447142038
+  },
+  "genus_accuracy": 0.8838654177021602,
+  "risk_weighted_error": 2.0765628814697266,
+  "expected_calibration_error": 0.018364354784334614,
+  "deadly_recall": {
+    "amanita-phalloides": 1.0,
+    "amanita-virosa": 0.8636363636363636,
+    "clitocybe-rivulosa": 0.8636363636363636,
+    "cortinarius-orellanus": 1.0,
+    "cortinarius-rubellus": 0.8541666666666666,
+    "galerina-marginata": 0.9142857142857143,
+    "gyromitra-esculenta": 1.0,
+    "inocybe-erubescens": 0.875,
+    "lepiota-brunneoincarnata": 0.7391304347826086,
+    "lepiota-subincarnata": 0.8409090909090909,
+    "_group_level_recall": 0.9329446064139941
+  },
+  "dangerous_confusions": [
+    {
+      "true_species": "amanita-virosa",
+      "predicted_as": "amanita-citrina",
+      "count": 3,
+      "max_confidence": 0.806,
+      "silent": 0,
+      "min_deadly_mass": 0.1007,
+      "max_deadly_mass": 0.3045
+    },
+    {
+      "true_species": "clitocybe-rivulosa",
+      "predicted_as": "crepidotus-cesatii",
+      "count": 3,
+      "max_confidence": 0.3356,
+      "silent": 0,
+      "min_deadly_mass": 0.2203,
+      "max_deadly_mass": 0.3047
+    },
+    {
+      "true_species": "galerina-marginata",
+      "predicted_as": "tubaria-furfuracea",
+      "count": 2,
+      "max_confidence": 0.8903,
+      "silent": 0,
+      "min_deadly_mass": 0.0846,
+      "max_deadly_mass": 0.3607
+    },
+    {
+      "true_species": "amanita-virosa",
+      "predicted_as": "calvatia-gigantea",
+      "count": 1,
+      "max_confidence": 0.5816,
+      "silent": 0,
+      "min_deadly_mass": 0.3174,
+      "max_deadly_mass": 0.3174
+    },
+    {
+      "true_species": "inocybe-erubescens",
+      "predicted_as": "gymnopilus-penetrans",
+      "count": 1,
+      "max_confidence": 0.5438,
+      "silent": 0,
+      "min_deadly_mass": 0.084,
+      "max_deadly_mass": 0.084
+    },
+    {
+      "true_species": "galerina-marginata",
+      "predicted_as": "coprinellus-micaceus",
+      "count": 1,
+      "max_confidence": 0.4989,
+      "silent": 0,
+      "min_deadly_mass": 0.3809,
+      "max_deadly_mass": 0.3809
+    },
+    {
+      "true_species": "amanita-virosa",
+      "predicted_as": "agaricus-sylvicola",
+      "count": 1,
+      "max_confidence": 0.4478,
+      "silent": 0,
+      "min_deadly_mass": 0.3362,
+      "max_deadly_mass": 0.3362
+    },
+    {
+      "true_species": "amanita-virosa",
+      "predicted_as": "russula-claroflava",
+      "count": 1,
+      "max_confidence": 0.4294,
+      "silent": 0,
+      "min_deadly_mass": 0.1969,
+      "max_deadly_mass": 0.1969
+    },
+    {
+      "true_species": "cortinarius-rubellus",
+      "predicted_as": "laccaria-laccata",
+      "count": 1,
+      "max_confidence": 0.3452,
+      "silent": 0,
+      "min_deadly_mass": 0.1636,
+      "max_deadly_mass": 0.1636
+    },
+    {
+      "true_species": "lepiota-subincarnata",
+      "predicted_as": "russula-ochroleuca",
+      "count": 1,
+      "max_confidence": 0.2672,
+      "silent": 0,
+      "min_deadly_mass": 0.1298,
+      "max_deadly_mass": 0.1298
+    },
+    {
+      "true_species": "cortinarius-rubellus",
+      "predicted_as": "imleria-badia",
+      "count": 1,
+      "max_confidence": 0.2441,
+      "silent": 0,
+      "min_deadly_mass": 0.2422,
+      "max_deadly_mass": 0.2422
+    },
+    {
+      "true_species": "clitocybe-rivulosa",
+      "predicted_as": "cuphophyllus-virgineus",
+      "count": 1,
+      "max_confidence": 0.198,
+      "silent": 0,
+      "min_deadly_mass": 0.1804,
+      "max_deadly_mass": 0.1804
+    },
+    {
+      "true_species": "lepiota-subincarnata",
+      "predicted_as": "tubaria-furfuracea",
+      "count": 1,
+      "max_confidence": 0.1562,
+      "silent": 0,
+      "min_deadly_mass": 0.0786,
+      "max_deadly_mass": 0.0786
+    }
+  ],
+  "coverage_precision": [
+    {
+      "threshold": 0.1,
+      "coverage": 0.9992353278531829,
+      "precision": 0.8334608762196288,
+      "n": 10454
+    },
+    {
+      "threshold": 0.15,
+      "coverage": 0.9975148155228446,
+      "precision": 0.8348984285166731,
+      "n": 10436
+    },
+    {
+      "threshold": 0.2,
+      "coverage": 0.9923532785318295,
+      "precision": 0.8384704295896744,
+      "n": 10382
+    },
+    {
+      "threshold": 0.25,
+      "coverage": 0.9838463008984898,
+      "precision": 0.8441659380161275,
+      "n": 10293
+    },
+    {
+      "threshold": 0.3,
+      "coverage": 0.9712292104760084,
+      "precision": 0.8522783190630844,
+      "n": 10161
+    },
+    {
+      "threshold": 0.35,
+      "coverage": 0.9516344867138214,
+      "precision": 0.864403374849337,
+      "n": 9956
+    },
+    {
+      "threshold": 0.4,
+      "coverage": 0.928789906327662,
+      "precision": 0.8777400432232171,
+      "n": 9717
+    },
+    {
+      "threshold": 0.45,
+      "coverage": 0.9066144140699675,
+      "precision": 0.8892988929889298,
+      "n": 9485
+    },
+    {
+      "threshold": 0.5,
+      "coverage": 0.8804243930414835,
+      "precision": 0.9006622516556292,
+      "n": 9211
+    },
+    {
+      "threshold": 0.55,
+      "coverage": 0.847352322691646,
+      "precision": 0.9153976311336718,
+      "n": 8865
+    },
+    {
+      "threshold": 0.6,
+      "coverage": 0.8100745555343146,
+      "precision": 0.9284955752212389,
+      "n": 8475
+    },
+    {
+      "threshold": 0.65,
+      "coverage": 0.7779583253679985,
+      "precision": 0.939550313306303,
+      "n": 8139
+    },
+    {
+      "threshold": 0.7,
+      "coverage": 0.7445039189447524,
+      "precision": 0.949801001412248,
+      "n": 7789
+    },
+    {
+      "threshold": 0.75,
+      "coverage": 0.7081819919709424,
+      "precision": 0.9605884734782022,
+      "n": 7409
+    },
+    {
+      "threshold": 0.8,
+      "coverage": 0.6726247371439495,
+      "precision": 0.9688787835725451,
+      "n": 7037
+    },
+    {
+      "threshold": 0.85,
+      "coverage": 0.6241636398394188,
+      "precision": 0.9765696784073506,
+      "n": 6530
+    },
+    {
+      "threshold": 0.9,
+      "coverage": 0.5640412922959281,
+      "precision": 0.9850872733435011,
+      "n": 5901
+    },
+    {
+      "threshold": 0.95,
+      "coverage": 0.46883961001720514,
+      "precision": 0.9928644240570846,
+      "n": 4905
+    }
+  ],
+  "reliability": [
+    {
+      "bin": "0.0-0.1",
+      "count": 8,
+      "mean_confidence": 0.07611065357923508,
+      "observed_accuracy": 0.0
+    },
+    {
+      "bin": "0.1-0.2",
+      "count": 72,
+      "mean_confidence": 0.1680300086736679,
+      "observed_accuracy": 0.1111111111111111
+    },
+    {
+      "bin": "0.2-0.3",
+      "count": 221,
+      "mean_confidence": 0.2536328136920929,
+      "observed_accuracy": 0.20361990950226244
+    },
+    {
+      "bin": "0.3-0.4",
+      "count": 444,
+      "mean_confidence": 0.35208290815353394,
+      "observed_accuracy": 0.29504504504504503
+    },
+    {
+      "bin": "0.4-0.5",
+      "count": 506,
+      "mean_confidence": 0.4519484341144562,
+      "observed_accuracy": 0.46047430830039526
+    },
+    {
+      "bin": "0.5-0.6",
+      "count": 736,
+      "mean_confidence": 0.5509744882583618,
+      "observed_accuracy": 0.5801630434782609
+    },
+    {
+      "bin": "0.6-0.7",
+      "count": 686,
+      "mean_confidence": 0.6494860649108887,
+      "observed_accuracy": 0.6865889212827988
+    },
+    {
+      "bin": "0.7-0.8",
+      "count": 752,
+      "mean_confidence": 0.7501055002212524,
+      "observed_accuracy": 0.7712765957446809
+    },
+    {
+      "bin": "0.8-0.9",
+      "count": 1136,
+      "mean_confidence": 0.8532270789146423,
+      "observed_accuracy": 0.8846830985915493
+    },
+    {
+      "bin": "0.9-1.0",
+      "count": 5901,
+      "mean_confidence": 0.9769294857978821,
+      "observed_accuracy": 0.9850872733435011
+    }
+  ],
+  "dangerous_confusion_count": 18,
+  "dangerous_confusion_rate": 0.0017205123303383673,
+  "silent_dangerous_confusion_count": 0,
+  "silent_dangerous_confusion_rate": 0.0,
+  "deadly_mass_threshold": 0.01,
+  "split": "test",
+  "checkpoint": "ml/runs/run5/best.pt",
+  "calibrated": true
+}
