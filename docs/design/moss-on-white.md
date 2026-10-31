@@ -125,14 +125,21 @@ a second thing that has to arrive; on a slow decode the photograph can paint
 before the overlay does, and for that frame the title is cream on sunlit
 moss. Shipping it dark makes the worst case a dark band with no text yet.
 
-**The contrast figures decided how dark.** Over `theme.colour.photoScrim`,
-the token that already exists for text on a photograph, the asset measures
-**11.63:1 on the brightest moss a letter can land on** and 16.73:1 on the
-mean. The worst case is the number that matters — a single bright tuft under
-the tagline is the failure, not the average. At the brightness the preview
-was judged on, that worst case was **4.10:1**: fine for the title, below AA
-for the tagline. Keeping more of the moss's colour was measured against
-three brighter bakes and cost too much in every one.
+**The contrast figures decided how dark, and launching the client corrected
+them.** Over `theme.colour.photoScrim` — the token that already exists for
+text on a photograph, black at 0.62 — the shipped asset measures **7.93:1 on
+the brightest moss a letter can land on** and 14.33:1 on the mean. The worst
+case is the number that matters: a single bright tuft under the tagline is
+the failure, not the average.
+
+It shipped at brightness 0.60 for one commit and was wrong. That figure was
+measured against the gradient in a mock-up rather than against the token the
+app actually uses, and the real scrim is far stronger — so the band arrived
+**double-darkened**, holding AAA at 11.64:1 with the moss gone almost black.
+A photograph of nothing. Rebaked at 0.86 after driving the real client and
+looking at it, which is the only way this class of fault has ever been found
+here. Going further is a cliff: an unmodified frame measures 6.40:1 and
+drops below AAA.
 
 **The rule under the title went from gold to cream.** The book's gold reads
 at about 3.9:1 against the scrimmed moss, which made the one surviving

@@ -48,10 +48,21 @@ BAND_WIDTH = 1200
 CROP_FROM_BOTTOM = True
 CROP_Y_FRACTION = 0.6486          # 3000 / 4624 on the original
 
-# Measured on the preview Martin chose. Dark enough for cream at AAA,
-# light enough that the moss still reads as moss rather than as a texture.
-BRIGHTNESS = 0.60
-SATURATION = 0.82
+# How dark to ship it, measured against the scrim it will actually sit
+# under -- `theme.colour.photoScrim`, which is black at 0.62.
+#
+# These were 0.60 / 0.82 for one commit, calibrated against the gradient in
+# a mock-up rather than against the token. The real scrim is far stronger,
+# so the band arrived double-darkened: it held AAA at 11.64:1 and the moss
+# had gone almost black, which is a photograph of nothing. Found by
+# launching the client and looking, which is the only way this sort of
+# fault has ever been found in this project.
+#
+# Worst case over photoScrim at this bake is 7.93:1 -- still AAA, on the
+# brightest moss a letter can land on. Going further is the cliff: an
+# unmodified frame measures 6.40:1 and drops below it.
+BRIGHTNESS = 0.86
+SATURATION = 1.02
 
 MARK_PX = 168                      # 56pt at 3x
 CAP = ("M 96 286 C 96 60 416 60 416 286 C 416 304 362 312 256 312 "
