@@ -35,51 +35,69 @@ import argparse
 import pathlib
 
 HERE = pathlib.Path(__file__).parent
-INK, PAPER = "#231e17", "#f6f3ea"
+# The mark is cream on moss as of 2026-10-31. It was ink on paper, an
+# outline, until then. Both halves of that changed and for different
+# reasons, both measured.
+#
+# **Filled rather than outlined.** An outline's only mass is its stroke, so
+# the old mark was 18.1% ink at a true 48 px store tile and its luminance was
+# 211 against the white a listing is drawn on -- it had no edge and nothing
+# to see. Filling the same paths takes it to about 32% without moving a
+# control point.
+#
+# **Cream on moss rather than ink on paper.** Against the cream mark the moss
+# carries 5.7:1, and against a white store page 7.4:1 where the book's gold
+# managed 4.7. It is also the colour nothing else on a phone's home screen is
+# using.
+CREAM, MOSS = "#f6f3ea", "#4e6e3f"
 
-# Round five's geometry, read off `round5/m4-outline.svg`.
-CAP = ("M 62 268 C 62 114 452 114 452 268 "
-       "C 452 284 392 292 257 292 C 122 292 62 284 62 268 Z")
+# Round five's cap, raised and narrowed on 2026-10-31. This is the only edit
+# to Martin's original geometry anywhere in the project, and it is here
+# because a launcher masks to a circle.
+#
+# A circle has the same margin in every direction, so a drawing fits one when
+# its own reach is even. Measured as a fraction of the tile's radius, the
+# flat cap reached 0.82 sideways and 0.53 upward -- a spread of 0.29, nearly
+# touching at the sides with twice that gap above it. It did not clip; it sat
+# lopsidedly, which reads as a drawing both too big and floating. The dome
+# reaches 0.62 and 0.71, a spread of 0.09.
+CAP = ("M 96 286 C 96 60 416 60 416 286 "
+       "C 416 304 362 312 256 312 C 150 312 96 304 96 286 Z")
 
 # The same stem, with the closing `Z` gone. That `Z` drew a straight line
-# from (309,290) back to (205,290) -- across the top of the stem, inside the
-# cap. It is the only stroke being *removed* anywhere in this file.
+# across the top of the stem, inside the cap. It is the only stroke being
+# *removed* anywhere in this file, and it survived the cap change untouched.
 #
 # Two consequences of opening a path, both handled here rather than left to
 # show up at 220 px:
 #
-# The ends move from y=290 to y=292, which is the cap underside's own
-# centreline, so each end sits in the middle of that 30-wide stroke instead
-# of just inside its lower edge.
+# The ends sit on the cap underside's own centreline, so each end is in the
+# middle of that 30-wide stroke instead of just inside its lower edge.
 #
 # And the ends take a BUTT cap rather than the round one the rest of the
 # drawing uses. A round cap is a half-disc of radius 15 centred on the
 # endpoint, and at the stem's near-vertical tangent it bulged out below the
 # cap as a small nub on each side. A butt cap is a flat edge along the
 # tangent, which the cap's underside swallows completely.
-STEM_OPEN = ("M 205 292 C 198 348 194 400 199 432 "
-             "C 204 464 310 464 315 432 C 320 400 316 348 309 292")
+STEM_OPEN = ("M 206 312 C 199 374 195 432 200 466 "
+             "C 205 496 307 496 312 466 C 317 432 313 374 306 312")
 
-DY = -16
-RING = "M 171 330 C 214 314 300 314 343 330"
-VOLVA = "M 168 424 C 160 468 354 468 346 424"
+# Centres the ink box in the 512 canvas. `build_icons.py` measures and
+# recentres anyway, so this is for anything that uses the SVG directly.
+DY = -22
 
 
-def mark(stroke: int = 30, ground: str | None = PAPER,
-         ring: bool = False, volva: bool = False, ink: str = INK) -> str:
+def mark(stroke: int = 30, ground: str | None = MOSS,
+         ink: str = CREAM) -> str:
     bg = (f'<rect width="512" height="512" fill="{ground}"/>' if ground else "")
     # The stem's two open ends are the only butt caps in the drawing; see
     # the note on STEM_OPEN.
     body = (f'<path d="{CAP}"/>'
             f'<path d="{STEM_OPEN}" stroke-linecap="butt"/>')
-    if ring:
-        body += f'<path d="{RING}"/>'
-    if volva:
-        body += f'<path d="{VOLVA}"/>' 
     return (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" '
         f'width="512" height="512">{bg}'
-        f'<g fill="none" stroke="{ink}" stroke-width="{stroke}" '
+        f'<g fill="{ink}" stroke="{ink}" stroke-width="{stroke}" '
         f'stroke-linejoin="round" stroke-linecap="round" '
         f'transform="translate(0,{DY})">{body}</g></svg>'
     )
@@ -99,11 +117,11 @@ def main() -> int:
 
     # Useful siblings, same drawing.
     (HERE / "funga-mark-transparent.svg").write_text(mark(ground=None))
-    (HERE / "funga-mark-reversed.svg").write_text(mark(ground=INK, ink=PAPER))
+    (HERE / "funga-mark-reversed.svg").write_text(mark(ground=CREAM, ink=MOSS))
 
     print(f"  {out.relative_to(HERE.parent.parent)}")
     print("  funga-mark-transparent.svg   (no ground, for placing)")
-    print("  funga-mark-reversed.svg      (paper on ink)")
+    print("  funga-mark-reversed.svg      (moss on cream, for pale grounds)")
     return 0
 
 

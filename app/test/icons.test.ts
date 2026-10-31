@@ -106,9 +106,12 @@ describe('the icon set', () => {
   });
 
   it('sets the adaptive background to the app paper, not white', () => {
-    // The mark is drawn on #f6f3ea. A white plate behind it shows as a ring
-    // of the wrong cream once a launcher masks it to a circle.
-    expect(config.android.adaptiveIcon.backgroundColor).toBe('#f6f3ea');
-    expect(config.splash.backgroundColor).toBe('#f6f3ea');
+    // The mark is drawn on moss as of 2026-10-31. A ground that disagrees
+    // with the one `build_icons.py` composites onto shows as a ring of the
+    // wrong colour the moment a launcher masks the icon to a circle -- which
+    // is what every launcher on Martin's phone does. It was #f6f3ea, and the
+    // same failure applied then; only the colour has changed.
+    expect(config.android.adaptiveIcon.backgroundColor).toBe('#4e6e3f');
+    expect(config.splash.backgroundColor).toBe('#4e6e3f');
   });
 });

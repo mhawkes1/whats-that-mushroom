@@ -85,24 +85,46 @@ a verdict, and it still holds.
 `dome-canopy-on-paper.svg` is the in-app lockup, for the masthead and
 anywhere there is no tile to sit in.
 
-## What applying it costs
+## Applied, 2026-10-31
 
-- `theme.ts` takes the eleven values. `accent` becoming moss removes gold
-  from every screen at once, because it is already a named role.
-- **`app/test/theme.test.ts` will fail, and should.** It bars any palette
-  colour that is dominantly green and is not declared chrome; moss is now
-  the brand, so that declaration has to be re-stated rather than bypassed.
-  It also pins the emphasis ordering, which must still put a DEADLY row
-  heavier than a TOXIC one on the new ground, and the AAA floor for
-  `danger` on every ground it appears on.
-- `app.json`'s `adaptiveIcon.backgroundColor` moves from `#f6f3ea` to the
-  mark's ground, and `app/test/icons.test.ts` pins it.
-- `docs/screenshots/` and `docs/walkthrough.html` both show the old palette
-  and need regenerating from the real client afterwards.
+It is no longer a specification. `theme.ts` carries the values, the screens
+use them, the icons are generated from the moss mark, and the client was
+driven through the consent gate to Home to look at it.
 
-None of that is hard. All of it is a separate commit from this one, because
-a palette change that drags its own tests with it should be reviewable on
-its own.
+Two tokens were added that this document did not originally name, because
+the ink panel needed them: `canopyInk` (`#1f2b1a`), the one block of solid
+colour in the app, and `onCanopyInk` (`#c2cfb6`) for body text on it.
+`onAccent` is right for the bold leads and too loud for three paragraphs.
+
+**`theme.test.ts` moved with the palette, which was the review.** Exactly
+one assertion failed when the palette landed — `accent is not green unless
+it is chrome` — and that is the guard working rather than an obstacle. The
+allowlist is now `GREEN_BY_DESIGN` and says in a paragraph what it licences.
+Because an allowlist that grows is one that stops meaning anything, a new
+test underneath it names the colours that can never be green whatever anyone
+appends: both hazard colours and their surfaces, `confident`, and all three
+text colours. Changing those now means deleting an assertion with a reason
+beside it.
+
+Three further guards came with the ink panel: both weights of text on it
+clear AAA (14.6:1 and 9.1:1), it is heavier against the page than the accent
+control is — so the loudest thing on the home screen stays the sentence
+about not eating things rather than a button — and `onCanopyInk` is
+unusable on the page, so it cannot be reached for as a general muted shade.
+
+**`canopyInk` is a near-black green that the hue test does not flag.** It
+reads `g - r = 12`, one short of the threshold; channel gaps shrink with
+luminance and CLAUDE.md has the blind spot written up. It is listed as
+green-by-design anyway, because the list is a statement of intent and not a
+record of what a regex caught.
+
+The icon moved too: `mark.py` now draws the domed cap filled in cream on
+moss, `build_icons.py` composites onto `#4e6e3f`, and `app.json`'s two
+background colours and the test that pins them moved with it.
+`build_masthead.py` imports the paths from `mark.py` rather than keeping its
+own copy, so the masthead's mushroom and the launcher's cannot drift.
+
+472 Python tests, 167 client tests, typecheck clean.
 
 ## The masthead, 2026-10-31
 

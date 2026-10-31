@@ -99,10 +99,26 @@ describe('labels on filled controls stay readable', () => {
 describe('green never states an outcome', () => {
   /**
    * The hue test, rather than a list of names: any future colour that is
-   * dominantly green has to justify itself here. `canopy` and `lichen` are
-   * allowed because they are chrome; `canopySurface` is a near-white tint.
+   * dominantly green has to come here and justify itself.
+   *
+   * **`accent` joined this list on 2026-10-31 and that is a real
+   * loosening**, so it is worth being exact about what it does and does not
+   * licence. Green became the brand: the masthead, the tab glyphs, the count
+   * tile for species the app could name, and the button that opens the
+   * camera. None of those states an outcome about a mushroom. The original
+   * argument in `POSITIONING.md` was about green *attached to something* --
+   * a verdict, a hazard line, a confidence marker -- and that is untouched.
+   *
+   * Because an allowlist that grows is an allowlist that stops meaning
+   * anything, the test below this one names the colours that can never be
+   * green whatever anyone adds here. If a future change wants `confident` or
+   * a hazard colour in moss, it has to delete an assertion with a reason
+   * written next to it, rather than appending a string.
    */
-  const CHROME = new Set(['canopy', 'lichen', 'canopySurface']);
+  const GREEN_BY_DESIGN = new Set([
+    'accent', 'canopy', 'lichen', 'canopySurface', 'canopyInk', 'onCanopyInk',
+  ]);
+  const CHROME = GREEN_BY_DESIGN;
 
   function isGreen(hex: string): boolean {
     const v = hex.replace('#', '');
@@ -113,6 +129,32 @@ describe('green never states an outcome', () => {
   it.each(Object.entries(theme.colour))('%s is not green unless it is chrome', (name, hex) => {
     if (CHROME.has(name)) return;
     expect(isGreen(hex), `${name} (${hex}) is green and is not chrome`).toBe(false);
+  });
+
+  it('the colours that state something are never green, allowlist or not', () => {
+    // The backstop for the paragraph above. These are the colours attached
+    // to a claim about a mushroom rather than to the app's own furniture,
+    // and no amount of brand evolution makes a green one of them correct.
+    // `danger` and `caution` because a hazard in the colour of permission is
+    // the single worst thing this palette could do; `confident` because it
+    // sits beside a species name; the text colours because a sentence about
+    // a mushroom is the most direct claim the app makes.
+    for (const name of [
+      'danger',
+      'dangerSurface',
+      'caution',
+      'cautionSurface',
+      'confident',
+      'text',
+      'textMuted',
+      'textFaint',
+    ] as const) {
+      expect(
+        GREEN_BY_DESIGN.has(name),
+        `${name} states something; it must never be listed as green by design`,
+      ).toBe(false);
+      expect(isGreen(theme.colour[name]), `${name} is ${theme.colour[name]}`).toBe(false);
+    }
   });
 
   it('confident is not green, because it is attached to an identification', () => {
@@ -126,6 +168,34 @@ describe('green never states an outcome', () => {
       parseInt(theme.colour.confident.replace('#', '').slice(i, i + 2), 16),
     );
     expect(b).toBeGreaterThan(r + 20);
+  });
+});
+
+describe('the ink panel is readable', () => {
+  /**
+   * The one block of solid colour in the app, carrying the paragraph that
+   * is the product's entire argument. Two colours sit on it and both have
+   * to work, because a panel nobody can read is worse than the cream card
+   * it replaced -- that one was merely invisible as an object.
+   */
+  it('both weights of text clear AAA on the ink panel', () => {
+    expect(contrast(theme.colour.onAccent, theme.colour.canopyInk)).toBeGreaterThanOrEqual(7);
+    expect(contrast(theme.colour.onCanopyInk, theme.colour.canopyInk)).toBeGreaterThanOrEqual(7);
+  });
+
+  it('the panel is the heaviest thing on the page', () => {
+    // Heavier than the accent control, which is the only other filled
+    // element. If that ever inverts, the loudest thing on the home screen
+    // becomes a button rather than the sentence about not eating things.
+    const weight = (hex: string) => contrast(hex, theme.colour.background);
+    expect(weight(theme.colour.canopyInk)).toBeGreaterThan(weight(theme.colour.accent));
+  });
+
+  it('body text on the panel is not usable on the page', () => {
+    // So it cannot be reached for as a general muted colour; it is a role,
+    // not a shade. Same mistake shape as `color: theme.colour.background`
+    // for a label on a filled button.
+    expect(contrast(theme.colour.onCanopyInk, theme.colour.background)).toBeLessThan(2.5);
   });
 });
 

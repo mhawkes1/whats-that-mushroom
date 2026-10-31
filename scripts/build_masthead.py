@@ -98,11 +98,24 @@ BRIGHTNESS = 0.92
 SATURATION = 1.02
 
 MARK_PX = 168                      # 56pt at 3x
-CAP = ("M 96 286 C 96 60 416 60 416 286 C 416 304 362 312 256 312 "
-       "C 150 312 96 304 96 286 Z")
-STEM = ("M 206 312 C 199 374 195 432 200 466 C 205 496 307 496 312 466 "
-        "C 317 432 313 374 306 312")
-CREAM = "#f6f3ea"
+
+
+def _mark_geometry():
+    """The launcher icon's own paths, imported rather than copied.
+
+    These were duplicated here for one commit, which is exactly how the
+    masthead's mushroom and the launcher's would quietly stop being the same
+    drawing -- the ebook's field data is generated from the taxonomy for the
+    same reason, and two hand-kept copies of anything in this project have
+    drifted every time. `docs/logo/mark.py` is the source of truth; this
+    reads it.
+    """
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "_funga_mark", ROOT / "docs" / "logo" / "mark.py")
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m.CAP, m.STEM_OPEN, m.DY, m.CREAM
 
 
 def build_band(source: Path, out: Path) -> tuple[int, int]:
@@ -140,13 +153,14 @@ def build_mark(out: Path) -> None:
     dependency for a decoration. A PNG generated from the same path data the
     icons come from cannot drift from them.
     """
+    cap, stem, dy, cream = _mark_geometry()
     svg = (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" '
         f'width="{MARK_PX}" height="{MARK_PX}">'
-        f'<g fill="{CREAM}" stroke="{CREAM}" stroke-width="33.3" '
+        f'<g fill="{cream}" stroke="{cream}" stroke-width="30" '
         f'stroke-linejoin="round" stroke-linecap="round" '
-        f'transform="translate(256,216) scale(0.90) translate(-256,-256)">'
-        f'<path d="{CAP}"/><path d="{STEM}" stroke-linecap="butt"/></g></svg>'
+        f'transform="translate(0,{dy})">'
+        f'<path d="{cap}"/><path d="{stem}" stroke-linecap="butt"/></g></svg>'
     )
     js = r"""
 const { chromium } = require('playwright');

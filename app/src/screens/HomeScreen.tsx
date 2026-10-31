@@ -48,14 +48,20 @@ export function HomeScreen({ navigation }: { navigation: any }) {
       <AppHeader />
 
       <View style={styles.counts}>
+        {/* Filled, where its neighbour is not. Martin's call, 2026-10-31:
+            green marks the observations the app could put a name to. The
+            line that comes with it is in `theme.ts` -- moss may mark
+            confidence in an identification and never the standing of a
+            species, which is why a hazard chip sits beside the name in the
+            log rather than taking its colour from this. */}
         <Pressable
-          style={styles.count}
+          style={[styles.count, styles.countNamed]}
           onPress={() => navigation.navigate('Me')}
           accessibilityRole="button"
           accessibilityLabel={`${counts?.species ?? 0} species named. Opens your observations.`}
         >
-          <Text style={styles.countNumber}>{counts?.species ?? 0}</Text>
-          <Text style={styles.countLabel}>
+          <Text style={[styles.countNumber, styles.countOn]}>{counts?.species ?? 0}</Text>
+          <Text style={[styles.countLabel, styles.countOn]}>
             species{'\n'}named
           </Text>
         </Pressable>
@@ -93,24 +99,29 @@ export function HomeScreen({ navigation }: { navigation: any }) {
         </Pressable>
       ) : null}
 
-      <View style={styles.panel}>
-        <Text style={styles.panelHeading}>What this app will not do</Text>
-        <Text style={styles.panelItem}>
-          <Text style={styles.lead}>It will never tell you a mushroom is safe
+      {/* The one block of solid colour in the app. This paragraph is the
+          product's whole argument and it used to be a cream card on a cream
+          field -- the same weight as the photography tips below it. */}
+      <View style={[styles.panel, styles.panelThesis]}>
+        <Text style={[styles.panelHeading, styles.panelHeadingOn]}>
+          What this app will not do
+        </Text>
+        <Text style={[styles.panelItem, styles.panelItemOn]}>
+          <Text style={[styles.lead, styles.leadOn]}>It will never tell you a mushroom is safe
           to eat.</Text> There is no such category in it. It names what it can
           and warns about recorded hazards; where there is no hazard on record
           it says nothing at all, because silence is the honest answer and
           cannot be misread as permission.
         </Text>
-        <Text style={styles.panelItem}>
-          <Text style={styles.lead}>It will refuse rather than guess.</Text> If
+        <Text style={[styles.panelItem, styles.panelItemOn]}>
+          <Text style={[styles.lead, styles.leadOn]}>It will refuse rather than guess.</Text> If
           two species that look alike from a photograph are in play and one of
           them can kill, it names neither. That is the app working, not
           failing — and it is the whole difference between this and the apps
           that answer every time.
         </Text>
-        <Text style={styles.panelItem}>
-          <Text style={styles.lead}>It cannot see what you did not
+        <Text style={[styles.panelItem, styles.panelItemOn]}>
+          <Text style={[styles.lead, styles.leadOn]}>It cannot see what you did not
           photograph.</Text> The base of the stem and the underside of the cap
           are where most answers are, and they are the parts almost everyone
           leaves in the ground.
@@ -177,6 +188,8 @@ const styles = StyleSheet.create({
     color: theme.colour.text,
   },
   countLabel: { fontSize: theme.font.small, color: theme.colour.textMuted },
+  countNamed: { backgroundColor: theme.colour.accent, borderColor: theme.colour.accent },
+  countOn: { color: theme.colour.onAccent },
 
   primary: {
     backgroundColor: theme.colour.accent,
@@ -192,16 +205,25 @@ const styles = StyleSheet.create({
 
   panel: {
     backgroundColor: theme.colour.canopySurface,
+    borderWidth: 1,
+    borderColor: theme.colour.border,
     borderRadius: theme.radius.md,
     padding: theme.spacing(2.5),
     gap: theme.spacing(1.5),
   },
+  panelThesis: {
+    backgroundColor: theme.colour.canopyInk,
+    borderColor: theme.colour.canopyInk,
+  },
+  panelHeadingOn: { color: theme.colour.lichen },
+  panelItemOn: { color: theme.colour.onCanopyInk },
+  leadOn: { color: theme.colour.onAccent },
   panelHeading: {
     fontSize: theme.font.small,
     fontWeight: '700',
     letterSpacing: 0.4,
     textTransform: 'uppercase',
-    color: theme.cover.gold,
+    color: theme.colour.canopy,
   },
   panelItem: {
     fontSize: theme.font.body,

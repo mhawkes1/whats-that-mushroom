@@ -51,7 +51,13 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "docs" / "logo" / "funga-mark.svg"
 ASSETS = ROOT / "app" / "assets"
 
-PAPER = "#f6f3ea"
+# The ground every icon is composited onto. Moss since 2026-10-31; it was
+# paper, and a white plate behind the mark used to show as a ring of the
+# wrong cream once a launcher masked to a circle. The same argument holds
+# with the new colour, which is why this is a constant and not a literal in
+# four places: `app.json`'s two backgroundColor values have to match it, and
+# `app/test/icons.test.ts` pins that they do.
+MOSS = "#4e6e3f"
 
 # Fraction of the canvas the mark's longest side fills.
 IOS_FILL = 0.62
@@ -158,10 +164,10 @@ def main() -> int:
 
     targets = [
         # name,              size, fill,          ground, transparent
-        ("icon.png",         1024, IOS_FILL,      PAPER,  False),
+        ("icon.png",         1024, IOS_FILL,      MOSS,   False),
         ("adaptive-icon.png", 1024, ANDROID_FILL, None,   True),
         ("splash-icon.png",   512, 0.70,          None,   True),
-        ("favicon.png",        48, 0.74,          PAPER,  False),
+        ("favicon.png",        48, 0.74,          MOSS,   False),
     ]
 
     jobs = []
