@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { theme } from '../lib/theme';
 
@@ -30,105 +30,140 @@ export const APP_NAME = 'Funga';
 const TAGLINE = "I'll tell you when I can't tell.";
 
 /**
- * The front page's header.
+ * The front page's masthead.
  *
- * This replaced a full reproduction of Martin Hawkes's book cover --
- * photograph, Fraunces setting, gold rule, byline -- at his request on
- * 2026-09-29. The photograph is gone; two things it carried had to survive
- * it, and one of them is the reason this component exists rather than the
- * header being inlined:
+ * **A photograph came back on 2026-10-31, and it is deliberately not of a
+ * mushroom.** The one that was here until 2026-09-29 was the book cover: a
+ * cep, filling the frame, lit like a portrait. That is the composition every
+ * foraging app opens with, and on this app it is an implication -- a prize
+ * edible presented as the first thing you see, by the one product whose
+ * whole claim is that it will not tell you what is safe to eat. It makes no
+ * claim and breaks no rule, and it says the wrong thing.
  *
- * **This now lives on the Home tab, and carries nothing but the name.**
- * The tab bar landed on 2026-10-29 and took both of its old passengers
- * with it: the emergency route went to Home as a plain button, and
- * starting another mushroom became the Observe tab, which states it more
- * plainly than any corner button could.
+ * This is a sphagnum bank from one of Martin's own frames, cropped from the
+ * third of it with no fruiting body in it at all. Woodland is what the
+ * screen should have been saying; the mushroom is the user's job, not the
+ * masthead's.
  *
- * What is left is the masthead, and it is deliberately NOT on the working
- * screen. Most apps do not put their name on the screen you use, because
- * you tapped the icon four seconds ago. The cost here was specific:
- * "Funga" tells a beginner nothing about mushrooms, and the tagline was
- * written to carry exactly that. On Home, "what is this app" is the
- * question being asked, so the masthead earns its space.
+ * **The darkening is baked into the asset, not applied here.** The band
+ * carries cream text, and a filter applied at render time is a second thing
+ * that has to arrive. On a slow decode the photograph can paint before the
+ * overlay does, and for that frame the title is cream on sunlit moss --
+ * the one state this image must never be in. `scripts/build_masthead.py`
+ * ships it dark, so the worst case is a dark band with no text yet.
  *
- * **The emergency route is NOT here any more.** It was, from the cover
- * onwards, because it is the one control that must never need a scroll.
- * Martin dropped it from the header on 2026-10-29, having seen that the
- * capture screen already carries a full-width emergency button and
- * wanting this corner for starting another mushroom.
+ * **The scrim is `photoScrim` and the text is `onAccent`, which is the
+ * existing rule rather than a new one.** What sits under this scrim is a
+ * photograph, so it is not themed and cannot be reasoned about from the
+ * palette -- which is exactly why `theme.ts` says text on it is `onAccent`
+ * and never `text`. Measured against this image at the token's own 0.62:
+ * worst case 11.63:1 on the brightest moss a letter can land on, mean
+ * 16.73:1. The first number is the one that matters; a single bright tuft
+ * under the tagline is the failure, not the average.
  *
- * The no-scroll guarantee did not go with it. That button is now PINNED
- * outside the capture screen's ScrollView, so it is on screen whatever
- * the user has scrolled to -- which it was not before, on any real phone.
- * Dropping the header control therefore made the route more reliable
- * rather than less, but only because the pinning came with it. If a
- * future change unpins it, the guarantee is gone and nothing in this
- * component will say so; `emergencyRoute.test.ts` is what holds the line.
+ * Those figures are why the asset is as dark as it is. At the brightness
+ * the preview was judged on, the worst case fell to 4.10:1 -- legible for
+ * the title, below AA for the tagline. Keeping more of the moss's colour
+ * was measured and cost too much.
  *
- * The brief history, because it keeps mattering: the cover pinned it to
- * its top corner; removing the cover nearly cost the app its panic
- * button; drawing it as a plus sign in the add-a-new-one corner made
- * users reach for it to add a mushroom, which is what this corner now
- * actually does.
+ * **The mark is a PNG because the client has no SVG renderer**, and adding
+ * one to draw two curves would be a dependency for a decoration. It is
+ * generated from the same path data the launcher icons come from, so the
+ * two cannot drift.
  *
- * **A little of the book's identity.** The gold rule and the serif title
- * remain. They used to be reinforcement for a shared name; since the rename
- * they are the *only* thread back to the printed guide, which makes them
- * more load-bearing than they were, not less. The typeface is still loaded
- * and still never awaited: if Fraunces has not arrived, the title renders in
- * the platform serif rather than not at all.
+ * **This lives on Home and not on the working screen.** Most apps do not
+ * name themselves on the screen you use, because you tapped the icon four
+ * seconds ago. The cost here was specific: "Funga" tells a beginner nothing
+ * about mushrooms, and the tagline was written to carry exactly that. On
+ * Home, "what is this app" is the question being asked, so the masthead
+ * earns its space.
+ *
+ * **The emergency route is NOT here.** It was, from the book cover onwards,
+ * because it is the one control that must never need a scroll. Martin
+ * dropped it from the header on 2026-10-29: Home carries it as a plain
+ * button and the capture screen's own is pinned outside its ScrollView, so
+ * it is on screen whatever the user has scrolled to -- which it was not
+ * before, on any real phone. Restoring a photograph to this component is
+ * exactly the kind of change that cost the app its panic button last time.
+ * It did not this time, and `emergencyRoute.test.ts` is what holds that
+ * line rather than this comment.
  */
 export function AppHeader() {
   return (
     <View style={styles.header}>
-      <View style={styles.titleBlock}>
+      <Image
+        source={require('../../assets/masthead.jpg')}
+        style={styles.photo}
+        resizeMode="cover"
+        // Decorative. The name is read out by the title below it, and a
+        // screen reader announcing "photograph of moss" before the app's
+        // own name is noise.
+        accessible={false}
+        accessibilityElementsHidden
+        importantForAccessibility="no"
+      />
+      <View style={styles.scrim} />
+
+      <View style={styles.block}>
+        <Image
+          source={require('../../assets/mark-cream.png')}
+          style={styles.mark}
+          resizeMode="contain"
+          accessible={false}
+          accessibilityElementsHidden
+          importantForAccessibility="no"
+        />
         <Text style={styles.title} allowFontScaling={false}>
           {APP_NAME}
         </Text>
         <View style={styles.rule} />
         <Text style={styles.tagline}>{TAGLINE}</Text>
       </View>
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  // The woodland ground. Green is allowed here and nowhere that states an
-  // outcome: this band names the app, not a mushroom, so it cannot be read
-  // as permission. See the note at the top of `theme.ts`.
+  // Full bleed. HomeScreen insets its content by spacing(3) and the masthead
+  // is the one block that should touch the edges, so it pulls back out by
+  // exactly that much. A band with a margin reads as a card about the app
+  // rather than as the top of it.
   header: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    gap: theme.spacing(2),
-    backgroundColor: theme.colour.canopySurface,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colour.lichen,
-    borderRadius: theme.radius.md,
-    paddingHorizontal: theme.spacing(2),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    marginBottom: theme.spacing(1),
+    height: 150,
+    marginHorizontal: -theme.spacing(3),
+    marginTop: -theme.spacing(3),
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  titleBlock: { flex: 1 },
+  photo: { ...StyleSheet.absoluteFillObject, width: undefined, height: undefined },
+  // Not a new colour: the palette's own scrim for text over a photograph.
+  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: theme.colour.photoScrim },
+
+  block: { alignItems: 'center', paddingHorizontal: theme.spacing(2) },
+  mark: { width: 44, height: 44 },
   title: {
     fontFamily: theme.cover.display,
     fontSize: 30,
     lineHeight: 36,
-    color: theme.colour.text,
+    marginTop: theme.spacing(0.5),
+    // Over a photograph, never `text`. See the note on `photoScrim`.
+    color: theme.colour.onAccent,
   },
-  // The book's gold, kept deliberately: it is the one visual thread back to
-  // the printed guide now the photograph has gone.
+  // What is left of the book's rule. It was the gold until the masthead went
+  // over a photograph, where gold at 3.9:1 against the scrimmed moss was the
+  // faintest thing on the screen. Cream is the same gesture and legible.
   rule: {
-    height: 2,
-    width: 56,
-    backgroundColor: theme.cover.gold,
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    height: 3,
+    width: 44,
+    backgroundColor: theme.colour.onAccent,
+    opacity: 0.85,
+    marginTop: theme.spacing(0.75),
+    marginBottom: theme.spacing(0.75),
   },
   tagline: {
     fontSize: theme.font.small,
-    color: theme.colour.textMuted,
+    color: theme.colour.onAccent,
+    textAlign: 'center',
   },
 });
