@@ -16,8 +16,8 @@ the one state this image must never be in. Shipping it dark means the worst
 case is a dark band with no text yet, rather than text nobody can read.
 
 **Which photograph.** Martin's, 31 October 2026: a red *Russula* on a
-sphagnum bank. The crop is the bottom third, full width, which holds no
-mushroom and -- unlike the frame this replaced -- no conifer needles and no
+sphagnum bank. The crop is the TOP third, full width, which holds no
+mushroom and -- unlike the frames this replaced -- no conifer needles and no
 twigs. Two bands were shipped before it, both from a bolete-on-moss frame,
 and both had debris lying across the moss just above the title; the eye goes
 to a stick before it goes to the name.
@@ -75,26 +75,33 @@ BAND_WIDTH = 1200
 # source region is still 2,472px wide against a 1,200px output, so nothing
 # is upscaled.
 CROP_X_FRACTION = 0.0             # full width: this frame needs no trimming
-CROP_FLUSH_BOTTOM = True          # the clean sheet of moss is the bottom third
+CROP_FLUSH_BOTTOM = False         # the TOP third. See below.
 
-# How dark to ship it, measured against the scrim it will actually sit
-# under -- `theme.colour.photoScrim`, which is black at 0.62.
+# **Top of the frame, not the bottom, and the band is lifted rather than
+# darkened.** Both of those changed on 2026-10-31 after Martin said the moss
+# looked like too much of a close-up, which it was.
 #
-# **This frame needs almost no darkening.** Unmodified, its worst case over
-# the real scrim is 7.50:1 -- already AAA on the brightest moss a letter can
-# land on. The 8% below comes off for headroom, not for legibility, and
-# takes it to 8.4:1.
+# The first thing to understand is what could not fix it. The band was
+# already cut from the frame's full width, so there was no zooming out left
+# to do -- at a fixed 2.32:1, taking more vertical scene means cropping the
+# sides, which zooms further IN. A close-up frame stays a close-up.
 #
-# That is worth knowing because the two frames before it did need it, and
-# the first of those was got wrong in an instructive way: it was baked
-# against the gradient in a mock-up rather than against the token the app
-# uses, arrived double-darkened at 11.64:1, and the moss Martin chose for
-# being moss had gone almost black. A photograph of nothing. Found by
-# launching the client and looking at it, which is the only way this class
-# of fault has ever been found here.
+# What fixed it is that the top of this photograph is focused past the moss:
+# soft grass across the left, finer moss behind. It reads as a woodland floor
+# at walking distance rather than a macro of one cushion. Honest about why --
+# it is depth of field, not distance.
 #
-# So: measure the frame, do not inherit the last frame's numbers.
-BRIGHTNESS = 0.92
+# And it is bright enough to carry cream with room to spare, which the bottom
+# third was not: worst case over `theme.colour.photoScrim` is 8.3:1 at a
+# brightness of 1.12, so the band is *lifted* 12% rather than dimmed. The
+# bottom third needed dimming to 0.92 for 8.4:1. Unmodified this band
+# measures 9.4:1.
+#
+# The rule the earlier frames taught still holds and is the reason this is a
+# constant rather than a literal: measure the frame, do not inherit the last
+# frame's numbers. One of them was baked against a mock-up's gradient instead
+# of the real token, arrived double-darkened, and the moss went black.
+BRIGHTNESS = 1.12
 SATURATION = 1.02
 
 MARK_PX = 168                      # 56pt at 3x

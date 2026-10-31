@@ -154,19 +154,31 @@ a second thing that has to arrive; on a slow decode the photograph can paint
 before the overlay does, and for that frame the title is cream on sunlit
 moss. Shipping it dark makes the worst case a dark band with no text yet.
 
-**This frame needs almost no darkening, and that was not true of the last
-two.** Unmodified, its worst case over `theme.colour.photoScrim` is
-**7.50:1** — already AAA on the brightest moss a letter can land on. It ships
-at 0.92 brightness, which is headroom rather than legibility, and measures
-8.4:1.
+**It is the TOP third of the frame, and the band is lifted rather than
+darkened.** Both changed on 31 October after Martin said the moss looked
+like too much of a close-up, which it did.
 
-The frame before it did need darkening, and I got that wrong in a way worth
-recording: it was baked against the gradient in a mock-up instead of against
-the token the app actually uses, so it arrived **double-darkened** — AAA at
-11.64:1, with the moss gone almost black. A photograph of nothing. Found by
-driving the real client and looking at it, which is the only way this class
-of fault has ever been found here. **Measure the frame; do not inherit the
-last frame's numbers.**
+What could *not* fix it is the useful part. The band was already cut from
+the frame's full width, so there was no zooming out left: at a fixed 2.32:1,
+taking more vertical scene means cropping the sides, which zooms further
+**in**. A close-up frame stays a close-up however it is cropped, and the two
+other candidate frames both had their mushroom sitting in the receding-moss
+zone.
+
+The top of this photograph is focused past the moss — soft grass across the
+left, finer moss behind — so it reads as a woodland floor at walking
+distance rather than a macro of one cushion. Honest about why: that is depth
+of field, not distance.
+
+It is also bright enough to carry cream with room to spare, which the bottom
+third was not. Worst case over `theme.colour.photoScrim` is **8.3:1** at a
+brightness of **1.12** — the band is *lifted* 12%, where the bottom third had
+to be dimmed to 0.92 for a comparable figure. Unmodified it measures 9.4:1.
+
+The rule the earlier frames taught still holds: **measure the frame, do not
+inherit the last frame's numbers.** One of them was baked against a mock-up's
+gradient instead of the real token, arrived double-darkened at 11.64:1, and
+the moss went black.
 
 **The rule under the title went from gold to cream.** The book's gold reads
 at about 3.9:1 against the scrimmed moss, which made the one surviving
