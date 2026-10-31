@@ -16,7 +16,7 @@ the one state this image must never be in. Shipping it dark means the worst
 case is a dark band with no text yet, rather than text nobody can read.
 
 **Which photograph.** Martin's, 31 October 2026: a red *Russula* on a
-sphagnum bank. The crop is the TOP third, full width, which holds no
+sphagnum bank. The crop is the bottom third, full width, which holds no
 mushroom and -- unlike the frames this replaced -- no conifer needles and no
 twigs. Two bands were shipped before it, both from a bolete-on-moss frame,
 and both had debris lying across the moss just above the title; the eye goes
@@ -75,33 +75,34 @@ BAND_WIDTH = 1200
 # source region is still 2,472px wide against a 1,200px output, so nothing
 # is upscaled.
 CROP_X_FRACTION = 0.0             # full width: this frame needs no trimming
-CROP_FLUSH_BOTTOM = False         # the TOP third. See below.
+CROP_FLUSH_BOTTOM = True          # the bottom third. See below.
 
-# **Top of the frame, not the bottom, and the band is lifted rather than
-# darkened.** Both of those changed on 2026-10-31 after Martin said the moss
-# looked like too much of a close-up, which it was.
+# **Bottom third of the frame, sharp, dimmed to 0.92.** Martin's call on
+# 2026-10-31, having seen both running in the client.
 #
-# The first thing to understand is what could not fix it. The band was
-# already cut from the frame's full width, so there was no zooming out left
-# to do -- at a fixed 2.32:1, taking more vertical scene means cropping the
-# sides, which zooms further IN. A close-up frame stays a close-up.
+# It went to the top third for a few hours, because he said this band read
+# as too much of a close-up -- which it does. The top is focused past the
+# moss and reads as a woodland floor at walking distance rather than a macro
+# of one cushion. Shown side by side in the app he preferred this one: the
+# top band's softness is depth of field, not distance, and a blurred
+# masthead loses the moss texture that made the photograph worth using.
 #
-# What fixed it is that the top of this photograph is focused past the moss:
-# soft grass across the left, finer moss behind. It reads as a woodland floor
-# at walking distance rather than a macro of one cushion. Honest about why --
-# it is depth of field, not distance.
+# Two things from that detour are worth keeping.
 #
-# And it is bright enough to carry cream with room to spare, which the bottom
-# third was not: worst case over `theme.colour.photoScrim` is 8.3:1 at a
-# brightness of 1.12, so the band is *lifted* 12% rather than dimmed. The
-# bottom third needed dimming to 0.92 for 8.4:1. Unmodified this band
-# measures 9.4:1.
+# **The crop cannot fix a close-up.** The band is already the frame's full
+# width, so at a fixed 2.32:1 there is no zooming out left -- more vertical
+# scene means cropping the sides, which zooms further IN. If a future
+# masthead reads too close, it needs a different photograph, not a different
+# crop. His other two frames were checked and both have their mushroom
+# sitting in exactly the receding-moss zone that would otherwise have solved
+# it.
 #
-# The rule the earlier frames taught still holds and is the reason this is a
-# constant rather than a literal: measure the frame, do not inherit the last
-# frame's numbers. One of them was baked against a mock-up's gradient instead
-# of the real token, arrived double-darkened, and the moss went black.
-BRIGHTNESS = 1.12
+# **Measure the frame; do not inherit the last frame's numbers.** This band
+# needs dimming to 0.92 for 8.4:1 worst case over `theme.colour.photoScrim`;
+# the top band needed *lifting* 12% for about the same figure. An earlier
+# frame was baked against a mock-up's gradient rather than the real token,
+# arrived double-darkened at 11.64:1, and the moss went black.
+BRIGHTNESS = 0.92
 SATURATION = 1.02
 
 MARK_PX = 168                      # 56pt at 3x

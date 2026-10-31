@@ -154,31 +154,30 @@ a second thing that has to arrive; on a slow decode the photograph can paint
 before the overlay does, and for that frame the title is cream on sunlit
 moss. Shipping it dark makes the worst case a dark band with no text yet.
 
-**It is the TOP third of the frame, and the band is lifted rather than
-darkened.** Both changed on 31 October after Martin said the moss looked
-like too much of a close-up, which it did.
+**It is the bottom third of the frame, sharp, dimmed to 0.92.** Worst case
+over `theme.colour.photoScrim` is **8.3:1** on the brightest moss a letter
+can land on, mean 15.6:1.
 
-What could *not* fix it is the useful part. The band was already cut from
-the frame's full width, so there was no zooming out left: at a fixed 2.32:1,
-taking more vertical scene means cropping the sides, which zooms further
-**in**. A close-up frame stays a close-up however it is cropped, and the two
-other candidate frames both had their mushroom sitting in the receding-moss
-zone.
+It spent a few hours as the *top* third, because Martin said this band read
+as too much of a close-up — which it does. The top is focused past the moss
+and reads as a woodland floor at walking distance. Seen side by side in the
+running app he preferred this one: the top band's softness is depth of
+field, not distance, and a blurred masthead gives up the moss texture that
+made the photograph worth using in the first place.
 
-The top of this photograph is focused past the moss — soft grass across the
-left, finer moss behind — so it reads as a woodland floor at walking
-distance rather than a macro of one cushion. Honest about why: that is depth
-of field, not distance.
+Two things from that detour are worth keeping.
 
-It is also bright enough to carry cream with room to spare, which the bottom
-third was not. Worst case over `theme.colour.photoScrim` is **8.3:1** at a
-brightness of **1.12** — the band is *lifted* 12%, where the bottom third had
-to be dimmed to 0.92 for a comparable figure. Unmodified it measures 9.4:1.
+**A crop cannot fix a close-up.** The band is already the frame's full
+width, so at a fixed 2.32:1 there is no zooming out left — more vertical
+scene means cropping the sides, which zooms further *in*. If a future
+masthead reads too close, it needs a different photograph, not a different
+crop. The other two frames were checked and both have their mushroom sitting
+in exactly the receding-moss zone that would otherwise have solved it.
 
-The rule the earlier frames taught still holds: **measure the frame, do not
-inherit the last frame's numbers.** One of them was baked against a mock-up's
-gradient instead of the real token, arrived double-darkened at 11.64:1, and
-the moss went black.
+**Measure the frame; do not inherit the last frame's numbers.** This band
+needs dimming to 0.92; the top band needed *lifting* 12% for about the same
+figure. An earlier frame was baked against a mock-up's gradient rather than
+the real token, arrived double-darkened at 11.64:1, and the moss went black.
 
 **The rule under the title went from gold to cream.** The book's gold reads
 at about 3.9:1 against the scrimmed moss, which made the one surviving
