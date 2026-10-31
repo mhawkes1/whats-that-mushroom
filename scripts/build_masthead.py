@@ -15,8 +15,12 @@ does, and for that frame the title is cream on a sunlit moss bank -- which is
 the one state this image must never be in. Shipping it dark means the worst
 case is a dark band with no text yet, rather than text nobody can read.
 
-**Which photograph.** Martin's, 31 October 2026: a bolete on a sphagnum bank.
-The crop is the bottom third of the frame, which holds no mushroom at all.
+**Which photograph.** Martin's, 31 October 2026: a red *Russula* on a
+sphagnum bank. The crop is the bottom third, full width, which holds no
+mushroom and -- unlike the frame this replaced -- no conifer needles and no
+twigs. Two bands were shipped before it, both from a bolete-on-moss frame,
+and both had debris lying across the moss just above the title; the eye goes
+to a stick before it goes to the name.
 That matters beyond composition -- the masthead this replaced was a choice
 edible shown as a specimen portrait, which is the opening every foraging app
 uses and an implication on an app whose whole claim is that it will not tell
@@ -44,24 +48,41 @@ ASSETS = ROOT / "app" / "assets"
 BAND_ASPECT = 306 / 132
 BAND_WIDTH = 1200
 
-# Bottom third of the frame. Sphagnum, no mushroom in it.
-CROP_FROM_BOTTOM = True
-CROP_Y_FRACTION = 0.6486          # 3000 / 4624 on the original
+# The region of the source frame to take, as fractions of its width and
+# height. Flush to the bottom edge, and in from the left.
+#
+# The first version took the full width from 65% down. That cleared the
+# mushroom but kept two things Martin spotted on the rendered masthead: a
+# conifer needle lying across the moss just above the title, and brown
+# stems along the left edge. Neither is a flaw in the photograph; both are
+# debris at the top of a band that is otherwise one even texture, and the
+# eye goes to them before it goes to the name.
+#
+# Dropping below the needle means a shorter band, which means a narrower
+# one at a fixed aspect -- so the window moves right as well as down. The
+# source region is still 2,472px wide against a 1,200px output, so nothing
+# is upscaled.
+CROP_X_FRACTION = 0.0             # full width: this frame needs no trimming
+CROP_FLUSH_BOTTOM = True          # the clean sheet of moss is the bottom third
 
 # How dark to ship it, measured against the scrim it will actually sit
 # under -- `theme.colour.photoScrim`, which is black at 0.62.
 #
-# These were 0.60 / 0.82 for one commit, calibrated against the gradient in
-# a mock-up rather than against the token. The real scrim is far stronger,
-# so the band arrived double-darkened: it held AAA at 11.64:1 and the moss
-# had gone almost black, which is a photograph of nothing. Found by
-# launching the client and looking, which is the only way this sort of
-# fault has ever been found in this project.
+# **This frame needs almost no darkening.** Unmodified, its worst case over
+# the real scrim is 7.50:1 -- already AAA on the brightest moss a letter can
+# land on. The 8% below comes off for headroom, not for legibility, and
+# takes it to 8.4:1.
 #
-# Worst case over photoScrim at this bake is 7.93:1 -- still AAA, on the
-# brightest moss a letter can land on. Going further is the cliff: an
-# unmodified frame measures 6.40:1 and drops below it.
-BRIGHTNESS = 0.86
+# That is worth knowing because the two frames before it did need it, and
+# the first of those was got wrong in an instructive way: it was baked
+# against the gradient in a mock-up rather than against the token the app
+# uses, arrived double-darkened at 11.64:1, and the moss Martin chose for
+# being moss had gone almost black. A photograph of nothing. Found by
+# launching the client and looking at it, which is the only way this class
+# of fault has ever been found here.
+#
+# So: measure the frame, do not inherit the last frame's numbers.
+BRIGHTNESS = 0.92
 SATURATION = 1.02
 
 MARK_PX = 168                      # 56pt at 3x
@@ -77,16 +98,21 @@ def build_band(source: Path, out: Path) -> tuple[int, int]:
 
     im = Image.open(source)
     w, h = im.size
-    band_h = round(w / BAND_ASPECT)
-    y = round(h * CROP_Y_FRACTION)
-    if y + band_h > h:
-        y = h - band_h
+    x0 = round(w * CROP_X_FRACTION)
+    band_w = w - x0
+    band_h = round(band_w / BAND_ASPECT)
+    y = (h - band_h) if CROP_FLUSH_BOTTOM else 0
     if y < 0:
         raise SystemExit(
-            f"{source.name} is {w}x{h}; a {BAND_ASPECT:.2f}:1 band needs "
-            f"{band_h}px of height and there is not enough below the crop point."
+            f"{source.name} is {w}x{h}; a {BAND_ASPECT:.2f}:1 band {band_w}px "
+            f"wide needs {band_h}px of height and the frame has {h}."
         )
-    band = im.crop((0, y, w, y + band_h))
+    if band_w < BAND_WIDTH:
+        raise SystemExit(
+            f"the crop is {band_w}px wide and the output is {BAND_WIDTH}px; "
+            f"that would upscale the photograph."
+        )
+    band = im.crop((x0, y, w, y + band_h))
     band = band.resize((BAND_WIDTH, round(BAND_WIDTH / BAND_ASPECT)), Image.LANCZOS)
     band = ImageEnhance.Brightness(band).enhance(BRIGHTNESS)
     band = ImageEnhance.Color(band).enhance(SATURATION)
