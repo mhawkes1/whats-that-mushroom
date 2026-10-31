@@ -150,6 +150,16 @@ last frame's numbers.**
 at about 3.9:1 against the scrimmed moss, which made the one surviving
 thread back to the printed guide the faintest thing on the screen.
 
+**The photograph itself is committed**, at `docs/design/masthead-source.jpg`,
+reduced from 3,472px to 2,000px — still ample for a 1,200px band. So
+`python scripts/build_masthead.py` with no arguments reproduces both assets
+from the repository alone. That is deliberate: this project has twice lost
+something it could have kept, run one's `calibration.json` and its
+`manifest.parquet`, and a derived asset whose source lives only on somebody's
+phone is the same mistake for less money. Regenerated from the committed
+source it measures 8.32:1 worst case, against 8.4:1 from the full-resolution
+original.
+
 `app/test/masthead.test.ts` pins the assets' presence, the scrim token, that
 every word over the photograph is `onAccent`, that the cover does not come
 back, that the tagline survives, and that both images are hidden from screen

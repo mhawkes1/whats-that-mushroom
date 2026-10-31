@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Derive the home screen's masthead assets from a photograph and the mark.
 
-    python scripts/build_masthead.py --source <photo.jpg>
+    python scripts/build_masthead.py
 
 Writes two files, neither of which is ever edited by hand:
 
@@ -42,6 +42,18 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "app" / "assets"
+
+# The photograph, committed, so the masthead is regenerable rather than
+# merely present. It is reduced from the 3,472px original to 2,000px, which
+# is still ample for a 1,200px band, because the point is reproducibility
+# and not archival. Martin has the full-resolution frame.
+#
+# This project has twice lost something it could have kept: run one's
+# `calibration.json`, which cannot be reconstructed without the images and
+# the checkpoint, and its `manifest.parquet`. A derived asset whose source
+# lives only on somebody's phone is the same shape of mistake, cheaper to
+# avoid.
+DEFAULT_SOURCE = ROOT / "docs" / "design" / "masthead-source.jpg"
 
 # The masthead is 132pt tall across a 306pt phone: 2.318:1. Rendered at 3x
 # for a modern display, with a little width in hand.
@@ -163,8 +175,9 @@ const [svgPath, outPath, size] = process.argv.slice(2);
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--source", type=Path,
-                    help="the photograph to cut the band from")
+    ap.add_argument("--source", type=Path, default=DEFAULT_SOURCE,
+                    help="the photograph to cut the band from "
+                         "(default: docs/design/masthead-source.jpg)")
     ap.add_argument("--mark-only", action="store_true")
     args = ap.parse_args()
 
@@ -174,8 +187,6 @@ def main() -> int:
 
     if args.mark_only:
         return 0
-    if not args.source:
-        ap.error("--source is required unless --mark-only")
     if not args.source.exists():
         raise SystemExit(f"no such photograph: {args.source}")
     size = build_band(args.source, ASSETS / "masthead.jpg")
