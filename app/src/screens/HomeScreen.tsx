@@ -61,13 +61,26 @@ export function HomeScreen({ navigation }: { navigation: any }) {
         </Pressable>
 
         {/* Shown beside the find count rather than buried, because in this
-            app a refusal is the product working. */}
-        <View style={styles.count}>
+            app a refusal is the product working.
+
+            It opens the log too. It was a plain View until Martin tapped it
+            on 2026-10-31 and nothing happened -- which made the refusals
+            look like a score rather than a list of observations worth
+            going back to, and that is the opposite of why the tile is
+            here. The two tiles count the same log and must behave the
+            same way; a tile that reads as tappable beside one that is
+            teaches that neither is. */}
+        <Pressable
+          style={styles.count}
+          onPress={() => navigation.navigate('Me')}
+          accessibilityRole="button"
+          accessibilityLabel={`${counts?.declined ?? 0} times I wouldn't say. Opens your observations.`}
+        >
           <Text style={styles.countNumber}>{counts?.declined ?? 0}</Text>
           <Text style={styles.countLabel}>
             times I{'\n'}wouldn't say
           </Text>
-        </View>
+        </Pressable>
       </View>
 
       {!started ? (
