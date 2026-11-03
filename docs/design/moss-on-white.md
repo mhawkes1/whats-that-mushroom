@@ -154,18 +154,30 @@ a second thing that has to arrive; on a slow decode the photograph can paint
 before the overlay does, and for that frame the title is cream on sunlit
 moss. Shipping it dark makes the worst case a dark band with no text yet.
 
-**It is the bottom 44% of the frame, in a band 180pt tall.** Worst case over
-`theme.colour.photoScrim` is 7.5:1 on the brightest moss a letter can land
-on.
+**It is the bottom third of the frame, in a band 132pt tall.** Worst case
+over `theme.colour.photoScrim` is 8.3:1 on the brightest moss a letter can
+land on.
 
-**The band grew from 150pt to 180pt because that is the only way to zoom
-out.** Martin asked twice for less close-up. At a fixed width a crop cannot
-help — more vertical scene means cropping the sides, which zooms further
-*in* — so the lever is the band's own height. 180pt takes 44% of the
-photograph against 37%, which is a third more scene and visibly smaller
-moss, and it still clears the mushroom: its stem base sits at 68% down the
-frame. Going further puts the cap in shot. It costs 30pt of screen before
-the first tile.
+**132 is where it ends up, and the route there is worth keeping because the
+complaint and the fix were about different things.** Martin asked twice for
+less close-up, and the answer that looked obvious was a taller band: at a
+fixed width a crop cannot zoom out, since more vertical scene means cropping
+the sides. So the band went to 180pt — 44% of the photograph against 37%,
+a third more scene.
+
+That was the wrong answer to the right complaint. What he had actually been
+judging, in every comparison sheet since 31 October, was the band at **2.32:1**,
+the shape the generator produced. The app's header was 306×150 = **2.04:1**,
+so `cover` filled the height and threw roughly 12% off the sides. The sheets
+had been showing a *wider, less zoomed* band than the app ever displayed —
+which is why "too close up" and "the crop in the sheet is better" were one
+complaint rather than two. He was asking for the thing he had already been
+shown.
+
+So the fix was to make the container the shape the sheets were: 132pt. 180pt
+does show more of the photograph, but it buys that by reaching further up
+into the shadowed middle of the frame and by taking 48pt more of the screen
+before the first tile.
 
 **The asset and the container disagreed for several days and nothing said
 so.** The band was generated at 306/132 while `AppHeader`'s `header` was

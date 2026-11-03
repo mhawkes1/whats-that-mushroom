@@ -135,9 +135,11 @@ const styles = StyleSheet.create({
     // the masthead shipped more zoomed than anything that had been measured.
     // `masthead.test.ts` reads both and refuses a mismatch.
     //
-    // 180 rather than 150 because at a fixed width a taller band is the only
-    // way to show more of a photograph, and the moss read as a close-up.
-    height: 180,
+    // 132 matches the band in every comparison sheet Martin has judged.
+    // The mismatch above is why the app looked more zoomed than the sheets
+    // did: at 150 against an asset cut for 132, `cover` kept the height and
+    // cropped the width.
+    height: 132,
     marginHorizontal: -theme.spacing(3),
     marginTop: -theme.spacing(3),
     overflow: 'hidden',

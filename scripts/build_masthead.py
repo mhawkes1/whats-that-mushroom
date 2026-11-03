@@ -64,11 +64,22 @@ DEFAULT_SOURCE = ROOT / "docs" / "design" / "masthead-source.jpg"
 # anything measured here, and silently. `app/test/masthead.test.ts` now reads
 # both numbers and refuses a mismatch.
 #
-# 180pt rather than 150: Martin asked twice for less zoom, and at a fixed
-# width the ONLY way to show more of a photograph is a taller band. It takes
-# 44% of the frame against 37%, which is a third more scene.
+# 132pt, which is the band Martin has been pointing at in every comparison
+# sheet since 31 October.
+#
+# This is the whole of the confusion, and it was an aspect bug rather than a
+# matter of taste. Every sheet rendered the band at the shape the generator
+# produced, 306/132 = 2.32:1. The app's header was 306x150 = 2.04:1, so
+# `cover` filled the height and threw roughly 12% off the sides. The sheets
+# were therefore showing a WIDER, less zoomed band than the app had ever
+# displayed -- so "too close up" and "the crop in the sheet is better" were
+# the same complaint, and a taller band was the wrong answer to it.
+#
+# 180pt was that wrong answer: it does show more of the frame, but it does
+# so by reaching further up into the shadowed middle of the photograph and
+# by taking 30pt more of the screen.
 HEADER_WIDTH_PT = 306
-HEADER_HEIGHT_PT = 180
+HEADER_HEIGHT_PT = 132
 BAND_ASPECT = HEADER_WIDTH_PT / HEADER_HEIGHT_PT
 # Rendered well above 3x of 306pt, with width in hand.
 BAND_WIDTH = 1200
@@ -90,7 +101,7 @@ BAND_WIDTH = 1200
 CROP_X_FRACTION = 0.0             # full width: this frame needs no trimming
 CROP_FLUSH_BOTTOM = True          # the bottom third. See below.
 
-# **Bottom 44% of the frame, sharp, dimmed to 0.92.** Martin's call on
+# **Bottom third of the frame, sharp, dimmed to 0.92.** Martin's call on
 # 2026-10-31, having seen both running in the client.
 #
 # It went to the top third for a few hours, because he said this band read
