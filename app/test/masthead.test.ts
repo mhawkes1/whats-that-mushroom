@@ -31,6 +31,44 @@ describe('the masthead', () => {
     }
   });
 
+  it('the asset is the shape of the container it goes into', () => {
+    // These disagreed for several days and nothing said so. The band was
+    // generated at 306/132 while `header` was 306x150, so `resizeMode
+    // ="cover"` scaled to fill and threw roughly 12% off the sides: the
+    // shipped masthead was more zoomed in than any version that had been
+    // measured, and the crop that reached a phone was not the crop anybody
+    // had looked at.
+    //
+    // Reading the JPEG's own SOF0 marker rather than trusting a constant,
+    // because the generator writing one number and the component using
+    // another is the exact failure.
+    const jpeg = readFileSync(resolve(APP, 'assets/masthead.jpg'));
+    let i = 2;
+    let dims: [number, number] | null = null;
+    while (i < jpeg.length - 9) {
+      if (jpeg[i] !== 0xff) { i += 1; continue; }
+      const marker = jpeg[i + 1];
+      // SOF0/1/2 carry the frame size; everything else is skipped by length.
+      if (marker >= 0xc0 && marker <= 0xc2) {
+        dims = [jpeg.readUInt16BE(i + 7), jpeg.readUInt16BE(i + 5)];
+        break;
+      }
+      i += 2 + jpeg.readUInt16BE(i + 2);
+    }
+    expect(dims, 'could not read masthead.jpg dimensions').not.toBeNull();
+
+    const header = /height:\s*(\d+)/.exec(
+      read('src/components/AppHeader.tsx').split('header: {')[1],
+    );
+    expect(header, 'AppHeader has no explicit header height').not.toBeNull();
+    const want = 306 / Number(header![1]);
+    const got = dims![0] / dims![1];
+    expect(
+      Math.abs(got - want),
+      `asset is ${got.toFixed(3)}:1 and the container is ${want.toFixed(3)}:1`,
+    ).toBeLessThan(0.02);
+  });
+
   it('puts its text on the scrim token, never a literal', () => {
     // What is underneath is a photograph. It is not themed and cannot be
     // reasoned about from the palette, which is why `theme.ts` names a

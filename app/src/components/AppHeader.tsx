@@ -129,7 +129,15 @@ const styles = StyleSheet.create({
   // exactly that much. A band with a margin reads as a card about the app
   // rather than as the top of it.
   header: {
-    height: 150,
+    // Must equal `HEADER_HEIGHT_PT` in `scripts/build_masthead.py`. The two
+    // disagreed for several days -- the asset was cut at 306/132 and the
+    // container was 306x150 -- so `cover` threw about 12% off the sides and
+    // the masthead shipped more zoomed than anything that had been measured.
+    // `masthead.test.ts` reads both and refuses a mismatch.
+    //
+    // 180 rather than 150 because at a fixed width a taller band is the only
+    // way to show more of a photograph, and the moss read as a close-up.
+    height: 180,
     marginHorizontal: -theme.spacing(3),
     marginTop: -theme.spacing(3),
     overflow: 'hidden',

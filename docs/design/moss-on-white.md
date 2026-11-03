@@ -154,30 +154,33 @@ a second thing that has to arrive; on a slow decode the photograph can paint
 before the overlay does, and for that frame the title is cream on sunlit
 moss. Shipping it dark makes the worst case a dark band with no text yet.
 
-**It is the bottom third of the frame, sharp, dimmed to 0.92.** Worst case
-over `theme.colour.photoScrim` is **8.3:1** on the brightest moss a letter
-can land on, mean 15.6:1.
+**It is the bottom 44% of the frame, in a band 180pt tall.** Worst case over
+`theme.colour.photoScrim` is 7.5:1 on the brightest moss a letter can land
+on.
 
-It spent a few hours as the *top* third, because Martin said this band read
-as too much of a close-up — which it does. The top is focused past the moss
-and reads as a woodland floor at walking distance. Seen side by side in the
-running app he preferred this one: the top band's softness is depth of
-field, not distance, and a blurred masthead gives up the moss texture that
-made the photograph worth using in the first place.
+**The band grew from 150pt to 180pt because that is the only way to zoom
+out.** Martin asked twice for less close-up. At a fixed width a crop cannot
+help — more vertical scene means cropping the sides, which zooms further
+*in* — so the lever is the band's own height. 180pt takes 44% of the
+photograph against 37%, which is a third more scene and visibly smaller
+moss, and it still clears the mushroom: its stem base sits at 68% down the
+frame. Going further puts the cap in shot. It costs 30pt of screen before
+the first tile.
 
-Two things from that detour are worth keeping.
-
-**A crop cannot fix a close-up.** The band is already the frame's full
-width, so at a fixed 2.32:1 there is no zooming out left — more vertical
-scene means cropping the sides, which zooms further *in*. If a future
-masthead reads too close, it needs a different photograph, not a different
-crop. The other two frames were checked and both have their mushroom sitting
-in exactly the receding-moss zone that would otherwise have solved it.
+**The asset and the container disagreed for several days and nothing said
+so.** The band was generated at 306/132 while `AppHeader`'s `header` was
+306×150, so `resizeMode="cover"` scaled to fill and threw roughly 12% off
+the sides: the shipped masthead was *more* zoomed than any version anyone
+had measured, and the crop that reached a phone was not the crop that had
+been looked at. `build_masthead.py` now derives the aspect from
+`HEADER_HEIGHT_PT`, and `masthead.test.ts` reads the JPEG's own SOF0 marker
+and the height out of `AppHeader.tsx` and refuses a mismatch.
 
 **Measure the frame; do not inherit the last frame's numbers.** This band
-needs dimming to 0.92; the top band needed *lifting* 12% for about the same
-figure. An earlier frame was baked against a mock-up's gradient rather than
-the real token, arrived double-darkened at 11.64:1, and the moss went black.
+needs dimming to 0.92; a band taken from the top of the same photograph
+needed *lifting* 12% for the same legibility. An earlier frame was baked
+against a mock-up's gradient rather than the real token, arrived
+double-darkened at 11.64:1, and the moss went black.
 
 **The rule under the title went from gold to cream.** The book's gold reads
 at about 3.9:1 against the scrimmed moss, which made the one surviving

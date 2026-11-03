@@ -55,9 +55,22 @@ ASSETS = ROOT / "app" / "assets"
 # avoid.
 DEFAULT_SOURCE = ROOT / "docs" / "design" / "masthead-source.jpg"
 
-# The masthead is 132pt tall across a 306pt phone: 2.318:1. Rendered at 3x
-# for a modern display, with a little width in hand.
-BAND_ASPECT = 306 / 132
+# The masthead's own shape, which MUST match `AppHeader`'s `header` height
+# or the asset is cropped on the way in.
+#
+# It did not match for several days: the band was generated at 306/132 while
+# the container was 306x150, so `resizeMode="cover"` scaled to fill and threw
+# about 12% off the sides -- the shipped masthead was more zoomed than
+# anything measured here, and silently. `app/test/masthead.test.ts` now reads
+# both numbers and refuses a mismatch.
+#
+# 180pt rather than 150: Martin asked twice for less zoom, and at a fixed
+# width the ONLY way to show more of a photograph is a taller band. It takes
+# 44% of the frame against 37%, which is a third more scene.
+HEADER_WIDTH_PT = 306
+HEADER_HEIGHT_PT = 180
+BAND_ASPECT = HEADER_WIDTH_PT / HEADER_HEIGHT_PT
+# Rendered well above 3x of 306pt, with width in hand.
 BAND_WIDTH = 1200
 
 # The region of the source frame to take, as fractions of its width and
@@ -77,7 +90,7 @@ BAND_WIDTH = 1200
 CROP_X_FRACTION = 0.0             # full width: this frame needs no trimming
 CROP_FLUSH_BOTTOM = True          # the bottom third. See below.
 
-# **Bottom third of the frame, sharp, dimmed to 0.92.** Martin's call on
+# **Bottom 44% of the frame, sharp, dimmed to 0.92.** Martin's call on
 # 2026-10-31, having seen both running in the client.
 #
 # It went to the top third for a few hours, because he said this band read
