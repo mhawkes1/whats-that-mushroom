@@ -69,15 +69,41 @@ describe('the masthead', () => {
     ).toBeLessThan(0.02);
   });
 
-  it('puts its text on the scrim token, never a literal', () => {
+  it('puts its text on a scrim token, never a literal', () => {
     // What is underneath is a photograph. It is not themed and cannot be
     // reasoned about from the palette, which is why `theme.ts` names a
     // scrim for exactly this and why `theme.test.ts` bans colour literals
     // outside that file. A hardcoded rgba() here is how SporePrintScreen
     // ended up with near-black ink on a near-black scrim.
-    expect(header()).toMatch(/theme\.colour\.photoScrim/);
+    expect(header()).toMatch(/theme\.colour\.mastheadScrim/);
     expect(header()).not.toMatch(/rgba\(/);
     expect(header()).not.toMatch(/#[0-9a-fA-F]{3,8}\b/);
+  });
+
+  it('did not take the spore print screen down with it', () => {
+    // `mastheadScrim` is 0.30 against `photoScrim`'s 0.62, and the whole
+    // justification for the lighter one is that THIS photograph is a
+    // committed file that has been measured. The spore print screen's is
+    // the user's, could be a white card in sunlight, and carries the labels
+    // saying which box holds the deposit -- on the flow that asks somebody
+    // for twelve hours. Splitting a token is how a value quietly spreads,
+    // so this pins which screen got which.
+    expect(read('src/screens/SporePrintScreen.tsx')).toMatch(/theme\.colour\.photoScrim/);
+    expect(read('src/screens/SporePrintScreen.tsx')).not.toMatch(/mastheadScrim/);
+    expect(read('src/lib/theme.ts')).toMatch(/photoScrim: 'rgba\(0, 0, 0, 0\.62\)'/);
+  });
+
+  it('haloes the lettering, because the scrim alone no longer carries it', () => {
+    // At 0.30 the worst case is 2.7:1 -- under AA and under the 3:1 large
+    // text gets. That was Martin's call with the number in front of him,
+    // and `textHalo` is what stops the tagline disappearing into a bright
+    // tuft. A contrast ratio cannot score an edged letter, so nothing else
+    // in the suite would notice this being dropped.
+    const src = header();
+    expect(src).toMatch(/textShadowColor:\s*theme\.colour\.textHalo/);
+    expect(src).toMatch(/textShadowRadius/);
+    // On both pieces of type. The title is 30px and still misses 3:1.
+    expect(src.match(/\.\.\.halo/g) ?? []).toHaveLength(2);
   });
 
   it('uses onAccent for every word over the photograph', () => {

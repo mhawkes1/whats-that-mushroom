@@ -121,12 +121,23 @@ CROP_FLUSH_BOTTOM = True          # the bottom third. See below.
 # sitting in exactly the receding-moss zone that would otherwise have solved
 # it.
 #
-# **Measure the frame; do not inherit the last frame's numbers.** This band
-# needs dimming to 0.92 for 8.4:1 worst case over `theme.colour.photoScrim`;
-# the top band needed *lifting* 12% for about the same figure. An earlier
+# **Measure the frame; do not inherit the last frame's numbers.** An earlier
 # frame was baked against a mock-up's gradient rather than the real token,
 # arrived double-darkened at 11.64:1, and the moss went black.
-BRIGHTNESS = 0.92
+#
+# **1.00 is not "no decision", it is Martin's decision of 2026-11-03.** The
+# band was dimmed to 0.92 and laid under a 0.62 scrim, for 8.3:1 and moss
+# that read as dark woodland rather than as the sphagnum in his frame. He
+# was shown the same crop at four depths with the worst case against each,
+# and chose the brightest: no dimming here, and `theme.colour.mastheadScrim`
+# at 0.30 in the client.
+#
+# The cost is stated where it is paid, in `theme.ts`: **2.7:1** on the
+# brightest tuft a letter can land on, which is under AA and under the 3:1
+# large text gets. `textHalo` carries the lettering instead. If this ever
+# needs undoing, the lever is the scrim token, not this constant -- the
+# asset is now simply the photograph.
+BRIGHTNESS = 1.00
 SATURATION = 1.02
 
 MARK_PX = 168                      # 56pt at 3x

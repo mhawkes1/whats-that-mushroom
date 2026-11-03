@@ -92,6 +92,33 @@ export const theme = {
     // against this exact value.
     photoScrim: 'rgba(0, 0, 0, 0.62)',
 
+    // The masthead's own, lighter dim, and the reason it is a SECOND token
+    // rather than a change to the one above.
+    //
+    // `photoScrim` sits over a photograph nobody has seen -- the user's, on
+    // the spore print screen, where the labels say which box holds the
+    // deposit and which holds the white card. It has to survive a white
+    // card photographed in sunlight, so it is dark and stays dark.
+    //
+    // The masthead's photograph is one committed file that has been
+    // measured. Martin's call, 2026-11-03: he wants the sphagnum to read
+    // the way it does in the frame, and at 0.62 it reads as dark woodland.
+    // At 0.30 the moss is the moss, and the worst case a letter can land
+    // on falls to **2.7:1** -- under AA, and under the 3:1 that large text
+    // gets. That is a deliberate trade and it is the whole reason the two
+    // scrims are separate values: the one that can be reasoned about moved
+    // and the one that cannot did not.
+    //
+    // `textHalo` below is what carries the lettering at this depth.
+    mastheadScrim: 'rgba(0, 0, 0, 0.30)',
+
+    // A hard shadow under cream text on a photograph. A contrast ratio
+    // measures ink against ONE background colour; a letter edged in near
+    // black against a bright tuft is legible in a way the ratio cannot
+    // score, which is why this is a mitigation for `mastheadScrim` and not
+    // a defence of it. It is not a licence to put text on anything.
+    textHalo: 'rgba(0, 0, 0, 0.9)',
+
     // Woodland chrome, now a shade family with `accent` rather than a
     // separate green. `canopy` is the deeper moss: eyebrows, active tabs,
     // rules. `canopySurface` is the tint under an advisory panel.

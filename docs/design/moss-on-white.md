@@ -154,9 +154,31 @@ a second thing that has to arrive; on a slow decode the photograph can paint
 before the overlay does, and for that frame the title is cream on sunlit
 moss. Shipping it dark makes the worst case a dark band with no text yet.
 
-**It is the bottom third of the frame, in a band 132pt tall.** Worst case
-over `theme.colour.photoScrim` is 8.3:1 on the brightest moss a letter can
-land on.
+**It is the bottom third of the frame, in a band 132pt tall.**
+
+**The scrim is 0.30, not 0.62, and the worst case is 2.7:1.** Martin's call,
+2026-11-03, made with that number in front of him. At 0.62 — with the asset
+dimmed to 0.92 on top of it — the band measured 8.3:1 and read as dark
+woodland rather than as the sphagnum in his frame, and he had been asking
+about that for three rounds under the impression it was the crop. He was
+shown the same crop at four depths with each one's worst case: 0.62 at
+8.3:1, 0.45 at 4.9:1, 0.30 at 2.7:1, and a fourth option with the
+photograph undimmed and the lettering on white beneath it at 11.9:1. He
+chose 0.30.
+
+So the asset is no longer dimmed at all, and 2.7:1 is under AA and under
+the 3:1 large text gets. `theme.colour.textHalo` is what carries the
+lettering instead — a contrast ratio scores ink against one background
+colour and cannot see a letter edged in near black. That is a mitigation
+rather than a defence, and it is written down as one in `theme.ts`,
+`AppHeader.tsx` and `build_masthead.py` so nobody later reads 0.30 as a
+value that was arrived at by measurement.
+
+**`photoScrim` kept its 0.62 and kept the spore print screen**, which is
+why there are two tokens. The photograph under that one is the user's,
+could be a white card in sunlight, and carries the labels saying which box
+holds the deposit — on the flow that asks somebody for twelve hours. A
+shared token would have taken this change straight into it.
 
 **132 is where it ends up, and the route there is worth keeping because the
 complaint and the fix were about different things.** Martin asked twice for

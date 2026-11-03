@@ -52,19 +52,33 @@ const TAGLINE = "I'll tell you when I can't tell.";
  * the one state this image must never be in. `scripts/build_masthead.py`
  * ships it dark, so the worst case is a dark band with no text yet.
  *
- * **The scrim is `photoScrim` and the text is `onAccent`, which is the
- * existing rule rather than a new one.** What sits under this scrim is a
- * photograph, so it is not themed and cannot be reasoned about from the
- * palette -- which is exactly why `theme.ts` says text on it is `onAccent`
- * and never `text`. Measured against this image at the token's own 0.62:
- * worst case 11.63:1 on the brightest moss a letter can land on, mean
- * 16.73:1. The first number is the one that matters; a single bright tuft
- * under the tagline is the failure, not the average.
+ * **The scrim is `mastheadScrim` and the text is `onAccent`.** The second
+ * half of that is the existing rule and is not negotiable: what sits under
+ * a scrim is a photograph, so it is not themed and cannot be reasoned about
+ * from the palette, which is why text on it is `onAccent` and never `text`.
  *
- * Those figures are why the asset is as dark as it is. At the brightness
- * the preview was judged on, the worst case fell to 4.10:1 -- legible for
- * the title, below AA for the tagline. Keeping more of the moss's colour
- * was measured and cost too much.
+ * The first half is new and is a deliberate trade. This used to be
+ * `photoScrim` at 0.62, with the asset dimmed to 0.92 on top of that, for a
+ * worst case of 8.3:1 -- and moss that read as dark woodland rather than as
+ * the sphagnum in the frame. Martin was shown the same crop at four depths
+ * with the worst case against each and chose the brightest, 2026-11-03.
+ *
+ * So the asset is now undimmed and the scrim is 0.30, and **the worst case
+ * is 2.7:1 on the brightest tuft a letter can land on** -- under AA, and
+ * under the 3:1 that large text gets. That number is the cost and it is
+ * written here rather than softened: a single bright tuft under the tagline
+ * is the failure, not the mean.
+ *
+ * `textHalo` is what carries the lettering at that depth. A contrast ratio
+ * scores ink against one background colour; a letter edged in near black
+ * against a bright tuft is legible in a way the ratio cannot see. It is a
+ * mitigation, not a defence, and if this is ever revisited the lever is the
+ * scrim token.
+ *
+ * **`photoScrim` keeps its 0.62 and keeps the spore print screen.** The
+ * photograph under THAT one is the user's, could be a white card in
+ * sunlight, and has never been measured because it cannot be. Splitting the
+ * token is what kept this change out of that flow.
  *
  * **The mark is a PNG because the client has no SVG renderer**, and adding
  * one to draw two curves would be a dependency for a decoration. It is
@@ -123,6 +137,17 @@ export function AppHeader() {
   );
 }
 
+// What makes cream readable over a 0.30 scrim. Offset as well as radius:
+// a radius alone is a symmetrical glow that a bright tuft swallows, where
+// an offset leaves a hard edge under each stroke. Applied to both pieces of
+// type rather than only the tagline -- the title is 30px serif, which still
+// misses the 3:1 large text gets.
+const halo = {
+  textShadowColor: theme.colour.textHalo,
+  textShadowOffset: { width: 0, height: 1 },
+  textShadowRadius: 5,
+} as const;
+
 const styles = StyleSheet.create({
   // Full bleed. HomeScreen insets its content by spacing(3) and the masthead
   // is the one block that should touch the edges, so it pulls back out by
@@ -147,8 +172,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   photo: { ...StyleSheet.absoluteFillObject, width: undefined, height: undefined },
-  // Not a new colour: the palette's own scrim for text over a photograph.
-  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: theme.colour.photoScrim },
+  // The masthead's own scrim, not `photoScrim`. See the note above: that
+  // one covers a photograph nobody has seen and stays dark.
+  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: theme.colour.mastheadScrim },
 
   block: { alignItems: 'center', paddingHorizontal: theme.spacing(2) },
   mark: { width: 44, height: 44 },
@@ -157,8 +183,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
     lineHeight: 36,
     marginTop: theme.spacing(0.5),
-    // Over a photograph, never `text`. See the note on `photoScrim`.
+    // Over a photograph, never `text`. See the note on `mastheadScrim`.
     color: theme.colour.onAccent,
+    ...halo,
   },
   // What is left of the book's rule. It was the gold until the masthead went
   // over a photograph, where gold at 3.9:1 against the scrimmed moss was the
@@ -175,5 +202,6 @@ const styles = StyleSheet.create({
     fontSize: theme.font.small,
     color: theme.colour.onAccent,
     textAlign: 'center',
+    ...halo,
   },
 });
