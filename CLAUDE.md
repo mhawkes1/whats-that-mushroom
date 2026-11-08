@@ -562,6 +562,29 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   squatting and invites an argument that costs more than a domain.
   `funga.co.uk` is the one to register, and registering it is what makes
   this identifier honest rather than merely unused.
+  **Status as of 2026-11-08: UNKNOWN, and nobody has actually checked.**
+  Martin searched 123-reg on 2026-11-08 and reported "there is no
+  funga.co.uk, but fungaapp.co.uk" -- but the screenshot shows the search
+  box reading **"Fungaapp"**, so the page is evidence about `fungaapp.*`
+  and says nothing whatever about `funga.co.uk`. A result for a different
+  string is not a negative result. The check is twenty seconds: type
+  `funga` into the same box.
+  What that search DID establish: `fungaapp.co.uk` is available at £3.99
+  for the first year, and 123-reg includes WHOIS privacy, which matters
+  because Nominet otherwise publishes a registrant address for a
+  non-trading individual.
+  **The identifier was deliberately NOT changed.** Both are still
+  `uk.co.funga.app`. Nothing is published, so there is no deadline, and
+  repointing a permanent id at `fungaapp.co.uk` on the strength of a
+  search that did not test `funga.co.uk` is the wrong order of
+  operations. If `funga.co.uk` turns out to be gone and
+  `fungaapp.co.uk` is the one bought, the change is two lines in
+  `app/app.json` -- `bundleIdentifier` and `package`, both to
+  `uk.co.fungaapp.app` -- and it must happen **before the first build
+  reaches either store**, not after.
+  The app's own name is unaffected either way. `APP_NAME` stays `Funga`;
+  a domain with `app` on the end is an infrastructure identifier of the
+  same kind as the `whats-that-mushroom` slug, and no user reads it.
 - **The title's typeface is loaded but never awaited.** `useFonts` reports an
   error as well as a loading state, and a front page that will not render
   because a font did not arrive is worse than a title in the platform serif.
