@@ -27,7 +27,7 @@ export function EmergencyScreen() {
           accessibilityLabel="Call 999"
         >
           <Text style={styles.call999Text}>Call 999</Text>
-          <Text style={styles.callHint}>Seriously unwell</Text>
+          <Text style={[styles.callHint, styles.call999Hint]}>Seriously unwell</Text>
         </Pressable>
         <Pressable
           style={styles.call}
@@ -75,7 +75,20 @@ const styles = StyleSheet.create({
   call999: { backgroundColor: theme.colour.danger, borderColor: theme.colour.danger },
   call999Text: { fontSize: theme.font.heading, fontWeight: '800', color: theme.colour.onAccent },
   callText: { fontSize: theme.font.heading, fontWeight: '800', color: theme.colour.danger },
+  // On the OUTLINED 111 button, whose ground is the page.
   callHint: { fontSize: theme.font.tiny, color: theme.colour.textMuted },
+  // And on the FILLED 999 button, whose ground is not.
+  //
+  // One style served both until 2026-11-08, and on the filled button it
+  // measured **1.12:1** -- "Seriously unwell" was all but invisible, on the
+  // one screen in this app that must never fail, under the control somebody
+  // reaches for when a child has eaten something.
+  //
+  // It is the October cream-on-cream fault exactly: a label that borrowed a
+  // colour instead of naming its role, correct only while the ground
+  // happened to suit it. `textMuted` is right on paper and meaningless on a
+  // filled control, which is what `onAccent` exists to say.
+  call999Hint: { color: theme.colour.onAccent },
   step: { flexDirection: 'row', gap: theme.spacing(1.5) },
   stepNumber: {
     fontSize: theme.font.small,

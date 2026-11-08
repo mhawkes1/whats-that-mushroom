@@ -27,6 +27,96 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+THEME = ROOT / "app" / "src" / "lib" / "theme.ts"
+
+# The page's copy of the app's palette, DERIVED rather than kept by hand.
+#
+# It was kept by hand until 2026-11-08 and it had drifted: the page was
+# still painting the app in October's paper cream with a gold accent, three
+# palette changes after `theme.ts` went moss-on-white. Nobody noticed
+# because the page renders perfectly either way -- it just shows an app
+# that no longer exists, on the most shareable surface the project has.
+#
+# Same argument as the ebook's field data being generated: two hand-kept
+# copies of one fact drift, and the drift is silent. The left-hand side is
+# the CSS variable the page's own rules use; the right is the key in
+# `theme.colour`. A key that disappears from the theme now fails the build.
+PALETTE = {
+    "bg": "background",
+    "surface": "surface",
+    "raised": "surfaceRaised",
+    "border": "border",
+    "text": "text",
+    "muted": "textMuted",
+    "faint": "textFaint",
+    "danger": "danger",
+    "danger-surface": "dangerSurface",
+    "caution": "caution",
+    "caution-surface": "cautionSurface",
+    "confident": "confident",
+    "accent": "accent",
+    "canopy": "canopy",
+    "canopy-surface": "canopySurface",
+    "on-accent": "onAccent",
+    "on-disabled": "onDisabled",
+}
+
+ROOT_BLOCK = re.compile(
+    r"(/\* The app's own palette[^*]*\*/\n)(?:  --app-[a-z-]+: [^;]+;\n)+",
+)
+
+
+def theme_colours() -> dict[str, str]:
+    """Read `colour` out of theme.ts.
+
+    A brace counter rather than a flat regex, because `theme.ts` carries
+    several objects of `name: 'value'` pairs -- `cover` among them, which is
+    where the gold this page used to use still lives -- and a flat scan
+    would mix them.
+    """
+    src = THEME.read_text()
+    start = src.index("colour: {") + len("colour: {")
+    depth, end = 1, start
+    while depth:
+        ch = src[end]
+        depth += (ch == "{") - (ch == "}")
+        end += 1
+    body = src[start:end - 1]
+    return dict(re.findall(r"^\s*(\w+): '([^']+)',", body, re.M))
+
+
+def repaint(html: str) -> tuple[str, int]:
+    """Rewrite the --app-* block from theme.ts, or refuse."""
+    colours = theme_colours()
+    missing = [k for k in PALETTE.values() if k not in colours]
+    if missing:
+        raise SystemExit(
+            "  REFUSING: theme.colour no longer has "
+            + ", ".join(missing)
+            + "\n  The page cannot be painted from a palette that moved under"
+              " it.\n  Fix PALETTE in this script against app/src/lib/theme.ts."
+        )
+    block = "".join(
+        f"  --app-{var}: {colours[key]};\n" for var, key in PALETTE.items()
+    )
+    html, n = ROOT_BLOCK.subn(lambda m: m.group(1) + block, html, count=1)
+    if not n:
+        raise SystemExit("  REFUSING: no --app-* block found in the page.")
+
+    # The other direction: a variable the CSS still uses that nothing emits
+    # any more. `--app-gold` was exactly this -- the palette dropped gold and
+    # two rules went on referring to it, which CSS resolves to nothing rather
+    # than to an error.
+    used = set(re.findall(r"var\(--app-([a-z-]+)\)", html))
+    orphans = sorted(used - set(PALETTE))
+    if orphans:
+        raise SystemExit(
+            "  REFUSING: the page uses --app-"
+            + ", --app-".join(orphans)
+            + " and nothing defines them.\n  A var() with no value silently"
+              " renders as nothing at all."
+        )
+    return html, len(PALETTE)
 
 # Confident first, then progressively less willing to answer. The capture
 # finds the verdicts in whatever order the stub happens to produce them, and
@@ -141,6 +231,7 @@ def main() -> int:
     # and the alternative is a page that silently stops rendering.
     payload = payload.replace("</", "<\\/")
     html = BLOCK.sub(lambda m: m.group(1) + payload + m.group(3), html, count=1)
+    html, n_colours = repaint(html)
     page.write_text(html)
 
     verdicts = ", ".join(s["verdict"] for s in data["scenes"])
@@ -152,6 +243,7 @@ def main() -> int:
           f"taxonomy_reviewed={data['health']['taxonomy_reviewed']}")
     print(f"  verdicts   {verdicts}")
     print(f"  follow-ups {len(data['follow_ups'])}")
+    print(f"  palette    {n_colours} colours from app/src/lib/theme.ts")
     return 0
 
 

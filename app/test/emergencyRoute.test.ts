@@ -115,3 +115,64 @@ describe('the tab structure', () => {
     expect(header).toMatch(/I'll tell you when I can't tell/);
   });
 });
+
+describe('the emergency screen itself', () => {
+  const SRC = resolve(__dirname, '..', 'src', 'screens', 'EmergencyScreen.tsx');
+  const src = () => readFileSync(SRC, 'utf8');
+
+  it('writes every label on the filled 999 button in onAccent', () => {
+    // It did not until 2026-11-08. One `callHint` style served both call
+    // buttons -- one outlined on paper, one filled with `danger` -- so
+    // "Seriously unwell" was `textMuted` on a dark red ground: **1.12:1**,
+    // invisible, under the control somebody reaches for when a child has
+    // eaten something.
+    //
+    // The same fault as October's cream-on-cream primary buttons: a label
+    // borrowing a colour that was only ever right because the ground
+    // happened to suit it. Nothing else in the suite can see this, because
+    // vitest cannot render the screen and a contrast test over `theme.ts`
+    // only knows which colours exist, not which are put on top of which.
+    const text = src();
+    const button = text.slice(
+      text.indexOf('styles.call999]'),
+      text.indexOf('</Pressable>', text.indexOf('styles.call999]')),
+    );
+    expect(button, 'could not find the 999 button').toContain('Call 999');
+
+    // Each <Text> resolves its own style list. React Native composes an
+    // array left to right and the LAST declared colour wins, so the check
+    // has to resolve the effective one -- testing every style in the list
+    // would fail `[callHint, call999Hint]`, which is the correct fix.
+    const texts = [...button.matchAll(/<Text style=\{(\[[^\]]*\]|[^}]*)\}>/g)];
+    expect(texts.length, 'the 999 button has no <Text> children').toBeGreaterThan(0);
+
+    for (const [, expr] of texts) {
+      const names = [...expr.matchAll(/styles\.(\w+)/g)].map((m) => m[1]);
+      let effective: string | null = null;
+      for (const name of names) {
+        const decl = new RegExp(`\\b${name}: \\{[^}]*\\}`).exec(text);
+        expect(decl, `${name} is used but never defined`).not.toBeNull();
+        const colour = /color: theme\.colour\.(\w+)/.exec(decl![0]);
+        if (colour) effective = colour[1];
+      }
+      expect(
+        effective,
+        `${names.join(' + ')} sets no colour at all on a filled danger button`,
+      ).not.toBeNull();
+      expect(
+        effective,
+        `${names.join(' + ')} resolves to ${effective} on a filled danger button`,
+      ).toBe('onAccent');
+    }
+  });
+
+  it('still offers both numbers, and 999 is the filled one', () => {
+    // The hierarchy is the message: 999 if someone is seriously unwell,
+    // 111 otherwise. A pair of equal-weight buttons asks a frightened
+    // person to make that call with no steer.
+    const text = src();
+    expect(text).toContain("tel:999");
+    expect(text).toContain("tel:111");
+    expect(text).toMatch(/call999: \{ backgroundColor: theme\.colour\.danger/);
+  });
+});

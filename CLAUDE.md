@@ -38,12 +38,27 @@ test; if a change makes a test here fail, the change is wrong.
 
 ## Current status
 
-Everything works **except the model**. There is no trained classifier; the API
-serves a stub backend with deterministic fake predictions. Every other layer
-is real and tested.
+**The model exists.** Five training runs; `server/app/config.py` serves
+`ml/runs/run5` -- 271 species, 83.3% top-1, and the first run ever to
+measure **zero silent dangerous confusions**, on its test split and again
+on its validation split. Installing it is a three-file copy and nothing
+else; see the run five section at the end of this file for what the
+numbers do and do not support.
 
-210 tests pass. `/health` honestly reports `model_loaded: false`,
-`calibrated: false`, `taxonomy_reviewed: false`.
+`model.onnx` is NOT in the repository and never will be (350 MB). So a
+fresh clone -- cloud session, CI, a new laptop -- serves the **stub
+backend** and `/health` reports `model_loaded: false`, which is correct
+rather than broken. Do not read a stub verdict as a model failure, and do
+not read the three-file copy as optional: *this* checkout has no model.
+
+**647 tests pass**: 473 Python (`python -m pytest ml/tests server/tests -q`,
+plus 1 skipped) and 174 client (`cd app && npm test`). The figure was
+written once as 210 and left for two months while the suite tripled; count
+it, do not quote it.
+
+**What is still false in `/health`:** `calibrated` follows the model, so it
+is false wherever the model is; `taxonomy_reviewed` is false everywhere and
+is the one that blocks release.
 
 The training pipeline has been rehearsed end to end on synthetic data
 (`python scripts/smoke_e2e.py`, ~1 minute on CPU, no dataset or network
@@ -104,6 +119,14 @@ cd app && EXPO_PUBLIC_API_URL=http://127.0.0.1:8000 npm run web
 
 # Companion ebook -- fill its field data from the taxonomy
 python scripts/build_ebook.py --ebook <book>.html --out draft.html
+
+# The screenshots and the shareable walkthrough. Both are GENERATED from a
+# running app -- start one with scripts/try_it.py first -- and both go
+# stale silently, because a page renders perfectly while showing last
+# month's palette over this month's claims.
+node scripts/screenshots.js && python scripts/screenshots_pdf.py
+python scripts/capture_walkthrough.py --out docs/walkthrough.json
+python scripts/build_walkthrough_page.py
 
 # See it work -- no GPU, no dataset, no network, nothing mocked
 python scripts/demo.py
@@ -820,6 +843,48 @@ commits.
   upload failed in a way the server reads as a malformed request rather than a
   missing file. The lesson is the obvious one: a suite that is green on a
   client nobody has launched is green about something else.
+- **Both generated showcases had gone stale, and one of them could not
+  help it.** 2026-11-08: `docs/screenshots/` and `docs/walkthrough.html`
+  were still the October paper-and-gold palette, three palette changes
+  behind, on the two surfaces most likely to be shown to somebody outside
+  the project.
+  The screenshots were stale because **there was no script** -- they had
+  been produced ad hoc twice, rediscovering the two traps from the note
+  below each time. `scripts/screenshots.js` is now committed and drives
+  the real client end to end; `scripts/screenshots_pdf.py` binds the set.
+  Four things the first run of that script got wrong, all of them the
+  traps in a new shape: the consent gate opens onto **Observe, not Home**,
+  so the capture screen was filed as `03-front-page.png`; the field notes
+  are the screen *after* the photo slots; the emergency and result screens
+  sit **above** the tab navigator, so there is no tab bar to leave by and
+  `goBack()` walked out of the app (reload instead -- consent and the log
+  are in localStorage); and the spore print guide is reached from a **log
+  entry**, not from the capture screen, because the result-screen route
+  only appears when the next question happens to be `spore_print_colour`,
+  which depends on the stub.
+  The walkthrough was worse, because its palette was **hand-copied** from
+  `theme.ts` into the page's `--app-*` block. `build_walkthrough_page.py`
+  now derives it, refuses when a mapped key has left the theme, and
+  refuses when the page still uses a `var(--app-*)` nothing defines --
+  which `--app-gold` had been doing since gold left the palette, resolving
+  to nothing at all rather than to an error. Same argument as the ebook's
+  field data: two hand-kept copies of one fact drift, silently.
+  **The page's prose is not generated and had drifted too** -- it named
+  run four and `ml/runs/run4-b32/MODEL_CARD.md`. Regenerating does not fix
+  prose; read it.
+- **Driving the real client found a 1.12:1 label on the emergency
+  screen.** `callHint` was one style shared between the filled 999 button
+  and the outlined 111 one, so "Seriously unwell" was `textMuted` on
+  `danger`: invisible, on the one screen that must never fail, under the
+  control somebody reaches for when a child has eaten something. Exactly
+  the October cream-on-cream fault -- a label borrowing a colour that was
+  only ever right because the ground happened to suit it -- and nothing in
+  the suite could see it, because vitest cannot render the screen and a
+  contrast test over `theme.ts` knows which colours exist, not which are
+  put on top of which. `call999Hint` is `onAccent` (8.66:1) and
+  `emergencyRoute.test.ts` resolves each `<Text>`'s composed style list and
+  requires the effective colour on that button to be `onAccent`. Checked
+  that it fails on the old code rather than assuming it.
 - **`docs/screenshots/` is generated by driving the real client**, not mocked
   up — Playwright against `npm run web` with the stub backend, which is why
   the species names in it are meaningless and the refusal logic around them is
