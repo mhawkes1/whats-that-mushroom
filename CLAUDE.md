@@ -554,37 +554,37 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   builder's `USER_AGENT` were deliberately left as `whats-that-mushroom`.**
   They are infrastructure identifiers no user reads, and changing a slug
   breaks the Expo project link.
-- **The bundle identifiers are `uk.co.funga.app`, and deliberately not
-  `com.funga.*`.** Changed 2026-10-27, which was the last free moment: a
-  bundle id is permanent once published to either store. Reverse-DNS
-  convention says use a domain you control, and `funga.com` belongs to
-  Funga PBC, a US forestry startup -- taking their namespace would be
-  squatting and invites an argument that costs more than a domain.
-  `funga.co.uk` is the one to register, and registering it is what makes
-  this identifier honest rather than merely unused.
-  **Status as of 2026-11-08: UNKNOWN, and nobody has actually checked.**
-  Martin searched 123-reg on 2026-11-08 and reported "there is no
-  funga.co.uk, but fungaapp.co.uk" -- but the screenshot shows the search
-  box reading **"Fungaapp"**, so the page is evidence about `fungaapp.*`
-  and says nothing whatever about `funga.co.uk`. A result for a different
-  string is not a negative result. The check is twenty seconds: type
-  `funga` into the same box.
-  What that search DID establish: `fungaapp.co.uk` is available at £3.99
-  for the first year, and 123-reg includes WHOIS privacy, which matters
-  because Nominet otherwise publishes a registrant address for a
-  non-trading individual.
-  **The identifier was deliberately NOT changed.** Both are still
-  `uk.co.funga.app`. Nothing is published, so there is no deadline, and
-  repointing a permanent id at `fungaapp.co.uk` on the strength of a
-  search that did not test `funga.co.uk` is the wrong order of
-  operations. If `funga.co.uk` turns out to be gone and
-  `fungaapp.co.uk` is the one bought, the change is two lines in
-  `app/app.json` -- `bundleIdentifier` and `package`, both to
-  `uk.co.fungaapp.app` -- and it must happen **before the first build
-  reaches either store**, not after.
-  The app's own name is unaffected either way. `APP_NAME` stays `Funga`;
-  a domain with `app` on the end is an infrastructure identifier of the
-  same kind as the `whats-that-mushroom` slug, and no user reads it.
+- **The bundle identifiers are `uk.co.fungaapp.app`.** Both of them --
+  `ios.bundleIdentifier` and `android.package` in `app/app.json`. A bundle
+  id is permanent once published to either store, and reverse-DNS
+  convention says use a domain you control, so this one is only honest
+  once `fungaapp.co.uk` is registered. **Register it.** £3.99 at 123-reg
+  on 2026-11-08, WHOIS privacy included -- which matters, because Nominet
+  otherwise publishes a registrant address for a non-trading individual,
+  and this app invites incident reports from strangers.
+  **It was `uk.co.funga.app` until 2026-11-08, and the reason it moved is
+  that `funga.co.uk` is gone.** `funga.com` was never available either --
+  it belongs to Funga PBC, a US forestry startup, and taking their
+  namespace would be squatting and invites an argument that costs more
+  than a domain.
+  **The evidence took two searches, and the first one did not say what it
+  looked like it said.** Martin searched "Fungaapp", reported "there is no
+  funga.co.uk", and the screenshot's own search box read `Fungaapp` -- a
+  result for a different string is not a negative result, and this is a
+  permanent identifier. The second search, for `Funga.co.uk`, settled it:
+  123-reg prints a large "Add to Cart" card for an available name, as it
+  did for `fungaapp.co.uk`, and for `funga.co.uk` it printed **no card at
+  all**, only alternatives.
+  **Three of those alternatives are traps.** `funga.uk.com` is *not a UK
+  domain* -- `uk.com` is a plain second-level domain CentralNic resells
+  subdomains of, so registering it buys a name inside somebody else's
+  namespace, which is the exact fault that ruled out `funga.com`. And
+  `funga.shop` and `funga.buzz` at 84p are first-year loss-leaders that
+  renew at £36-45.
+  **The app's name is unaffected.** `APP_NAME` is still `Funga` and
+  `expo.name` is still `Funga`. The `app` on the end of the domain is an
+  infrastructure identifier of the same kind as the `whats-that-mushroom`
+  slug, and no user ever reads either.
 - **The title's typeface is loaded but never awaited.** `useFonts` reports an
   error as well as a loading state, and a front page that will not render
   because a font did not arrive is worse than a title in the platform serif.

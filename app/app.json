@@ -13,7 +13,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "uk.co.funga.app",
+      "bundleIdentifier": "uk.co.fungaapp.app",
       "infoPlist": {
         "NSCameraUsageDescription": "Used to photograph mushrooms for identification.",
         "NSPhotoLibraryUsageDescription": "Used to choose an existing photograph of a mushroom.",
@@ -21,7 +21,7 @@
       }
     },
     "android": {
-      "package": "uk.co.funga.app",
+      "package": "uk.co.fungaapp.app",
       "permissions": [
         "CAMERA",
         "ACCESS_FINE_LOCATION",
