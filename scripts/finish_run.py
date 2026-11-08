@@ -103,9 +103,13 @@ def main() -> int:
     print()
     print("  LARGE -- transfer these off the box; git will refuse them.")
     print("  " + "-" * 70)
+    large_missing = []
     for template, size, why in LARGE:
         rel = template.format(run=run)
-        mark = "ok      " if (ROOT / rel).exists() else "MISSING "
+        here = (ROOT / rel).exists()
+        if not here:
+            large_missing.append((rel, why))
+        mark = "ok      " if here else "MISSING "
         print(f"   {mark} {rel:<42} {size:<9} {why}")
 
     if present:
@@ -153,8 +157,31 @@ def main() -> int:
         print("  made again from what survives -- they need the images and")
         print("  the checkpoint, which go with it.")
 
+    if large_missing:
+        # This block did not exist until 2026-11-08, and the LARGE table was
+        # printed for a human to read and then ignored by the verdict. So the
+        # script said "Safe to stop" with `model.onnx` reported MISSING four
+        # lines above it -- the one artefact the server actually loads.
+        #
+        # That is the `frdbi_gap.py` fault in the script written to stop step
+        # 9 being a list nobody checks: a report must not reassure past its
+        # own warning, because the warning scrolls away and the verdict is
+        # what gets acted on. Found when Martin asked whether he could
+        # terminate his pods and this was the thing consulted to answer him.
+        print()
+        print("  REFUSING: large artefacts are not on this machine.")
+        for rel, why in large_missing:
+            print(f"    - {rel}")
+            print(f"        {why}")
+        print()
+        print("  These are never committed, so a fresh clone ALWAYS looks")
+        print("  like this -- which is the point. Run this ON THE POD, where")
+        print("  the files are, and only stop it once every line reads ok.")
+        print("  If you have already pulled them to your own machine, they")
+        print("  are safe; this checkout simply cannot see them.")
+
     print()
-    if missing or unaddable:
+    if missing or unaddable or large_missing:
         return 1
     print("  Everything is here and git will take all of it. Safe to stop.")
     print()

@@ -60,6 +60,19 @@ def complete_run(tmp_path, monkeypatch):
     # tuned on -- unlike the test split, which gates release.
     np.savez_compressed(run / "predictions-val.npz", probs=np.zeros((2, 2), np.float16))
     created.append(run / "predictions-val.npz")
+    # The three large ones. They are never committed, so the fixture has to
+    # stand them up itself -- and until 2026-11-08 it did not, which is how
+    # `test_a_complete_run_passes_and_says_it_is_safe_to_stop` passed while
+    # the script printed `model.onnx  MISSING` and then "Safe to stop".
+    # A "complete run" that is missing the file the server loads is not one.
+    for name in ("model.onnx", "best.pt"):
+        (run / name).write_bytes(b"\0")
+        created.append(run / name)
+    parquet = processed / "manifest.parquet"
+    parquet_existed = parquet.exists()
+    if not parquet_existed:
+        parquet.write_bytes(b"\0")
+
     splits = processed / "splits.csv.gz"
     existed = splits.exists()
     if not existed:
@@ -68,6 +81,8 @@ def complete_run(tmp_path, monkeypatch):
                       "image_url": ["u"], "path": ["p"], "split": ["train"]}
                      ).to_csv(splits, index=False, compression="gzip")
     yield "ml/runs/_pytest_probe"
+    if not parquet_existed:
+        parquet.unlink(missing_ok=True)
     for path in created:
         path.unlink(missing_ok=True)
     run.rmdir()
@@ -90,6 +105,28 @@ def test_every_small_artefact_appears_in_the_git_add_line(complete_run):
                  "config.yaml",
                  "history.json", "train.log", "splits.csv.gz"):
         assert name in add, f"{name} is not in the command to paste"
+
+
+def test_a_missing_large_artefact_refuses_too(complete_run):
+    """The verdict must read the LARGE table, not just print it.
+
+    It did not until 2026-11-08. `large_missing` did not exist: the table
+    was printed for a human and the return code was computed from the small
+    files alone, so the script said **"Safe to stop"** with `model.onnx`
+    reported MISSING four lines above -- the one artefact the server loads,
+    and the whole reason anybody runs this before killing a pod.
+
+    That is the `frdbi_gap.py` fault inside the script written to stop step
+    9 being a list nobody checks. A warning scrolls away; a verdict is what
+    gets acted on, so a report must not reassure past its own warning.
+    """
+    run = ROOT / complete_run
+    (run / "model.onnx").unlink()
+    result = _run(complete_run)
+    assert result.returncode == 1, result.stdout
+    assert "REFUSING: large artefacts are not on this machine." in result.stdout
+    assert "model.onnx" in result.stdout.split("REFUSING: large")[1]
+    assert "Safe to stop" not in result.stdout
 
 
 def test_a_missing_artefact_refuses_and_says_not_to_stop_the_pod():

@@ -1437,6 +1437,24 @@ repo, dormant, aimed squarely at the overfitting this curve shows.
   launcher's own words, and says so plainly when the log is empty or missing
   -- a process that wrote nothing died differently from one that wrote a
   traceback, and the failure path must not itself fail.
+- **And then the check reassured past its own warning.** 2026-11-08,
+  with Martin asking whether he could terminate his pods:
+  `finish_run.py` printed `model.onnx  MISSING` in the LARGE table and
+  then, four lines later, **"Everything is here and git will take all of
+  it. Safe to stop."** `large_missing` did not exist -- the table was
+  printed for a human to read and the return code was computed from the
+  small files alone. The one artefact the server actually loads could be
+  absent and the script still said stop the pod.
+  That is the `frdbi_gap.py` fault, inside the script written to stop step
+  9 being a list nobody checks, found on the one question it exists to
+  answer. A warning scrolls off; the verdict is what gets acted on. The
+  LARGE rows now block the exit code, and the refusal says a fresh clone
+  always looks like this -- these are never committed -- so run it **on
+  the pod**, where the files are.
+  The fixture is the other half: it created only the seven small files, so
+  `test_a_complete_run_passes_and_says_it_is_safe_to_stop` was asserting
+  that an incomplete run is safe to stop. A "complete run" that is missing
+  the file the server loads is not one.
 - **Step 9 was a list, and a list is not a check.** The run-book named the
   seven small artefacts to commit and the three large ones to transfer, and
   it depended on somebody reading it at the end of a long day, on a machine
