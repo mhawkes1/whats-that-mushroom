@@ -1,6 +1,7 @@
 """Bind `docs/screenshots/` into one PDF, for somebody who wants the set.
 
     node scripts/screenshots.js      # the screens themselves
+    python scripts/icon_sheet.py     # and the logo, from app/assets/
     python scripts/screenshots_pdf.py
 
 One screen per page, scaled to fit with a margin, in the order a person
@@ -27,6 +28,11 @@ PAGE = (1240, 1754)
 MARGIN = 60
 
 ORDER = [
+    # The logo first, because the set did not contain it until 2026-11-08.
+    # The masthead shows the mark as a cream silhouette on a photograph with
+    # no ground under it, which is not the logo -- the logo is cream on a
+    # moss plate. `scripts/icon_sheet.py` composes it from `app/assets/`.
+    "00-app-icon",
     "03-front-page",
     "02-consent-every-box-on-its-own",
     "05-field-notes",
@@ -44,7 +50,8 @@ def main() -> int:
         raise SystemExit(
             "  REFUSING: no screenshot for " + ", ".join(missing)
             + "\n  Run `node scripts/screenshots.js` first; it drives the real"
-              " client\n  and these are its output, not files kept by hand."
+              " client,\n  and `python scripts/icon_sheet.py` for the logo page."
+              "\n  These are output, not files kept by hand."
         )
 
     pages = []

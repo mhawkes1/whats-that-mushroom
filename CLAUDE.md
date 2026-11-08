@@ -124,7 +124,8 @@ python scripts/build_ebook.py --ebook <book>.html --out draft.html
 # running app -- start one with scripts/try_it.py first -- and both go
 # stale silently, because a page renders perfectly while showing last
 # month's palette over this month's claims.
-node scripts/screenshots.js && python scripts/screenshots_pdf.py
+node scripts/screenshots.js && python scripts/icon_sheet.py \
+  && python scripts/screenshots_pdf.py
 python scripts/capture_walkthrough.py --out docs/walkthrough.json
 python scripts/build_walkthrough_page.py
 
@@ -1204,6 +1205,26 @@ commits.
   through the mask. And both backgrounds are `#f6f3ea` rather than white:
   the mark is drawn on paper, and a white plate shows as a ring of the
   wrong cream once a launcher masks to a circle.
+- **The screenshot set never contained the logo.** Martin, 2026-11-08:
+  "include the actual logo which isn't actually white". He was right and
+  the distinction is exact -- the masthead shows the *mark* as a cream
+  silhouette floating on a photograph with no ground under it, and the
+  **logo** is that mark on a moss plate. Eight app screens showed the
+  first and never the second. `scripts/icon_sheet.py` composes
+  `docs/screenshots/00-app-icon.png` from `app/assets/`, and it is page
+  one of the PDF.
+  **The Android crop was wrong on the first attempt**, at 66/108. The
+  launcher reserves the outer 18dp a side and inscribes the mask in the
+  central **72dp**; 66dp is the *safe zone*, the circle whose contents
+  survive whichever mask a launcher picks, which is a constraint on the
+  artwork rather than the viewport. Cropping to it drew the mark larger
+  than any phone shows it.
+  **The mark fills 87% of the Android tile against 62% of the iOS one,
+  and that is correct.** A circle has less area than the square it is cut
+  from, so content has to be larger inside it to carry the same weight.
+  It is the same fact as the entry below, read from the other end: 0.58 of
+  a 108dp canvas is 62.6dp of ink, which sits inside both the 72dp
+  viewport and the 66dp safe circle.
 - **The Android foreground is drawn smaller than the iOS icon on purpose.**
   An adaptive icon is 108dp of which the central 72dp is visible and only a
   66dp circle is guaranteed, because the launcher picks the mask. Content
