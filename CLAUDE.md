@@ -930,6 +930,26 @@ commits.
   to the declaration, because the explanatory note beside it contains the
   words `width: undefined` and a whole-file scan matches the prose.
   Confirmed failing on the old code rather than assumed to.
+- **Five of Martin's own frames were tried as the masthead and the
+  sphagnum was kept.** 2026-11-08, his call after seeing all five rendered
+  as the real band: a haircap moss close-up and four of small bonnets on
+  moss. Worst-case contrast under the actual glyphs, at the shipped 0.30
+  scrim -- sphagnum **3.12**, haircap 2.48, and the four mushroom frames
+  2.09 to 2.34, all of them hitting blown-white cap in the text zone.
+  The best of the mushroom frames was the wide pair: 10.18 behind the
+  mark and open space under the title. What rules it out is **not** the
+  contrast but the composition rule above -- its two bonnets sit at the
+  left and right edges, which is exactly what a 360pt phone crops. The
+  sphagnum is the only candidate whose subject is everywhere, so no device
+  width can take anything out of it.
+  **Trying them is what found the fill bug**, which is the better reason
+  to have done it. Three re-crops had failed to change the screen and the
+  fourth attempt made that impossible to keep explaining away.
+  A mushroom on the front page is also still the composition the note in
+  `AppHeader.tsx` argues against -- but that argument was written about
+  the book cover's cep, a prize edible lit as a portrait, and a *Mycena*
+  on moss does not make the same implication. If a frame is ever chosen,
+  that is the distinction to make rather than the rule to cite.
 - **And the band is 390pt wide, not 306.** It is full-bleed: it pulls back
   out through HomeScreen's 24pt gutters with a negative margin, so it
   spans the screen. `HEADER_WIDTH_PT` was the *content* width from the day
