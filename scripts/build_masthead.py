@@ -78,7 +78,30 @@ DEFAULT_SOURCE = ROOT / "docs" / "design" / "masthead-source.jpg"
 # 180pt was that wrong answer: it does show more of the frame, but it does
 # so by reaching further up into the shadowed middle of the photograph and
 # by taking 30pt more of the screen.
-HEADER_WIDTH_PT = 306
+# 390, which is the band's REAL width: it is full-bleed, so it spans the
+# whole screen, not the content column.
+#
+# This was 306 -- the content width, 390 minus two 24pt gutters -- from the
+# moment the band was first cut, and `masthead.test.ts` asserted it. Both
+# were wrong together, which is why neither caught it. Measured in the
+# running client on 2026-11-08: the band is 360x132, 390x132 and 430x132 on
+# the three phone widths, never 306. An asset cut at 2.318:1 inside a
+# 2.955:1 box means `resizeMode="cover"` matches the width and throws
+# **22%** off the top and bottom -- so every masthead this project has
+# shipped has been a tighter crop than the one anybody measured. Third time
+# this exact fault has appeared; the first two were caught by looking at the
+# app, and so was this one.
+#
+# **There is no single correct value, and that is the part to understand.**
+# The container's aspect is the device's width over 132, so it runs 2.73
+# (360pt) to 3.26 (430pt). Whichever aspect the asset is cut at, `cover`
+# crops the other way on some phones: cut wider than the box and it trims
+# the sides, narrower and it trims top and bottom. 390 is the reference
+# device and splits the difference -- about 13% either way at the extremes.
+# What follows from that is a composition rule, not a constant: **keep the
+# subject out of the outer eighth, on every side.** A frame whose interest
+# is at the left and right edges loses it on a small phone.
+HEADER_WIDTH_PT = 390
 HEADER_HEIGHT_PT = 132
 BAND_ASPECT = HEADER_WIDTH_PT / HEADER_HEIGHT_PT
 # Rendered well above 3x of 306pt, with width in hand.

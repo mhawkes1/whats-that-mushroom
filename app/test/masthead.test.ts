@@ -39,6 +39,12 @@ describe('the masthead', () => {
     // measured, and the crop that reached a phone was not the crop anybody
     // had looked at.
     //
+    // Fixing that tied the two to EACH OTHER and left both wrong, because
+    // 306 is the content width and the band is full-bleed. This test
+    // therefore passed while `cover` ate 22% of the band's height. A test
+    // that compares two numbers it also supplies is not a measurement --
+    // the width here has to be the one the client reports.
+    //
     // Reading the JPEG's own SOF0 marker rather than trusting a constant,
     // because the generator writing one number and the component using
     // another is the exact failure.
@@ -61,12 +67,40 @@ describe('the masthead', () => {
       read('src/components/AppHeader.tsx').split('header: {')[1],
     );
     expect(header, 'AppHeader has no explicit header height').not.toBeNull();
-    const want = 306 / Number(header![1]);
+    // 390, not the content width. The band is full-bleed -- it pulls back
+    // out through HomeScreen's gutters with a negative margin -- so it
+    // spans the screen. This read 306 until 2026-11-08 and the generator
+    // agreed with it, so the pair was self-consistent and wrong, and the
+    // shipped band was losing 22% of its height to `cover` on every phone.
+    // Measured in the running client, not reasoned about.
+    const want = 390 / Number(header![1]);
     const got = dims![0] / dims![1];
     expect(
       Math.abs(got - want),
       `asset is ${got.toFixed(3)}:1 and the container is ${want.toFixed(3)}:1`,
     ).toBeLessThan(0.02);
+  });
+
+  it('lets the photograph fill the band', () => {
+    // `{...absoluteFillObject, width: undefined, height: undefined}` is the
+    // native idiom for stopping an <Image> sizing itself to its source. On
+    // React Native Web it does the opposite: measured in the running client
+    // on 2026-11-08, the element kept the asset's intrinsic **1200x406**
+    // inside a 390x132 header, so `overflow: hidden` showed a corner of the
+    // photograph at about 3x and `resizeMode="cover"` never applied.
+    //
+    // Nothing else can see this. The asset is the right shape, the test
+    // above proves it, the component references it correctly, and the band
+    // renders -- it just renders the wrong part of the picture. Three
+    // rounds of re-cropping were spent on the symptom.
+    // Read the declaration, not the file: the note above this style in
+    // the component spells out the old idiom, and a scan of the whole
+    // source matches that prose instead of the code.
+    const decl = /^\s*photo: \{[^}]*\},$/m.exec(header());
+    expect(decl, 'no photo style found in AppHeader').not.toBeNull();
+    expect(decl![0]).not.toMatch(/undefined/);
+    expect(decl![0]).toMatch(/width: '100%'/);
+    expect(decl![0]).toMatch(/height: '100%'/);
   });
 
   it('puts its text on a scrim token, never a literal', () => {

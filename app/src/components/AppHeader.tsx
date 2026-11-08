@@ -171,7 +171,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  photo: { ...StyleSheet.absoluteFillObject, width: undefined, height: undefined },
+  // `width: '100%', height: '100%'` rather than the `width: undefined,
+  // height: undefined` idiom that was here until 2026-11-08.
+  //
+  // That idiom exists to stop a native <Image> sizing itself to its source.
+  // On React Native Web it does the opposite: the element kept the asset's
+  // intrinsic box -- measured in the running client at **1200x406** inside
+  // a 390x132 header -- so `overflow: hidden` was showing a corner of the
+  // photograph at roughly 3x, and `resizeMode="cover"` never got to do
+  // anything. The masthead had never once been displayed as composed in a
+  // browser, which also means every contrast figure measured off the ASSET
+  // described an image the app was not showing.
+  //
+  // Found by reading the element's own box out of the DOM after three
+  // rounds of re-cropping failed to change what appeared on screen. The
+  // lesson is the one this project keeps relearning: measure the thing the
+  // client renders, not the thing you generated.
+  photo: { ...StyleSheet.absoluteFillObject, width: '100%', height: '100%' },
   // The masthead's own scrim, not `photoScrim`. See the note above: that
   // one covers a photograph nobody has seen and stays dark.
   scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: theme.colour.mastheadScrim },
