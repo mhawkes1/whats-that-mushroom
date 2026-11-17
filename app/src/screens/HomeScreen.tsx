@@ -75,16 +75,27 @@ export function HomeScreen({ navigation }: { navigation: any }) {
             going back to, and that is the opposite of why the tile is
             here. The two tiles count the same log and must behave the
             same way; a tile that reads as tappable beside one that is
-            teaches that neither is. */}
+            teaches that neither is.
+
+            **The two tiles do not count the same unit**, and the label
+            reads as though they do. `species` is a set of distinct
+            species keys; `declined` is a count of OBSERVATIONS, because
+            there is no species to count where the app named none -- that
+            is the whole point of the tile. So three photographs of one
+            unidentifiable mushroom read as three here and would read as
+            one on the left. Martin's wording, 2026-11-17, chosen for the
+            symmetry with the tile beside it; the overstatement is of
+            variety, not of knowledge, and it cannot flatter the app --
+            it inflates the count of times it refused. */}
         <Pressable
           style={styles.count}
           onPress={() => navigation.navigate('Me')}
           accessibilityRole="button"
-          accessibilityLabel={`${counts?.declined ?? 0} times I wouldn't say. Opens your observations.`}
+          accessibilityLabel={`${counts?.declined ?? 0} left unnamed. Opens your observations.`}
         >
           <Text style={styles.countNumber}>{counts?.declined ?? 0}</Text>
           <Text style={styles.countLabel}>
-            times I{'\n'}wouldn't say
+            species{'\n'}unnamed
           </Text>
         </Pressable>
       </View>

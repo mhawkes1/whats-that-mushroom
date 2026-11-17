@@ -1205,6 +1205,26 @@ commits.
   through the mask. And both backgrounds are `#f6f3ea` rather than white:
   the mark is drawn on paper, and a white plate shows as a ring of the
   wrong cream once a launcher masks to a circle.
+- **"times I wouldn't say" became "species unnamed", and the two tiles
+  do not count the same unit.** Martin's wording, 2026-11-17, for the
+  symmetry with the tile beside it. `species` is a set of distinct
+  species keys; `declined` is a count of **observations**, because where
+  the app named nothing there is no species to count -- which is the
+  whole point of the tile. So three photographs of one unidentifiable
+  mushroom read as three on the right and would read as one on the left.
+  Recorded rather than fixed because the overstatement is of *variety*,
+  not of knowledge, and it cannot flatter the app: it inflates the count
+  of times it refused.
+  **His first proposal was "more information required", and that one was
+  declined.** `declined` includes `out_of_scope`, where the app's own
+  words are "It may be a species I was never trained on" and no further
+  information helps, and `dangerous_group`, where the refusal can be
+  permanent -- the ivory funnels want a microscope. A label promising a
+  way through on those is the same over-claim as "increase accuracy" on
+  the follow-up offer, and for the same reason.
+  The screen-reader label says "left unnamed" rather than "species
+  unnamed", because a count read aloud as species is the reading the
+  visible label can survive and a spoken one cannot.
 - **The screenshot set never contained the logo.** Martin, 2026-11-08:
   "include the actual logo which isn't actually white". He was right and
   the distinction is exact -- the masthead shows the *mark* as a cream
