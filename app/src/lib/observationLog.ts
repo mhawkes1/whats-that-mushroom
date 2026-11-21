@@ -381,7 +381,15 @@ export async function forgetPlaces(): Promise<boolean> {
 export interface Tally {
   /** Every observation recorded on this device. */
   observations: number;
-  /** Distinct species the app was willing to NAME. */
+  /** Observations where the app was willing to NAME a species. */
+  named: number;
+  /**
+   * Distinct species it named. Deliberately NOT shown on the home screen:
+   * it reads as a life list of what the user has found, when it is a count
+   * of what an unreviewed classifier was confident enough to put a name on.
+   * Kept because the two are different questions and the log screen may
+   * one day want this one.
+   */
   species: number;
   /** Observations where it declined to name one. */
   declined: number;
@@ -402,12 +410,17 @@ export interface Tally {
  * the same flattery as a dangerous_group row that names a species.
  */
 export function tally(entries: Observation[]): Tally {
-  const named = new Set<string>();
+  const seen = new Set<string>();
   let declined = 0;
   for (const entry of entries) {
     const top = entry.verdict === 'species' ? entry.candidates[0] : undefined;
-    if (top?.speciesKey) named.add(top.speciesKey);
+    if (top?.speciesKey) seen.add(top.speciesKey);
     else declined += 1;
   }
-  return { observations: entries.length, species: named.size, declined };
+  return {
+    observations: entries.length,
+    named: entries.length - declined,
+    species: seen.size,
+    declined,
+  };
 }

@@ -436,17 +436,22 @@ describe('the home screen tally', () => {
   });
 
   it('reports zero rather than throwing on an empty log', () => {
-    expect(tally([])).toEqual({ observations: 0, species: 0, declined: 0 });
+    expect(tally([])).toEqual({ observations: 0, named: 0, species: 0, declined: 0 });
   });
 
-  it('never lets the species count exceed the observation count', () => {
-    // The property that matters: a tally that can drift above what the app
-    // actually said is a tally that flatters.
-    const entries = [named('a'), named('b'),
+  it('partitions the log: named plus unnamed is every observation', () => {
+    // The identity the two home tiles imply, and it is NOT true of
+    // `species`. This assertion used to read `species + declined` and
+    // passed only because its fixture gave every find a different key --
+    // a test that holds because of what it was handed rather than because
+    // of what is true. The duplicate here is what breaks the old form.
+    const entries = [named('a'), named('a'), named('b'),
                      entry({ verdict: 'uncertain', candidates: [] })];
     const counts = tally(entries);
-    expect(counts.species).toBeLessThanOrEqual(counts.observations);
-    expect(counts.species + counts.declined).toBe(counts.observations);
+    expect(counts.named + counts.declined).toBe(counts.observations);
+    expect(counts.named).toBe(3);
+    expect(counts.species).toBe(2);
+    expect(counts.species).toBeLessThanOrEqual(counts.named);
   });
 });
 
@@ -513,6 +518,6 @@ describe('reopening an old observation', () => {
       identity: { observationId: first.observationId, recordedAt: first.recordedAt },
     });
     const log = merge([first], again);
-    expect(tally(log)).toEqual({ observations: 1, species: 1, declined: 0 });
+    expect(tally(log)).toEqual({ observations: 1, named: 1, species: 1, declined: 0 });
   });
 });

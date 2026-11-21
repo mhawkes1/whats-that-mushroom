@@ -25,12 +25,13 @@ import { theme } from '../lib/theme';
  * app" is the actual question being asked, so the masthead earns its space
  * instead of costing it.
  *
- * **The counts are deliberately not flattering.** `tally` counts a species
- * only where the app was willing to NAME one, and shows the number of times
- * it declined beside it. An app whose claim is that it admits when it does
- * not know should keep score of the admissions; a tally that quietly
- * promoted every `dangerous_group` into a find would be the same flattery as
- * a history row that names a species it refused to choose between.
+ * **The counts are deliberately not flattering.** The two tiles split every
+ * observation into the ones the app put a name to and the ones it would not,
+ * and they show the refusals at the same size as the finds. An app whose
+ * claim is that it admits when it does not know should keep score of the
+ * admissions; a tally that quietly promoted every `dangerous_group` into a
+ * find would be the same flattery as a history row that names a species it
+ * refused to choose between.
  */
 export function HomeScreen({ navigation }: { navigation: any }) {
   const [counts, setCounts] = useState<Tally | null>(null);
@@ -58,11 +59,11 @@ export function HomeScreen({ navigation }: { navigation: any }) {
           style={[styles.count, styles.countNamed]}
           onPress={() => navigation.navigate('Me')}
           accessibilityRole="button"
-          accessibilityLabel={`${counts?.species ?? 0} species named. Opens your observations.`}
+          accessibilityLabel={`${counts?.named ?? 0} observations where I named a species. Opens your observations.`}
         >
-          <Text style={[styles.countNumber, styles.countOn]}>{counts?.species ?? 0}</Text>
+          <Text style={[styles.countNumber, styles.countOn]}>{counts?.named ?? 0}</Text>
           <Text style={[styles.countLabel, styles.countOn]}>
-            species{'\n'}named
+            named
           </Text>
         </Pressable>
 
@@ -77,25 +78,36 @@ export function HomeScreen({ navigation }: { navigation: any }) {
             same way; a tile that reads as tappable beside one that is
             teaches that neither is.
 
-            **The two tiles do not count the same unit**, and the label
-            reads as though they do. `species` is a set of distinct
-            species keys; `declined` is a count of OBSERVATIONS, because
-            there is no species to count where the app named none -- that
-            is the whole point of the tile. So three photographs of one
-            unidentifiable mushroom read as three here and would read as
-            one on the left. Martin's wording, 2026-11-17, chosen for the
-            symmetry with the tile beside it; the overstatement is of
-            variety, not of knowledge, and it cannot flatter the app --
-            it inflates the count of times it refused. */}
+            **Both tiles count observations, since 2026-11-21, and the
+            pair is now a partition of the log.** They used to count
+            different things: `species` was a set of distinct species keys
+            while `declined` counted observations, so three photographs of
+            one unidentifiable mushroom read as three here and one on the
+            left, and the two did not sum to the total. The label said
+            "species" on both, which is why it looked as though they did.
+
+            The evidence was already in the suite. `observationLog.test.ts`
+            had asserted `species + declined === observations` since the
+            tally was written, and it passed only because that fixture used
+            distinct species -- the duplicate-species test a few lines above
+            it proves the identity false. An assertion that holds because of
+            what it was handed is the masthead fault again.
+
+            Counting observations on both sides also drops a second,
+            quieter over-claim. The distinct-species figure read as a life
+            list of what the USER had found; it was a count of what an
+            unreviewed classifier had been confident enough to name, which
+            is not the same set and is not the user's achievement. `species`
+            is still computed and is deliberately not displayed. */}
         <Pressable
           style={styles.count}
           onPress={() => navigation.navigate('Me')}
           accessibilityRole="button"
-          accessibilityLabel={`${counts?.declined ?? 0} left unnamed. Opens your observations.`}
+          accessibilityLabel={`${counts?.declined ?? 0} observations left unnamed. Opens your observations.`}
         >
           <Text style={styles.countNumber}>{counts?.declined ?? 0}</Text>
           <Text style={styles.countLabel}>
-            species{'\n'}unnamed
+            unnamed
           </Text>
         </Pressable>
       </View>
