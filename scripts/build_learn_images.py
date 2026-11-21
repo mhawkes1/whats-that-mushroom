@@ -67,6 +67,14 @@ CARDS: dict[str, tuple[str, float]] = {
     "photographing-a-mushroom": ("amanita", 0.53),
     "spore-prints": ("waxcaps", 0.50),
     "answers-that-mislead-me": ("bonnets", 0.50),
+    # Added 2026-11-21 with the post. Martin sent the same clump twice, a
+    # landscape frame and a portrait one, and asked which. The landscape,
+    # on the rule the four above already follow: at 4:3 a 3:2 landscape
+    # source keeps ALL of its height and loses 11% of its width, while the
+    # portrait frame -- 6000x4000 carrying `Orientation: 8`, the trap that
+    # shipped the elf cups sideways -- keeps only half its height. Same
+    # photograph either way; one of the two throws away half of it.
+    "what-the-percentages-mean": ("clump", 0.50),
     # The home screen's single card: the troop of bonnets on haircap moss,
     # Martin's pick. Its own crop rather than a shared file, so the home
     # card and an article card can diverge without one going wrong.

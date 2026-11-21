@@ -32,16 +32,18 @@ import { theme } from '../lib/theme';
  * mushroom held in a hand, which is a picking gesture, and nothing lit
  * as a portrait of produce. These are all in situ where they grew.
  *
- * A post may have no entry here. `what-the-percentages-mean` was written
- * after the five frames were allocated, so its card is text-led until
- * Martin sends one -- which is what this index was originally, and the
- * render below guards the gap rather than leaving a 256pt hole.
+ * A post may have no entry here, and the render below guards that rather
+ * than leaving a 256pt hole -- which is what this index was originally,
+ * before it had photographs at all. Nothing is unmapped today:
+ * `what-the-percentages-mean` was text-led for an afternoon, until
+ * Martin sent a sixth frame for it.
  */
 const IMAGES: Record<string, number> = {
   'why-i-refuse': require('../../assets/learn/why-i-refuse.jpg'),
   'photographing-a-mushroom': require('../../assets/learn/photographing-a-mushroom.jpg'),
   'spore-prints': require('../../assets/learn/spore-prints.jpg'),
   'answers-that-mislead-me': require('../../assets/learn/answers-that-mislead-me.jpg'),
+  'what-the-percentages-mean': require('../../assets/learn/what-the-percentages-mean.jpg'),
 };
 
 export function LearnScreen({ navigation }: { navigation: any }) {
