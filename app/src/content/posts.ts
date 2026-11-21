@@ -106,6 +106,67 @@ export const POSTS: Post[] = [
   },
 
   {
+    slug: 'what-the-percentages-mean',
+    title: 'What the percentages mean',
+    standfirst:
+      'The number beside a species is not the chance that I am right, and the small ones matter far more than they look.',
+    blocks: [
+      {
+        kind: 'p',
+        text:
+          'Every photograph gets a score for every species I know, and those scores add up to one. What you see is the top few out of several hundred, so the percentages on your screen will not add up to 100. The rest is spread thinly over everything I did not think was worth showing you.',
+      },
+      { kind: 'heading', text: 'What a percentage is not' },
+      {
+        kind: 'p',
+        text:
+          'It is not a vote, and it is not a second opinion. Nobody has looked at your mushroom. It is one model’s score, produced by something that has only ever seen photographs, and it carries no more authority than that.',
+      },
+      { kind: 'heading', text: 'What it is, once it has been checked' },
+      {
+        kind: 'p',
+        text:
+          'A percentage is honest when it matches how often I turn out to be right. If I say 70% on a thousand photographs and I am right on about seven hundred of them, then the number means what it says. Making that true is a separate step from training: the model is tested against photographs it was never shown, and its numbers are stretched or squeezed until they line up with reality. That step is the whole difference between a confidence and a number that merely looks like one.',
+      },
+      { kind: 'heading', text: 'Right now, it has not been checked' },
+      {
+        kind: 'p',
+        text:
+          'Where that is the case I say so on the result itself, every time, rather than letting you find out later. Treat the ordering as real and the numbers as rough. The species at the top is still the one I think most likely; it is the distance between 60% and 80% that you should not read much into yet.',
+      },
+      { kind: 'heading', text: 'Why a small number can still stop me' },
+      {
+        kind: 'p',
+        text:
+          'This is the one worth remembering. If the species that can kill hold even 1% of the score between them, I show the full warning — at any position in the list, including places too far down for you to see. Rounding a one-in-a-hundred chance of a lethal mushroom down to nothing is the single piece of arithmetic this app will not do.',
+      },
+      {
+        kind: 'aside',
+        text:
+          'So a dangerous species sitting at 1% is not me being twitchy. It is the one number on the screen whose size is not the point.',
+      },
+      { kind: 'heading', text: 'Why the leader can be well ahead and I still will not name it' },
+      {
+        kind: 'p',
+        text:
+          'A species can lead on 57% and get no name from me, because something that can kill is holding 24% behind it. The question I am answering is not whether the leader is ahead of the others. It is whether anything dangerous is still in play.',
+      },
+      { kind: 'heading', text: 'Why I sometimes name nothing at all' },
+      {
+        kind: 'p',
+        text:
+          'There is a bar, and it is set so that when I do commit to a species I am right about 95 times in 100. Below the bar I decline and ask for more instead. That is why refusals are common rather than rare: the bar is where it is on purpose, and dropping it would buy you more names at the price of more wrong ones.',
+      },
+      { kind: 'heading', text: 'What moves a percentage' },
+      {
+        kind: 'p',
+        text:
+          'Answering a question — but not in the way most people expect. Telling me something that matches a species does not push it up. It pushes down every species that cannot show what you described, and whatever is left rises because the rest fell. That is also why a guessed answer is not free, which is its own piece further on.',
+      },
+    ],
+  },
+
+  {
     slug: 'photographing-a-mushroom',
     title: 'Photographing a mushroom',
     standfirst:

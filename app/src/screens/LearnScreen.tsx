@@ -30,7 +30,12 @@ import { theme } from '../lib/theme';
  *
  * What rules a frame out is not the species but the composition: no
  * mushroom held in a hand, which is a picking gesture, and nothing lit
- * as a portrait of produce. These four are all in situ where they grew.
+ * as a portrait of produce. These are all in situ where they grew.
+ *
+ * A post may have no entry here. `what-the-percentages-mean` was written
+ * after the five frames were allocated, so its card is text-led until
+ * Martin sends one -- which is what this index was originally, and the
+ * render below guards the gap rather than leaving a 256pt hole.
  */
 const IMAGES: Record<string, number> = {
   'why-i-refuse': require('../../assets/learn/why-i-refuse.jpg'),
@@ -43,7 +48,7 @@ export function LearnScreen({ navigation }: { navigation: any }) {
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Text style={styles.intro}>
-        Four things worth knowing before you point a camera at a mushroom.
+        Five things worth knowing before you point a camera at a mushroom.
         None of them tells you whether anything is safe to eat; this app
         has no such category in it.
       </Text>
@@ -56,12 +61,14 @@ export function LearnScreen({ navigation }: { navigation: any }) {
           accessibilityRole="button"
           accessibilityLabel={`${post.title}. ${post.standfirst}`}
         >
-          <Image
-            source={IMAGES[post.slug]}
-            style={styles.cardPhoto}
-            resizeMode="cover"
-            accessible={false}
-          />
+          {IMAGES[post.slug] ? (
+            <Image
+              source={IMAGES[post.slug]}
+              style={styles.cardPhoto}
+              resizeMode="cover"
+              accessible={false}
+            />
+          ) : null}
           <View style={styles.cardText}>
             <Text style={styles.cardTitle}>{post.title}</Text>
             <Text style={styles.cardStandfirst}>{post.standfirst}</Text>

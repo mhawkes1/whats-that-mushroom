@@ -103,9 +103,12 @@ describe('rule 1 over everything a Learn reader sees', () => {
 describe('the posts themselves', () => {
   const slugs = POSTS.map((p) => p.slug);
 
-  it('ships the four that need no mycologist', () => {
+  it('ships the ones that need no mycologist, in reading order', () => {
+    // Order is pedagogical and not alphabetical: what I will say, then what
+    // the numbers beside it mean, then three ways to give me more to go on.
     expect(slugs).toEqual([
       'why-i-refuse',
+      'what-the-percentages-mean',
       'photographing-a-mushroom',
       'spore-prints',
       'answers-that-mislead-me',
@@ -141,24 +144,47 @@ describe('the posts themselves', () => {
 
 describe('the card photographs', () => {
   const learn = readFileSync(resolve(ROOT, 'src/screens/LearnScreen.tsx'), 'utf8');
+  const mapped = [...learn.matchAll(/'([a-z-]+)': require\('\.\.\/\.\.\/assets\/learn\//g)]
+    .map((m) => m[1]);
 
-  it('gives every post an image that exists on disk', () => {
+  it('backs every mapped slug with a file that exists on disk', () => {
     // A missing asset stops an Expo build, which is late. Same reason
     // icons.test.ts checks the icon set rather than trusting the build.
-    for (const post of POSTS) {
-      expect(learn, `no image mapped for ${post.slug}`).toContain(`'${post.slug}': require(`);
+    //
+    // A post is allowed to have NO entry: the index was text-led before it
+    // had photographs at all, and a post written after the frames were
+    // allocated waits for one rather than borrowing another post's. What is
+    // forbidden is a mapping with nothing behind it.
+    for (const slug of mapped) {
       expect(
-        existsSync(resolve(ROOT, `assets/learn/${post.slug}.jpg`)),
-        `assets/learn/${post.slug}.jpg is missing — run scripts/build_learn_images.py`,
+        existsSync(resolve(ROOT, `assets/learn/${slug}.jpg`)),
+        `assets/learn/${slug}.jpg is missing — run scripts/build_learn_images.py`,
       ).toBe(true);
     }
     expect(existsSync(resolve(ROOT, 'assets/learn/home.jpg'))).toBe(true);
   });
 
+  it('renders no photograph box for a post that has none', () => {
+    // Without the guard an unmapped slug leaves a 256pt hole in the card,
+    // which reads as an image that failed to load rather than as a post
+    // without one. Pinned at the source, because vitest cannot drive the
+    // RN renderer and this is exactly the class of fault that let three
+    // client bugs sit behind a green suite for months.
+    expect(learn).toContain('{IMAGES[post.slug] ? (');
+  });
+
+  it('leaves at most one post waiting for a frame', () => {
+    // Not a rule, a prompt: two text-led cards among photographs stops
+    // looking like one post that arrived early and starts looking like
+    // the index losing its photographs.
+    const unmapped = POSTS.filter((p) => !mapped.includes(p.slug));
+    expect(unmapped.map((p) => p.slug).join(', ')).not.toMatch(/,/);
+  });
+
   it('maps no slug that is not a post', () => {
-    const mapped = [...learn.matchAll(/'([a-z-]+)': require\('\.\.\/\.\.\/assets\/learn\//g)]
-      .map((m) => m[1]);
-    expect(mapped.sort()).toEqual(POSTS.map((p) => p.slug).sort());
+    for (const slug of mapped) {
+      expect(POSTS.map((p) => p.slug), `${slug} is mapped but is not a post`).toContain(slug);
+    }
   });
 
   it('ships no EXIF on any of them', () => {
@@ -166,7 +192,7 @@ describe('the card photographs', () => {
     // the one asset in this app that can publish where somebody was
     // standing. The build writes every card through a fresh image, so
     // there is no APP1 segment at all — not merely no GPS.
-    for (const slug of [...POSTS.map((p) => p.slug), 'home']) {
+    for (const slug of [...mapped, 'home']) {
       const bytes = readFileSync(resolve(ROOT, `assets/learn/${slug}.jpg`));
       expect(
         bytes.indexOf(Buffer.from('Exif\0\0', 'latin1')),
@@ -176,7 +202,7 @@ describe('the card photographs', () => {
   });
 
   it('keeps each card small enough to bundle', () => {
-    for (const slug of [...POSTS.map((p) => p.slug), 'home']) {
+    for (const slug of [...mapped, 'home']) {
       const kb = readFileSync(resolve(ROOT, `assets/learn/${slug}.jpg`)).length / 1024;
       expect(kb, `${slug}.jpg is ${Math.round(kb)} KB`).toBeLessThan(200);
     }

@@ -152,7 +152,7 @@ export function HomeScreen({ navigation }: { navigation: any }) {
         style={styles.learn}
         onPress={() => navigation.navigate('Learn')}
         accessibilityRole="button"
-        accessibilityLabel="Before you start. Four short pieces on photographing and reading mushrooms."
+        accessibilityLabel="Before you start. Five short pieces on photographing and reading mushrooms."
       >
         {/* `width: '100%'` with a real height -- see `learnPhoto` for
             why neither the absoluteFill-with-undefined idiom nor
@@ -166,11 +166,11 @@ export function HomeScreen({ navigation }: { navigation: any }) {
         <View style={styles.learnText}>
           <Text style={styles.learnHeading}>Before you start</Text>
           <Text style={styles.learnBody}>
-            Why I refuse to answer sometimes, how to photograph a mushroom
-            so I can do better, taking a spore print, and the three
-            questions people answer wrongly.
+            Why I refuse to answer sometimes, what the percentages mean,
+            how to photograph a mushroom so I can do better, taking a spore
+            print, and the three questions people answer wrongly.
           </Text>
-          <Text style={styles.learnMore}>Four short pieces →</Text>
+          <Text style={styles.learnMore}>Five short pieces →</Text>
         </View>
       </Pressable>
 
