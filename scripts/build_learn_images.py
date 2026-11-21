@@ -5,6 +5,7 @@ the ebook's field data. A set kept by hand drifts, and here the drift would
 show up as one card framed differently from the other three.
 
     python scripts/build_learn_images.py
+    python scripts/build_learn_images.py --ingest <name>=<file.jpg> ...
 
 Sources are in `docs/design/learn/` at 2000px on the long edge, committed,
 so this runs from a fresh clone. The originals are 3-9 MB and stay off the
@@ -28,7 +29,7 @@ from __future__ import annotations
 import pathlib
 import sys
 
-from PIL import Image
+from PIL import Image, ImageOps
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SRC = ROOT / "docs" / "design" / "learn"
@@ -62,8 +63,8 @@ WIDTH, HEIGHT = 780, 585
 #: deleted, because a source swapped for a portrait one would need them
 #: back.
 CARDS: dict[str, tuple[str, float]] = {
-    "why-i-refuse": ("elfcups", 0.50),
-    "photographing-a-mushroom": ("amanita", 0.57),
+    "why-i-refuse": ("elfcups", 0.48),
+    "photographing-a-mushroom": ("amanita", 0.53),
     "spore-prints": ("waxcaps", 0.50),
     "answers-that-mislead-me": ("bonnets", 0.50),
     # The home screen's single card: the troop of bonnets on haircap moss,
@@ -71,6 +72,59 @@ CARDS: dict[str, tuple[str, float]] = {
     # card and an article card can diverge without one going wrong.
     "home": ("mycena-cluster", 0.50),
 }
+
+
+#: Longest edge of a committed source. The originals are 24 MP.
+SOURCE_EDGE = 2000
+
+
+def upright(path: pathlib.Path) -> Image.Image:
+    """Open a photograph the way a person sees it.
+
+    **`ImageOps.exif_transpose` is not optional, and leaving it out shipped
+    a sideways card for a day.** Two of the six frames Martin sent carry
+    EXIF `Orientation: 8` -- stored 6000x4000 landscape, meant to be
+    displayed 4000x6000 portrait. `Image.open().size` reports what is
+    STORED, so an ingest that only downscales and strips metadata throws
+    the tag away and bakes the wrong rotation in for good.
+    The scarlet elf cups went out rotated 90 degrees on 2026-11-21 and
+    nothing caught it -- not the build, not the tests, not me looking
+    straight at the rendered card -- because **leaf litter has no
+    horizon**. A cap-and-stem mushroom would have been obvious at a
+    glance; a cup fungus on fallen beech leaves is plausible from any
+    angle. Apply the tag first, then strip.
+    """
+    return ImageOps.exif_transpose(Image.open(path)).convert("RGB")
+
+
+def ingest(pairs: list[str]) -> int:
+    """Turn original photographs into committed sources.
+
+    This step used to be a few lines typed into a shell, which is exactly
+    why the orientation bug had nowhere to be fixed: the originals are not
+    in the repository, so a fault baked in here is permanent unless the
+    person who holds them runs the step again.
+    """
+    SRC.mkdir(parents=True, exist_ok=True)
+    for pair in pairs:
+        if "=" not in pair:
+            print(f"REFUSING: expected <name>=<file>, got {pair!r}", file=sys.stderr)
+            return 1
+        name, original = pair.split("=", 1)
+        path = pathlib.Path(original)
+        if not path.exists():
+            print(f"REFUSING: no such file {path}", file=sys.stderr)
+            return 1
+        im = upright(path)
+        scale = SOURCE_EDGE / max(im.size)
+        if scale < 1:
+            im = im.resize((round(im.width * scale), round(im.height * scale)), Image.LANCZOS)
+        clean = Image.new("RGB", im.size)   # a fresh image carries no EXIF at all
+        clean.paste(im)
+        out = SRC / f"{name}.jpg"
+        clean.save(out, "JPEG", quality=90, optimize=True)
+        print(f"  {name:16} {im.size[0]}x{im.size[1]}  {out.stat().st_size // 1024:>4} KB")
+    return 0
 
 
 def crop(src: Image.Image, focus_y: float) -> Image.Image:
@@ -84,6 +138,9 @@ def crop(src: Image.Image, focus_y: float) -> Image.Image:
 
 
 def main() -> int:
+    if len(sys.argv) > 1 and sys.argv[1] == "--ingest":
+        return ingest(sys.argv[2:])
+
     OUT.mkdir(parents=True, exist_ok=True)
     missing = [s for s, _ in CARDS.values() if not (SRC / f"{s}.jpg").exists()]
     if missing:
@@ -91,8 +148,9 @@ def main() -> int:
         return 1
 
     for name, (source, focus_y) in CARDS.items():
-        with Image.open(SRC / f"{source}.jpg") as src:
-            card = crop(src.convert("RGB"), focus_y)
+        # `upright` rather than `Image.open`: the committed sources are
+        # already rotated correctly, and a source added by hand may not be.
+        card = crop(upright(SRC / f"{source}.jpg"), focus_y)
         # A fresh image rather than card.save(exif=None): Pillow carries the
         # source's exif through a crop, and "no argument" is not "strip".
         clean = Image.new("RGB", card.size)

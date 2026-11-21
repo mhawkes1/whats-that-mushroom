@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-11-21T10:56:40.690170+00:00",
+  "captured_at": "2026-11-21T11:13:44.499848+00:00",
   "health": {
     "status": "ok",
     "model_loaded": false,
@@ -185,7 +185,7 @@
     {
       "verdict": "out_of_scope",
       "result": {
-        "observation_id": "5e89fa8c85b24ac99c610be184306189",
+        "observation_id": "154289013dfb40e1b9a22ce1b0f6e5ba",
         "verdict": "out_of_scope",
         "headline": "This doesn't match anything I know well",
         "detail": "The photograph does not resemble any species in my range with reasonable confidence. It may be a species I was never trained on, or the photograph may not show enough of the mushroom.",
@@ -345,7 +345,7 @@
     {
       "verdict": "group",
       "result": {
-        "observation_id": "ba7072f8de1c48a2a6295d04c6066ffa",
+        "observation_id": "a03d115bdcbd4187828a7f83d5cad623",
         "verdict": "group",
         "headline": "This looks like a Lactarius species",
         "detail": "The candidates cannot be separated from this photograph alone. They differ by characters that are not visible here. I'm reasonably confident about the genus (66%) but not about which species within it.",
@@ -509,7 +509,7 @@
     {
       "verdict": "uncertain",
       "result": {
-        "observation_id": "091d18d489e942d68180865de64c9fcb",
+        "observation_id": "060b223641194241bebccc59550115d6",
         "verdict": "uncertain",
         "headline": "I'm not sure what this is",
         "detail": "No candidate is likely enough to name. The possibilities below are ranked, but the photograph does not settle between them.",
@@ -670,7 +670,7 @@
     {
       "verdict": "dangerous_group",
       "result": {
-        "observation_id": "f3ec0ae640b942bda46dec829eaec111",
+        "observation_id": "f467369be958436fa2d567c9b5c67006",
         "verdict": "dangerous_group",
         "headline": "I can't safely narrow this down",
         "detail": "The leading candidates include both Clitocybe nebularis and Clitocybe rivulosa. These are confused with each other in the field, and one of them can kill. I will not choose between them from a photograph.",
@@ -838,7 +838,7 @@
     {
       "verdict": "species",
       "result": {
-        "observation_id": "46986f3eac4949d0aecb7e6cb2b0b53a",
+        "observation_id": "2f8d43c45a3e4e71a82b9b42b98063ab",
         "verdict": "species",
         "headline": "Most likely Pholiota squarrosa",
         "detail": "Dry upturned scales on cap and stem; clustered at the base of living trees.",
@@ -1059,7 +1059,7 @@
     {
       "answered": "Running down the stem",
       "result": {
-        "observation_id": "f3ec0ae640b942bda46dec829eaec111",
+        "observation_id": "f467369be958436fa2d567c9b5c67006",
         "verdict": "dangerous_group",
         "headline": "I can't safely narrow this down",
         "detail": "The leading candidates include both Clitocybe nebularis and Clitocybe rivulosa. These are confused with each other in the field, and one of them can kill. I will not choose between them from a photograph.",
@@ -1230,7 +1230,7 @@
     {
       "answered": "Squarely attached",
       "result": {
-        "observation_id": "f3ec0ae640b942bda46dec829eaec111",
+        "observation_id": "f467369be958436fa2d567c9b5c67006",
         "verdict": "out_of_scope",
         "headline": "This doesn't match anything I know well",
         "detail": "The photograph does not resemble any species in my range with reasonable confidence. It may be a species I was never trained on, or the photograph may not show enough of the mushroom.",
@@ -1393,7 +1393,7 @@
     {
       "answered": "Notched just before the stem",
       "result": {
-        "observation_id": "f3ec0ae640b942bda46dec829eaec111",
+        "observation_id": "f467369be958436fa2d567c9b5c67006",
         "verdict": "out_of_scope",
         "headline": "This doesn't match anything I know well",
         "detail": "The photograph does not resemble any species in my range with reasonable confidence. It may be a species I was never trained on, or the photograph may not show enough of the mushroom.",
@@ -1564,7 +1564,7 @@
     {
       "answered": "Free, not touching the stem",
       "result": {
-        "observation_id": "f3ec0ae640b942bda46dec829eaec111",
+        "observation_id": "f467369be958436fa2d567c9b5c67006",
         "verdict": "out_of_scope",
         "headline": "This doesn't match anything I know well",
         "detail": "The photograph does not resemble any species in my range with reasonable confidence. It may be a species I was never trained on, or the photograph may not show enough of the mushroom.",

@@ -88,7 +88,7 @@ characters come from standard references but are unverified.
 | `app/src/lib/observationLog.ts` | Local history; what a stored verdict may say later |
 | `app/src/components/AppHeader.tsx` | Front-page header; `APP_NAME` lives here |
 | `app/src/content/posts.ts` | The Learn posts, bundled; what a post may and may not claim |
-| `scripts/build_learn_images.py` | Derives the Learn card photographs; strips EXIF unconditionally |
+| `scripts/build_learn_images.py` | Ingests and derives the Learn card photographs; applies EXIF orientation, then strips |
 | `server/app/disclaimer.py` | What a user acknowledges before first use; the version is the text |
 | `server/app/incidents.py` | Reports that the app was wrong, and how they are graded |
 | `docs/INCIDENTS.md` | Who acts on a report, and in what order |
@@ -1457,6 +1457,35 @@ commits.
   The broken `aspectRatio` version measured 1,529, which is what made the
   fault visible at all -- it was the page growing 370pt for a 106pt
   change that said the number could not be right.
+- **A card shipped SIDEWAYS for a day, and the tag that says so was
+  thrown away by a step that was not in the repository.** 2026-11-21.
+  Two of the six frames Martin sent carry EXIF **`Orientation: 8`** --
+  stored 6000x4000 landscape, meant to be displayed 4000x6000 portrait.
+  `Image.open().size` reports what is **stored**, so an ingest that only
+  downscales and strips metadata reads the wrong shape, crops against it,
+  and bakes a 90-degree rotation in permanently. The scarlet elf cups went
+  out that way.
+  **Nothing caught it.** Not the build, not the suite, and not me looking
+  straight at the rendered card twice -- because **leaf litter has no
+  horizon**. A cap-and-stem mushroom would have been obvious at a glance;
+  a cup fungus on fallen beech leaves is plausible from any angle. It
+  surfaced only because the replacement frame Martin sent read as portrait
+  in the conversation while `PIL` reported landscape, and the two numbers
+  disagreeing is the whole of the evidence.
+  **The deeper fault is that the ingest was shell history.** Turning an
+  original into `docs/design/learn/*.jpg` was a few lines typed inline, so
+  there was nowhere for the fix to live and no way for anybody else to
+  re-run it -- and the originals are 24 MP files on Martin's machine, so a
+  fault baked in there is permanent. `build_learn_images.py --ingest
+  <name>=<file>` is now that step, `upright()` applies the tag before
+  anything else on **both** paths, and `server/tests/test_learn_images.py`
+  asserts the call is present, that no direct `Image.open` survives in the
+  crop path, and that the two portrait sources are stored portrait --
+  confirmed failing on a deliberately un-transposed re-ingest rather than
+  assumed to.
+  **The rule: apply the orientation tag, then strip metadata, never the
+  other way round.** And when a library reports a shape that disagrees
+  with what a person sees, the person is right and the tag is why.
 - **A comment invented a safety route that has never existed.**
   `AppHeader.tsx` explained giving up the header's emergency button by
   saying Home carries one "and the capture screen's own is pinned
