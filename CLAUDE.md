@@ -584,10 +584,19 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   `ios.bundleIdentifier` and `android.package` in `app/app.json`. A bundle
   id is permanent once published to either store, and reverse-DNS
   convention says use a domain you control, so this one is only honest
-  once `fungaapp.co.uk` is registered. **Register it.** £3.99 at 123-reg
-  on 2026-11-08, WHOIS privacy included -- which matters, because Nominet
-  otherwise publishes a registrant address for a non-trading individual,
-  and this app invites incident reports from strangers.
+  once `fungaapp.co.uk` is registered. **Martin registered it on
+  2026-11-21**, so the identifiers are now honest and nothing in
+  `app/app.json` has to move. £3.99 at 123-reg, WHOIS privacy included --
+  which matters, because Nominet otherwise publishes a registrant address
+  for a non-trading individual, and this app invites incident reports from
+  strangers.
+  **Check the spelling against the identifiers before trusting a report
+  that it is done.** He first said "fungapp.com", which is a different
+  name twice over -- one `a` and the wrong TLD -- and `uk.co.fungaapp.app`
+  is reverse-DNS for the `.co.uk`, not for that. It was a typo, confirmed
+  the same day. A bundle id is permanent once either store publishes it,
+  so a one-letter difference between the domain and the identifier is not
+  a thing to assume away.
   **It was `uk.co.funga.app` until 2026-11-08, and the reason it moved is
   that `funga.co.uk` is gone.** `funga.com` was never available either --
   it belongs to Funga PBC, a US forestry startup, and taking their
