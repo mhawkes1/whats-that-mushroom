@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { AppHeader } from '../components/AppHeader';
@@ -108,49 +108,39 @@ export function HomeScreen({ navigation }: { navigation: any }) {
         </Pressable>
       ) : null}
 
-      {/* The one block of solid colour in the app. This paragraph is the
-          product's whole argument and it used to be a cream card on a cream
-          field -- the same weight as the photography tips below it. */}
+      {/* The one block of solid colour in the app, and since 2026-11-21
+          three lines rather than three paragraphs.
+
+          Each claim used to carry a sentence of explanation -- about 200
+          words, the tallest thing on the page. Those explanations are now
+          `why-i-refuse`, at greater length than they ever had here, so
+          keeping both was the duplication this screen created the day the
+          Learn posts landed. What stays is the standing statement: the
+          consent gate states the terms once, with a tick, and never again.
+
+          Deleting it outright was the alternative and would have left the
+          home screen explaining nothing, which is the gap this tab was
+          added to fill. */}
       <View style={[styles.panel, styles.panelThesis]}>
         <Text style={[styles.panelHeading, styles.panelHeadingOn]}>
           What this app will not do
         </Text>
-        <Text style={[styles.panelItem, styles.panelItemOn]}>
-          <Text style={[styles.lead, styles.leadOn]}>It will never tell you a mushroom is safe
-          to eat.</Text> There is no such category in it. It names what it can
-          and warns about recorded hazards; where there is no hazard on record
-          it says nothing at all, because silence is the honest answer and
-          cannot be misread as permission.
+        <Text style={[styles.claim, styles.panelItemOn]}>
+          It will never tell you a mushroom is safe to eat.
         </Text>
-        <Text style={[styles.panelItem, styles.panelItemOn]}>
-          <Text style={[styles.lead, styles.leadOn]}>It will refuse rather than guess.</Text> If
-          two species that look alike from a photograph are in play and one of
-          them can kill, it names neither. That is the app working, not
-          failing — and it is the whole difference between this and the apps
-          that answer every time.
+        <Text style={[styles.claim, styles.panelItemOn]}>
+          It will refuse rather than guess.
         </Text>
-        <Text style={[styles.panelItem, styles.panelItemOn]}>
-          <Text style={[styles.lead, styles.leadOn]}>It cannot see what you did not
-          photograph.</Text> The base of the stem and the underside of the cap
-          are where most answers are, and they are the parts almost everyone
-          leaves in the ground.
+        <Text style={[styles.claim, styles.panelItemOn]}>
+          It cannot see what you did not photograph.
         </Text>
-      </View>
-
-      <View style={styles.panel}>
-        <Text style={styles.panelHeading}>Getting a useful answer</Text>
-        <Text style={styles.tip}>
-          • Lever the whole mushroom out rather than cutting it. The base
-          matters and it is easy to lose.
-        </Text>
-        <Text style={styles.tip}>
-          • Photograph the cap, the side and the underside. Each one rules
-          things out that the others cannot.
-        </Text>
-        <Text style={styles.tip}>
-          • Daylight beats indoor light for colour, and colour separates
-          species that otherwise look identical.
-        </Text>
+        <Pressable
+          onPress={() => navigation.navigate('Post', { slug: 'why-i-refuse' })}
+          accessibilityRole="button"
+          accessibilityLabel="Why I refuse to answer. Opens the article."
+        >
+          <Text style={styles.panelLink}>Why I refuse →</Text>
+        </Pressable>
       </View>
 
       {/* Here rather than on the working screen. Martin, 2026-10-29: on the
@@ -180,13 +170,24 @@ export function HomeScreen({ navigation }: { navigation: any }) {
         accessibilityRole="button"
         accessibilityLabel="Before you start. Four short pieces on photographing and reading mushrooms."
       >
-        <Text style={styles.learnHeading}>Before you start</Text>
-        <Text style={styles.learnBody}>
-          Why I refuse to answer sometimes, how to photograph a mushroom so
-          I can do better, taking a spore print, and the three questions
-          people answer wrongly.
-        </Text>
-        <Text style={styles.learnMore}>Four short pieces →</Text>
+        {/* `width: '100%'` with an explicit height, never the
+            absoluteFill-with-undefined idiom that left the masthead
+            showing a corner of its photograph at 3x on React Native Web. */}
+        <Image
+          source={require('../../assets/learn/home.jpg')}
+          style={styles.learnPhoto}
+          resizeMode="cover"
+          accessible={false}
+        />
+        <View style={styles.learnText}>
+          <Text style={styles.learnHeading}>Before you start</Text>
+          <Text style={styles.learnBody}>
+            Why I refuse to answer sometimes, how to photograph a mushroom
+            so I can do better, taking a spore print, and the three
+            questions people answer wrongly.
+          </Text>
+          <Text style={styles.learnMore}>Four short pieces →</Text>
+        </View>
       </Pressable>
 
       <Text style={styles.footnote}>
@@ -208,6 +209,13 @@ const styles = StyleSheet.create({
     padding: theme.spacing(2),
     gap: theme.spacing(0.5),
   },
+  claim: { fontSize: theme.font.body, lineHeight: 24, fontWeight: '600' },
+  panelLink: {
+    fontSize: theme.font.small,
+    fontWeight: '700',
+    color: theme.colour.lichen,
+    marginTop: theme.spacing(0.5),
+  },
   countAside: {
     fontSize: theme.font.small,
     lineHeight: 20,
@@ -218,12 +226,11 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colour.surface,
     borderWidth: 1,
     borderColor: theme.colour.border,
-    borderLeftWidth: 4,
-    borderLeftColor: theme.colour.accent,
     borderRadius: theme.radius.md,
-    padding: theme.spacing(2),
-    gap: theme.spacing(0.75),
+    overflow: 'hidden',
   },
+  learnPhoto: { width: '100%', height: 150 },
+  learnText: { padding: theme.spacing(2), gap: theme.spacing(0.75) },
   learnHeading: {
     fontSize: theme.font.heading,
     fontWeight: '700',
@@ -286,7 +293,6 @@ const styles = StyleSheet.create({
     color: theme.colour.text,
   },
   lead: { fontWeight: '700' },
-  tip: { fontSize: theme.font.body, lineHeight: 22, color: theme.colour.text },
 
   safety: {
     backgroundColor: theme.colour.dangerSurface,

@@ -88,6 +88,7 @@ characters come from standard references but are unverified.
 | `app/src/lib/observationLog.ts` | Local history; what a stored verdict may say later |
 | `app/src/components/AppHeader.tsx` | Front-page header; `APP_NAME` lives here |
 | `app/src/content/posts.ts` | The Learn posts, bundled; what a post may and may not claim |
+| `scripts/build_learn_images.py` | Derives the Learn card photographs; strips EXIF unconditionally |
 | `server/app/disclaimer.py` | What a user acknowledges before first use; the version is the text |
 | `server/app/incidents.py` | Reports that the app was wrong, and how they are graded |
 | `docs/INCIDENTS.md` | Who acts on a report, and in what order |
@@ -1316,6 +1317,65 @@ commits.
   form.
   Writing post four is what found the `cap_surface` undercount above: the
   prose had to state the numbers, which meant computing them.
+- **The front page lost two thirds of its words the same day it gained
+  the posts.** 2026-11-21, Martin: *"front page is very wordy... should be
+  clear of clutter"*, next to a competitor's screen of photo cards.
+  **The light green photography tips are gone outright**, because
+  `photographing-a-mushroom` is those three bullets at length -- the
+  duplication the Learn section created an hour earlier.
+  **The dark green thesis panel was COMPRESSED, not deleted**, and the
+  distinction is the whole of it. It was three bold claims each followed
+  by a sentence of explanation, ~200 words and the tallest thing on the
+  page; the explanations are now `why-i-refuse`. What stays is the three
+  claims and a link, because the consent gate states the terms once with
+  a tick and never again, and this is the standing version. Deleting it
+  would have left the home screen explaining nothing, which is the gap
+  the tab was added to fill. `content.test.ts` pins all three claims so a
+  later tidy cannot take the panel down to a bare link.
+  Measured in the running client: **1,606pt to 1,134pt**, about a 30%
+  cut, with a photograph added. The saving is bigger than it looks
+  because the Learn card gained a 150pt image band on the way.
+- **Martin's four photographs are committed as derived crops, and the
+  originals are not.** `scripts/build_learn_images.py` cuts
+  `app/assets/learn/*.jpg` (780x390, 2:1, ~60 KB each, 294 KB for five)
+  from `docs/design/learn/*.jpg`, which are his frames downscaled to
+  1600px. Generated, never hand-cropped -- the `build_icons.py` argument,
+  and here the drift would show as one card framed unlike the other
+  three.
+  **`eval/photos/**` is gitignored and that is why a build step was
+  needed at all.** Twenty of his photographs sit there on his machine and
+  in a working copy, and the test enforcing the ignore says why: *"a
+  photograph must not be committed -- they carry EXIF location."* A card
+  image reading from that directory works locally and fails on a fresh
+  clone, exactly like `model.onnx`.
+  **So every output is written through a fresh `Image`**, which is the
+  only reliable strip -- Pillow carries a source's EXIF through a crop,
+  and passing no `exif=` argument is not the same as removing it. The
+  four sources turned out to carry **NaN** GPS coordinates already, but
+  the block, the camera make and the timestamp were all there, and a
+  build that strips unconditionally cannot be caught out by the next
+  frame somebody adds. `content.test.ts` greps each committed card for
+  the `Exif\0\0` marker and requires it absent.
+  **The composition rule, not the species, is what ruled frames out:** no
+  mushroom held in a hand, which is a picking gesture, and nothing lit as
+  a portrait of produce. That is the `AppHeader` note scoped properly --
+  it was written about the book cover's cep. All four are in situ.
+- **The rule 1 scanner reads comments, and caught its own author.**
+  `content.test.ts` matched `\bedible\b` inside the note in
+  `LearnScreen.tsx` explaining which photographs were ruled out, which
+  had to use the word to say it. Same shape as `masthead.test.ts`
+  matching its own explanatory prose. **The comment was reworded rather
+  than the scanner narrowed**: skipping comments means parsing TSX to
+  find out what is one, and a scanner that knows where a string sits is a
+  scanner that can be fooled about where a string sits. The cost is that
+  prose in those four files cannot use the words either, which is cheap.
+- **A card that wraps its title in a View breaks a text selector.**
+  `screenshots.js` tapped `/^Before you start$/`; once the Learn card
+  became image + title + standfirst inside one `Pressable`, the control's
+  text is the whole card and the anchored regex matched nothing. The
+  failure is loud -- the helper dumps every visible control -- but the
+  lesson is that **an end-anchored selector asserts a layout**, not a
+  label. Start-anchored now.
 - **The screenshot set never contained the logo.** Martin, 2026-11-08:
   "include the actual logo which isn't actually white". He was right and
   the distinction is exact -- the masthead shows the *mark* as a cream

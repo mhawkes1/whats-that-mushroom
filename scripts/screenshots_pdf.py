@@ -35,6 +35,8 @@ ORDER = [
     "00-app-icon",
     "03-front-page",
     "02-consent-every-box-on-its-own",
+    "04-learn",
+    "04b-learn-post",
     "05-field-notes",
     "07-result",
     "08-result-after-answering",

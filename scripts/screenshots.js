@@ -129,6 +129,26 @@ async function shot(p, name) {
   await sleep(p, 3000);
   await shot(p, '03-front-page.png');
 
+  // ---- Learn, reached from the card at the foot of the front page -----
+  // Added 2026-11-21 with the section itself. A screenshot set that does
+  // not show a feature is a set that is already stale about it, and this
+  // one is the project's most shareable surface.
+  await tap(p, /^Before you start/);  // the card's text is title + standfirst
+  await sleep(p, 2500);
+  await fit(p);
+  await shot(p, '04-learn.png');
+
+  await tap(p, /^Three answers that mislead me/);
+  await sleep(p, 2500);
+  await fit(p);
+  await shot(p, '04b-learn-post.png');
+
+  // Stack screens again: reload rather than goBack, for the reason below.
+  await p.goto(URL, { waitUntil: 'domcontentloaded', timeout: 120000 });
+  await sleep(p, 9000);
+  await goTab(p, 'Home');
+  await sleep(p, 2000);
+
   // ---- emergency, reached the way a user reaches it -------------------
   await tap(p, /Someone has eaten a wild mushroom/);
   await sleep(p, 3000);
