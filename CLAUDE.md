@@ -1309,12 +1309,28 @@ commits.
   mycological claim, and those wait for the review `taxonomy_reviewed:
   false` is blocking on. The index says so on screen rather than leaving
   the absence to be noticed.
-  **Placement: below the emergency button, never above it.** Content must
-  not push the one control that must never need a scroll further down the
-  page; that is the rule to hold whatever the section grows into. It is a
-  stack screen rather than a fourth tab -- the home screen's photography
-  tips were already this feature's stub, and the first post is their long
-  form.
+  **Placement: it was below the emergency button, and the rule it obeyed
+  lasted a day.** The Learn card went under the red box because content
+  must not push the one control that must never need a scroll further
+  down the page. Martin reversed it on 2026-11-21 -- *"I want this at the
+  bottom to scroll to. As not on the main screen when first upload"* --
+  so the order is masthead, count, thesis, **Learn, emergency**, footnote.
+  Measured in the running client at 390x844 as the app opens: the
+  emergency label sits at **y 959-999** with the visible area ending at
+  795, so it is **164pt below the fold** where it used to be just above
+  it. One flick.
+  That is the same judgement as taking it off the capture screen on
+  2026-10-29, one step further, and `docs/SAFETY.md` carries both sides
+  at length. The cost worth stating: Home's button is the only route a
+  user meets in **ordinary** use -- the consent screen's fires once
+  before first use and the report flow's is several taps into a form.
+  Nothing SAFETY.md listed as kept is given up: hardcoded, offline, above
+  the consent gate, more than one route. `content.test.ts` asserts the
+  new order *and*, separately, that the home route exists at all, which
+  is the thing that would be a loss rather than a decision.
+  It is a stack screen rather than a fourth tab -- the home screen's
+  photography tips were already this feature's stub, and the first post
+  is their long form.
   Writing post four is what found the `cap_surface` undercount above: the
   prose had to state the numbers, which meant computing them.
 - **The front page lost two thirds of its words the same day it gained
@@ -1403,6 +1419,19 @@ commits.
   generally: a generated artefact can be wrong in the *pessimistic*
   direction, and a fault that only ever appears in a screenshot should be
   reproduced in the running client before anybody edits a stylesheet.
+- **A comment invented a safety route that has never existed.**
+  `AppHeader.tsx` explained giving up the header's emergency button by
+  saying Home carries one "and the capture screen's own is pinned
+  outside its ScrollView, so it is on screen whatever the user has
+  scrolled to". There is no such control. `emergencyRoute.test.ts`
+  asserts the capture screen must **not** navigate to Emergency, and
+  `grep` finds the route in exactly three files: Home, Consent, Report.
+  So the file whose job is to justify dropping one always-on route
+  claimed a second one as cover for it. Found 2026-11-21 while checking
+  what moving the home button would actually cost -- which is the only
+  reason anybody read that sentence closely. **A comment that invents a
+  safety route is worse than no comment:** it is what somebody reads
+  before deciding they can afford to move another one.
 - **A card that wraps its title in a View breaks a text selector.**
   `screenshots.js` tapped `/^Before you start$/`; once the Learn card
   became image + title + standfirst inside one `Pressable`, the control's

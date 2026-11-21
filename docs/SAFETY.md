@@ -181,6 +181,32 @@ yes to "has anyone eaten it". `app/test/emergencyRoute.test.ts` asserts the
 removal AND the remaining routes, so putting it back on the front page means
 coming here and reading why it left.
 
+**And on 2026-11-21 it moved to the foot of the home screen**, below the
+Learn card, on the same reasoning one step further. Martin: *"I want this
+at the bottom to scroll to. As not on the main screen when first upload."*
+
+The cost, stated rather than glossed: the home screen's button is the only
+route a user meets in **ordinary** use. The consent screen's fires once,
+before first use, and the report flow's is several taps into a form. So the
+control for "a child has eaten something" now needs one flick of a scroll
+on a phone, where before it was just above the fold.
+
+What is still not given up is everything this section listed as kept: the
+screen stays hardcoded, offline, above the consent gate, and reachable by
+more than one route. `app/test/content.test.ts` now asserts the order
+*and* that the home route exists at all, which is the thing that would
+actually be a loss rather than a judgement.
+
+**A stale comment was found in the same change.** `AppHeader.tsx` claimed
+the capture screen carried an emergency control "pinned outside its
+ScrollView, so it is on screen whatever the user has scrolled to". There is
+no such control -- `emergencyRoute.test.ts` asserts the capture screen must
+*not* navigate to Emergency -- so the comment described a second always-on
+route that has never existed, in the file whose job is to explain why the
+header gave its own up. Removed. A comment that invents a safety route is
+worse than no comment: it is the thing somebody reads before deciding they
+can afford to move another one.
+
 The obvious home for a quiet route is the "Me" tab, when the tab bar lands.
 
 **The report form refuses to be a triage channel.** Its first two questions

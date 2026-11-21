@@ -143,22 +143,6 @@ export function HomeScreen({ navigation }: { navigation: any }) {
         </Pressable>
       </View>
 
-      {/* Here rather than on the working screen. Martin, 2026-10-29: on the
-          capture screen this read as "something has gone wrong" to somebody
-          who had just opened the app. It is still one tap from a tab that is
-          always on screen, and the screen behind it is hardcoded and works
-          with no signal. */}
-      <Pressable
-        style={styles.safety}
-        onPress={() => navigation.navigate('Emergency')}
-        accessibilityRole="button"
-        accessibilityLabel="Someone has eaten a wild mushroom. What to do."
-      >
-        <Text style={styles.safetyText}>
-          Someone has eaten a wild mushroom — what to do
-        </Text>
-      </Pressable>
-
       {/* Below the emergency route, never above it. Content must not push
           the one control that must never need a scroll any further down
           the page; that is the rule to hold whatever this section grows
@@ -188,6 +172,35 @@ export function HomeScreen({ navigation }: { navigation: any }) {
           </Text>
           <Text style={styles.learnMore}>Four short pieces →</Text>
         </View>
+      </Pressable>
+
+      {/* Below the Learn card since 2026-11-21, and it used to be above
+          it with a comment saying content must never push this control
+          down the page. Martin reversed that: *"I want this at the bottom
+          to scroll to. As not on the main screen when first upload."*
+
+          It is the same judgement he made on 2026-10-29 when it came off
+          the capture screen -- "I don't want the app to seem alarming
+          from the off" -- carried one step further, and `docs/SAFETY.md`
+          carries the full argument on both sides.
+
+          What it costs, stated rather than glossed: this is the only
+          route into the emergency screen a user meets in ordinary use.
+          The consent screen's fires once, before first use, and the
+          report flow's is several taps into a form. So the control for
+          "a child has eaten something" now needs one flick of a scroll.
+          What is NOT given up is anything SAFETY.md required: the screen
+          stays hardcoded, offline, above the consent gate, and reachable
+          by more than one route. */}
+      <Pressable
+        style={styles.safety}
+        onPress={() => navigation.navigate('Emergency')}
+        accessibilityRole="button"
+        accessibilityLabel="Someone has eaten a wild mushroom. What to do."
+      >
+        <Text style={styles.safetyText}>
+          Someone has eaten a wild mushroom — what to do
+        </Text>
       </Pressable>
 
       <Text style={styles.footnote}>

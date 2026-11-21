@@ -200,11 +200,26 @@ describe('the home screen keeps its statement', () => {
     }
   });
 
-  it('puts the Learn card below the emergency route, never above it', () => {
-    // Content must not push the one control that must never need a
-    // scroll any further down the page.
-    expect(home.indexOf("navigate('Emergency')")).toBeLessThan(
-      home.indexOf("navigate('Learn')"),
+  it('puts the emergency route last, below the Learn card', () => {
+    // This asserted the OPPOSITE for one day, with a comment saying
+    // content must never push the one control that must never need a
+    // scroll. Martin reversed it on 2026-11-21: "I want this at the
+    // bottom to scroll to. As not on the main screen when first upload."
+    //
+    // Same judgement as taking it off the capture screen on 2026-10-29,
+    // one step further; docs/SAFETY.md carries both sides. Kept as a
+    // test rather than deleted so the order stays a decision: putting it
+    // back above Learn means coming here and reading why it moved.
+    expect(home.indexOf("navigate('Learn')")).toBeLessThan(
+      home.indexOf("navigate('Emergency')"),
     );
+  });
+
+  it('still leaves the emergency route on the home screen at all', () => {
+    // The thing that would actually be a loss. Moving it down the page
+    // is Martin's call; losing it is how an app silently drops its
+    // panic button, which this project has a note about.
+    expect(home).toContain("navigate('Emergency')");
+    expect(home).toContain('Someone has eaten a wild mushroom');
   });
 });

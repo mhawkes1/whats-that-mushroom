@@ -95,9 +95,8 @@ const TAGLINE = "I'll tell you when I can't tell.";
  * **The emergency route is NOT here.** It was, from the book cover onwards,
  * because it is the one control that must never need a scroll. Martin
  * dropped it from the header on 2026-10-29: Home carries it as a plain
- * button and the capture screen's own is pinned outside its ScrollView, so
- * it is on screen whatever the user has scrolled to -- which it was not
- * before, on any real phone. Restoring a photograph to this component is
+ * button, and on 2026-11-21 he moved that button to the foot of Home as
+ * well. Restoring a photograph to this component is
  * exactly the kind of change that cost the app its panic button last time.
  * It did not this time, and `emergencyRoute.test.ts` is what holds that
  * line rather than this comment.
