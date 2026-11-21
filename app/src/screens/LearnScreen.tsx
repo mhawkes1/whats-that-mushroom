@@ -98,7 +98,10 @@ const styles = StyleSheet.create({
     borderRadius: theme.radius.md,
     overflow: 'hidden',
   },
-  cardPhoto: { width: '100%', height: 140 },
+  // 4:3 at the 390pt reference width. A real height, not `aspectRatio`:
+  // React Native Web ignores the ratio and sizes the element from the
+  // asset's own pixels. See the note on `learnPhoto` in HomeScreen.
+  cardPhoto: { width: '100%', height: 256 },
   cardText: { padding: theme.spacing(2), gap: theme.spacing(0.75) },
   cardTitle: {
     fontSize: theme.font.heading,

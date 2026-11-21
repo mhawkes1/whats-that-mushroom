@@ -154,9 +154,9 @@ export function HomeScreen({ navigation }: { navigation: any }) {
         accessibilityRole="button"
         accessibilityLabel="Before you start. Four short pieces on photographing and reading mushrooms."
       >
-        {/* `width: '100%'` with an explicit height, never the
-            absoluteFill-with-undefined idiom that left the masthead
-            showing a corner of its photograph at 3x on React Native Web. */}
+        {/* `width: '100%'` with a real height -- see `learnPhoto` for
+            why neither the absoluteFill-with-undefined idiom nor
+            `aspectRatio` works on React Native Web. */}
         <Image
           source={require('../../assets/learn/home.jpg')}
           style={styles.learnPhoto}
@@ -242,7 +242,21 @@ const styles = StyleSheet.create({
     borderRadius: theme.radius.md,
     overflow: 'hidden',
   },
-  learnPhoto: { width: '100%', height: 150 },
+  // An explicit HEIGHT, matching 4:3 at the 390pt reference width, and
+  // never `aspectRatio`. Measured in the running client: with
+  // `{width: '100%', aspectRatio: 4/3}` the element came back
+  // **340x585** -- ratio 0.58, portrait -- because React Native Web
+  // ignored the ratio and took the asset's INTRINSIC PIXEL HEIGHT as its
+  // CSS height. That is the masthead fault a third time: on this
+  // platform an <Image> will size itself from its source unless a real
+  // dimension stops it.
+  //
+  // 342pt of card at 4:3 is 256. A 360pt phone's card is 312 and a 430's
+  // is 382, so `cover` trims about 8% of width at the small end and 11%
+  // of height at the large one -- the masthead's own note already says
+  // there is no single correct aspect, and 390 is this project's
+  // reference width.
+  learnPhoto: { width: '100%', height: 256 },
   learnText: { padding: theme.spacing(2), gap: theme.spacing(0.75) },
   learnHeading: {
     fontSize: theme.font.heading,

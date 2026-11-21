@@ -1419,6 +1419,44 @@ commits.
   generally: a generated artefact can be wrong in the *pessimistic*
   direction, and a fault that only ever appears in a screenshot should be
   reproduced in the running client before anybody edits a stylesheet.
+- **The Learn cards are 4:3, and the shape was the bug rather than the
+  crop.** 2026-11-21, Martin: re-crop the Mycena troop, the Amanita and
+  the waxcaps *"so you can see the whole mushroom"* -- all three were
+  losing their stems off the bottom. No nudge fixes that; a band keeps a
+  fixed fraction of its source and the question is whether a mushroom
+  fits in it at all. Measured over the five: the four Canon landscape
+  frames are 2000x1333, **exactly 3:2**, so a 2:1 card was throwing away
+  a quarter of their height and anything 3:2 or taller uses them WHOLE,
+  uncropped. The Amanita is the one portrait source and decides the
+  rest -- 2:1 keeps 33% of its height, 3:2 keeps 44%, and only **4:3**
+  reaches the bottom of the stem at 50%. 4:3 costs the landscape four
+  11% of their width, centred, where none of them has anything.
+- **There was a SECOND crop nobody had accounted for, in the component.**
+  `learnPhoto` was `{width: '100%', height: 150}`. A 342pt-wide card with
+  a 150pt box is aspect 2.28 holding a 2.00 asset, so `resizeMode="cover"`
+  threw away a further **12% of the asset's height**, centred, on top of
+  whatever the build script had already cut. Two crops, and only one of
+  them was written down anywhere.
+- **`aspectRatio` does not fix it on React Native Web -- it is the
+  masthead fault a third time.** The obvious repair is
+  `{width: '100%', aspectRatio: 4/3}` so the box always matches the
+  asset. Measured in the running client, the element came back
+  **340x585**: ratio 0.58, portrait, the asset's **intrinsic pixel
+  height** taken as its CSS height with the ratio ignored. Exactly what
+  `styles.photo` did to the masthead with its 1200x406, and the lesson is
+  now general enough to state as a rule: **on this platform an `<Image>`
+  sizes itself from its source unless a real dimension stops it** --
+  `width: undefined` does not stop it, and neither does `aspectRatio`.
+  The shipped fix is an explicit `height: 256`, which is 4:3 at the 390pt
+  reference card width. A 360pt phone's card is 312 and a 430's is 382,
+  so `cover` trims about 8% of width at one end and 11% of height at the
+  other; the masthead's own note already records that there is no single
+  correct aspect, and 390 is the reference.
+  **Cost on the front page: 1,159pt to 1,200pt.** Forty-one points for
+  whole mushrooms, because the old 150pt band was short only by cropping.
+  The broken `aspectRatio` version measured 1,529, which is what made the
+  fault visible at all -- it was the page growing 370pt for a 106pt
+  change that said the number could not be right.
 - **A comment invented a safety route that has never existed.**
   `AppHeader.tsx` explained giving up the header's emergency button by
   saying Home carries one "and the capture screen's own is pinned

@@ -34,25 +34,42 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 SRC = ROOT / "docs" / "design" / "learn"
 OUT = ROOT / "app" / "assets" / "learn"
 
-#: 2:1, at 2x for a 390pt card. A 430pt phone needs 764px, so 780 covers
+#: 4:3, at 2x for a 390pt card. A 430pt phone needs 764px, so 780 covers
 #: the widest phone without paying for a third size.
-WIDTH, HEIGHT = 780, 390
+#:
+#: **It was 2:1 until 2026-11-21 and the shape was the whole problem.**
+#: Martin asked for the Mycena troop, the Amanita and the waxcaps to be
+#: re-cropped "so you can see the whole mushroom" -- all three were losing
+#: their stems off the bottom edge. No nudge fixes that: a band keeps a
+#: fixed fraction of its source, and the question is whether a mushroom
+#: fits in it at all.
+#:
+#: Measured over the five sources. The four Canon LANDSCAPE frames are
+#: 2000x1333, exactly 3:2, so at 2:1 a card threw away a quarter of their
+#: height and at 3:2 or taller it uses them WHOLE, uncropped. The Amanita
+#: is the one portrait source and decides the rest: 2:1 keeps 33% of its
+#: height, 3:2 keeps 44%, and only 4:3 keeps the 50% that reaches the
+#: bottom of the stem. 4:3 costs the landscape four 11% of their width,
+#: centred, which none of them has anything in.
+WIDTH, HEIGHT = 780, 585
 
 #: published name -> (source, focus as a fraction of the source's height).
-#: The focus exists because a 2:1 card never matches the source's shape,
-#: and which band it keeps is the whole decision. Centre is wrong for most
-#: of them: a mushroom photographed from a crouch sits above the middle of
-#: the frame, and the portrait one (amanita) loses two thirds of its
-#: height, so a few hundredths move the cap in or out of shot.
+#: The focus now matters for ONE source. At 4:3 the landscape frames keep
+#: 100% of their height, so `crop` clamps `top` to 0 whatever is asked for
+#: and only the Amanita's value does anything -- it still loses half its
+#: height, so a few hundredths move the cap top or the stem base out of
+#: shot. The others are left at 0.5 to say "nothing to decide" rather than
+#: deleted, because a source swapped for a portrait one would need them
+#: back.
 CARDS: dict[str, tuple[str, float]] = {
     "why-i-refuse": ("elfcups", 0.50),
-    "photographing-a-mushroom": ("amanita", 0.47),
-    "spore-prints": ("waxcaps", 0.45),
-    "answers-that-mislead-me": ("bonnets", 0.37),
+    "photographing-a-mushroom": ("amanita", 0.57),
+    "spore-prints": ("waxcaps", 0.50),
+    "answers-that-mislead-me": ("bonnets", 0.50),
     # The home screen's single card: the troop of bonnets on haircap moss,
     # Martin's pick. Its own crop rather than a shared file, so the home
     # card and an article card can diverge without one going wrong.
-    "home": ("mycena-cluster", 0.45),
+    "home": ("mycena-cluster", 0.50),
 }
 
 
