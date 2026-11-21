@@ -478,12 +478,68 @@ async def match_spore_print_photo(
     )
 
 
+#: Names that are not a reviewer, kept as the worksheet's own tags. These
+#: are what the machine-filled rows are signed with, and a taxonomy whose
+#: only signature is one of them is exactly the unreviewed case.
+_MACHINE_TAGS = frozenset(
+    {"unreviewed-seed-fill", "claude-option-widening", "claude-top250-batch"}
+)
+
+#: Words somebody types into a field meaning "not yet". Every one of them
+#: is truthy, and the old check accepted all of them.
+_PLACEHOLDERS = frozenset(
+    {
+        "todo", "to do", "tbd", "tba", "pending", "none", "null", "nil",
+        "n/a", "na", "no", "not yet", "nobody", "no one", "unreviewed",
+        "unknown", "someone", "test", "x", "xx", "xxx", "?", "-", "--",
+        "false", "0",
+    }
+)
+
+
+def _is_a_reviewer(name: object) -> bool:
+    """Whether `name` is a person who signed the taxonomy off."""
+    if not isinstance(name, str):
+        return False
+    cleaned = " ".join(name.split()).strip(" .,-")
+    if len(cleaned) < 3 or not any(c.isalpha() for c in cleaned):
+        return False
+    folded = cleaned.casefold()
+    return folded not in _PLACEHOLDERS and folded not in _MACHINE_TAGS
+
+
 def _taxonomy_reviewed() -> bool:
+    """The one flag that gates a public release.
+
+    It was `bool(reviewed_by)`, which any non-empty string satisfied --
+    `"TODO"`, `"pending"`, `"claude-top250-batch"`, a stray space. That is
+    the wrong way round for a flag whose false value is the safe one and
+    whose true value says a qualified mycologist has read 1,363 rows of
+    toxicity and field characters. Nobody would set it deliberately by
+    accident; somebody would very easily type a note into the field.
+
+    So a value that is present and is not a name is not quietly ignored:
+    it is refused AND logged, because the operator who typed it expected
+    something to happen and the silence would read as the check passing.
+    A list is accepted, since a taxonomy can be signed by more than one
+    person, and one real name among the machine tags is enough.
+    """
     import json
 
-    return bool(
-        json.loads(settings.taxonomy_path.read_text(encoding="utf-8")).get("reviewed_by")
-    )
+    raw = json.loads(settings.taxonomy_path.read_text(encoding="utf-8")).get("reviewed_by")
+    if raw is None:
+        return False
+
+    names = raw if isinstance(raw, list) else [raw]
+    signed = [n for n in names if _is_a_reviewer(n)]
+    if not signed:
+        log.error(
+            "taxonomy reviewed_by is set to %r, which is not a reviewer -- "
+            "taxonomy_reviewed stays false. It needs the name of the "
+            "qualified mycologist who signed the data off.",
+            raw,
+        )
+    return bool(signed)
 
 
 @app.get("/disclaimer", response_model=DisclaimerOut)
