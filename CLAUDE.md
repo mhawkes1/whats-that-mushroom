@@ -89,6 +89,8 @@ characters come from standard references but are unverified.
 | `app/src/components/AppHeader.tsx` | Front-page header; `APP_NAME` lives here |
 | `app/src/content/posts.ts` | The Learn posts, bundled; what a post may and may not claim |
 | `scripts/build_learn_images.py` | Ingests and derives the Learn card photographs; applies EXIF orientation, then strips |
+| `scripts/review_pack.py` | The slice of the character table a mycologist must check before launch, and the safe way back |
+| `docs/review-pack.csv` | 629 rows over 128 species, deadliest first; tiers 1-3 of 4 |
 | `server/app/disclaimer.py` | What a user acknowledges before first use; the version is the text |
 | `server/app/incidents.py` | Reports that the app was wrong, and how they are graded |
 | `docs/INCIDENTS.md` | Who acts on a report, and in what order |
@@ -1457,6 +1459,46 @@ commits.
   The broken `aspectRatio` version measured 1,529, which is what made the
   fault visible at all -- it was the page growing 370pt for a 106pt
   change that said the number could not be right.
+- **What a mycologist actually has to check is 629 rows, not 1,363, and
+  the tiering comes from the lookalike graph rather than from toxicity.**
+  2026-11-21, scoping the review so it can be asked for. Counted:
+  | tier | | species | rows |
+  | --- | --- | ---: | ---: |
+  | 1 | DEADLY + SERIOUS | 21 | 96 |
+  | 2 | safe halves facing a DEADLY | 84 | 424 |
+  | 3 | safe halves facing a SERIOUS | 23 | 109 |
+  | 4 | no dangerous neighbour at all | 143 | 734 |
+  **Tier 2 is four times tier 1, and leaving it out reviews half a
+  safeguard.** A state list is read in both directions: omitting a state a
+  DEADLY species shows turns a correct observation into a contradiction and
+  pushes the lethal candidate down, and the mirror error on the harmless
+  lookalike -- listing a state it does NOT show -- means the answer fails to
+  contradict it, so the safe species stays up and the deadly one stays down.
+  Both halves gate the same warning.
+  Tier 4 is excluded on the project's own rule 1: a species with no
+  recorded toxicity renders no hazard line, so an error there cannot change
+  a warning -- the worst case is a wrong name with nothing attached.
+  **`--merge` exists because handing out a slice is a data-loss hazard.**
+  `character_states.py import` is authoritative and wipes any state not in
+  the sheet it is given, so feeding a returned 629-row pack to it would
+  silently delete the other 734. `review_pack.py --merge` writes back only
+  the rows the pack covers, flags any correction that is not one of the
+  character's own options, and a test asserts no row it does not cover
+  loses its state.
+  **Who filled the sheet in, counted rather than assumed:** 1,198 rows
+  `Martin Hawkes`, 159 `claude-top250-batch`, 6 `claude-option-widening`.
+  `NOT_A_REVIEWER` holds only the two machine tags, so the code counts
+  Martin as a reviewer -- which is right for provenance and is NOT what
+  `taxonomy_reviewed` means. **Nothing in the file has been checked by a
+  mycologist**, which is the whole of the release blocker.
+- **`docs/REVIEW.md` is the pack a reviewer is handed and it is badly
+  stale.** It opens "covers 57 species", says 205 worksheet rows and names
+  8 deadly species; the file holds **271 species, 1,363 rows, 10 DEADLY and
+  11 SERIOUS**. Found 2026-11-21 while drafting the approach to a
+  mycologist -- the first document an outside expert would read, wrong by a
+  factor of five, in the same way and for the same reason as every other
+  stale figure in this project: prose written once and never re-derived.
+  Regenerate or rewrite it before it goes to anybody.
 - **A card shipped SIDEWAYS for a day, and the tag that says so was
   thrown away by a step that was not in the repository.** 2026-11-21.
   Two of the six frames Martin sent carry EXIF **`Orientation: 8`** --
