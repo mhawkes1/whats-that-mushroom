@@ -87,6 +87,7 @@ characters come from standard references but are unverified.
 | `app/` | Expo React Native client |
 | `app/src/lib/observationLog.ts` | Local history; what a stored verdict may say later |
 | `app/src/components/AppHeader.tsx` | Front-page header; `APP_NAME` lives here |
+| `app/src/content/posts.ts` | The Learn posts, bundled; what a post may and may not claim |
 | `server/app/disclaimer.py` | What a user acknowledges before first use; the version is the text |
 | `server/app/incidents.py` | Reports that the app was wrong, and how they are graded |
 | `docs/INCIDENTS.md` | Who acts on a report, and in what order |
@@ -469,6 +470,27 @@ Training needs a GPU and is documented in `docs/ROADMAP.md`.
   that fails when the allowlist stops naming anything real. `cap_colour` is
   the one to do next: colour is the least reliable character in the
   catalogue, it shifts with age and wet, and the death cap depends on it.
+- **One of those notes shipped an UNDERCOUNT, and nothing was checking.**
+  Found 2026-11-21. `cap_surface`'s safety note said "slimy or greasy"
+  contradicts **four** of the deadly species; it contradicts **five**.
+  *Gyromitra esculenta* declares `cap_surface: ["Brain-like or folded"]`,
+  which is a real option on that character, so an answer of `Slimy or
+  greasy` rules it out exactly like the other four -- and it had simply
+  never been counted. The note was understating how much a wrong answer
+  costs, in the one sentence written to warn about it.
+  The general fault is the one this file keeps meeting: **a count written
+  into prose is a hand-kept copy of a fact that lives in the taxonomy.**
+  `test_character_guidance.py` now computes all three from
+  `taxonomy.seed.json` and requires the prose to agree -- `ring` (2, the
+  two the note opens on), `cap_surface` (5) and `habitat` (3) -- with no
+  expected number restated anywhere in the test, so a species added,
+  dropped or re-described fails the test that owns the sentence. Confirmed
+  failing on the old "four" rather than assumed to.
+  The counts are of species that **declare** the character: one that
+  declares nothing cannot be contradicted, because an undescribed
+  character gets likelihood 1.0. So "deadly species gated by this
+  character" and "deadly species in the label space" are different
+  numbers, and the note means the first.
 - **Some answer options are non-observations, not states.** `volva`'s "I cut
   it off" and `cortina`'s "Can't tell" are in `uninformative_options` and get
   a likelihood of 1.0. Without that, the commonest field mistake — cutting the
@@ -1205,26 +1227,95 @@ commits.
   through the mask. And both backgrounds are `#f6f3ea` rather than white:
   the mark is drawn on paper, and a white plate shows as a ring of the
   wrong cream once a launcher masks to a circle.
-- **"times I wouldn't say" became "species unnamed", and the two tiles
-  do not count the same unit.** Martin's wording, 2026-11-17, for the
-  symmetry with the tile beside it. `species` is a set of distinct
-  species keys; `declined` is a count of **observations**, because where
-  the app named nothing there is no species to count -- which is the
-  whole point of the tile. So three photographs of one unidentifiable
-  mushroom read as three on the right and would read as one on the left.
-  Recorded rather than fixed because the overstatement is of *variety*,
-  not of knowledge, and it cannot flatter the app: it inflates the count
-  of times it refused.
-  **His first proposal was "more information required", and that one was
-  declined.** `declined` includes `out_of_scope`, where the app's own
-  words are "It may be a species I was never trained on" and no further
-  information helps, and `dangerous_group`, where the refusal can be
-  permanent -- the ivory funnels want a microscope. A label promising a
-  way through on those is the same over-claim as "increase accuracy" on
-  the follow-up offer, and for the same reason.
-  The screen-reader label says "left unnamed" rather than "species
-  unnamed", because a count read aloud as species is the reading the
-  visible label can survive and a spoken one cannot.
+- **Both home tiles became ONE, and the word that had to go was "named".**
+  2026-11-21. The screen had a green `named` count beside an `unnamed`
+  one; it now shows a single plain card -- the observation count, with a
+  sentence under it saying how many of those went unnamed.
+  Martin killed the tiles after looking at a competitor's "420
+  Observations / 147 Confirmed" pair, and his reason is this file's own
+  argument carried one step further. "Confirmed" is wrong because it
+  claims a *confirmer*; **"named" claims a NAMER**, and there isn't one.
+  There is a classifier on an unreviewed label space, `taxonomy_reviewed:
+  false`, and nobody who has looked at the mushroom. A big filled number
+  labelled "named" reads as a score of correct identifications whatever
+  the word literally means. The observation count cannot: it is a count
+  of times the user pressed a button, beyond dispute and needing nobody.
+  **The refusals stayed, as a sentence rather than a score.** Dropping
+  them would have cost the home screen its whole statement -- an app
+  whose claim is that it admits when it does not know should keep score
+  of the admissions. But a number in a box is a leaderboard and the same
+  fact in the app's own voice is a disclosure: *"On 147 of these I would
+  not name a species"* says what the app DID. The count of finds is
+  deliberately not stated at all, because that is the one that would read
+  as "273 correct".
+  **The green went with it**, which restores something `panelThesis`'s own
+  comment already claimed: the thesis panel is now genuinely the one block
+  of solid colour in the app.
+  **An intermediate step is worth knowing about, because the evidence for
+  it was already in the suite.** Before the tiles were dropped they were
+  briefly fixed: `species` counted distinct species keys while `declined`
+  counted *observations*, under labels that read as though they matched,
+  so three photographs of one unidentifiable mushroom read as three on
+  the right and one on the left. `observationLog.test.ts` had asserted
+  `species + declined === observations` since the tally was written and
+  passed **only because its fixture gave every find a different key** --
+  the duplicate-species test a few lines above it proves the identity
+  false. Same fault as `HEADER_WIDTH_PT`: an assertion that holds because
+  of what it was handed. `tally` now returns `named` as well, the
+  assertion uses it, and the replacement was confirmed failing on the old
+  form (`expected 3 to be 4`). `species` is still computed and is **not
+  displayed**, for the reason above.
+  **His 2026-11-17 wording "species unnamed" is gone with the pair**, and
+  so is the reason for it -- it existed for symmetry with "species named".
+  His earlier "more information required" stays declined for the original
+  reason: `declined` includes `out_of_scope`, where no further information
+  helps, and `dangerous_group`, where the refusal can be permanent.
+- **The Learn posts are IN the repo, and that was the whole decision.**
+  2026-11-21. Martin liked a competitor's home screen carrying beginner
+  articles that open a website. The idea is the most aligned thing on that
+  screen -- an app whose proposition is *refusing* owes the user something
+  at the moment it refuses -- and "link straight to a website post" is the
+  part that was wrong.
+  **A website is a second place where species claims live.** Same argument
+  as the ebook's field data being generated rather than hand-copied and the
+  walkthrough being a recording rather than a reimplementation: two
+  hand-kept copies of one fact drift, silently. A post on *Mycena* has to
+  say something about the funeral bell, and then there are two descriptions
+  of a deadly species, one of them unversioned.
+  **And rule 1 applies to every word of it.** Its scanner has twice been
+  found covering one surface and missing another -- it never read
+  `disclaimer.py`, where a soft edibility verdict survived the September
+  purge in the most-read text in the app, and it never read
+  `scripts/try_it.py`. A website is not even in the repository. Ordinary
+  field-guide phrasing ("delicious when young", "not worth collecting") is
+  a rule 1 break, and nothing would diff it.
+  So the posts are a typed TypeScript module, bundled with the app, and
+  `app/test/content.test.ts` runs rule 1 over them **in both directions**
+  from their first day -- plus over `LearnScreen`, `PostScreen` and
+  `HomeScreen`, whose thesis panel had never been scanned by anything. The
+  two sentences that legitimately contain "safe to eat" are an allowlist
+  with a second test that fails when an entry stops appearing, the same
+  shape as `test_character_guidance.py`'s. Confirmed catching a planted
+  "a choice edible is delicious" rather than assumed to.
+  **Bundled, not fetched**, for the reason the emergency screen is
+  hardcoded: a wood is where the network is not. Text-led cards for now;
+  photographs would be bundled assets too, never remote.
+  **What a post may say.** These four state facts about how the APP
+  behaves -- what each refusal means, which answers contradict which
+  candidates -- and naming a species in service of that is fine, because
+  it describes this app rather than making a new field-guide claim. A post
+  that tells somebody how to tell two mushrooms apart in the field IS a
+  mycological claim, and those wait for the review `taxonomy_reviewed:
+  false` is blocking on. The index says so on screen rather than leaving
+  the absence to be noticed.
+  **Placement: below the emergency button, never above it.** Content must
+  not push the one control that must never need a scroll further down the
+  page; that is the rule to hold whatever the section grows into. It is a
+  stack screen rather than a fourth tab -- the home screen's photography
+  tips were already this feature's stub, and the first post is their long
+  form.
+  Writing post four is what found the `cap_surface` undercount above: the
+  prose had to state the numbers, which meant computing them.
 - **The screenshot set never contained the logo.** Martin, 2026-11-08:
   "include the actual logo which isn't actually white". He was right and
   the distinction is exact -- the masthead shows the *mark* as a cream

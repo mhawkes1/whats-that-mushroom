@@ -246,7 +246,7 @@ CHARACTERS: dict[str, Character] = {
         safety_note=(
             "Weather is the trap here. A dry cap looks greasy in the rain and "
             "a slimy one dries smooth within the hour, and \u201cslimy or "
-            "greasy\u201d contradicts four of the deadly species at once. If "
+            "greasy\u201d contradicts five of the deadly species at once. If "
             "it has been raining, skip this."
         ),
         options=(

@@ -20,6 +20,8 @@ import { HistoryScreen } from './src/screens/HistoryScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { ReportScreen } from './src/screens/ReportScreen';
 import { ResultScreen } from './src/screens/ResultScreen';
+import { LearnScreen } from './src/screens/LearnScreen';
+import { PostScreen } from './src/screens/PostScreen';
 import { SporePrintScreen } from './src/screens/SporePrintScreen';
 import { getDisclaimer } from './src/lib/api';
 import { gate, readConsent, type Gate } from './src/lib/consent';
@@ -215,6 +217,17 @@ export default function App() {
             name="SporePrint"
             component={SporePrintScreen}
             options={{ title: 'Spore print' }}
+          />
+          {/* Stack screens rather than a fourth tab: see LearnScreen. */}
+          <Stack.Screen
+            name="Learn"
+            component={LearnScreen}
+            options={{ title: 'Before you start' }}
+          />
+          <Stack.Screen
+            name="Post"
+            component={PostScreen}
+            options={{ title: '' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

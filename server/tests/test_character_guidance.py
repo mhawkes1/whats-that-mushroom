@@ -110,3 +110,110 @@ def test_every_character_offers_a_way_out_of_guessing(deadly_gated):
         assert "skip" in CHARACTERS[key].safety_note.lower(), (
             f"{key}'s safety note should name the escape hatch it relies on"
         )
+
+
+# ---------------------------------------------------------------------------
+# The numbers in the guidance, against the taxonomy that produces them.
+#
+# These notes quote counts -- "contradicts five of the deadly species" -- and
+# a quoted count is prose, which goes stale the way every other hand-written
+# figure in this project has. The cap_surface note shipped "four" while the
+# answer rules out FIVE: *Gyromitra esculenta* declares only
+# "Brain-like or folded", so "slimy or greasy" contradicts it like the rest,
+# and it had simply never been counted. An undercount in a safety note is the
+# note understating how much a wrong answer costs.
+#
+# Nothing below restates a count. Each one is computed from the taxonomy and
+# the prose is required to agree, so a species added, dropped or re-described
+# fails the test that owns the sentence.
+
+import json  # noqa: E402
+import re  # noqa: E402
+
+POSTS_TS = ROOT / "app" / "src" / "content" / "posts.ts"
+
+NUMBER_WORD = {
+    1: "one", 2: "two", 3: "three", 4: "four", 5: "five",
+    6: "six", 7: "seven", 8: "eight", 9: "nine", 10: "ten",
+}
+
+
+def _deadly_states() -> list[tuple[str, dict]]:
+    data = json.loads((ROOT / "data" / "taxonomy.seed.json").read_text())
+    return [
+        (s["scientific_name"], s.get("character_states") or {})
+        for s in data["species"]
+        if s.get("toxicity") == "DEADLY"
+    ]
+
+
+def _contradicted(character: str, answer: str) -> list[str]:
+    """Deadly species an answer rules out.
+
+    A species is contradicted where it DECLARES the character and does not
+    list that state. One that declares nothing cannot be contradicted at
+    all -- an undescribed character gets likelihood 1.0 -- which is why a
+    count of "deadly species gated by this character" is not the same
+    number as "deadly species in the label space".
+    """
+    return sorted(
+        name
+        for name, states in _deadly_states()
+        if states.get(character) and answer not in states[character]
+    )
+
+
+def _grassland_deadly() -> list[str]:
+    return sorted(
+        name
+        for name, states in _deadly_states()
+        if states.get("habitat") == ["No trees nearby", "Mixed broadleaf"]
+    )
+
+
+def test_the_cap_surface_note_states_the_number_the_taxonomy_supports():
+    n = len(_contradicted("cap_surface", "Slimy or greasy"))
+    note = CHARACTERS["cap_surface"].safety_note
+    assert f"contradicts {NUMBER_WORD[n]} of the deadly species" in note, (
+        f"the note disagrees with the taxonomy ({n}): {note!r}"
+    )
+
+
+def test_the_ring_note_states_the_number_the_taxonomy_supports():
+    # The two it opens on are the ones "no ring" rules out.
+    n = len(_contradicted("ring", "No ring"))
+    note = CHARACTERS["ring"].safety_note
+    assert note.lower().startswith(f"{NUMBER_WORD[n]} of the deadliest"), (
+        f"the note disagrees with the taxonomy ({n}): {note!r}"
+    )
+
+
+def test_the_habitat_note_states_the_number_the_taxonomy_supports():
+    n = len(_grassland_deadly())
+    note = CHARACTERS["habitat"].safety_note
+    assert f"away from {NUMBER_WORD[n]} deadly species" in note, (
+        f"the note disagrees with the taxonomy ({n}): {note!r}"
+    )
+
+
+def test_the_learn_post_states_the_same_numbers_as_the_notes():
+    """The same four facts on a second surface, which is the half that gets
+    missed. Rule 1's own scanner read `assess` and not `disclaimer.py`, then
+    read `disclaimer.py` and not `scripts/try_it.py`. A Learn post that
+    teaches a beginner which answers are dangerous is a safety surface, and
+    it is the one furthest from the code that produces the numbers.
+    """
+    post = re.sub(r"\s+", " ", POSTS_TS.read_text())
+
+    cobwebby = NUMBER_WORD[len(_contradicted("ring", "Cobwebby fibres"))]
+    no_ring = NUMBER_WORD[len(_contradicted("ring", "No ring"))]
+    slimy = NUMBER_WORD[len(_contradicted("cap_surface", "Slimy or greasy"))]
+    grass = NUMBER_WORD[len(_grassland_deadly())]
+
+    for fragment in (
+        f"rules out {cobwebby} of the deadly species",
+        f'"no ring" rules out {no_ring}',
+        f"contradicts {slimy} deadly species",
+        f"{grass.capitalize()} of the deadly species I know list only",
+    ):
+        assert fragment in post, f"the post does not say: {fragment!r}"

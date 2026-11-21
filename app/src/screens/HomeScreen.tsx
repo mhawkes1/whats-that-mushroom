@@ -48,69 +48,55 @@ export function HomeScreen({ navigation }: { navigation: any }) {
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <AppHeader />
 
-      <View style={styles.counts}>
-        {/* Filled, where its neighbour is not. Martin's call, 2026-10-31:
-            green marks the observations the app could put a name to. The
-            line that comes with it is in `theme.ts` -- moss may mark
-            confidence in an identification and never the standing of a
-            species, which is why a hazard chip sits beside the name in the
-            log rather than taking its colour from this. */}
-        <Pressable
-          style={[styles.count, styles.countNamed]}
-          onPress={() => navigation.navigate('Me')}
-          accessibilityRole="button"
-          accessibilityLabel={`${counts?.named ?? 0} observations where I named a species. Opens your observations.`}
-        >
-          <Text style={[styles.countNumber, styles.countOn]}>{counts?.named ?? 0}</Text>
-          <Text style={[styles.countLabel, styles.countOn]}>
-            named
+      {/* ONE number, and it is the user's own.
+          Two tiles stood here until 2026-11-21: a green "named" count
+          beside an "unnamed" one. Martin's objection retired them, and it
+          is the argument this file had already made about a competitor's
+          "Confirmed" tile, carried one step further. That tile was wrong
+          because it claims a confirmer. "Named" claims a NAMER -- and
+          there is no namer. There is a classifier with an unreviewed
+          label space, `taxonomy_reviewed: false`, and nobody at all who
+          has looked at the mushroom. A big filled number labelled "named"
+          reads as a score of correct identifications, whatever the word
+          literally means.
+
+          So the tile counts the one thing that is beyond dispute: how
+          many times the user pointed the camera. It cannot flatter, cannot
+          mislead and needs nobody's confirmation.
+
+          **The refusals stay, as a sentence rather than a score.** Losing
+          them would cost the home screen its whole statement -- an app
+          whose claim is that it admits when it does not know should keep
+          score of the admissions. But a number in a box is a leaderboard,
+          and the same fact in the app's own voice is a disclosure: it says
+          what I DID, which is a fact about this app, rather than implying
+          something was established. The number of finds is deliberately
+          not stated at all, because that is the one that would read as
+          "700 correct".
+
+          The green went with the tile, which restores something the
+          thesis panel's own comment already claimed: it is now genuinely
+          the one block of solid colour in the app. */}
+      <Pressable
+        style={styles.observations}
+        onPress={() => navigation.navigate('Me')}
+        accessibilityRole="button"
+        accessibilityLabel={
+          started
+            ? `${counts?.observations ?? 0} observations. I would not name a species on ${counts?.declined ?? 0} of them. Opens your observations.`
+            : 'No observations yet. Opens your observations.'
+        }
+      >
+        <Text style={styles.countNumber}>{counts?.observations ?? 0}</Text>
+        <Text style={styles.countLabel}>observations</Text>
+        {started ? (
+          <Text style={styles.countAside}>
+            {(counts?.declined ?? 0) > 0
+              ? `On ${counts?.declined} of these I would not name a species.`
+              : 'I have put a name to every one of them so far.'}
           </Text>
-        </Pressable>
-
-        {/* Shown beside the find count rather than buried, because in this
-            app a refusal is the product working.
-
-            It opens the log too. It was a plain View until Martin tapped it
-            on 2026-10-31 and nothing happened -- which made the refusals
-            look like a score rather than a list of observations worth
-            going back to, and that is the opposite of why the tile is
-            here. The two tiles count the same log and must behave the
-            same way; a tile that reads as tappable beside one that is
-            teaches that neither is.
-
-            **Both tiles count observations, since 2026-11-21, and the
-            pair is now a partition of the log.** They used to count
-            different things: `species` was a set of distinct species keys
-            while `declined` counted observations, so three photographs of
-            one unidentifiable mushroom read as three here and one on the
-            left, and the two did not sum to the total. The label said
-            "species" on both, which is why it looked as though they did.
-
-            The evidence was already in the suite. `observationLog.test.ts`
-            had asserted `species + declined === observations` since the
-            tally was written, and it passed only because that fixture used
-            distinct species -- the duplicate-species test a few lines above
-            it proves the identity false. An assertion that holds because of
-            what it was handed is the masthead fault again.
-
-            Counting observations on both sides also drops a second,
-            quieter over-claim. The distinct-species figure read as a life
-            list of what the USER had found; it was a count of what an
-            unreviewed classifier had been confident enough to name, which
-            is not the same set and is not the user's achievement. `species`
-            is still computed and is deliberately not displayed. */}
-        <Pressable
-          style={styles.count}
-          onPress={() => navigation.navigate('Me')}
-          accessibilityRole="button"
-          accessibilityLabel={`${counts?.declined ?? 0} observations left unnamed. Opens your observations.`}
-        >
-          <Text style={styles.countNumber}>{counts?.declined ?? 0}</Text>
-          <Text style={styles.countLabel}>
-            unnamed
-          </Text>
-        </Pressable>
-      </View>
+        ) : null}
+      </Pressable>
 
       {!started ? (
         <Pressable
@@ -183,6 +169,26 @@ export function HomeScreen({ navigation }: { navigation: any }) {
         </Text>
       </Pressable>
 
+      {/* Below the emergency route, never above it. Content must not push
+          the one control that must never need a scroll any further down
+          the page; that is the rule to hold whatever this section grows
+          into. The photography tips above were this feature's stub, and
+          the first post is their long form. */}
+      <Pressable
+        style={styles.learn}
+        onPress={() => navigation.navigate('Learn')}
+        accessibilityRole="button"
+        accessibilityLabel="Before you start. Four short pieces on photographing and reading mushrooms."
+      >
+        <Text style={styles.learnHeading}>Before you start</Text>
+        <Text style={styles.learnBody}>
+          Why I refuse to answer sometimes, how to photograph a mushroom so
+          I can do better, taking a spore print, and the three questions
+          people answer wrongly.
+        </Text>
+        <Text style={styles.learnMore}>Four short pieces →</Text>
+      </Pressable>
+
       <Text style={styles.footnote}>
         Never eat a wild mushroom identified only by an app.
       </Text>
@@ -194,15 +200,44 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: theme.colour.background },
   content: { padding: theme.spacing(3), gap: theme.spacing(2.5) },
 
-  counts: { flexDirection: 'row', gap: theme.spacing(2) },
-  count: {
-    flex: 1,
+  observations: {
     backgroundColor: theme.colour.surface,
     borderWidth: 1,
     borderColor: theme.colour.border,
     borderRadius: theme.radius.md,
     padding: theme.spacing(2),
     gap: theme.spacing(0.5),
+  },
+  countAside: {
+    fontSize: theme.font.small,
+    lineHeight: 20,
+    color: theme.colour.textMuted,
+    marginTop: theme.spacing(1),
+  },
+  learn: {
+    backgroundColor: theme.colour.surface,
+    borderWidth: 1,
+    borderColor: theme.colour.border,
+    borderLeftWidth: 4,
+    borderLeftColor: theme.colour.accent,
+    borderRadius: theme.radius.md,
+    padding: theme.spacing(2),
+    gap: theme.spacing(0.75),
+  },
+  learnHeading: {
+    fontSize: theme.font.heading,
+    fontWeight: '700',
+    color: theme.colour.text,
+  },
+  learnBody: {
+    fontSize: theme.font.small,
+    lineHeight: 20,
+    color: theme.colour.textMuted,
+  },
+  learnMore: {
+    fontSize: theme.font.small,
+    fontWeight: '600',
+    color: theme.colour.accent,
   },
   countNumber: {
     fontSize: 34,
@@ -211,9 +246,6 @@ const styles = StyleSheet.create({
     color: theme.colour.text,
   },
   countLabel: { fontSize: theme.font.small, color: theme.colour.textMuted },
-  countNamed: { backgroundColor: theme.colour.accent, borderColor: theme.colour.accent },
-  countOn: { color: theme.colour.onAccent },
-
   primary: {
     backgroundColor: theme.colour.accent,
     borderRadius: theme.radius.md,
