@@ -6,11 +6,16 @@ show up as one card framed differently from the other three.
 
     python scripts/build_learn_images.py
 
-Sources are in `docs/design/learn/` at 1600px on the long edge, committed,
-so this runs from a fresh clone. The originals are 4-9 MB off a phone and
-a camera and stay off the repository; `eval/photos/**` is gitignored for
-exactly that reason, which is also why the Learn cards could not simply
-point at it.
+Sources are in `docs/design/learn/` at 2000px on the long edge, committed,
+so this runs from a fresh clone. The originals are 3-9 MB and stay off the
+repository; `eval/photos/**` is gitignored for exactly that reason, which
+is also why the Learn cards could not simply point at it.
+
+All five are 6000x4000 Canon frames. The set they replaced was 3472x4624
+off a phone, and the difference is not only pixel count: a 3:2 LANDSCAPE
+original loses a third of its height to a 2:1 card, where a portrait one
+loses two thirds. Four of the five are landscape, so the crop keeps far
+more of what was composed.
 
 **Every output is written through a fresh Image, so no EXIF survives.**
 The four sources carry no GPS -- checked, the coordinates are NaN -- but a
@@ -34,18 +39,20 @@ OUT = ROOT / "app" / "assets" / "learn"
 WIDTH, HEIGHT = 780, 390
 
 #: published name -> (source, focus as a fraction of the source's height).
-#: The focus exists because every frame but the bracket is PORTRAIT, so a
-#: 2:1 card keeps about a quarter of the image and which quarter is the
-#: whole decision. Centre is wrong for most of them: a mushroom
-#: photographed from a crouch sits above the middle of the frame.
+#: The focus exists because a 2:1 card never matches the source's shape,
+#: and which band it keeps is the whole decision. Centre is wrong for most
+#: of them: a mushroom photographed from a crouch sits above the middle of
+#: the frame, and the portrait one (amanita) loses two thirds of its
+#: height, so a few hundredths move the cap in or out of shot.
 CARDS: dict[str, tuple[str, float]] = {
-    "why-i-refuse": ("bracket", 0.52),
-    "photographing-a-mushroom": ("amanita", 0.52),
-    "spore-prints": ("brittlegill", 0.50),
-    "answers-that-mislead-me": ("chanterelle", 0.56),
-    # The home screen's single card. Same frame as spore-prints, cropped
-    # on its own so the two can diverge without one of them going wrong.
-    "home": ("brittlegill", 0.50),
+    "why-i-refuse": ("elfcups", 0.50),
+    "photographing-a-mushroom": ("amanita", 0.47),
+    "spore-prints": ("waxcaps", 0.45),
+    "answers-that-mislead-me": ("bonnets", 0.37),
+    # The home screen's single card: the troop of bonnets on haircap moss,
+    # Martin's pick. Its own crop rather than a shared file, so the home
+    # card and an article card can diverge without one going wrong.
+    "home": ("mycena-cluster", 0.45),
 }
 
 

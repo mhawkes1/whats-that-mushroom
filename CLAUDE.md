@@ -1335,11 +1335,29 @@ commits.
   Measured in the running client: **1,606pt to 1,134pt**, about a 30%
   cut, with a photograph added. The saving is bigger than it looks
   because the Learn card gained a 150pt image band on the way.
-- **Martin's four photographs are committed as derived crops, and the
+- **Martin's five photographs are committed as derived crops, and the
   originals are not.** `scripts/build_learn_images.py` cuts
-  `app/assets/learn/*.jpg` (780x390, 2:1, ~60 KB each, 294 KB for five)
+  `app/assets/learn/*.jpg` (780x390, 2:1, ~45 KB each, 226 KB for five)
   from `docs/design/learn/*.jpg`, which are his frames downscaled to
-  1600px. Generated, never hand-cropped -- the `build_icons.py` argument,
+  2000px.
+  **The first set was phone shots and was replaced within the hour.** The
+  Canon frames are **6000x4000** against the phone's 3472x4624, and pixel
+  count is the smaller half of it: four of the five are **landscape**, so
+  a 2:1 card keeps two thirds of the height, where a portrait source
+  keeps one third. The crop throws away far less of what was composed.
+  Mapping, Martin's call: the Mycena troop on haircap moss is the home
+  card, the scarlet elf cups are `why-i-refuse` (a cup fungus is the
+  furthest thing in the set from a gilled mushroom, which is the post's
+  last section), the *Amanita* with its ring and warts is
+  `photographing-a-mushroom`, the waxcaps are `spore-prints` because they
+  are the clearest gills anywhere in the set, and two small bonnets in
+  moss are `answers-that-mislead-me` -- a little brown mushroom is where
+  every one of those three answers is both needed and easy to get wrong.
+  **The elf cups nearly got a cleverer justification and it was wrong.**
+  *Galerina marginata* -> *Sarcoscypha austriaca* is a real recorded
+  confusion and it belongs to **run two**; run five's graph holds eleven
+  pairs and the elf cup is not among them. Checked before writing it
+  down. Pick a photograph for what it shows. Generated, never hand-cropped -- the `build_icons.py` argument,
   and here the drift would show as one card framed unlike the other
   three.
   **`eval/photos/**` is gitignored and that is why a build step was
@@ -1369,6 +1387,22 @@ commits.
   find out what is one, and a scanner that knows where a string sits is a
   scanner that can be fooled about where a string sits. The cost is that
   prose in those four files cannot use the words either, which is cheap.
+- **The screenshot script showed a clipped line the app does not have.**
+  Every front-page capture since the tab bar landed ended
+  `...identified only by an` with `app.` cut in half by the tab bar, and
+  it had been read as a layout fault to fix. It is the opposite: `fit()`
+  grows the viewport to the content's full height, at which point the
+  inner container has nothing left to scroll and the bar -- which sits at
+  the bottom of the WINDOW -- comes to rest on top of the last element.
+  Measured in the running client at a real 390x844 with the list scrolled
+  to its end: the line ends at **y=771** and the bar starts at **795**.
+  24pt of clearance on a phone. **The capture was the only thing wrong.**
+  That is the third trap in that script and the first that works in this
+  direction -- the other two hide things that are real, this one invents
+  one. `fit()` now measures the bar and adds its height. Worth knowing
+  generally: a generated artefact can be wrong in the *pessimistic*
+  direction, and a fault that only ever appears in a screenshot should be
+  reproduced in the running client before anybody edits a stylesheet.
 - **A card that wraps its title in a View breaks a text selector.**
   `screenshots.js` tapped `/^Before you start$/`; once the Learn card
   became image + title + standfirst inside one `Pressable`, the control's

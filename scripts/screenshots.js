@@ -77,17 +77,40 @@ async function tap(p, re, { timeout = 6000 } = {}) {
 const goTab = (p, name) => tap(p, new RegExp(`${name}$`));
 
 /** Grow the viewport to the whole screen. See trap 2. */
+/**
+ * Grow the viewport to the whole screen, PLUS the height of the tab bar.
+ *
+ * The tab bar is the third trap and it bites in the opposite direction to
+ * the other two: it makes the capture show a fault the app does not have.
+ * Once the viewport is as tall as the content, the inner container has
+ * nothing left to scroll, and the bar -- which sits at the bottom of the
+ * WINDOW -- comes to rest on top of the last element. Every front-page
+ * capture since the tab bar landed has shown the closing line clipped
+ * mid-word.
+ *
+ * Measured in the running client at a real 390x844 with the list scrolled
+ * to its end: the line ends at y=771 and the bar starts at 795. There is
+ * 24pt of clearance on a phone. The screenshot was the only thing wrong.
+ */
 async function fit(p) {
-  const h = await p.evaluate((cap) => {
+  const { h, bar } = await p.evaluate((cap) => {
     let max = document.documentElement.scrollHeight;
     for (const d of document.querySelectorAll('div')) {
       if (d.scrollHeight > d.clientHeight + 4) max = Math.max(max, d.scrollHeight);
     }
-    return Math.min(Math.ceil(max) + 16, cap);
+    // The tab bar is the shortest element holding every tab's label.
+    const tab = [...document.querySelectorAll('div')]
+      .filter((e) => e.textContent.includes('Observe') && e.textContent.includes('Home'))
+      .sort((a, b) => a.textContent.length - b.textContent.length)[0];
+    const r = tab && tab.getBoundingClientRect();
+    return {
+      h: Math.min(Math.ceil(max) + 16, cap),
+      bar: r && r.height > 8 ? Math.ceil(r.height) : 0,
+    };
   }, MAX_HEIGHT);
-  await p.setViewportSize({ width: WIDTH, height: h });
+  await p.setViewportSize({ width: WIDTH, height: Math.min(h + bar, MAX_HEIGHT) });
   await sleep(p, 700);
-  return h;
+  return h + bar;
 }
 
 async function shot(p, name) {
